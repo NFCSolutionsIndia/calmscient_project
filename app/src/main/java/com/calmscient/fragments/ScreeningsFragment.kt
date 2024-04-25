@@ -94,7 +94,7 @@ class ScreeningsFragment : Fragment() {
             screeningResponse = JsonUtil.fromJsonString<List<ScreeningItem>>(screeningJsonString)
 
 
-            Log.d("Screenings","$screeningResponse")
+            Log.d("Screeningssssssssss","$screeningResponse")
         }
 
         return binding.root
@@ -104,7 +104,7 @@ class ScreeningsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerViewMedications.layoutManager = LinearLayoutManager(requireContext())
-        cardViewAdapter = ScreeningsCardAdapter(requireActivity().supportFragmentManager,cardViewItems)
+        cardViewAdapter = ScreeningsCardAdapter(requireActivity().supportFragmentManager,cardViewItems,screeningResponse)
         binding.recyclerViewMedications.adapter = cardViewAdapter
         displayCardViews(screeningResponse)
     }
@@ -141,12 +141,15 @@ class ScreeningsFragment : Fragment() {
     }
 
     private fun loadFragment(fragment: Fragment) {
+        val args = Bundle().apply {
+            putString("screeningResponse", JsonUtil.toJsonString(screeningResponse))
+        }
+        fragment.arguments = args
+
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
-
 
 }

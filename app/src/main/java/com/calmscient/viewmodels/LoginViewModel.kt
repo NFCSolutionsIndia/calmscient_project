@@ -1,4 +1,6 @@
 package com.calmscient.viewmodels
+
+import android.content.DialogInterface
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,41 +14,53 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-
+@HiltViewModel
 class LoginViewModel @Inject constructor(private val loginRepository: LoginRepository) : ViewModel() {
+
     val loginResultLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val responseData: MutableLiveData<LoginResponse?> = MutableLiveData()
     val failureResponseData: MutableLiveData<LoginResponse?> = MutableLiveData()
-    val loginResponse: MutableLiveData<LoginResponse?>
-        get() = responseData
+    val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
-    // Empty constructor
-    constructor(apiService: ApiService) : this(LoginRepository(apiService)) {
-        // You can initialize any additional dependencies here if needed
-    }
+    private var lastUsername: String? = null
+    private var lastPassword: String? = null
 
     fun loginUser(username: String, password: String) {
+        lastUsername = username
+        lastPassword = password
         loadingLiveData.value = true // Show loader
         viewModelScope.launch {
             try {
                 val loginRequest = LoginRequest(username, password)
                 val response = loginRepository.loginUser(loginRequest)
                 handleResponse(response)
-            } catch (e: Exception) {
+            }
+            catch (e: SocketTimeoutException) {
+                // Handle timeout exception
+                Log.e("LoginViewModel", "Timeout Exception: ${e.message}")
+                errorLiveData.postValue("Timeout Exception: ${e.message}")
+                loginResultLiveData.postValue(false) // Indicate login failure
+            }
+            catch (e: Exception) {
                 e.printStackTrace()
                 loginResultLiveData.value = false
+                errorLiveData.postValue("Timeout Exception: ${e.message}")
             } finally {
                 loadingLiveData.value = false
             }
         }
     }
-    fun setResponseDate(response : LoginResponse)
-    {
-        responseData.value = response
-        Log.d("LoginViewModel Class","$responseData")
+
+    fun retryLogin() {
+        lastUsername?.let { username ->
+            lastPassword?.let { password ->
+                loginUser(username, password)
+            }
+        }
     }
 
     private suspend fun handleResponse(call: Call<LoginResponse>) {
@@ -57,7 +71,6 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
                     val isValidLogin = response.body()?.statusResponse?.responseCode == 200
                     if (isValidLogin) {
                         responseData.postValue(response.body()) // Store response data
-                        responseData.value?.let { setResponseDate(it) }
                         Log.d("LoginViewModel", "Response Data: ${response.body()}")
                     } else {
                         failureResponseData.postValue(response.body())
@@ -66,8 +79,14 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
                 } else {
                     loginResultLiveData.postValue(false)
                 }
+            } catch (e: SocketTimeoutException) {
+                // Handle timeout exception
+                Log.e("LoginViewModel", "Timeout Exception: ${e.message}")
+                errorLiveData.postValue("Timeout Exception: ${e.message}")
+                loginResultLiveData.postValue(false) // Indicate login failure
             } catch (e: Exception) {
                 e.printStackTrace()
+                errorLiveData.postValue("Timeout Exception: ${e.message}")
                 loginResultLiveData.postValue(false)
             }
         }

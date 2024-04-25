@@ -10,12 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
+import com.calmscient.di.remote.response.QuestionnaireItem
+import androidx.viewpager2.widget.ViewPager2
 import com.calmscient.activities.CommonDialog
-import com.calmscient.fragments.Question
 
-class QuestionAdapter(private val context: Context, private val questions: List<Question>, val title: String) :
+class QuestionAdapter(private val context: Context, private var questionnaireItems: List<QuestionnaireItem>) :
     RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder>() {
 
+        private var screeningId :Int =-1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.questions_item_card_view, parent, false)
@@ -25,71 +27,59 @@ class QuestionAdapter(private val context: Context, private val questions: List<
     inner class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questionTextView: TextView = itemView.findViewById(R.id.questionTextView)
         val optionsRecyclerView: RecyclerView = itemView.findViewById(R.id.optionsRecyclerView)
-        val descTextView: TextView = itemView.findViewById(R.id.desc_text_view)
         val infoIcon: ImageView = itemView.findViewById(R.id.informationDialogButton)
 
         init {
             optionsRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
         }
 
-        fun bindOptions(options: List<String>, selectedOptionIndex: Int) {
-            val optionsAdapter = OptionsAdapter(options, selectedOptionIndex) { clickedPosition ->
-                questions[adapterPosition].selectedOption = clickedPosition
-                notifyDataSetChanged()
-            }
-            optionsRecyclerView.adapter = optionsAdapter
-            //descTextView.visibility = if (isFirstItem) View.VISIBLE else View.GONE
-
-            infoIcon.setOnClickListener {
-                val commonDialog = CommonDialog(context)
-
-                // Show a dialog when the fragment is loaded
-                if (title == context.getString(R.string.phq_heading)) {
-                    commonDialog.showDialog(context.getString(R.string.phq))
-                } else if (title == context.getString(R.string.gad_heading)) {
-                    commonDialog.showDialog(context.getString(R.string.gad))
-                } else if (title == context.getString(R.string.audit_heading)) {
-                    commonDialog.showDialog(context.getString(R.string.audit))
-                } else if (title == context.getString(R.string.dast_heading)) {
-                    commonDialog.showDialog(context.getString(R.string.dast))
+        fun bindOptions(options: List<String>, selectedOptionIndex: Int?) {
+            val selectedOption = questionnaireItems[adapterPosition].answerResponse.indexOfFirst { it.selected == "true" }
+            val optionsAdapter = OptionsAdapter(options, selectedOption) { clickedPosition ->
+                questionnaireItems[adapterPosition].answerResponse.forEachIndexed { index, answerResponse ->
+                    answerResponse.selected = (index == clickedPosition).toString()
                 }
+
+//                infoIcon.setOnClickListener{
+//                    val commonDialog = CommonDialog(context)
+//                    if(screeningId == 0)
+//                    {
+//                        commonDialog.showDialog(context.getString(R.string.phq))
+//                    }
+//                }
+                notifyDataSetChanged() // Notify the adapter of the change
             }
+
+            optionsRecyclerView.adapter = optionsAdapter
         }
     }
 
+
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
-        val item = questions[position]
-        holder.questionTextView.text = item.questionText
-        if (position == 0) {
-            if (title == "PHQ-9") {
-                holder.descTextView.visibility = View.GONE
-                holder.infoIcon.visibility = View.VISIBLE
-                holder.descTextView.text = context.getString(R.string.phq)
-            } else if (title == "GAD-7") {
-                holder.descTextView.visibility = View.GONE
-                holder.infoIcon.visibility = View.VISIBLE
-                holder.descTextView.text = context.getString(R.string.gad)
-            } else if (title == "AUDIT") {
-                holder.descTextView.visibility = View.GONE
-                holder.infoIcon.visibility = View.VISIBLE
-                holder.descTextView.text = context.getString(R.string.audit)
-            } else if (title == "DAST-10") {
-                holder.descTextView.visibility = View.GONE
-                holder.infoIcon.visibility = View.VISIBLE
-                holder.descTextView.text = context.getString(R.string.dast)
-            }
-        } else {
-            holder.descTextView.visibility = View.GONE
-            holder.infoIcon.visibility = View.GONE
-        }
+        val item = questionnaireItems[position]
+        holder.questionTextView.text = item.questionName
+        val selectedOptionIndex = item.selectedOption
+        //holder.bindOptions(item.answerResponse.map { it.optionLabel }, item.selectedOption)
 
-        Log.d("AdapterDebug", "Options size: ${item.options.size}")
+        // Set the options RecyclerView orientation to vertical
+        //holder.optionsRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
 
-        holder.bindOptions(item.options, item.selectedOption)
+        // Bind options to the options RecyclerView
+        holder.bindOptions(item.answerResponse.map { it.optionLabel }, selectedOptionIndex)
+
+        // Set visibility of infoIcon based on position
+        holder.infoIcon.visibility = if (position == 0) View.VISIBLE else View.GONE
+
     }
 
     override fun getItemCount(): Int {
-        return questions.size
+        return questionnaireItems.size
     }
+    fun updateQuestionnaireItems(newQuestionnaireItems: List<QuestionnaireItem>) {
+        questionnaireItems = newQuestionnaireItems
+        notifyDataSetChanged()
+    }
+
+
 
 }

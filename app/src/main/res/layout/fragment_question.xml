@@ -98,7 +98,7 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.calmscient.utils.NonSwipeRecyclerView
             android:id="@+id/questionsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_400sdp"

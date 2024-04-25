@@ -35,7 +35,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
     lateinit var menuItemsViewModel: MenuItemViewModel
     @Inject
     lateinit var apiService: ApiService
-    @Inject lateinit var loginViewModel: LoginViewModel
+     private val loginViewModel: LoginViewModel by viewModels()
      private lateinit var loginRepository: LoginRepository
 
     private lateinit var customProgressDialog: CustomProgressDialog

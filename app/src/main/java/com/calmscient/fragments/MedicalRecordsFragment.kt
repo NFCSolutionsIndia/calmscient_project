@@ -25,6 +25,7 @@ import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.MenuItemViewModel
 import com.calmscient.viewmodels.ScreeningViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -151,7 +152,25 @@ class MedicalRecordsFragment : Fragment() {
                 val jsonString = JsonUtil.toJsonString(screeningsResponseDate)
                 SharedPreferencesUtil.saveData(requireContext(), "screeningsResponse", jsonString)
             }
+            else{
+                screeningsMenuViewModel.errorLiveData.value?.let { failureMessage ->
+                    failureMessage.let {
+                        commonDialog.showDialog(
+                            it
+                        )
+                    }
+                }
+                screeningsMenuViewModel.errorLiveData.value?.let { failureMessage ->
+                    failureMessage.let{
+                        ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                            // Retry logic when the retry button is clicked
+                            screeningsMenuViewModel.retryScreeningsFetchMenuItems()
+                        }
+                    }
+                }
+            }
         }
+
 
         binding.backIcon.setOnClickListener {
 

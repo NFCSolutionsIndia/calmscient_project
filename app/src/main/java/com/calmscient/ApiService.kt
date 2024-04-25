@@ -14,8 +14,10 @@ package com.calmscient
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.request.LoginRequest
 import com.calmscient.di.remote.request.ScreeningRequest
+import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.ScreeningAssignmentResponse
 import com.calmscient.di.remote.response.ScreeningResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -37,5 +39,8 @@ interface ApiService {
 
     @POST("patients/screening/getScreeningListForMobile")
     fun fetchScreeningsMenuItems(@Body requestBody: ScreeningRequest): Call<ScreeningResponse>
+
+    @POST("patients/screening/getScreeningQuestionnaireForMobile")
+    fun fetchScreeningsQuestionItems(@Body requestBody: ScreeningsAssessmentRequest): Call<ScreeningAssignmentResponse>
 }
 

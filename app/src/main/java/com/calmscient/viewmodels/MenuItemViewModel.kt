@@ -8,22 +8,32 @@ import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.response.MenuItem
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.repository.MenuItemRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.calmscient.utils.network.ServerTimeoutHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
+import java.net.SocketTimeoutException
 import javax.inject.Inject
-
 
 class MenuItemViewModel @Inject constructor(private val menuItemRepository: MenuItemRepository) : ViewModel() {
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val resultLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val menuItemsLiveData: MutableLiveData<List<MenuItem>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
+    val failureLiveData: MutableLiveData<String> = MutableLiveData()
+
+    private var lastPlid: Int = -1
+    private var lastParentId: Int = -1
+    private var lastPatientId: Int = -1
+    private var lastClientId: Int = -1
 
     fun fetchMenuItems(plid: Int, parentId: Int, patientId: Int, clientId: Int) {
         loadingLiveData.value = true // Show loader
+        lastPlid = plid
+        lastParentId = parentId
+        lastPatientId = patientId
+        lastClientId = clientId
         viewModelScope.launch {
             try {
                 val newUrl = "http://20.197.5.97:8083/identity/menu/fetchMenus"
@@ -36,10 +46,19 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
                 val response = menuItemRepository.fetchMenuItems(request)
                 Log.d("MenuItemViewModel", "Response: $response")
                 handleResponse(response)
-            } catch (e: Exception) {
+            }
+            catch (e: SocketTimeoutException) {
+                // Handle timeout exception
+                errorLiveData.postValue("Timeout Exception: ${e.message}")
+                Log.e("MenuItemViewModel", "Timeout Exception: ${e.message}")
+                resultLiveData.postValue(false) // Indicate login failure
+            }
+            catch (e: Exception) {
                 e.printStackTrace()
-                errorLiveData.value = "Failed to fetch menu items."
-            } finally {
+                failureLiveData.postValue("Exception: ${e.message}")
+                resultLiveData.postValue(false)
+            }
+            finally {
                 loadingLiveData.value = false
             }
         }
@@ -55,6 +74,7 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
                     if (menuItemsResponse != null && isSuccess) {
                         Log.d("MenuItemViewModel", "Response: $menuItemsResponse")
                         menuItemsLiveData.postValue(menuItemsResponse.menuItems)
+                        resultLiveData.postValue(isSuccess)
                     } else {
                         errorLiveData.postValue("Empty response")
                     }
@@ -63,11 +83,23 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
                     errorLiveData.postValue("Error: ${response.code()}")
                     resultLiveData.postValue(false)
                 }
-            } catch (e: Exception) {
+            }
+            catch (e: SocketTimeoutException) {
+                // Handle timeout exception
+                Log.e("MenuItemViewModel", "Timeout Exception: ${e.message}")
+                errorLiveData.postValue("Timeout Exception: ${e.message}")
+                resultLiveData.postValue(false) // Indicate login failure
+            }
+            catch (e: Exception) {
                 e.printStackTrace()
-                errorLiveData.postValue("Exception: ${e.message}")
+                failureLiveData.postValue("Exception: ${e.message}")
                 resultLiveData.postValue(false)
             }
         }
+    }
+
+    // Function to retry fetching menu items
+    fun retryFetchMenuItems() {
+        fetchMenuItems(lastPlid, lastParentId, lastPatientId, lastClientId)
     }
 }

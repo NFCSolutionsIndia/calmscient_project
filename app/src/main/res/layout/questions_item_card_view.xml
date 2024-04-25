@@ -37,7 +37,7 @@
         android:textSize="@dimen/_16sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.calmscient.utils.NonSwipeRecyclerView
         android:id="@+id/optionsRecyclerView"
         android:layout_width="match_parent"
         android:layout_weight="1"

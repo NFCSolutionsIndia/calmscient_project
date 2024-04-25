@@ -17,16 +17,20 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
+
+
 class OptionsAdapter(
     private val options: List<String>,
-    private val selectedOptionIndex: Int,
+    private var selectedOptionIndex: Int,
     private val optionClickListener: (Int) -> Unit
 ) : RecyclerView.Adapter<OptionsAdapter.OptionsViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OptionsViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.option_item_card_view, parent, false)
         return OptionsViewHolder(itemView)
     }
+
     inner class OptionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val optionTextView: TextView = itemView.findViewById(R.id.option)
 
@@ -36,31 +40,43 @@ class OptionsAdapter(
                 optionClickListener.invoke(clickedPosition)
             }
         }
-    }
-    override fun onBindViewHolder(holder: OptionsViewHolder, position: Int) {
-        val option = options[position]
-        holder.optionTextView.text = option
-        if (position == selectedOptionIndex) {
-            // Change the color of the selected card and text
-            holder.itemView.setBackgroundResource(R.drawable.card_selected_background)
-            holder.optionTextView.setTextColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.white
+
+        fun bind(option: String, isSelected: Boolean) {
+            optionTextView.text = option
+            if (isSelected) {
+                // Change the color of the selected card and text
+                itemView.setBackgroundResource(R.drawable.card_selected_background)
+                optionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.white
+                    )
                 )
-            )
-        } else {
-            // Reset the color for non-selected options
-            holder.itemView.setBackgroundResource(R.drawable.card_default_background)
-            holder.optionTextView.setTextColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.black
+            } else {
+                // Reset the color for non-selected options
+                itemView.setBackgroundResource(R.drawable.card_default_background)
+                optionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.black
+                    )
                 )
-            )
+            }
         }
     }
+
+    override fun onBindViewHolder(holder: OptionsViewHolder, position: Int) {
+        val option = options[position]
+        val isSelected = position == selectedOptionIndex
+        holder.bind(option, isSelected)
+    }
+
     override fun getItemCount(): Int {
         return options.size
+    }
+
+    fun setSelectedOption(selectedOption: Int) {
+        selectedOptionIndex = selectedOption
+        notifyDataSetChanged()
     }
 }

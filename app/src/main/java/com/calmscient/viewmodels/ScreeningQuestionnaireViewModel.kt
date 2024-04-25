@@ -17,9 +17,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.calmscient.ApiService
 import com.calmscient.di.remote.request.ScreeningRequest
+import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.QuestionnaireItem
+import com.calmscient.di.remote.response.ScreeningAssignmentResponse
 import com.calmscient.di.remote.response.ScreeningItem
 import com.calmscient.di.remote.response.ScreeningResponse
+import com.calmscient.repository.ScreeningQuestionnaireRepository
 import com.calmscient.repository.ScreeningsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -30,32 +34,38 @@ import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
-class ScreeningViewModel @Inject constructor(private val screeningRepository: ScreeningsRepository) : ViewModel() {
-    val screeningListLiveData: MutableLiveData<List<ScreeningItem>> = MutableLiveData()
-    val screeningsResultLiveData: MutableLiveData<Boolean> = MutableLiveData()
+class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQuestionnaireRepository: ScreeningQuestionnaireRepository) : ViewModel() {
+    val screeningQuestionListLiveData: MutableLiveData<List<QuestionnaireItem>> = MutableLiveData()
+    val screeningsQuestionResultLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val failureLiveData: MutableLiveData<String> = MutableLiveData()
-    val failureResponseData: MutableLiveData<ScreeningResponse?> = MutableLiveData()
+    val failureResponseData: MutableLiveData<ScreeningAssignmentResponse?> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
-    private var lastPlid: Int = -1
-    private var lastPatientId: Int = -1
-    private var lastClientId: Int = -1
 
 
-    fun getScreeningList(patientId: Int, clientId: Int, patientLocationId: Int) {
+    private var fromDate: String = ""
+    private var patientLocationId: Int = -1
+    private var toDate: String = ""
+    private var screeningId: Int = -1
+    private var patientId: Int = -1
+    private var clientId: Int = -1
+    private var assessmentId: Int = -1
+
+
+    fun getScreeningQuestionsList(patientId: Int, clientId: Int, patientLocationId: Int, toDate: String, fromDate: String, assessmentId :Int, screeningId :Int) {
         loadingLiveData.value = true // Show loader
         viewModelScope.launch {
             try {
-                val request = ScreeningRequest(patientId, clientId, patientLocationId)
-                val response = screeningRepository.fetchScreeningsMenuItems(request)
+                val request = ScreeningsAssessmentRequest(fromDate,patientLocationId,toDate,screeningId,patientId,clientId,assessmentId)
+                val response = screeningQuestionnaireRepository.fetchScreeningsMenuItems(request)
                 handleResponse(response)
             }
             catch (e: SocketTimeoutException) {
                 // Handle timeout exception
                 errorLiveData.postValue("Timeout Exception: ${e.message}")
                 Log.e("MenuItemViewModel", "Timeout Exception: ${e.message}")
-                screeningsResultLiveData.postValue(false) // Indicate login failure
+                screeningsQuestionResultLiveData.postValue(false) // Indicate login failure
             }
             catch (e: Exception) {
                 e.printStackTrace()
@@ -66,7 +76,7 @@ class ScreeningViewModel @Inject constructor(private val screeningRepository: Sc
         }
     }
 
-    private suspend fun handleResponse(call: Call<ScreeningResponse>) {
+    private suspend fun handleResponse(call: Call<ScreeningAssignmentResponse>) {
         withContext(Dispatchers.IO) {
             try {
                 val response = call.execute()
@@ -75,14 +85,16 @@ class ScreeningViewModel @Inject constructor(private val screeningRepository: Sc
                     val isSuccess = response.body()?.statusResponse?.responseCode == 200
                     val screeningItems = response.body()
                     if(isSuccess && screeningItems != null) {
-                        screeningListLiveData.postValue(screeningItems.screeningList)
-                        screeningsResultLiveData.postValue(isSuccess)
+                        screeningQuestionListLiveData.postValue(screeningItems.questionnaire)
+                        screeningsQuestionResultLiveData.postValue(isSuccess)
                         Log.d("ScreeningsViewModel", "Response Data: ${response.body()}")
                     }
                     else {
                         failureResponseData.postValue(response.body())
+                        val res = response.body()?.statusResponse?.responseMessage
+                        errorLiveData.postValue("Error Occure: $res")
                     }
-                    screeningsResultLiveData.postValue(false)
+                    screeningsQuestionResultLiveData.postValue(false)
                 } else {
                     failureLiveData.postValue("Failed to fetch screening list.")
                 }
@@ -91,18 +103,18 @@ class ScreeningViewModel @Inject constructor(private val screeningRepository: Sc
                 // Handle timeout exception
                 Log.e("MenuItemViewModel", "Timeout Exception: ${e.message}")
                 errorLiveData.postValue("Timeout Exception: ${e.message}")
-                screeningsResultLiveData.postValue(false) // Indicate login failure
+                screeningsQuestionResultLiveData.postValue(false) // Indicate login failure
             }
             catch (e: Exception) {
                 e.printStackTrace()
                 failureLiveData.postValue("Failed to fetch screening list.")
-                screeningsResultLiveData.postValue(false)
+                screeningsQuestionResultLiveData.postValue(false)
             }
         }
     }
 
     // Function to retry fetching menu items
     fun retryScreeningsFetchMenuItems() {
-        getScreeningList(lastPlid, lastPatientId, lastClientId)
+        getScreeningQuestionsList(patientId,clientId,patientLocationId,toDate,fromDate,assessmentId, screeningId)
     }
 }

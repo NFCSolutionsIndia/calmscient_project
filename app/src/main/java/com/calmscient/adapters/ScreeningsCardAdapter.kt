@@ -22,14 +22,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
+import com.calmscient.di.remote.response.ScreeningItem
 import com.calmscient.fragments.AUDITQuestionFragment
 import com.calmscient.fragments.DASTQuestionFragment
 import com.calmscient.fragments.GADQuestionFragment
 import com.calmscient.fragments.HistoryFragment
 import com.calmscient.fragments.QuestionFragment
 import com.calmscient.fragments.ScreeningsCardItem
+import com.calmscient.utils.common.CommonClass
 
-class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, private val items: List<ScreeningsCardItem>) :
+class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, private val items: List<ScreeningsCardItem>,private val screeningResponse: List<ScreeningItem>) :
     RecyclerView.Adapter<ScreeningsCardAdapter.CardViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -54,25 +56,40 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
         }*/
         holder.imageHistory.setOnClickListener {
             val fragment = HistoryFragment()
-            fragmentManager.beginTransaction()
-                .replace(R.id.flFragment, fragment)
-                .addToBackStack(null)
-                .commit()
+            fragment.let {
+                fragmentManager.beginTransaction()
+                    .replace(R.id.flFragment, it)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
+
         holder.cardViewLayout.setOnClickListener {
-            val context = holder.itemView.context
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            when (position) {
-                0 -> fragmentTransaction.replace(R.id.flFragment, QuestionFragment())
-                1 -> fragmentTransaction.replace(R.id.flFragment, GADQuestionFragment())
-                2 -> fragmentTransaction.replace(R.id.flFragment, AUDITQuestionFragment())
-                3 -> fragmentTransaction.replace(R.id.flFragment, DASTQuestionFragment())
-                // Add more cases for other card positions if needed
-                else -> {}
+            // Check internet connection
+            if (CommonClass.isNetworkAvailable(holder.itemView.context)) {
+                // Load corresponding fragment based on position
+                val fragment = when (position) {
+                    0 -> QuestionFragment(screeningResponse[position])
+                    1 -> GADQuestionFragment()
+                    2 -> AUDITQuestionFragment()
+                    3 -> DASTQuestionFragment()
+                    // Add more cases for other positions if needed
+                    else -> null
+                }
+
+                fragment?.let {
+                    fragmentManager.beginTransaction()
+                        .replace(R.id.flFragment, it)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            } else {
+                // Show internet connection dialog
+                CommonClass.showInternetDialogue(holder.itemView.context)
             }
-            fragmentTransaction.addToBackStack(null).commit()
         }
+
     }
 
     override fun getItemCount(): Int = items.size
@@ -82,6 +99,7 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
         val cardViewLayout: CardView = itemView.findViewById(R.id.screenings_item_card_view)
         val imageHistory: ImageView = itemView.findViewById(R.id.history_icon)
         val screeningsImageNext: ImageView = itemView.findViewById(R.id.screenings_next_icon)
+
 
 
     }

@@ -28,4 +28,8 @@ class NonSwipeRecyclerView : RecyclerView {
         // Disable intercepting touch events to prevent swiping left and right
         return false
     }
+    override fun onTouchEvent(e: MotionEvent?): Boolean {
+        // Disable touch events to prevent scrolling
+        return false
+    }
 }

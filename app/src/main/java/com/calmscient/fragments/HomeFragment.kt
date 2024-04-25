@@ -61,6 +61,7 @@ import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.LoginViewModel
 import com.calmscient.viewmodels.MenuItemViewModel
 import com.google.gson.Gson
@@ -79,8 +80,7 @@ class HomeFragment : Fragment() {
     private lateinit var introductionAdapter: AnxietyIntroductionAdapter
     private lateinit var profileImage: ImageView
     lateinit var savePrefData: SavePreferences
-    @Inject
-    lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModels()
     @Inject
     lateinit var menuViewModel: MenuItemViewModel
     @Inject
@@ -146,6 +146,8 @@ class HomeFragment : Fragment() {
 
                 val jsonString = JsonUtil.toJsonString(menuResponseDate)
                 SharedPreferencesUtil.saveData(requireContext(), "menuResponse", jsonString)
+                ServerTimeoutHandler.clearRetryListener()
+                ServerTimeoutHandler.dismissDialog()
 
 
                 if (menuResponseDate.size >= 2) {
@@ -153,6 +155,23 @@ class HomeFragment : Fragment() {
                     mediaclRecords.text = menuResponseDate[0].menuName
                     weeklySummary.text = menuResponseDate[1].menuName
                     favorites.text = menuResponseDate[2].menuName
+                }
+            }
+            else{
+                menuViewModel.failureLiveData.value?.let { failureMessage ->
+                    failureMessage.let {
+                        commonDialog.showDialog(
+                            it
+                        )
+                    }
+                }
+                menuViewModel.errorLiveData.value?.let { failureMessage ->
+                    failureMessage.let{
+                        ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                            // Retry logic when the retry button is clicked
+                            menuViewModel.retryFetchMenuItems()
+                        }
+                    }
                 }
             }
         }

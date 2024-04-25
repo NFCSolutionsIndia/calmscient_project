@@ -44,13 +44,13 @@ import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: LayoutLoginBinding
 
-    @Inject
-    lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var responseDate: LoginResponse
     private lateinit var customProgressDialog: CustomProgressDialog
 
@@ -127,7 +127,7 @@ class LoginActivity : AppCompatActivity() {
             if (isValidLogin) {
                 // Login successful, navigate to the next screen
                 responseDate = loginViewModel.responseData.value!!
-                handleLoginResponse(responseDate)
+                //handleLoginResponse(responseDate)
 
                 val jsonString = JsonUtil.toJsonString(responseDate)
                 SharedPreferencesUtil.saveData(this, "loginResponse", jsonString)
@@ -136,7 +136,6 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("LoginActivity Response", "${responseDate.loginDetails}")
                 navigateToDayScreen(responseDate)
             } else {
-
                 loginViewModel.failureResponseData.value?.let { failureMessage ->
                     failureMessage.statusResponse.responseMessage.let {
                         commonDialog.showDialog(
@@ -144,6 +143,15 @@ class LoginActivity : AppCompatActivity() {
                         )
                     }
                 }
+                loginViewModel.errorLiveData.value?.let { failureMessage ->
+                    failureMessage.let{
+                        ServerTimeoutHandler.handleTimeoutException(this) {
+                            // Retry logic when the retry button is clicked
+                            loginViewModel.retryLogin()
+                        }
+                    }
+                }
+
                 //Snackbar.make(binding.root, "Invalid username or password", Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -155,7 +163,6 @@ class LoginActivity : AppCompatActivity() {
                 customProgressDialog.dialogDismiss()
             }
         }
-
         // Adding a text change listener to the email and password fields
         binding.userName.addTextChangedListener(inputTextWatcher)
         binding.editPassword.addTextChangedListener(inputTextWatcher)
@@ -187,6 +194,7 @@ class LoginActivity : AppCompatActivity() {
                             loginViewModel.loginUser(username, password)
                         }*/
         }
+
 
         val passwordToggle = findViewById<TextInputLayout>(R.id.Tin_password)
         val passwordEditText = findViewById<TextInputEditText>(R.id.edit_password)
@@ -234,11 +242,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToDayScreen(response: LoginResponse) {
-        loginViewModel.setResponseDate(response)
+        //loginViewModel.setResponseDate(response)
         startActivity(Intent(this, UserMoodActivity::class.java))
     }
 
-    private fun handleLoginResponse(response: LoginResponse) {
-        loginViewModel.setResponseDate(response)
-    }
+//    private fun handleLoginResponse(response: LoginResponse) {
+//        loginViewModel.setResponseDate(response)
+//    }
 }
