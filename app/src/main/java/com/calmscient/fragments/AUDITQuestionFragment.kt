@@ -12,12 +12,14 @@
 package com.calmscient.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -25,194 +27,228 @@ import com.calmscient.R
 import com.calmscient.activities.CommonDialog
 import com.calmscient.adapters.QuestionAdapter
 import com.calmscient.databinding.FragmentADUITQuestionBinding
-import com.calmscient.utils.common.SavePreferences
+import com.calmscient.databinding.FragmentGadQuestionsBinding
+import com.calmscient.databinding.FragmentQuestionBinding
+import com.calmscient.di.remote.response.QuestionnaireItem
+import com.calmscient.di.remote.response.ScreeningItem
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
+import com.calmscient.viewmodels.ScreeningQuestionnaireViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
-class AUDITQuestionFragment : Fragment() {
-    private lateinit var questionAdapter: QuestionAdapter
+class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
+
     private lateinit var binding: FragmentADUITQuestionBinding
-    lateinit var savePrefData: SavePreferences
-
+    private lateinit var questionAdapter: QuestionAdapter
+    private val screeningQuestionsViewModel: ScreeningQuestionnaireViewModel by activityViewModels()
+    private var screeningQuestionResponse : List<QuestionnaireItem> = emptyList()
+    private lateinit var screeningResponseList: List<ScreeningItem>
     private var currentQuestionIndex = 0
     private var isPreviousButtonVisible = false
-    private var isNextButtonVisible = true // Initially, show the next button
+    private var isNextButtonVisible = true
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            loadFragment(ScreeningsFragment())
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                loadFragment(ScreeningsFragment())
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
-    }
 
+    }
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentADUITQuestionBinding.inflate(inflater, container, false)
-        savePrefData = SavePreferences(requireContext())
-        binding.previousQuestion.visibility = View.GONE
+
+        // Retrieve data from arguments
+        val screeningResponseJson = arguments?.getString("screeningResponse")
+        Log.d("AUDIT Fragment ", "$screeningResponseJson")
+
+        screeningResponseList = listOf(screeningItem)
+
+        Log.d("AUDIT Fragment ","$screeningResponseList")
+
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+        commonDialog = CommonAPICallDialog(requireContext())
+
+        binding.backIcon.setOnClickListener{
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                loadFragment(ScreeningsFragment())
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+
+        binding
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Get the selected title from arguments
-        val selectedTitle = arguments?.getString("selectedTitle")
-        // Update your UI with the selected title
-        if (!selectedTitle.isNullOrEmpty()) {
-            binding.titleTextView.text = selectedTitle
+
+        val pagerSnapHelper = PagerSnapHelper()
+        pagerSnapHelper.attachToRecyclerView(binding.questionsRecyclerView)
+
+        val commonDialog = CommonDialog(requireContext())
+
+        // Show a dialog when the fragment is loaded
+        commonDialog.showDialog(screeningResponseList[0].screeningReminder)
+
+        // Get today's date
+        val today = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy")
+        val todayDate = dateFormat.format(today.time)
+
+        // Calculate 7 days before today
+        val sevenDaysBefore = Calendar.getInstance()
+        sevenDaysBefore.add(Calendar.DAY_OF_YEAR, -7)
+        val sevenDaysBeforeDate = dateFormat.format(sevenDaysBefore.time)
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+            observeViewModel()
+            setupRecyclerView()
         }
-        val titleA = "AUDIT"
-        val questions: List<Question> = generateDummyQuestions()
-        val totalQuestions = questions.size
-        questionAdapter = QuestionAdapter(requireContext(), questions, titleA)
+        else{
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
+        screeningQuestionsViewModel.getScreeningQuestionsList(screeningResponseList[0].patientID,screeningResponseList[0].clientID,screeningResponseList[0].plid,sevenDaysBeforeDate,todayDate,screeningResponseList[0].assessmentID,screeningResponseList[0].screeningID)
+
+        binding.nextQuestion.setOnClickListener {
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                moveToNextQuestion()
+            }
+            else
+            {
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+
+        // Handle click on previous question button
+        binding.previousQuestion.setOnClickListener {
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                moveToPreviousQuestion()
+            }
+            else
+            {
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+//        // Listen to RecyclerView scroll events to update currentQuestionIndex
+//        binding.questionsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                // Update currentQuestionIndex based on the visible item position
+//                currentQuestionIndex = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//            }
+//        })
+
+    }
+
+    private fun moveToNextQuestion() {
+        if (currentQuestionIndex < (screeningQuestionsViewModel.screeningQuestionListLiveData.value?.size ?: (0 - 1))) {
+            currentQuestionIndex++
+            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+        }
+    }
+
+    private fun moveToPreviousQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--
+            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+        }
+    }
+
+
+    private fun setupRecyclerView() {
+        // Assuming you have already initialized questionnaireItems in your ViewModel
+        questionAdapter = QuestionAdapter(requireContext(), emptyList())
         binding.questionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = questionAdapter
         }
-        // Create an instance of the CommonDialog class
-        val commonDialog = CommonDialog(requireContext())
-
-        // Show a dialog when the fragment is loaded
-        commonDialog.showDialog(getString(R.string.audit))
-        // Use a PagerSnapHelper for snapping to a question's position
-        val pagerSnapHelper = PagerSnapHelper()
-        pagerSnapHelper.attachToRecyclerView(binding.questionsRecyclerView)
-        setupNavigation()
-        binding.backIcon.setOnClickListener {
-            loadFragment(ScreeningsFragment())
-        }
     }
 
-    private fun generateDummyQuestions(): List<Question> {
-        val questionsList = mutableListOf<Question>()
-        if (savePrefData.getSpanLanguageState() == true) {
-            val questionTexts = listOf(
-                "1. ¿Con qué frecuencia bebe un trago con contenido de alcohol?",
-                "2. ¿Cuántos tragos que contengan alcohol consume en un día típico cuando está bebiendo?",
-                "3. ¿Con qué frecuencia bebe cuatro o más tragos en una ocasión?",
-                "4. ¿Con qué frecuencia durante el último año se dio cuenta de que no pudo dejar de beber una vez que había empezado?",
-                "5. ¿Con qué frecuencia durante el último año ha dejado de hacer lo que normalmente se esperaba de usted debido a la bebida?",
-                "6. ¿Con qué frecuencia durante el último año ha necesitado un primer trago en la mañana para ponerse en acción después de una sesión de beber abundantemente?",
-                "7. ¿Con qué frecuencia durante el último año ha tenido una sensación de culpa o remordimiento después de beber?",
-                "8. ¿Con qué frecuencia durante el último año ha sido incapaz de recordar lo que pasó la noche anterior debido a su forma de beber?",
-                "9. ¿Usted o alguien más han resultado heridos debido a su forma de beber?",
-                "10. ¿Ha estado preocupado por su forma de beber o le ha sugerido que beba menos algún pariente, amigo, médico u otro trabajador de la atención a la salud?"
-            )
 
-            for (index in questionTexts.indices) {
-                val questionText = questionTexts[index]
-                val options = if (index == 0) {
-                    // Custom options for the 1st question
-                    listOf(
-                        "Nunca",
-                        "Una vez al mes o menos",
-                        "2-4 veces al mes",
-                        "2-3 veces por semana",
-                        "4 o más veces por semana"
-                    )
-                } else if (index == 1) {
-                    // Custom options for the 2nd question
-                    listOf("0- 2", "3 o 4", "5 o 6", "7 - 9", "10 o más")
-                } else if (index == 8 || index == 9) {
-                    // Custom options for the 9th and 10th question
-                    listOf("No", "Sí, pero no en el último año", "Sí, en el último año")
-                } else {
-                    // Default options for other questions
-                    listOf("Nunca", "Menos de una vez al mes", "Mensualmente", "Semanalmente", "Diario o casi a diario")
+    private fun observeViewModel() {
+
+        screeningQuestionsViewModel.screeningsQuestionResultLiveData.observe(viewLifecycleOwner,Observer{isSuccess ->
+
+            if(isSuccess)
+            {
+                screeningQuestionResponse = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                screeningQuestionResponse?.let {
+
+                    val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                    Log.d("AUDIT Fragment ","$res")
+                    displayQuestions(it)
                 }
-                questionsList.add(Question(questionText, options))
             }
-        }else{
-            val questionTexts = listOf(
-                "1. How often do you have a drink containing alcohol?",
-                "2. How many standard drinks containing alcohol do you have on a typical day when drinking?",
-                "3. How often do you have six or more drinks on one occasion?",
-                "4. During the past year, how often have you found that you were not able to stop drinking once you had started?",
-                "5. During the past year, how often have you failed to do what was normally expected of you because of drinking?",
-                "6. During the past year, how often have you needed a drink in the morning to get yourself going after a heavy drinking session?",
-                "7. During the past year, how often have you had a feeling of guilt or remorse after drinking?",
-                "8. During the past year, how often have you been unable to remember what happened the night before because you had been drinking?",
-                "9. Have you or someone else been injured as a result of your drinking?",
-                "10. Has a relative or friend, doctor or other health worker been concerned about your drinking or suggested you cut down?"
-            )
-
-            for (index in questionTexts.indices) {
-                val questionText = questionTexts[index]
-                val options = if (index == 0) {
-                    // Custom options for the 1st question
-                    listOf(
-                        "Never",
-                        "Monthly or less",
-                        "2-4 times a month",
-                        "2-3 times a week",
-                        "4 or more times a week"
-                    )
-                } else if (index == 1) {
-                    // Custom options for the 2nd question
-                    listOf("1 or 2", "3 or 4", "5 or 6", "7 to 9", "10 or more")
-                } else if (index == 8 || index == 9) {
-                    // Custom options for the 9th and 10th question
-                    listOf("No", "Yes, but not in the past year", "Yes, during the past year")
-                } else {
-                    // Default options for other questions
-                    listOf("Never", "Less than monthly", "Monthly", "Weekly", "Daily or almost daily")
+            else{
+                screeningQuestionsViewModel.errorLiveData.value?.let { failureMessage ->
+                    failureMessage.let{
+                        ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                            // Retry logic when the retry button is clicked
+                            screeningQuestionsViewModel.retryScreeningsFetchMenuItems()
+                        }
+                    }
                 }
-                questionsList.add(Question(questionText, options))
+
+                screeningQuestionsViewModel.failureLiveData.value?.let { failureMessage ->
+                    failureMessage.let {
+                        commonDialog.showDialog(
+                            it
+                        )
+                    }
+                }
             }
-        }
+        })
+        screeningQuestionsViewModel.screeningQuestionListLiveData.observe(viewLifecycleOwner, Observer { questionnaireItems ->
+            questionnaireItems?.let {
 
+                val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                Log.d("AUDIT Fragment ","$res")
+                displayQuestions(it)
+            }
+        })
+        screeningQuestionsViewModel.failureLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
+            // Handle failure
+        })
+        screeningQuestionsViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                customProgressDialog.show("Loading...")
+            } else {
 
-        return questionsList
-    }
-
-    private fun setupNavigation() {
-        binding.nextQuestion.setOnClickListener {
-            navigateToQuestion(currentQuestionIndex + 1)
-        }
-        binding.previousQuestion.setOnClickListener {
-            navigateToQuestion(currentQuestionIndex - 1)
-        }
-        binding.questionsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-
-                // Check if the user is scrolling horizontally
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-                    // Update the current question index
-                    currentQuestionIndex = firstVisibleItemPosition
-                    // Toggle the visibility of the buttons based on the current index
-                    toggleButtonVisibility()
-                }
+                customProgressDialog.dialogDismiss()
             }
         })
     }
 
-    private fun navigateToQuestion(index: Int) {
-        val questions: List<Question> = generateDummyQuestions()
-        val totalQuestions = questions.size
-        if (index in 0 until questions.size) {
-            currentQuestionIndex = index
-            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+    private fun displayQuestions(questionnaireItems: List<QuestionnaireItem>) {
+        if (::questionAdapter.isInitialized) {
+            questionAdapter.updateQuestionnaireItems(questionnaireItems)
         } else {
-            if (currentQuestionIndex == questions.size - 1) {
-                loadFragment(ResultsFragment())
-            }
+            // Log an error or handle the case where questionAdapter is not initialized
         }
     }
-
-    private fun showResult() {
-        val toastMessage = "You've reached the end of the questions!"
-        Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
-    }
-
     private fun loadFragment(fragment: Fragment) {
-        val bundle = Bundle()
-        bundle.putString("description", getString(R.string.your_results))
-        bundle.putInt(ResultsFragment.SOURCE_SCREEN_KEY, ResultsFragment.SCREENINGS_FRAGMENT)
-        fragment.arguments = bundle
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
@@ -220,20 +256,4 @@ class AUDITQuestionFragment : Fragment() {
         transaction.commit()
     }
 
-    private fun toggleButtonVisibility() {
-        val questions: List<Question> = generateDummyQuestions()
-        val totalQuestions = questions.size
-        isPreviousButtonVisible = currentQuestionIndex > 0
-        isNextButtonVisible = currentQuestionIndex < totalQuestions - 1
-
-
-        // Always show both "Previous" and "Next" buttons/icons for the last question
-        if (currentQuestionIndex >= questions.size - 1) {
-            isPreviousButtonVisible = true
-            isNextButtonVisible = true
-        }
-        binding.previousQuestion.visibility =
-            if (isPreviousButtonVisible) View.VISIBLE else View.GONE
-        binding.nextQuestion.visibility = if (isNextButtonVisible) View.VISIBLE else View.GONE
-    }
 }

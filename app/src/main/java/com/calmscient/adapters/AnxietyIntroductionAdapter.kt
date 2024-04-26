@@ -23,6 +23,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -53,13 +54,12 @@ import com.calmscient.fragments.PlayerFragment
 import com.calmscient.fragments.PostponeWorryFirstScreen
 import com.calmscient.fragments.RecognizeFragment
 
-class AnxietyIntroductionAdapter(private val diffCallback: DiffUtil.ItemCallback<CardItemDataClass>) :
+class AnxietyIntroductionAdapter(private val diffCallback: DiffUtil.ItemCallback<CardItemDataClass>, private val fragmentManager: FragmentManager) :
     ListAdapter<CardItemDataClass, AnxietyIntroductionAdapter.ViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.anxiety_item_card, parent, false)
-        return ViewHolder(itemView)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.anxiety_item_card, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -75,6 +75,8 @@ class AnxietyIntroductionAdapter(private val diffCallback: DiffUtil.ItemCallback
         private val introCardView: CardView = itemView.findViewById(R.id.anxietyCard)
 
         fun bind(cardItem: CardItemDataClass) {
+            val context = itemView.context
+
             contentIcon.setImageResource(cardItem.contentIcons[0])
             descriptionTextView.text = cardItem.description
 
@@ -84,8 +86,9 @@ class AnxietyIntroductionAdapter(private val diffCallback: DiffUtil.ItemCallback
                 tickImageView.visibility = View.GONE
             }
             itemView.setOnClickListener {
-                val context = itemView.context
-                val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+
+                val fragmentManager = fragmentManager //(context as FragmentActivity).supportFragmentManager
+
                 when {
                     cardItem.availableContentTypes.contains(ItemType.AUDIO) -> {
                         if (cardItem.audioResourceId != null) {

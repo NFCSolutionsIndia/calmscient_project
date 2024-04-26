@@ -104,6 +104,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
 
         mediaclRecords=rootView.findViewById<TextView>(R.id.my_medical_records)
@@ -215,7 +216,7 @@ class HomeFragment : Fragment() {
         ss.setSpan(boldSpan, 7, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         tvProfileName.setText(ss)*/
         // Initialize the introductionAdapter here
-        introductionAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback())
+        introductionAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback(),requireActivity().supportFragmentManager)
 
         // Initialize the recyclerView before using it
         recyclerView = rootView.findViewById(R.id.recyclerViewVideos)
@@ -230,7 +231,7 @@ class HomeFragment : Fragment() {
             val additionalResourceItems = cardItemsFavoritesASL()
             val additionalResourceRecyclerView: RecyclerView =
                 rootView.findViewById(R.id.recyclerViewVideos)
-            val additionalResourceAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback())
+            val additionalResourceAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback(),requireActivity().supportFragmentManager)
             setupRecyclerView(
                 additionalResourceRecyclerView, additionalResourceItems, additionalResourceAdapter
             )
@@ -238,7 +239,7 @@ class HomeFragment : Fragment() {
             val additionalResourceItems = cardItemsFavoritesSpanish()
             val additionalResourceRecyclerView: RecyclerView =
                 rootView.findViewById(R.id.recyclerViewVideos)
-            val additionalResourceAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback())
+            val additionalResourceAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback(),requireActivity().supportFragmentManager)
             setupRecyclerView(
                 additionalResourceRecyclerView, additionalResourceItems, additionalResourceAdapter
             )
@@ -247,7 +248,7 @@ class HomeFragment : Fragment() {
             val additionalResourceItems = cardItemsFavorites()
             val additionalResourceRecyclerView: RecyclerView =
                 rootView.findViewById(R.id.recyclerViewVideos)
-            val additionalResourceAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback())
+            val additionalResourceAdapter = AnxietyIntroductionAdapter(CardItemDiffCallback(),requireActivity().supportFragmentManager)
             setupRecyclerView(
                 additionalResourceRecyclerView, additionalResourceItems, additionalResourceAdapter
             )

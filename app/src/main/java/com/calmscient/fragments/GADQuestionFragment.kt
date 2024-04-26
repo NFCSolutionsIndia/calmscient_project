@@ -12,12 +12,14 @@
 package com.calmscient.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -25,210 +27,231 @@ import com.calmscient.R
 import com.calmscient.activities.CommonDialog
 import com.calmscient.adapters.QuestionAdapter
 import com.calmscient.databinding.FragmentGadQuestionsBinding
-import com.calmscient.utils.common.SavePreferences
+import com.calmscient.di.remote.response.QuestionnaireItem
+import com.calmscient.di.remote.response.ScreeningItem
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
+import com.calmscient.viewmodels.ScreeningQuestionnaireViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
-class GADQuestionFragment : Fragment() {
+class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 
-    private lateinit var questionAdapter: QuestionAdapter
     private lateinit var binding: FragmentGadQuestionsBinding
-    lateinit var savePrefData: SavePreferences
+    private lateinit var questionAdapter: QuestionAdapter
+    private val screeningQuestionsViewModel: ScreeningQuestionnaireViewModel by activityViewModels()
+    private var screeningQuestionResponse : List<QuestionnaireItem> = emptyList()
+    private lateinit var screeningResponseList: List<ScreeningItem>
     private var currentQuestionIndex = 0
     private var isPreviousButtonVisible = false
-    private var isNextButtonVisible = true // Initially, show the next button
+    private var isNextButtonVisible = true
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            loadFragment(ScreeningsFragment())
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                loadFragment(ScreeningsFragment())
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
-    }
 
+    }
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentGadQuestionsBinding.inflate(inflater, container, false)
-        savePrefData = SavePreferences(requireContext())
-        binding.previousQuestion.visibility = View.GONE
+
+        // Retrieve data from arguments
+        val screeningResponseJson = arguments?.getString("screeningResponse")
+        Log.d("GAD Fragment ", "$screeningResponseJson")
+
+        screeningResponseList = listOf(screeningItem)
+
+        Log.d("GAD Fragment ","$screeningResponseList")
+
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+        commonDialog = CommonAPICallDialog(requireContext())
+
+        binding.backIcon.setOnClickListener{
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                loadFragment(ScreeningsFragment())
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+
+        binding
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Get the selected title from arguments
-        val selectedTitle = arguments?.getString("selectedTitle")
+        val pagerSnapHelper = PagerSnapHelper()
+        pagerSnapHelper.attachToRecyclerView(binding.questionsRecyclerView)
 
-        // Update your UI with the selected title
-        if (!selectedTitle.isNullOrEmpty()) {
-            binding.tvGadtitle.text = selectedTitle
+        val commonDialog = CommonDialog(requireContext())
+
+        // Show a dialog when the fragment is loaded
+        commonDialog.showDialog(screeningResponseList[0].screeningReminder)
+
+        // Get today's date
+        val today = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy")
+        val todayDate = dateFormat.format(today.time)
+
+        // Calculate 7 days before today
+        val sevenDaysBefore = Calendar.getInstance()
+        sevenDaysBefore.add(Calendar.DAY_OF_YEAR, -7)
+        val sevenDaysBeforeDate = dateFormat.format(sevenDaysBefore.time)
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+            observeViewModel()
+            setupRecyclerView()
         }
-        val titleG = "GAD-7"
-        val questions: List<Question> = generateDummyQuestions()
-        val totalQuestions = questions.size
-        questionAdapter = QuestionAdapter(requireContext(), questions, titleG)
+        else{
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
+        screeningQuestionsViewModel.getScreeningQuestionsList(screeningResponseList[0].patientID,screeningResponseList[0].clientID,screeningResponseList[0].plid,sevenDaysBeforeDate,todayDate,screeningResponseList[0].assessmentID,screeningResponseList[0].screeningID)
+
+        binding.nextQuestion.setOnClickListener {
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                moveToNextQuestion()
+            }
+            else
+            {
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+
+        // Handle click on previous question button
+        binding.previousQuestion.setOnClickListener {
+            if (CommonClass.isNetworkAvailable(requireContext()))
+            {
+                moveToPreviousQuestion()
+            }
+            else
+            {
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+//        // Listen to RecyclerView scroll events to update currentQuestionIndex
+//        binding.questionsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                // Update currentQuestionIndex based on the visible item position
+//                currentQuestionIndex = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//            }
+//        })
+
+    }
+
+    private fun moveToNextQuestion() {
+        if (currentQuestionIndex < (screeningQuestionsViewModel.screeningQuestionListLiveData.value?.size ?: (0 - 1))) {
+            currentQuestionIndex++
+            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+        }
+    }
+
+    private fun moveToPreviousQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--
+            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+        }
+    }
+
+
+    private fun setupRecyclerView() {
+        // Assuming you have already initialized questionnaireItems in your ViewModel
+        questionAdapter = QuestionAdapter(requireContext(), emptyList())
         binding.questionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = questionAdapter
         }
-// Create an instance of the CommonDialog class
-        val commonDialog = CommonDialog(requireContext())
-
-        // Show a dialog when the fragment is loaded
-        commonDialog.showDialog(getString(R.string.gad))
-        // Use a PagerSnapHelper for snapping to a question's position
-        val pagerSnapHelper = PagerSnapHelper()
-        pagerSnapHelper.attachToRecyclerView(binding.questionsRecyclerView)
-        setupNavigation()
-        binding.backIcon.setOnClickListener {
-            loadFragment(ScreeningsFragment())
-        }
     }
 
-    private fun generateDummyQuestions(): List<Question> {
-        val questionsList = mutableListOf<Question>()
-        if (savePrefData.getSpanLanguageState() == true) {
-            val questionTexts = listOf(
-                "1. Se ha sentido nervioso(a), ansioso(a) o con los nervios de punta",
-                "2. No ha sido capaz de parar o controlar su preocupación",
-                "3. Se ha preocupado demasiado por motivos diferentes",
-                "4. Ha tenido dificultad para relajarse",
-                "5. Se ha sentido tan inquieto(a) que no ha podido quedarse quieto(a)",
-                "6. Se ha molestado o irritado fácilmente",
-                "7. Ha tenido miedo de que algo terrible fuera a pasar",
-                "8. If you checked off any problems, how difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?"
-            )
-            for (index in questionTexts.indices) {
-                val questionText = questionTexts[index]
-                val options = if (index == 7) {
-                    // Custom options for the 8th question
-                    listOf(
-                        "No es nada difícil",//Not difficult at all
-                        "Algo dificil",//Somewhat difficult
-                        "Very difficult", //Very difficult
-                        "Extremadamente difícil"//Extremely difficult
-                    )
-                } else {
-                    // Default options for other questions
-                    listOf(
-                        "Ningún día",
-                        "Varios días",
-                        "Más de la mitad de los días",
-                        "Casi todos los días "
-                    )
+
+    private fun observeViewModel() {
+
+        screeningQuestionsViewModel.screeningsQuestionResultLiveData.observe(viewLifecycleOwner,Observer{isSuccess ->
+
+            if(isSuccess)
+            {
+                screeningQuestionResponse = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                screeningQuestionResponse?.let {
+
+                    val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                    Log.d("GAD Fragment ","$res")
+                    displayQuestions(it)
                 }
-                questionsList.add(Question(questionText, options))
             }
-        } else {
-            val questionTexts = listOf(
-                "1. Feeling nervous, anxious or on edge",
-                "2. Not being able to stop or control worrying",
-                "3. Worrying too much about different things",
-                "4. Trouble relaxing",
-                "5. Being so restless that it is hard to sit still",
-                "6. Becoming easily annoyed or irritable",
-                "7. Feeling afraid as if something awful might happen"
-                //"8. If you checked off any problems, how difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?"
-            )
-            for (index in questionTexts.indices) {
-                val questionText = questionTexts[index]
-                val options = if (index == 7) {
-                    // Custom options for the 8th question
-                    listOf(
-                        "Not difficult at all",
-                        "Somewhat difficult",
-                        "Very difficult",
-                        "Extremely difficult"
-                    )
-                } else {
-                    // Default options for other questions
-                    listOf(
-                        "Not at all",
-                        "Several days",
-                        "More than half the days",
-                        "Nearly every day"
-                    )
+            else{
+                screeningQuestionsViewModel.errorLiveData.value?.let { failureMessage ->
+                    failureMessage.let{
+                        ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                            // Retry logic when the retry button is clicked
+                            screeningQuestionsViewModel.retryScreeningsFetchMenuItems()
+                        }
+                    }
                 }
-                questionsList.add(Question(questionText, options))
+
+                screeningQuestionsViewModel.failureLiveData.value?.let { failureMessage ->
+                    failureMessage.let {
+                        commonDialog.showDialog(
+                            it
+                        )
+                    }
+                }
             }
-        }
+        })
+        screeningQuestionsViewModel.screeningQuestionListLiveData.observe(viewLifecycleOwner, Observer { questionnaireItems ->
+            questionnaireItems?.let {
 
-        return questionsList
-    }
+                val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                Log.d("GAD Fragment ","$res")
+                displayQuestions(it)
+            }
+        })
+        screeningQuestionsViewModel.failureLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
+            // Handle failure
+        })
+        screeningQuestionsViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                customProgressDialog.show("Loading...")
+            } else {
 
-    private fun setupNavigation() {
-        binding.nextQuestion.setOnClickListener {
-            navigateToQuestion(currentQuestionIndex + 1)
-        }
-
-        binding.previousQuestion.setOnClickListener {
-            navigateToQuestion(currentQuestionIndex - 1)
-        }
-
-        binding.questionsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                // Check if the user is scrolling horizontally
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-                    // Update the current question index
-                    currentQuestionIndex = firstVisibleItemPosition
-                    // Toggle the visibility of the buttons based on the current index
-                    toggleButtonVisibility()
-                }
+                customProgressDialog.dialogDismiss()
             }
         })
     }
 
-
-    private fun navigateToQuestion(index: Int) {
-        val questions: List<Question> = generateDummyQuestions()
-        val totalQuestions = questions.size
-        if (index in 0 until questions.size) {
-            currentQuestionIndex = index
-            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+    private fun displayQuestions(questionnaireItems: List<QuestionnaireItem>) {
+        if (::questionAdapter.isInitialized) {
+            questionAdapter.updateQuestionnaireItems(questionnaireItems)
         } else {
-            if (currentQuestionIndex == questions.size - 1) {
-                loadFragment(ResultsFragment())
-            }
+            // Log an error or handle the case where questionAdapter is not initialized
         }
     }
-
-    private fun showResult() {
-        val toastMessage = "You've reached the end of the questions!"
-        Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
-    }
-
     private fun loadFragment(fragment: Fragment) {
-        val bundle = Bundle()
-        bundle.putString("description", getString(R.string.your_results))
-        bundle.putInt(ResultsFragment.SOURCE_SCREEN_KEY, ResultsFragment.SCREENINGS_FRAGMENT)
-        fragment.arguments = bundle
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
-    }
-
-    private fun toggleButtonVisibility() {
-        val questions: List<Question> = generateDummyQuestions()
-        val totalQuestions = questions.size
-        isPreviousButtonVisible = currentQuestionIndex > 0
-        isNextButtonVisible = currentQuestionIndex < totalQuestions - 1
-
-
-        // Always show both "Previous" and "Next" buttons/icons for the last question
-        if (currentQuestionIndex >= questions.size - 1) {
-            isPreviousButtonVisible = true
-            isNextButtonVisible = true
-        }
-        binding.previousQuestion.visibility =
-            if (isPreviousButtonVisible) View.VISIBLE else View.GONE
-        binding.nextQuestion.visibility = if (isNextButtonVisible) View.VISIBLE else View.GONE
     }
 
 }

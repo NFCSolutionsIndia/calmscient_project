@@ -20,3 +20,9 @@ data class ScreeningsAssessmentRequest(
     val clientId: Int,
     val assessmentId: Int
 )
+
+
+data class SelectedOption(
+    val questionId: Int,
+    val optionLabelId: String
+)

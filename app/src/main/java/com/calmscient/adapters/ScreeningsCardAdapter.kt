@@ -71,9 +71,9 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
                 // Load corresponding fragment based on position
                 val fragment = when (position) {
                     0 -> QuestionFragment(screeningResponse[position])
-                    1 -> GADQuestionFragment()
-                    2 -> AUDITQuestionFragment()
-                    3 -> DASTQuestionFragment()
+                    1 -> GADQuestionFragment(screeningResponse[position])
+                    2 -> AUDITQuestionFragment(screeningResponse[position])
+                    3 -> DASTQuestionFragment(screeningResponse[position])
                     // Add more cases for other positions if needed
                     else -> null
                 }

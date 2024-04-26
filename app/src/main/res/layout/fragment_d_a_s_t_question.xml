@@ -56,7 +56,7 @@
         android:layout_height="@dimen/_400sdp"
         android:layout_below="@+id/separator">-->
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.calmscient.utils.NonSwipeRecyclerView
             android:id="@+id/questionsRecyclerView"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
