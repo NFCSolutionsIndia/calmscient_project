@@ -11,18 +11,20 @@
 
 package com.calmscient.di.remote.request
 
-data class ScreeningsAssessmentRequest(
-    val fromDate: String?,
-    val patientLocationId: Int,
-    val toDate: String?,
+data class PatientAnswerSaveRequest(
+    val flag: String?,
+    val answerId: String?,
     val screeningId: Int,
-    val patientId: Int,
+    val patientLocationId: Int,
+    val questionnaireId: Int,
+    val optionId: Int?,
+    val score: Int,
     val clientId: Int,
+    val patientId: Int,
     val assessmentId: Int
 )
 
-
-data class SelectedOption(
-    val questionId: Int,
-    val optionLabelId: String
+data class PatientAnswersWrapper(
+    val patientAnswers: List<PatientAnswerSaveRequest>
 )
+

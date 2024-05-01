@@ -13,12 +13,17 @@ package com.calmscient
 
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.request.LoginRequest
+import com.calmscient.di.remote.request.PatientAnswerSaveRequest
+import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.request.ScreeningRequest
 import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
+import com.calmscient.di.remote.request.ScreeningsResultsRequest
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.ScreeningAssignmentResponse
 import com.calmscient.di.remote.response.ScreeningResponse
+import com.calmscient.di.remote.response.ScreeningResultsResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -42,5 +47,14 @@ interface ApiService {
 
     @POST("patients/screening/getScreeningQuestionnaireForMobile")
     fun fetchScreeningsQuestionItems(@Body requestBody: ScreeningsAssessmentRequest): Call<ScreeningAssignmentResponse>
+
+    @POST("patients/screening/savePatientAnswersForMobile")
+    fun saveScreeningQuestionAnswers(@Body requestBody: PatientAnswersWrapper): Call<PatientAnswerSaveResponse>
+
+
+    @POST("patients/screening/getScreeningResultsForMobile")
+    fun getScreeningsResults(@Body requestBody: ScreeningsResultsRequest): Call<ScreeningResultsResponse>
+
+
 }
 

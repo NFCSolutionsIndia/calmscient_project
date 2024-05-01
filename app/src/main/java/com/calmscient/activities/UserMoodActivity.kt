@@ -24,6 +24,8 @@ import androidx.lifecycle.Observer
 import com.calmscient.ApiService
 import com.calmscient.AppController
 import com.calmscient.retrofit.ApplicationModule
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.OkHttpClient
 import javax.inject.Inject
@@ -40,10 +42,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
-    private var patientId: Int = 0
-    private var clientId: Int = 0
-    private var plid: Int = 0
-    private var parentId: Int = 0
+
+
 
 
     private var isImage1Visible = true
@@ -59,6 +59,11 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
        val res =  loginViewModel.responseData.value
         Log.d("UserMoodActivity","$res")
+
+        val jsonString = SharedPreferencesUtil.getData(this, "loginResponse", "")
+        val loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
+
+        Log.d("Login Response in USERMOOD","$loginResponse")
 
         loginViewModel.loginResultLiveData.observe(this) { isValidLogin ->
             if (isValidLogin) {

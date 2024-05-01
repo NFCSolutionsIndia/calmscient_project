@@ -2093,6 +2093,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="reset_password">Reset Password</string>
     <string name="verify_code">Verify Code</string>
     <string name="completed">Completed</string>
+    <string name="please_answer_the_questions">Please answer the Questions</string>
 
 
 </resources>

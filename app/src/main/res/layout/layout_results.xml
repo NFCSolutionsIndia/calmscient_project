@@ -74,7 +74,6 @@
                 android:layout_marginTop="@dimen/_30sdp"
                 android:layout_toEndOf="@+id/tablets"
                 android:fontFamily="@font/lexendregular"
-                android:text="08/24/2023"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp"
                 android:textStyle="bold" />
@@ -87,7 +86,6 @@
                 android:layout_marginTop="@dimen/_45sdp"
                 android:layout_toEndOf="@+id/tablets"
                 android:fontFamily="@font/lexendregular"
-                android:text="01:13PM"
                 android:textColor="@color/hospital_name"
                 android:textSize="@dimen/_12sdp" />
         </RelativeLayout>
@@ -230,7 +228,6 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_toEndOf="@id/tv_score"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="06"
                         android:textColor="@color/purple_100"
                         android:textSize="@dimen/_25sdp" />
                     <!--<TextView
@@ -246,14 +243,13 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/tv_total10"
+                    android:id="@+id/tv_totalValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_toLeftOf="@id/tv_total"
                     android:fontFamily="@font/lexendmedium"
-                    android:text="10"
                     android:textColor="@color/hospital_name"
                     android:textSize="@dimen/_25sdp" />
 
@@ -280,7 +276,6 @@
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:indeterminate="false"
-            android:max="60"
             android:progress="1"
             android:progressDrawable="@drawable/curved_progress_bar"
             android:scaleY="2"

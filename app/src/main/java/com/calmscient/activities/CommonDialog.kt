@@ -23,7 +23,7 @@ import com.calmscient.R
 class CommonDialog(private val context: Context) {
 
     @SuppressLint("MissingInflatedId")
-    fun showDialog(message: String) {
+    fun showDialog(message: String?) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.common_dialog, null)
         val infoTextView = dialogView.findViewById<TextView>(R.id.dialogInfoTextView)
         val closeButton = dialogView.findViewById<ImageView>(R.id.closeDialogButton)

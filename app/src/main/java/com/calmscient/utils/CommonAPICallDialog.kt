@@ -34,7 +34,7 @@ class CommonAPICallDialog(private val context: Context) {
             androidx.appcompat.app.AlertDialog.Builder(context, R.style.CustomDialog)
                 .setView(dialogView)
 
-        val dialog = dialogBuilder.create()
+        dialog = dialogBuilder.create()
         dialog.show()
 
         // Handle the close button click
@@ -43,5 +43,12 @@ class CommonAPICallDialog(private val context: Context) {
            dialog.dismiss()
         }
     }
+
+    fun dismiss() {
+        if (::dialog.isInitialized && dialog.isShowing) {
+            dialog.dismiss()
+        }
+    }
+
 }
 

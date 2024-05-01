@@ -92,6 +92,7 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
             }
             catch (e: Exception) {
                 e.printStackTrace()
+                errorLiveData.postValue("Exception: ${e.message}")
                 failureLiveData.postValue("Exception: ${e.message}")
                 resultLiveData.postValue(false)
             }

@@ -12,10 +12,15 @@
 package com.calmscient.repository
 
 import com.calmscient.ApiService
+import com.calmscient.di.remote.request.PatientAnswerSaveRequest
+import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.request.ScreeningRequest
 import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
+import com.calmscient.di.remote.request.ScreeningsResultsRequest
+import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.ScreeningAssignmentResponse
 import com.calmscient.di.remote.response.ScreeningResponse
+import com.calmscient.di.remote.response.ScreeningResultsResponse
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -23,5 +28,14 @@ class ScreeningQuestionnaireRepository @Inject constructor(private val apiServic
 {
     fun fetchScreeningsMenuItems(screeningAssignmentRequest: ScreeningsAssessmentRequest): Call<ScreeningAssignmentResponse> {
         return apiService.fetchScreeningsQuestionItems(screeningAssignmentRequest)
+    }
+
+    fun saveScreeningQuestionAnswers(patientAnswerSaveRequest: PatientAnswersWrapper): Call<PatientAnswerSaveResponse>
+    {
+        return  apiService.saveScreeningQuestionAnswers(patientAnswerSaveRequest)
+    }
+
+    fun getScreeningsResults(screeningResultsRequest: ScreeningsResultsRequest):Call<ScreeningResultsResponse>{
+        return  apiService.getScreeningsResults(screeningResultsRequest)
     }
 }

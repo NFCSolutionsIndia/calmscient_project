@@ -26,7 +26,7 @@ data class AnswerResponse(
     val optionLabel: String,
     val optionScore: String,
     val answer: String,
-    val answerId: Any?,
+    val answerId: String?,
     var selected: String
 )
 

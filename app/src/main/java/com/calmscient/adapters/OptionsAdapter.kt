@@ -43,6 +43,26 @@ class OptionsAdapter(
 
         fun bind(option: String, isSelected: Boolean) {
             optionTextView.text = option
+           /* if(selectedOptionIndex == position)
+            {
+                itemView.setBackgroundResource(R.drawable.card_selected_background)
+                optionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.white
+                    )
+                )
+            }
+            else {
+                // Reset the color for non-selected options
+                itemView.setBackgroundResource(R.drawable.card_default_background)
+                optionTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.black
+                    )
+                )
+            }*/
             if (isSelected) {
                 // Change the color of the selected card and text
                 itemView.setBackgroundResource(R.drawable.card_selected_background)

@@ -29,7 +29,7 @@ class BeginManageAnxietyActivity : AppCompat() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         binding.beginButton.setOnClickListener {
-            startActivity(Intent(this,ManageAnxietyActivity::class.java))
+            //startActivity(Intent(this,ManageAnxietyActivity::class.java))
         }
         binding.backIcon.setOnClickListener {
             finish()

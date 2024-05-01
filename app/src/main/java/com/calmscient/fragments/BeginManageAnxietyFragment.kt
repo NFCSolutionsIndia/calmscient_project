@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.calmscient.R
-import com.calmscient.activities.ManageAnxietyActivity
 import com.calmscient.databinding.LayoutBeginanxietyBinding
 class BeginManageAnxietyFragment : Fragment() {
     private lateinit var binding: LayoutBeginanxietyBinding

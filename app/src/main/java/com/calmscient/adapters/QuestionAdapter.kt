@@ -52,6 +52,14 @@ class QuestionAdapter(private val context: Context, private var questionnaireIte
 
             optionsRecyclerView.adapter = optionsAdapter
         }
+        fun getSelectedOptionId(): String? {
+            val selectedOptionIndex = questionnaireItems.getOrNull(adapterPosition)?.answerResponse?.indexOfFirst { it.selected == "true" }
+            return if (selectedOptionIndex != null && selectedOptionIndex != -1) {
+                questionnaireItems[adapterPosition].answerResponse[selectedOptionIndex].optionLabelId
+            } else {
+                null
+            }
+        }
     }
 
 
@@ -80,6 +88,13 @@ class QuestionAdapter(private val context: Context, private var questionnaireIte
         notifyDataSetChanged()
     }
 
-
+    fun getSelectedOptionId(position: Int): String? {
+        val selectedOptionIndex = questionnaireItems.getOrNull(position)?.answerResponse?.indexOfFirst { it.selected == "true" }
+        return if (selectedOptionIndex != null && selectedOptionIndex != -1) {
+            questionnaireItems[position].answerResponse[selectedOptionIndex].optionLabelId
+        } else {
+            null
+        }
+    }
 
 }

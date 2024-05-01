@@ -53,7 +53,7 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
     private var assessmentId: Int = -1
 
 
-    fun getScreeningQuestionsList(patientId: Int, clientId: Int, patientLocationId: Int, toDate: String, fromDate: String, assessmentId :Int, screeningId :Int) {
+    fun getScreeningQuestionsList(patientId: Int, clientId: Int, patientLocationId: Int, toDate: String?, fromDate: String?, assessmentId :Int, screeningId :Int) {
         loadingLiveData.value = true // Show loader
         viewModelScope.launch {
             try {
@@ -64,7 +64,7 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
             catch (e: SocketTimeoutException) {
                 // Handle timeout exception
                 errorLiveData.postValue("Timeout Exception: ${e.message}")
-                Log.e("MenuItemViewModel", "Timeout Exception: ${e.message}")
+                Log.e("ScreeningQuestionnaireViewModel", "Timeout Exception: ${e.message}")
                 screeningsQuestionResultLiveData.postValue(false) // Indicate login failure
             }
             catch (e: Exception) {
@@ -87,7 +87,7 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
                     if(isSuccess && screeningItems != null) {
                         screeningQuestionListLiveData.postValue(screeningItems.questionnaire)
                         screeningsQuestionResultLiveData.postValue(isSuccess)
-                        Log.d("ScreeningsViewModel", "Response Data: ${response.body()}")
+                        Log.d("ScreeningQuestionnaireViewModel", "Response Data: ${response.body()}")
                     }
                     else {
                         failureResponseData.postValue(response.body())
@@ -101,7 +101,7 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
             }
             catch (e: SocketTimeoutException) {
                 // Handle timeout exception
-                Log.e("MenuItemViewModel", "Timeout Exception: ${e.message}")
+                Log.e("ScreeningQuestionnaireViewModel", "Timeout Exception: ${e.message}")
                 errorLiveData.postValue("Timeout Exception: ${e.message}")
                 screeningsQuestionResultLiveData.postValue(false) // Indicate login failure
             }

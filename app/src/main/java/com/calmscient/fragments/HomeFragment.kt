@@ -167,12 +167,17 @@ class HomeFragment : Fragment() {
                     }
                 }
                 menuViewModel.errorLiveData.value?.let { failureMessage ->
-                    failureMessage.let{
-                        ServerTimeoutHandler.handleTimeoutException(requireContext()) {
-                            // Retry logic when the retry button is clicked
-                            menuViewModel.retryFetchMenuItems()
+                    failureMessage.let {
+                        if (CommonClass.isNetworkAvailable(requireContext())) {
+                            ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                                // Retry logic when the retry button is clicked
+                                menuViewModel.retryFetchMenuItems()
+                            }
+                        } else {
+                            CommonClass.showInternetDialogue(requireContext())
                         }
                     }
+
                 }
             }
         }
@@ -274,6 +279,7 @@ class HomeFragment : Fragment() {
             myMedicalMenuViewModel.resultLiveData.observe(requireActivity()){isSuccess ->
                 if(isSuccess)
                 {
+
 
                     myMedicalMenuResponseDate = myMedicalMenuViewModel.menuItemsLiveData.value!!
 

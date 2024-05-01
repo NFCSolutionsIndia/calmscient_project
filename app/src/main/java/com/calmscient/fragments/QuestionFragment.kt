@@ -22,11 +22,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
 import com.calmscient.activities.CommonDialog
 import com.calmscient.adapters.QuestionAdapter
 import com.calmscient.databinding.FragmentQuestionBinding
+import com.calmscient.di.remote.request.PatientAnswerSaveRequest
+import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.response.QuestionnaireItem
 import com.calmscient.di.remote.response.ScreeningItem
 import com.calmscient.utils.CommonAPICallDialog
@@ -34,6 +35,7 @@ import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.network.ServerTimeoutHandler
+import com.calmscient.viewmodels.SaveScreeningAnswersViewModel
 import com.calmscient.viewmodels.ScreeningQuestionnaireViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -44,12 +46,15 @@ data class Question(
     var selectedOption: Int = -1
 )
 
+
 class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 
     private lateinit var binding: FragmentQuestionBinding
     private lateinit var questionAdapter: QuestionAdapter
     private val screeningQuestionsViewModel: ScreeningQuestionnaireViewModel by activityViewModels()
-    private var screeningQuestionResponse : List<QuestionnaireItem> = emptyList()
+    private val saveScreeningAnswersViewModel: SaveScreeningAnswersViewModel by activityViewModels()
+    private var screeningQuestionResponse: List<QuestionnaireItem> = emptyList()
+    private var result: List<QuestionnaireItem> = emptyList()
     private lateinit var screeningResponseList: List<ScreeningItem>
     private var currentQuestionIndex = 0
     private var isPreviousButtonVisible = false
@@ -57,19 +62,35 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
 
+
+    private val selectedOptionsMap = mutableMapOf<Int, String?>()
+    // Define a variable to store the last saved state of selected options
+    private var lastSavedSelectedOptions: Map<Int, String?> = emptyMap()
+
+    // Function to check if there are any changes in selected options
+    private fun areSelectedOptionsChanged(): Boolean {
+        return selectedOptionsMap != lastSavedSelectedOptions
+    }
+
+    // Function to update the last saved state of selected options
+    private fun updateLastSavedSelectedOptions() {
+        lastSavedSelectedOptions = selectedOptionsMap.toMap()
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this){
-            if (CommonClass.isNetworkAvailable(requireContext()))
-            {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (CommonClass.isNetworkAvailable(requireContext())) {
                 loadFragment(ScreeningsFragment())
-            }
-            else{
+            } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
+        commonDialog = CommonAPICallDialog(requireContext())
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,23 +98,21 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
         binding = FragmentQuestionBinding.inflate(inflater, container, false)
 
         // Retrieve data from arguments
-        val screeningResponseJson = arguments?.getString("screeningResponse")
-        Log.d("Question Fragment ", "$screeningResponseJson")
+//        val screeningResponseJson = arguments?.getString("screeningResponse")
+//        Log.d("Question Fragment ", screeningResponseJson.toString())
 
         screeningResponseList = listOf(screeningItem)
 
-        Log.d("Questionnnnnnnnnnn Fragmentttttttttt ","$screeningResponseList")
+        Log.d("Questionnnnnnnnnnn Fragmentttttttttt ", "$screeningResponseList")
 
         customProgressDialog = CustomProgressDialog(requireContext())
 
         commonDialog = CommonAPICallDialog(requireContext())
 
-        binding.backIcon.setOnClickListener{
-            if (CommonClass.isNetworkAvailable(requireContext()))
-            {
+        binding.backIcon.setOnClickListener {
+            if (CommonClass.isNetworkAvailable(requireContext())) {
                 loadFragment(ScreeningsFragment())
-            }
-            else{
+            } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
@@ -122,36 +141,36 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
         val sevenDaysBefore = Calendar.getInstance()
         sevenDaysBefore.add(Calendar.DAY_OF_YEAR, -7)
         val sevenDaysBeforeDate = dateFormat.format(sevenDaysBefore.time)
-        if (CommonClass.isNetworkAvailable(requireContext()))
-        {
+        if (CommonClass.isNetworkAvailable(requireContext())) {
             observeViewModel()
             setupRecyclerView()
-        }
-        else{
+        } else {
             CommonClass.showInternetDialogue(requireContext())
         }
 
-        screeningQuestionsViewModel.getScreeningQuestionsList(screeningResponseList[0].patientID,screeningResponseList[0].clientID,screeningResponseList[0].plid,sevenDaysBeforeDate,todayDate,screeningResponseList[0].assessmentID,screeningResponseList[0].screeningID)
+        screeningQuestionsViewModel.getScreeningQuestionsList(
+            screeningResponseList[0].patientID,
+            screeningResponseList[0].clientID,
+            screeningResponseList[0].plid,
+            "",
+            "",
+            screeningResponseList[0].assessmentID,
+            screeningResponseList[0].screeningID
+        )
 
         binding.nextQuestion.setOnClickListener {
-            if (CommonClass.isNetworkAvailable(requireContext()))
-            {
+            if (CommonClass.isNetworkAvailable(requireContext())) {
                 moveToNextQuestion()
-            }
-            else
-            {
+            } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
 
         // Handle click on previous question button
         binding.previousQuestion.setOnClickListener {
-            if (CommonClass.isNetworkAvailable(requireContext()))
-            {
+            if (CommonClass.isNetworkAvailable(requireContext())) {
                 moveToPreviousQuestion()
-            }
-            else
-            {
+            } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
@@ -164,20 +183,6 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 //            }
 //        })
 
-    }
-
-    private fun moveToNextQuestion() {
-        if (currentQuestionIndex < (screeningQuestionsViewModel.screeningQuestionListLiveData.value?.size ?: (0 - 1))) {
-            currentQuestionIndex++
-            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
-        }
-    }
-
-    private fun moveToPreviousQuestion() {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--
-            binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
-        }
     }
 
 
@@ -193,56 +198,76 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 
     private fun observeViewModel() {
 
-        screeningQuestionsViewModel.screeningsQuestionResultLiveData.observe(viewLifecycleOwner,Observer{isSuccess ->
+        screeningQuestionsViewModel.screeningsQuestionResultLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isSuccess ->
+                if (isSuccess) {
+                    screeningQuestionsViewModel.screeningQuestionListLiveData.observe(
+                        viewLifecycleOwner,
+                        Observer { questionnaireItems ->
+                            questionnaireItems?.let {
 
-            if(isSuccess)
-            {
-                screeningQuestionResponse = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
-                screeningQuestionResponse?.let {
+                                val res =
+                                    screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                                screeningQuestionResponse = res
+                                Log.d("QuestionFragment ", "$res")
 
-                    val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
-                    Log.d("QuestionFragment ","$res")
-                    displayQuestions(it)
-                }
-            }
-            else{
-                screeningQuestionsViewModel.errorLiveData.value?.let { failureMessage ->
-                    failureMessage.let{
-                        ServerTimeoutHandler.handleTimeoutException(requireContext()) {
-                            // Retry logic when the retry button is clicked
-                            screeningQuestionsViewModel.retryScreeningsFetchMenuItems()
+                                result = it
+                                displayQuestions(it)
+                            }
+                        })
+
+                } else {
+                    screeningQuestionsViewModel.errorLiveData.value?.let { failureMessage ->
+                        failureMessage.let {
+                            if (CommonClass.isNetworkAvailable(requireContext())) {
+                                ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                                    // Retry logic when the retry button is clicked
+                                    screeningQuestionsViewModel.retryScreeningsFetchMenuItems()
+                                }
+                            } else {
+                                CommonClass.showInternetDialogue(requireContext())
+                            }
+
+                        }
+                    }
+
+                    screeningQuestionsViewModel.failureLiveData.value?.let { failureMessage ->
+                        failureMessage.let {
+                            commonDialog.showDialog(
+                                it
+                            )
                         }
                     }
                 }
+            })
+        screeningQuestionsViewModel.screeningQuestionListLiveData.observe(
+            viewLifecycleOwner,
+            Observer { questionnaireItems ->
+                questionnaireItems?.let {
 
-                screeningQuestionsViewModel.failureLiveData.value?.let { failureMessage ->
-                    failureMessage.let {
-                        commonDialog.showDialog(
-                            it
-                        )
-                    }
+                    val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
+                    screeningQuestionResponse = res
+                    Log.d("QuestionFragment ", "$res")
+                    result = it
+                    displayQuestions(it)
                 }
-            }
-        })
-        screeningQuestionsViewModel.screeningQuestionListLiveData.observe(viewLifecycleOwner, Observer { questionnaireItems ->
-            questionnaireItems?.let {
+            })
+        screeningQuestionsViewModel.failureLiveData.observe(
+            viewLifecycleOwner,
+            Observer { errorMessage ->
+                // Handle failure
+            })
+        screeningQuestionsViewModel.loadingLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isLoading ->
+                if (isLoading) {
+                    customProgressDialog.show("Loading...")
+                } else {
 
-                val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
-                Log.d("QuestionFragment ","$res")
-                displayQuestions(it)
-            }
-        })
-        screeningQuestionsViewModel.failureLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
-            // Handle failure
-        })
-        screeningQuestionsViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
-            if (isLoading) {
-                customProgressDialog.show("Loading...")
-            } else {
-
-                customProgressDialog.dialogDismiss()
-            }
-        })
+                    customProgressDialog.dialogDismiss()
+                }
+            })
     }
 
     private fun displayQuestions(questionnaireItems: List<QuestionnaireItem>) {
@@ -252,7 +277,14 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
             // Log an error or handle the case where questionAdapter is not initialized
         }
     }
+
     private fun loadFragment(fragment: Fragment) {
+
+        Log.d("LoadFragment in QF","$screeningResponseList")
+        val args = Bundle().apply {
+            putString("screeningResponse", JsonUtil.toJsonString(screeningResponseList))
+        }
+        fragment.arguments = args
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
@@ -260,4 +292,205 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
         transaction.commit()
     }
 
+    private fun moveToNextQuestion() {
+        var patientAnswers: PatientAnswersWrapper? = null
+        var flag : Boolean = false
+        if (screeningQuestionResponse.isNotEmpty() && currentQuestionIndex < screeningQuestionResponse.size) {
+            val currentQuestion = screeningQuestionResponse[currentQuestionIndex]
+            val selectedOptionId = questionAdapter.getSelectedOptionId(currentQuestionIndex)
+            storeSelectedOption(currentQuestion.questionId, selectedOptionId)
+
+            Log.d(" Question ID", "${currentQuestion.questionId}")
+            Log.d(" Selected Option ID", "$selectedOptionId")
+
+            currentQuestionIndex++
+
+            // Check if the current question index is at the last question
+            if (currentQuestionIndex == screeningQuestionResponse.size && areSelectedOptionsChanged()) {
+                // Update the last saved state of selected options
+                updateLastSavedSelectedOptions()
+
+                saveScreeningAnswersViewModel.successNotAnsweredData.observe(viewLifecycleOwner, Observer { isNotAnswered ->
+                    if (isNotAnswered) {
+                        saveScreeningAnswersViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData ->
+                            successData?.statusResponse?.responseMessage?.let {
+                                commonDialog.dismiss()
+                                commonDialog.showDialog(it)
+                            }
+                        })
+                    }
+                })
+
+                // Call the method to construct patient answers and print the data in the log
+                val patientAnswers = constructPatientAnswers()
+
+                Log.d(" Patient Answer", patientAnswers.toString())
+
+                // Check if patient answers are not empty
+                if (patientAnswers.patientAnswers.isNotEmpty()) {
+                    saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers)
+
+                    saveScreeningAnswersViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+                        if (isLoading) {
+                            customProgressDialog.show("Loading...")
+                        } else {
+                            customProgressDialog.dialogDismiss()
+                        }
+                    })
+
+                    saveScreeningAnswersViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
+                        if (!isSuccess) {
+                            saveScreeningAnswersViewModel.errorLiveData.value?.let { failureMessage ->
+                                failureMessage.let {
+                                    ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                                        // Retry logic when the retry button is clicked
+                                        saveScreeningAnswersViewModel.retrySavePatientAnswers()
+                                    }
+                                }
+                            }
+                            saveScreeningAnswersViewModel.failureLiveData.value?.let { failureMessage ->
+                                failureMessage.let {
+                                    commonDialog.dismiss()
+                                    commonDialog.showDialog(it)
+                                }
+                            }
+                        } else {
+                            // Observe successLiveData to show the success message
+                            saveScreeningAnswersViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
+                                if (isSuccess) {
+                                   /* saveScreeningAnswersViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData ->
+                                        successData?.statusResponse?.responseMessage?.let {
+                                            commonDialog.showDialog(it)
+                                        }
+                                    })*/
+                                    commonDialog.dismiss()
+                                    flag= true
+                                    if (CommonClass.isNetworkAvailable(requireContext())) {
+                                        loadFragment(ResultsFragment())
+                                    } else {
+                                        CommonClass.showInternetDialogue(requireContext())
+                                    }
+                                }
+                            })
+                        }
+                    })
+                    commonDialog.dismiss()
+                    customProgressDialog.dialogDismiss()
+                    //loadFragment(ResultsFragment())
+                }
+            } else {
+                // Smooth scroll to the next question
+                binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+            }
+        }
+        else if (patientAnswers?.patientAnswers.isNullOrEmpty() && !flag)  {
+            commonDialog.showDialog(getString(R.string.please_answer_the_questions))
+            Log.e(" Fragment", "screeningQuestionResponse is empty or currentQuestionIndex is out of bounds")
+        }
+    }
+
+
+    private fun moveToPreviousQuestion() {
+        if (currentQuestionIndex == screeningQuestionResponse.size) {
+            currentQuestionIndex--
+        }
+        if (currentQuestionIndex > 0 && currentQuestionIndex <= screeningQuestionResponse.size) {
+
+            val currentQuestion = screeningQuestionResponse[currentQuestionIndex]
+            val selectedOptionId = questionAdapter.getSelectedOptionId(currentQuestionIndex)
+            storeSelectedOption(currentQuestion.questionId, selectedOptionId)
+
+            Log.d("Question ID", "${currentQuestion.questionId}")
+            Log.d("Selected Option ID", "$selectedOptionId")
+
+            currentQuestionIndex--
+            if (currentQuestionIndex >= 0) {
+                binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
+            } else {
+                // Handle the case where we are already at the beginning of the list
+                Log.e("QuestionFragment", "Reached the beginning of the questions list")
+            }
+        } else {
+            Log.e("QuestionFragment", "currentQuestionIndex is out of bounds")
+        }
+    }
+
+
+    // Function to store selected option for a question
+    private fun storeSelectedOption(questionId: Int, selectedOptionId: String?) {
+        selectedOptionsMap[questionId] = selectedOptionId
+    }
+
+    private fun constructPatientAnswers(): PatientAnswersWrapper {
+        val patientAnswers = mutableListOf<PatientAnswerSaveRequest>()
+
+        var answerId: String? = null
+
+
+            // Iterate through all questions in screeningQuestionResponse
+            screeningQuestionResponse.forEach { questionnaireItem ->
+
+                // Find the selected option for the current question
+                val selectedOptionId = selectedOptionsMap[questionnaireItem.questionId]
+
+                questionnaireItem.answerResponse.forEach { response ->
+                    if (response.answerId != null) {
+                        answerId = response.answerId
+                        return@forEach // Exit the loop once an answerId is found
+                    }
+                }
+
+                // If an option is selected for the question
+                if (selectedOptionId != null) {
+                    // Find the answer response corresponding to the selectedOptionId
+                    val answerResponse =
+                        questionnaireItem.answerResponse.find { it.optionLabelId == selectedOptionId }
+
+                    answerResponse?.let { response ->
+
+                        //val flag =  if (response.selected == "true" && response.answerId != null) "U" else "I"
+
+
+                        //val answerId = if (response.selected == "true") response.answerId else null
+
+                        // Construct the PatientAnswer object
+                        val patientAnswer = PatientAnswerSaveRequest(
+                            flag = "",
+                            answerId = answerId,
+                            screeningId = screeningItem.screeningID,
+                            patientLocationId = screeningItem.plid,
+                            questionnaireId = questionnaireItem.questionId,
+                            optionId = response.optionLabelId.toInt(),
+                            score = response.optionScore.toInt(),
+                            clientId = screeningItem.clientID,
+                            patientId = screeningItem.patientID,
+                            assessmentId = screeningItem.assessmentID
+                        )
+
+                        // Add the constructed PatientAnswer to the list
+                        patientAnswers.add(patientAnswer)
+                    }
+                } /*else {
+                // If the question is not answered, construct the object with null for optionId
+                val patientAnswer = PatientAnswerSaveRequest(
+                    flag = "I",
+                    answerId = null,
+                    screeningId = screeningItem.screeningID,
+                    patientLocationId = screeningItem.plid,
+                    questionnaireId = questionnaireItem.questionId,
+                    optionId = null, // OptionId is null for skipped questions
+                    score = 0, // Set score to 0 for skipped questions
+                    clientId = screeningItem.clientID,
+                    patientId = screeningItem.patientID,
+                    assessmentId = screeningItem.assessmentID
+                )
+
+                // Add the constructed PatientAnswer to the list
+                patientAnswers.add(patientAnswer)
+            }*/
+            }
+
+        return PatientAnswersWrapper(patientAnswers)
+
+    }
 }

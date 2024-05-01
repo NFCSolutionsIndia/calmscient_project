@@ -9,20 +9,14 @@
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote.request
+package com.calmscient.di.remote.response
 
-data class ScreeningsAssessmentRequest(
-    val fromDate: String?,
-    val patientLocationId: Int,
-    val toDate: String?,
-    val screeningId: Int,
-    val patientId: Int,
-    val clientId: Int,
-    val assessmentId: Int
+data class PatientAnswerSaveResponse(
+    val statusResponse: PatientAnswersStatusResponse,
+    val totalAnswers: Int
 )
 
-
-data class SelectedOption(
-    val questionId: Int,
-    val optionLabelId: String
+data class PatientAnswersStatusResponse(
+    val responseMessage: String,
+    val responseCode: Int
 )
