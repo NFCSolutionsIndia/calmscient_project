@@ -50,5 +50,12 @@ class CommonAPICallDialog(private val context: Context) {
         }
     }
 
+    fun setOnDismissListener(listener: () -> Unit) {
+        dialog.setOnDismissListener {
+            listener.invoke()
+        }
+    }
+
+
 }
 

@@ -19,7 +19,6 @@
             android:fontFamily="@font/lexendmedium"
             android:gravity="center"
             android:paddingVertical="12dp"
-            android:text="@string/good_morning"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
 

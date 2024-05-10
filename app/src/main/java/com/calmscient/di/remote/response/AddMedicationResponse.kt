@@ -9,13 +9,9 @@
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote.request
+package com.calmscient.di.remote.response
 
-data class ScreeningsResultsRequest(
-    val patientLocationId: Int,
-    val screeningId: Int,
-    val patientId: Int,
-    val clientId: Int,
-    val assessmentId: Int,
-
+data class AddMedicationResponse(
+    val response: Response
 )
+

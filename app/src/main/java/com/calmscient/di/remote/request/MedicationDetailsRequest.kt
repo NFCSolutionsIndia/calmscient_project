@@ -11,11 +11,11 @@
 
 package com.calmscient.di.remote.request
 
-data class ScreeningsResultsRequest(
-    val patientLocationId: Int,
-    val screeningId: Int,
+data class MedicationDetailsRequest(
     val patientId: Int,
-    val clientId: Int,
-    val assessmentId: Int,
-
+    val patientLocationId: Int,
+    val fromDate: String,
+    val toDate: String,
+    val clientId: Int
 )
+

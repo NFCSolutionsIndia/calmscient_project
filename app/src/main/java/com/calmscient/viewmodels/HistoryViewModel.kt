@@ -14,11 +14,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.calmscient.di.remote.request.PatientAnswerSaveRequest
-import com.calmscient.di.remote.request.PatientAnswersWrapper
-import com.calmscient.di.remote.response.PatientAnswerSaveResponse
-import com.calmscient.di.remote.response.PatientAnswersStatusResponse
-import com.calmscient.repository.ScreeningQuestionnaireRepository
+import com.calmscient.di.remote.request.ScreeningHistoryRequest
+import com.calmscient.di.remote.response.ScreeningHistoryResponseData
+import com.calmscient.repository.ScreeningsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,33 +26,46 @@ import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
-class SaveScreeningAnswersViewModel @Inject constructor(private val repository: ScreeningQuestionnaireRepository) : ViewModel() {
+class HistoryViewModel @Inject constructor(private val repository: ScreeningsRepository) : ViewModel() {
 
-    val saveResponseLiveData: MutableLiveData<PatientAnswerSaveResponse?> = MutableLiveData()
+    val saveResponseLiveData: MutableLiveData<ScreeningHistoryResponseData?> = MutableLiveData()
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val failureLiveData: MutableLiveData<String> = MutableLiveData()
-    val failureResponseData: MutableLiveData<PatientAnswersStatusResponse?> = MutableLiveData()
+    val failureResponseData: MutableLiveData<ScreeningHistoryResponseData?> = MutableLiveData()
 
+    private var lastPatientLocationId: Int = -1
+    private var lastPatientId: Int = -1
+    private var lastClientId: Int = -1
+    private var lastScreeningId:Int = -1
 
-    private var lastRequestBody: PatientAnswersWrapper? = null
     // Function to save patient answers
-    fun savePatientAnswers(requestBody: PatientAnswersWrapper) {
+    fun getScreeningHistoryDetails(
+        patientLocationId: Int,
+        patientId: Int,
+        clientId: Int,
+        screeningId:Int
+    ) {
         loadingLiveData.value = true // Show loader
-        lastRequestBody = requestBody
+        lastScreeningId = screeningId
+        lastClientId = clientId
+        lastPatientId = patientId
+        lastPatientLocationId = patientLocationId
         viewModelScope.launch {
             try {
-                val response = repository.saveScreeningQuestionAnswers(requestBody)
+                val request = ScreeningHistoryRequest(patientLocationId,screeningId,patientId,clientId)
+                val response = repository.getScreeningsHistory(request)
+                Log.d("Add Medication Response - 2", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
                 // Handle timeout exception
                 failureLiveData.postValue("Timeout Exception: ${e.message}")
-                Log.e("SaveScreeningAnswersViewModel", "Timeout Exception: ${e.message}")
+                Log.e("AddMedicationDetailsViewModel", "Timeout Exception: ${e.message}")
             } catch (e: Exception) {
                 e.printStackTrace()
-                failureLiveData.value = "Failed to save patient answers."
+                failureLiveData.value = "Failed to get Data."
             } finally {
                 loadingLiveData.value = false
             }
@@ -62,7 +73,7 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
     }
 
     // Function to handle API response
-    private suspend fun handleResponse(call: Call<PatientAnswerSaveResponse>) {
+    private suspend fun handleResponse(call: Call<ScreeningHistoryResponseData>) {
         withContext(Dispatchers.IO) {
             try {
                 val response = call.execute()
@@ -72,38 +83,34 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
                     if (isSuccess) {
                         saveResponseLiveData.postValue(response.body())
                         successLiveData.postValue(isSuccess)
-                    }
-                   else if(isNotAnswered)
-                    {
+                        Log.d("Add Medication Response ", "Success: ${response.body()}")
+                    } else if (isNotAnswered) {
                         saveResponseLiveData.postValue(response.body())
                         successNotAnsweredData.postValue(isNotAnswered)
-                    }
-                    else
-                    {
-                        failureResponseData.postValue(response.body()?.statusResponse)
+                    } else {
+                        failureResponseData.postValue(response.body())
                         val res = response.body()?.statusResponse?.responseMessage
-                        errorLiveData.postValue("Error Occure: $res")
+                        errorLiveData.postValue("Error Occurred: $res")
                         successNotAnsweredData.postValue(false)
-
                     }
-                }
-                else {
-                    errorLiveData.postValue("Failed to save patient answers.")
+                } else {
+                    errorLiveData.postValue("Failed to get data.")
                 }
             } catch (e: SocketTimeoutException) {
                 // Handle timeout exception
                 failureLiveData.postValue("Timeout Exception: ${e.message}")
                 errorLiveData.postValue("Timeout Exception: ${e.message}")
-                Log.e("SaveScreeningAnswersViewModel", "Timeout Exception: ${e.message}")
+                Log.e("AddMedicationDetailsViewModel", "Timeout Exception: ${e.message}")
             } catch (e: Exception) {
                 e.printStackTrace()
-                failureLiveData.postValue("Failed to save patient answers.")
+                failureLiveData.postValue("Failed to get data.")
             }
         }
     }
 
-    // Function to retry saving patient answers
-    fun retrySavePatientAnswers() {
-        lastRequestBody?.let { savePatientAnswers(it) }
+    // Function to retry get
+    fun retryGetScreeningHistoryDetails() {
+        if (lastPatientLocationId > 0 && lastPatientId > 0 && lastClientId > 0  && lastScreeningId>0)
+            getScreeningHistoryDetails(lastPatientLocationId,lastScreeningId,lastPatientId,lastClientId)
     }
 }

@@ -11,17 +11,31 @@
 
 package com.calmscient
 
+import com.calmscient.di.remote.request.AddMedicationDetailsRequest
+import com.calmscient.di.remote.request.AlarmUpdateRequest
+import com.calmscient.di.remote.request.AlarmWrapper
+import com.calmscient.di.remote.request.AppointmentDetailsRequestData
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.request.LoginRequest
+import com.calmscient.di.remote.request.MedicationDetailsRequest
 import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
+import com.calmscient.di.remote.request.PatientMoodRequest
+import com.calmscient.di.remote.request.ScreeningHistoryRequest
 import com.calmscient.di.remote.request.ScreeningRequest
 import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
 import com.calmscient.di.remote.request.ScreeningsResultsRequest
+import com.calmscient.di.remote.response.AddMedicationResponse
+import com.calmscient.di.remote.response.AlarmUpdateResponse
+import com.calmscient.di.remote.response.AppointmentDetailsResponseData
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.MedicationDetailsResponse
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
+import com.calmscient.di.remote.response.PatientMoodResponse
 import com.calmscient.di.remote.response.ScreeningAssignmentResponse
+import com.calmscient.di.remote.response.ScreeningHistoryResponse
+import com.calmscient.di.remote.response.ScreeningHistoryResponseData
 import com.calmscient.di.remote.response.ScreeningResponse
 import com.calmscient.di.remote.response.ScreeningResultsResponse
 import retrofit2.Call
@@ -56,5 +70,24 @@ interface ApiService {
     fun getScreeningsResults(@Body requestBody: ScreeningsResultsRequest): Call<ScreeningResultsResponse>
 
 
+    @POST("patients/Medications/getMedications")
+    fun getMedicationDetails(@Body requestBody: MedicationDetailsRequest): Call<MedicationDetailsResponse>
+
+    @POST("patients/Medications/addMedications")
+    fun addMedicationDetails(@Body requestBody: AddMedicationDetailsRequest): Call<AddMedicationResponse>
+
+    @POST("patients/screening/getScreeningHistoryForMobile")
+    fun getScreeningsHistory(@Body requestBody: ScreeningHistoryRequest): Call<ScreeningHistoryResponseData>
+
+    @POST("patients/patientDetails/getMedicalAppointmentsByPatientId")
+    fun getAppointmentDetails(@Body requestBody: AppointmentDetailsRequestData): Call<AppointmentDetailsResponseData>
+
+
+    @POST("patients/patientDetails/getPatientStartupScreen")
+    fun getPatientMood(@Body requestBody: PatientMoodRequest): Call<PatientMoodResponse>
+
+
+    @POST("patients/Medications/addPatientMedicationAlarms")
+    fun updatePatientMedicationDetails(@Body requestBody: AlarmWrapper): Call<AlarmUpdateResponse>
 }
 

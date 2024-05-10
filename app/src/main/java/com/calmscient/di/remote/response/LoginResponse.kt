@@ -42,6 +42,10 @@ data class LoginDetails(
     val userType: String,
     val locationName: String,
     val address: String,
-    val city: Int
+    val city: Int,
+    val providerName:String,
+    val providerID:Int,
+    val providerCode:String,
+
 )
 

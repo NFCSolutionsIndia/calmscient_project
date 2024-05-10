@@ -19,25 +19,25 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
-import com.calmscient.Interface.OnAlarmSelectedListener
+import com.calmscient.Interface.OnAlarmSelectedListenerUpdate
 import com.calmscient.R
-import com.calmscient.databinding.FragmentAddMedicationsBinding
 import com.calmscient.databinding.FragmentBottomSheetBinding
-import com.calmscient.di.remote.request.Alarm
-import com.calmscient.di.remote.request.AlarmInternal
+import com.calmscient.di.remote.request.AlarmUpdateRequest
+import com.calmscient.di.remote.request.AlarmUpdateRequestInternal
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.ScheduledTimeDetails
 import com.calmscient.utils.CommonAPICallDialog
-import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDialogFragment() {
+class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: String?, private val scheduleTiming: ScheduledTimeDetails?, private val medicationId:Int): BottomSheetDialogFragment() {
 
-    private var onAlarmSelectedListener: OnAlarmSelectedListener? = null
+    private var onAlarmSelectedListener: OnAlarmSelectedListenerUpdate? = null
 
     lateinit var save: ImageView
     private lateinit var binding: FragmentBottomSheetBinding
@@ -45,20 +45,22 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
     private var selectedTimeInterval: TextView? = null
     private lateinit var commonDialog: CommonAPICallDialog
 
-    lateinit var textFive: TextView
-    lateinit var textTen: TextView
-    lateinit var textFifteen: TextView
-    lateinit var textTwenty: TextView
-    lateinit var textTwentyFive: TextView
-    lateinit var textThirty: TextView
+    private lateinit var textFive: TextView
+    private lateinit var textTen: TextView
+    private lateinit var textFifteen: TextView
+    private lateinit var textTwenty: TextView
+    private lateinit var textTwentyFive: TextView
+    private lateinit var textThirty: TextView
 
-    lateinit var sundayText: TextView
-    lateinit var mondayText: TextView
-    lateinit var tuesdayText: TextView
-    lateinit var wednesdayText: TextView
-    lateinit var thursdayText: TextView
-    lateinit var fridayText: TextView
-    lateinit var saturdayText: TextView
+    private lateinit var sundayText: TextView
+    private  lateinit var mondayText: TextView
+    private lateinit var tuesdayText: TextView
+    private lateinit var wednesdayText: TextView
+    private lateinit var thursdayText: TextView
+    private lateinit var fridayText: TextView
+    private  lateinit var saturdayText: TextView
+
+    private var loginResponse : LoginResponse? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,21 +76,24 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
         binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
 
 
-        // Initialize all TextViews representing time intervals or days using view binding
-         textFive = binding.textFive
-         textTen = binding.textTen
-         textFifteen = binding.textFifteen
-         textTwenty = binding.textTwenty
-         textTwentyFive = binding.textTwentyfive
-         textThirty = binding.textThirty
+        val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
-         sundayText = binding.textSunday
-         mondayText = binding.textMonday
-         tuesdayText = binding.textTuesday
-         wednesdayText = binding.textWednesday
-         thursdayText = binding.textThuresady
-         fridayText = binding.textFriday
-         saturdayText = binding.textSaturday
+        // Initialize all TextViews representing time intervals or days using view binding
+        textFive = binding.textFive
+        textTen = binding.textTen
+        textFifteen = binding.textFifteen
+        textTwenty = binding.textTwenty
+        textTwentyFive = binding.textTwentyfive
+        textThirty = binding.textThirty
+
+        sundayText = binding.textSunday
+        mondayText = binding.textMonday
+        tuesdayText = binding.textTuesday
+        wednesdayText = binding.textWednesday
+        thursdayText = binding.textThuresady
+        fridayText = binding.textFriday
+        saturdayText = binding.textSaturday
 
 
         // Set click listener for all TextViews
@@ -121,6 +126,26 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
         super.onViewCreated(view, savedInstanceState)
 
 
+        // Extract data from the API response
+        val alarmTime = scheduleTiming?.medicineTime
+        val alarmInterval =  scheduleTiming?.alarmInterval?.toInt()
+        val repeatDays = scheduleTiming?.repeat
+
+        // Set the time in the TimePicker
+        if (alarmTime != null) {
+            setTimeInTimePicker(alarmTime)
+        }
+
+        // Set the selected alarm interval
+        if (alarmInterval != null) {
+            setSelectedInterval(alarmInterval)
+        }
+
+        // Set the selected repeat days
+        if (repeatDays != null) {
+            setSelectedDays(repeatDays)
+        }
+
 
         binding.imgSave.setOnClickListener {
             val selectedTime = getTimeFromTimePicker()
@@ -151,21 +176,32 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
 
 
 
-            val alarm = AlarmInternal(
-                alarmId = 0,
-                alarmDate = todayDate,
-                repeat = selectedDays,
-                alarmInterval = getSelectedIntervals().firstOrNull() ?: 10,
-                flag = "I",
-                isEnabled = null,
-                medicineTime = selectedTime,
-                scheduleType = selectedSchedule
-            )
+            val alarm = loginResponse?.loginDetails?.let { it1 ->
+                val alarmId = scheduleTiming?.alarmId ?: 0
+                val flag = if (scheduleTiming != null) "U" else "I"
+
+                AlarmUpdateRequestInternal(
+                    alarmId = alarmId,
+                    alarmDate = todayDate,
+                    repeat = selectedDays,
+                    alarmInterval = getSelectedIntervals().lastOrNull() ?: 10,
+                    flag = flag,
+                    isEnabled = null,
+                    medicineTime = selectedTime,
+                    plId = it1.patientLocationID,
+                    medicationId = medicationId,
+                    scheduleType = selectedSchedule
+                )
+            }
             // Pass the alarm object to the listener
-            if (selectedSchedule != null) {
+            //onAlarmSelectedListener?.onAlarmSelected(alarm)
+            if (alarm != null) {
+                Log.d("Update in Bottom ","$alarm")
                 onAlarmSelectedListener?.onAlarmSelected(alarm)
             }
 
+            Log.d("Updated Alarm","$alarm")
+            Toast.makeText(requireContext(),"$alarm",Toast.LENGTH_LONG).show()
 
             dismiss()
         }
@@ -280,7 +316,7 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
         return formatter.format(calendar.time)
     }
 
-    fun setOnAlarmSelectedListener(listener: OnAlarmSelectedListener) {
+    fun setOnAlarmSelectedListener(listener: OnAlarmSelectedListenerUpdate) {
         onAlarmSelectedListener = listener
     }
 
@@ -304,6 +340,44 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
                 selected >= startFormatted && selected <= endFormatted
             } ?: false
         } ?: false
+    }
+
+    private fun setTimeInTimePicker(time: String) {
+        // Extract hour and minute from the time string
+        val (hour, minute) = time.split(":").map { it.toInt() }
+        // Set the hour and minute in the TimePicker
+        binding.timeTimePicker.hour = hour
+        binding.timeTimePicker.minute = minute
+    }
+
+    private fun setSelectedInterval(interval: Int) {
+        // Check the TextView corresponding to the selected interval and highlight it
+        when (interval) {
+            5 -> toggleSelection(binding.textFive)
+            10 -> toggleSelection(binding.textTen)
+            15 -> toggleSelection(binding.textFifteen)
+            20 -> toggleSelection(binding.textTwenty)
+            25 -> toggleSelection(binding.textTwentyfive)
+            30 -> toggleSelection(binding.textThirty)
+            // Add more cases for other intervals if needed
+        }
+    }
+
+    private fun setSelectedDays(days: List<String>) {
+        // Iterate through the list of days and select the corresponding TextViews
+        for (day in days) {
+            // Convert both the input day and the days in the list to lowercase for case-insensitive comparison
+            when (day.lowercase(Locale.ROOT)) {
+                "sun" -> toggleSelection(binding.textSunday)
+                "mon" -> toggleSelection(binding.textMonday)
+                "tue" -> toggleSelection(binding.textTuesday)
+                "wed" -> toggleSelection(binding.textWednesday)
+                "thu" -> toggleSelection(binding.textThuresady)
+                "fri" -> toggleSelection(binding.textFriday)
+                "sat" -> toggleSelection(binding.textSaturday)
+                // Add more cases for other days if needed
+            }
+        }
     }
 
 

@@ -1,7 +1,9 @@
 package com.calmscient.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -23,11 +25,17 @@ import java.util.Date
 import androidx.lifecycle.Observer
 import com.calmscient.ApiService
 import com.calmscient.AppController
+import com.calmscient.di.remote.response.PatientMoodResponse
 import com.calmscient.retrofit.ApplicationModule
+import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
+import com.calmscient.viewmodels.GetPatientMoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.OkHttpClient
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,7 +46,9 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
     @Inject
     lateinit var apiService: ApiService
      private val loginViewModel: LoginViewModel by viewModels()
-     private lateinit var loginRepository: LoginRepository
+     private val getPatientMoodViewModel: GetPatientMoodViewModel by viewModels()
+     private lateinit var loginResponse: LoginResponse
+     private lateinit var patientMoodResponse: PatientMoodResponse
 
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
@@ -47,6 +57,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
 
     private var isImage1Visible = true
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentUserMoodBinding.inflate(layoutInflater)
@@ -57,30 +69,24 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
+        customProgressDialog = CustomProgressDialog(this)
+        commonDialog = CommonAPICallDialog(this)
+
+
        val res =  loginViewModel.responseData.value
         Log.d("UserMoodActivity","$res")
 
         val jsonString = SharedPreferencesUtil.getData(this, "loginResponse", "")
-        val loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
+         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
         Log.d("Login Response in USERMOOD","$loginResponse")
 
-        loginViewModel.loginResultLiveData.observe(this) { isValidLogin ->
-            if (isValidLogin) {
-                // Login successful
-                val responseData: LoginResponse? = loginViewModel.responseData.value
-                // Handle the response data
-                if (responseData != null) {
-                    val patientId = responseData.loginDetails.patientID
-                    val clientId = responseData.loginDetails.clientID
-                    val plid = responseData.loginDetails.patientLocationID
-
-                    Log.d("UserMoodActivity", "Patient ID: $patientId, Client ID: $clientId, plid: $plid")
-                }
-            } else {
-                // Login failed
-                // Handle login failure, if needed
-            }
+        if(CommonClass.isNetworkAvailable(this)){
+            //observeViewModel()
+        }
+        else
+        {
+            CommonClass.showInternetDialogue(this)
         }
 
         greeting()
@@ -91,6 +97,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             // Update the flag to keep track of the currently visible image
             isImage1Visible = !isImage1Visible
         }*/
+
+
         //morning Clicks
         binding.imgMBad.setOnClickListener(this);
         binding.imgMBetter.setOnClickListener(this);
@@ -582,5 +590,57 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
         supportFragmentManager.beginTransaction()
             .replace(R.id.flFragment, homeFragment).addToBackStack(null)
             .commit()
+    }
+
+    private fun getCurrentDateTime(): String {
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        return currentDateTime.format(formatter)
+    }
+
+    private fun observeViewModel()
+    {
+        val currentDatetime = getCurrentDateTime()
+        getPatientMoodViewModel.getPatientMood(loginResponse.loginDetails.patientLocationID,loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,currentDatetime)
+
+        getPatientMoodViewModel.loadingLiveData.observe(this, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.dialogDismiss()
+                customProgressDialog.show("Loading...")
+            }
+            else
+            {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getPatientMoodViewModel.successLiveData.observe(this,Observer{isSuccess->
+            if(isSuccess)
+            {
+                ServerTimeoutHandler.clearRetryListener()
+                ServerTimeoutHandler.dismissDialog()
+
+
+
+            }
+        })
+
+        getPatientMoodViewModel.errorLiveData.observe(this, Observer { errorData->
+            if(errorData!= null)
+            {
+
+                if (CommonClass.isNetworkAvailable(this)) {
+                    ServerTimeoutHandler.handleTimeoutException(this) {
+                        // Retry logic when the retry button is clicked
+
+                        getPatientMoodViewModel.retryGetPatientMood()
+                    }
+                } else {
+                    CommonClass.showInternetDialogue(this)
+                }
+            }
+        })
+
     }
 }

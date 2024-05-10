@@ -45,6 +45,9 @@ class ScreeningViewModel @Inject constructor(private val screeningRepository: Sc
 
     fun getScreeningList(patientId: Int, clientId: Int, patientLocationId: Int) {
         loadingLiveData.value = true // Show loader
+        lastPatientId = patientId
+        lastClientId = clientId
+        lastPlid = patientLocationId
         viewModelScope.launch {
             try {
                 val request = ScreeningRequest(patientId, clientId, patientLocationId)

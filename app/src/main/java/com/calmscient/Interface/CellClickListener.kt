@@ -11,6 +11,19 @@
 
 package com.calmscient.Interface
 
+import com.calmscient.di.remote.response.MedicalDetails
+import com.calmscient.fragments.CardViewItem
+import com.calmscient.fragments.CardViewItems
+
 interface CellClickListener {
+    fun onCellClickListener(position:Int,item: CardViewItem)
+
+}
+
+interface CellClickListenerAppointments {
+    fun onCellClickListener(position:Int,item: CardViewItems)
+}
+
+interface CellClickListenerOne {
     fun onCellClickListener(position:Int)
 }

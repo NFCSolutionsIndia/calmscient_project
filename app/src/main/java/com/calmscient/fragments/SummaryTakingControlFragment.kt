@@ -72,7 +72,7 @@ class SummaryTakingControlFragment : Fragment() {
 
         //create a date string.
         val date_n: String = SimpleDateFormat(
-            "dd MMM yyyy",
+            "dd MM yyyy",
             Locale.getDefault()
         ).format(Date()) //get hold of textview.
         monthText.text = date_n

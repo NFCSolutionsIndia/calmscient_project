@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/_50sdp">
 
     <RelativeLayout
         android:id="@+id/Settings"
@@ -48,8 +49,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/lexendregular"
-        android:textSize="@dimen/_16sdp"
-        android:text="@string/phq_heading" />
+        android:textSize="@dimen/_16sdp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_history"

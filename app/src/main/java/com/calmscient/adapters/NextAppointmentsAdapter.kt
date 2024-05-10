@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.Interface.CellClickListener
+import com.calmscient.Interface.CellClickListenerAppointments
 import com.calmscient.R
 import com.calmscient.fragments.AppointmentdetailsFragment
 
@@ -29,7 +30,7 @@ import com.calmscient.fragments.CardViewItems
 import com.calmscient.fragments.NextAppointmentsFragment
 class NextAppointmentsAdapter (val context: Context, private val items: List<CardViewItems>) :
     RecyclerView.Adapter<NextAppointmentsAdapter.CardViewHolder>() {
-    lateinit var mListener: CellClickListener
+    lateinit var mListener: CellClickListenerAppointments
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -58,7 +59,14 @@ class NextAppointmentsAdapter (val context: Context, private val items: List<Car
             holder.img_arrow1.setImageResource(it)
         }
 
-        holder.nextAppointmentsCard.setOnClickListener(object : View.OnClickListener {
+        holder.nextAppointmentsCard.setOnClickListener {
+            // Retrieve the corresponding CardViewItem object
+            val clickedItem = items[position]
+            // Pass the clicked item to the onCellClickListener interface
+            mListener.onCellClickListener(position, clickedItem)
+        }
+
+       /* holder.nextAppointmentsCard.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if(item.DoctorNameTextView == context.getString(R.string.doctor_name1)) {
                     val activity = v!!.context as AppCompatActivity
@@ -70,7 +78,7 @@ class NextAppointmentsAdapter (val context: Context, private val items: List<Car
 
                 }
             }
-        })
+        })*/
     }
 
     override fun getItemCount(): Int = items.size
@@ -83,5 +91,9 @@ class NextAppointmentsAdapter (val context: Context, private val items: List<Car
         val HosptailNameTextView: TextView = itemView.findViewById(R.id.HosptailNameTextView)
         val img_arrow1: ImageView = itemView.findViewById(R.id.img_arrow1)
 
+    }
+
+    fun setCellClickListener(listener: CellClickListenerAppointments) {
+        mListener = listener
     }
 }

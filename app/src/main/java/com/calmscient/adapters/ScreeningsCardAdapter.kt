@@ -28,10 +28,11 @@ import com.calmscient.fragments.DASTQuestionFragment
 import com.calmscient.fragments.GADQuestionFragment
 import com.calmscient.fragments.HistoryFragment
 import com.calmscient.fragments.QuestionFragment
+import com.calmscient.fragments.ResultsFragment
 import com.calmscient.fragments.ScreeningsCardItem
 import com.calmscient.utils.common.CommonClass
 
-class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, private val items: List<ScreeningsCardItem>,private val screeningResponse: List<ScreeningItem>) :
+class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, private val items: List<ScreeningsCardItem>,private var screeningResponse: List<ScreeningItem>) :
     RecyclerView.Adapter<ScreeningsCardAdapter.CardViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -55,26 +56,15 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
                 .replace(R.id.flFragment, fragment).addToBackStack(null).commit()
         }*/
         holder.imageHistory.setOnClickListener {
-            val fragment = HistoryFragment()
-            fragment.let {
-                fragmentManager.beginTransaction()
-                    .replace(R.id.flFragment, it)
-                    .addToBackStack(null)
-                    .commit()
-            }
-        }
-
-
-        holder.cardViewLayout.setOnClickListener {
             // Check internet connection
             if (CommonClass.isNetworkAvailable(holder.itemView.context)) {
-                // Load corresponding fragment based on position
-                val fragment = when (position) {
-                    0 -> QuestionFragment(screeningResponse[position])
-                    1 -> GADQuestionFragment(screeningResponse[position])
-                    2 -> AUDITQuestionFragment(screeningResponse[position])
-                    3 -> DASTQuestionFragment(screeningResponse[position])
-                    // Add more cases for other positions if needed
+                // Load corresponding fragment based on screeningType
+                val fragment = when (screeningResponse[position].screeningType) {
+                    "PHQ-9" -> HistoryFragment(screeningResponse[position])
+                    "GAD-7" -> HistoryFragment(screeningResponse[position])
+                    "AUDIT" -> HistoryFragment(screeningResponse[position])
+                    "DAST-10" -> HistoryFragment(screeningResponse[position])
+                    // Add more cases for other screening types if needed
                     else -> null
                 }
 
@@ -90,7 +80,35 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
             }
         }
 
+
+        holder.cardViewLayout.setOnClickListener {
+            // Check internet connection
+            if (CommonClass.isNetworkAvailable(holder.itemView.context)) {
+                // Load corresponding fragment based on screeningType
+                val fragment = when (screeningResponse[position].screeningType) {
+                    "PHQ-9" -> QuestionFragment(screeningResponse[position])
+                    "GAD-7" -> GADQuestionFragment(screeningResponse[position])
+                    "AUDIT" -> AUDITQuestionFragment(screeningResponse[position])
+                    "DAST-10" -> DASTQuestionFragment(screeningResponse[position])
+                    // Add more cases for other screening types if needed
+                    else -> null
+                }
+
+                fragment?.let {
+                    fragmentManager.beginTransaction()
+                        .replace(R.id.flFragment, it)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            } else {
+                // Show internet connection dialog
+                CommonClass.showInternetDialogue(holder.itemView.context)
+            }
+        }
+
+
     }
+
 
     override fun getItemCount(): Int = items.size
 

@@ -49,7 +49,7 @@ import java.util.GregorianCalendar
 import java.util.Locale
 import kotlin.random.Random
 
-class JournalEntryFragment : Fragment(), CellClickListener, BottomSheetListener {
+class JournalEntryFragment : Fragment(), BottomSheetListener {
 
     private lateinit var binding: FragmentJournalEntryBinding
     private lateinit var adapter: JournalEntryAdapter
@@ -261,9 +261,6 @@ class JournalEntryFragment : Fragment(), CellClickListener, BottomSheetListener 
     }
 
 
-    override fun onCellClickListener(position: Int) {
-        // Handle cell click event here
-    }
 
     companion object {
         // Create a static array to store card sizes for each date

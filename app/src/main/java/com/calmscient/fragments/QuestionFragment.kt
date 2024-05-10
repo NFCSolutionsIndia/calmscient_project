@@ -11,6 +11,7 @@
 
 package com.calmscient.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -117,7 +118,6 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
             }
         }
 
-        binding
         return binding.root
     }
 
@@ -421,6 +421,7 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
         selectedOptionsMap[questionId] = selectedOptionId
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun constructPatientAnswers(): PatientAnswersWrapper {
         val patientAnswers = mutableListOf<PatientAnswerSaveRequest>()
 
@@ -467,8 +468,11 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
                             assessmentId = screeningItem.assessmentID
                         )
 
+
                         // Add the constructed PatientAnswer to the list
                         patientAnswers.add(patientAnswer)
+
+                        answerId = null
                     }
                 } /*else {
                 // If the question is not answered, construct the object with null for optionId

@@ -20,6 +20,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.Interface.CellClickListener
 import com.calmscient.R
@@ -27,13 +29,19 @@ import com.calmscient.adapters.MedicationsCardAdapter
 import com.calmscient.adapters.ScreeningsCardAdapter
 import com.calmscient.databinding.CalendarFragmentLayoutBinding
 import com.calmscient.databinding.FragmentScreeningsBinding
+import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.MenuItem
 import com.calmscient.di.remote.response.ScreeningItem
 import com.calmscient.di.remote.response.ScreeningResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.ScreeningViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
+
 
 data class ScreeningsCardItem(
     val title: String,
@@ -50,6 +58,13 @@ class ScreeningsFragment : Fragment() {
     private lateinit var tvDAST: TextView
     private var screeningResponse: List<ScreeningItem> = emptyList()
     private var medicalResponse :List<MenuItem> = emptyList()
+    private var loginResponse : LoginResponse? = null
+
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
+
+
+    private val screeningsMenuViewModel: ScreeningViewModel by viewModels()
 
 
 
@@ -79,8 +94,14 @@ class ScreeningsFragment : Fragment() {
             }
         }
 
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+        commonDialog = CommonAPICallDialog(requireContext())
+
         val medicalMenuJsonString = SharedPreferencesUtil.getData(requireContext(), "myMedicalMenuResponse", "")
 
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
         if(medicalMenuJsonString.isNotEmpty())
         {
@@ -88,13 +109,14 @@ class ScreeningsFragment : Fragment() {
              binding.titleTextView.text = medicalResponse[2].menuName
         }
 
-        // Retrieve response data from SharedPreferences
-        val screeningJsonString = SharedPreferencesUtil.getData(requireContext(), "screeningsResponse", "")
-        if (screeningJsonString.isNotEmpty()) {
-            screeningResponse = JsonUtil.fromJsonString<List<ScreeningItem>>(screeningJsonString)
 
 
-            Log.d("Screeningssssssssss","$screeningResponse")
+        if (CommonClass.isNetworkAvailable(requireContext())) {
+
+            observeViewModel()
+        }
+        else{
+            CommonClass.showInternetDialogue(requireContext())
         }
 
         return binding.root
@@ -125,7 +147,7 @@ class ScreeningsFragment : Fragment() {
         cardViewAdapter.notifyDataSetChanged()
     }*/
 
-    @SuppressLint("NotifyDataSetChanged")
+   /* @SuppressLint("NotifyDataSetChanged")
     private fun displayCardViews(screeningList: List<ScreeningItem>) {
         cardViewItems.clear()
         for (screeningItem in screeningList) {
@@ -138,18 +160,65 @@ class ScreeningsFragment : Fragment() {
             cardViewItems.add(ScreeningsCardItem(title, historyImageResource, nextOrKeyImageResource))
         }
         cardViewAdapter.notifyDataSetChanged()
+    }*/
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun displayCardViews(screeningList: List<ScreeningItem>) {
+        cardViewItems.clear()
+        for (screeningItem in screeningList) {
+            val title = screeningItem.screeningType
+            val historyImageResource = R.drawable.ic_history // Always show history icon
+            val nextOrKeyImageResource = R.drawable.ic_next_new
+            cardViewItems.add(ScreeningsCardItem(title, historyImageResource, nextOrKeyImageResource))
+        }
+        cardViewAdapter.notifyDataSetChanged()
     }
 
+
     private fun loadFragment(fragment: Fragment) {
-        val args = Bundle().apply {
-            putString("screeningResponse", JsonUtil.toJsonString(screeningResponse))
-        }
-        fragment.arguments = args
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun observeViewModel()
+    {
+
+        loginResponse?.loginDetails?.let {
+            screeningsMenuViewModel.getScreeningList(
+                it.patientID,
+                it.clientID,
+                it.patientLocationID
+            )
+        }
+
+        screeningsMenuViewModel.loadingLiveData.observe(requireActivity()) { isLoading ->
+            if (isLoading) {
+                customProgressDialog.show("Loading...")
+            } else {
+
+                customProgressDialog.dialogDismiss()
+            }
+        }
+
+        screeningsMenuViewModel.screeningListLiveData.observe(viewLifecycleOwner, Observer { successData->
+            if(successData!= null)
+            {
+                Log.d("Observeeeeee:","$successData")
+                screeningResponse = successData
+                displayCardViews(screeningResponse)
+
+                cardViewAdapter = ScreeningsCardAdapter(requireActivity().supportFragmentManager,cardViewItems,screeningResponse)
+                binding.recyclerViewMedications.adapter = cardViewAdapter
+
+                Log.d("OOOOObserve:","$screeningResponse")
+            }
+        })
+
+        Log.d("Observe:","$screeningResponse")
+
     }
 
 }

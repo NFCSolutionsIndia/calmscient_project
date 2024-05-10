@@ -44,7 +44,7 @@ import java.util.Locale
 data class DateTime(val date: String, val time: String)
 
 @AndroidEntryPoint
-class ResultsFragment : Fragment() {
+class ResultsFragment() : Fragment() {
     lateinit var binding: LayoutResultsBinding
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
@@ -87,6 +87,7 @@ class ResultsFragment : Fragment() {
             screeningResponse = screeningItemList.firstOrNull()
 
             Log.d("Result Fragment 123", "$screeningResponse")
+            Log.d("ClientId", "${screeningResponse?.clientID}")
         }
 
 
@@ -258,14 +259,16 @@ class ResultsFragment : Fragment() {
         }
     }
 
-    fun observeViewModel()
+    private fun observeViewModel()
     {
+        screeningResultsViewModel.clear()
+
         screeningResponse?.let { screeningItem ->
             screeningResultsViewModel.getScreeningResultsData(
                 screeningItem.plid,
                 screeningItem.screeningID,
                 screeningItem.patientID,
-                screeningItem.clientID,
+                screeningResponse!!.clientID,
                 screeningItem.assessmentID
             )
         }

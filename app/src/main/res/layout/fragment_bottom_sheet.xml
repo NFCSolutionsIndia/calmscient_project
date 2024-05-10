@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/time_picker_border"
                 android:calendarViewShown="false"
-                android:timePickerMode="spinner" />
+                android:timePickerMode="spinner"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -93,52 +93,93 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="horizontal">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_five"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                <TextView
+                    android:id="@+id/text_five"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/five"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="5"
+                    android:clickable="true"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_ten"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                <TextView
+                    android:id="@+id/text_ten"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/ten_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="10"
+                    android:clickable="true"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_fifteen"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                <TextView
+                    android:id="@+id/text_fifteen"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/fifteen"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="15"
+                    android:clickable="true"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_twenty"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                <TextView
+                    android:id="@+id/text_twenty"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/twenty_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="20"
+                    android:clickable="true"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_twentyfive"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                <TextView
+                    android:id="@+id/text_twentyfive"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/twentyfive_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="25"
+                    android:clickable="true"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_thirty"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                <TextView
+                    android:id="@+id/text_thirty"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/thirty_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="30"
+                    android:clickable="true"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
             </LinearLayout>
         </LinearLayout>
@@ -172,62 +213,105 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_6sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="horizontal">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_sun"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/text_sunday"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/sun_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="S"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_mon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/text_monday"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/mon_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="M"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_tue"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/text_tuesday"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/tue_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="T"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_wed"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/text_wednesday"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/wed_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="W"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_thu"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/text_thuresady"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/thu_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="T"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_fri"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/text_friday"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/fri_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="F"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/img_sat"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/text_saturday"
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:src="@drawable/sat_selected"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
+                    android:text="S"
+                    android:fontFamily="@font/lexendregular"
+                    android:textColor="@color/purple_100"
+                    android:textSize="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_6sdp"
                     tools:ignore="MissingConstraints" />
             </LinearLayout>
         </LinearLayout>

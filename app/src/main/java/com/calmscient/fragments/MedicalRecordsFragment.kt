@@ -40,7 +40,6 @@ class MedicalRecordsFragment : Fragment() {
     private val screeningsMenuViewModel: ScreeningViewModel by viewModels()
 
 
-    private lateinit var screeningsResponseDate: List<ScreeningItem>
 
     private lateinit var menuResponseDate: List<MenuItem>
 
@@ -48,6 +47,8 @@ class MedicalRecordsFragment : Fragment() {
     private lateinit var menuItemRequest: MenuItemRequest
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
+
+    private var loginResponse : LoginResponse? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,17 +116,15 @@ class MedicalRecordsFragment : Fragment() {
         }
         binding.upcomingsMedicalAppointmentsCard.setOnClickListener {
             //Toast.makeText(requireActivity(), "Coming Soon", Toast.LENGTH_LONG).show()
-            loadFragment(NextAppointmentsFragment())
+            if (CommonClass.isNetworkAvailable(requireContext())) {
+                loadFragment(NextAppointmentsFragment())
+            } else {
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
         binding.screeningsLayout.setOnClickListener {
             //loadFragment(ResultsFragment())
             if (CommonClass.isNetworkAvailable(requireContext())) {
-
-                screeningsMenuViewModel.getScreeningList(
-                    loginResponse.loginDetails.patientID,
-                    loginResponse.loginDetails.clientID,
-                    loginResponse.loginDetails.patientLocationID
-                )
                 loadFragment(ScreeningsFragment())
             } else {
                 CommonClass.showInternetDialogue(requireContext())
@@ -135,41 +134,9 @@ class MedicalRecordsFragment : Fragment() {
             //Toast.makeText(requireActivity(), "Coming Soon", Toast.LENGTH_LONG).show()
         }
 
-        screeningsMenuViewModel.loadingLiveData.observe(requireActivity()) { isLoading ->
-            if (isLoading) {
-                customProgressDialog.show("Loading...")
-            } else {
 
-                customProgressDialog.dialogDismiss()
-            }
-        }
 
-        screeningsMenuViewModel.screeningsResultLiveData.observe(requireActivity()) { isSuccess ->
-            if (isSuccess) {
 
-                screeningsResponseDate = screeningsMenuViewModel.screeningListLiveData.value!!
-
-                val jsonString = JsonUtil.toJsonString(screeningsResponseDate)
-                SharedPreferencesUtil.saveData(requireContext(), "screeningsResponse", jsonString)
-            }
-            else{
-                screeningsMenuViewModel.errorLiveData.value?.let { failureMessage ->
-                    failureMessage.let {
-                        commonDialog.showDialog(
-                            it
-                        )
-                    }
-                }
-                screeningsMenuViewModel.errorLiveData.value?.let { failureMessage ->
-                    failureMessage.let{
-                        ServerTimeoutHandler.handleTimeoutException(requireContext()) {
-                            // Retry logic when the retry button is clicked
-                            screeningsMenuViewModel.retryScreeningsFetchMenuItems()
-                        }
-                    }
-                }
-            }
-        }
 
 
         binding.backIcon.setOnClickListener {

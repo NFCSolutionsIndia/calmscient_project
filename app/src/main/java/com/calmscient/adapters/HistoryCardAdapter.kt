@@ -37,10 +37,12 @@ class HistoryCardAdapter(private val items: List<HistoryDataClass>) :
         val item = items[position]
         holder.textviewDate.text = item.date
         holder.textviewTime.text = item.time
+        holder.score.text = item.score.toString()
+        holder.total.text = item.total.toString()
         //holder.textviewQuestionValue.text = item.questionCount
-        holder.progressValue.progress = 60
+        holder.progressValue.progress = item.progressBarValue!!
     }
-    private fun resultPercent() {
+   /* private fun resultPercent() {
 
         val progressBar: ProgressBar
         val textView: TextView
@@ -63,11 +65,12 @@ class HistoryCardAdapter(private val items: List<HistoryDataClass>) :
                 }
             }
         }.start()
-    }
+    }*/
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textviewDate: TextView = itemView.findViewById(R.id.tv_date)
         val textviewTime: TextView = itemView.findViewById(R.id.tv_time)
         val progressValue: ProgressBar = itemView.findViewById(R.id.progressbar_history)
-        val textviewQuestionValue: TextView = itemView.findViewById(R.id.tv_value)
+        val score: TextView = itemView.findViewById(R.id.tv_score)
+        val total: TextView = itemView.findViewById(R.id.tv_total)
     }
 }

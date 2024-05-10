@@ -11,32 +11,56 @@
 
 package com.calmscient.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
 import com.calmscient.adapters.HistoryCardAdapter
 import com.calmscient.databinding.LayoutHistoryBinding
+import com.calmscient.di.remote.response.QuestionnaireItem
+import com.calmscient.di.remote.response.ScreeningHistoryResponse
+import com.calmscient.di.remote.response.ScreeningHistoryResponseData
+import com.calmscient.di.remote.response.ScreeningItem
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.viewmodels.HistoryViewModel
+import com.calmscient.viewmodels.ScreeningQuestionnaireViewModel
+import java.text.SimpleDateFormat
 
 data class HistoryDataClass(
-    val date: String,
+    val date: String?,
     val time: String?,
     val progressBarValue:Int?,
-    val questionCount: Int?,
+    val score: Int?,
+    val total: Int?
 )
-class HistoryFragment:Fragment() {
+class HistoryFragment(private val screeningItem: ScreeningItem):Fragment() {
     lateinit var binding:LayoutHistoryBinding
     lateinit var historyViewAdapter:HistoryCardAdapter
     private val historyItems = mutableListOf<HistoryDataClass>()
+
+
+    private val historyViewModel: HistoryViewModel by activityViewModels()
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
+    private var historyResponse: List<ScreeningHistoryResponse> = emptyList()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this){
             loadFragment(ScreeningsFragment())
         }
+
+
     }
 
     override fun onCreateView(
@@ -48,6 +72,17 @@ class HistoryFragment:Fragment() {
         binding.historyBackIcon.setOnClickListener {
             loadFragment(ScreeningsFragment())
         }
+
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonDialog = CommonAPICallDialog(requireContext())
+
+
+        Log.d("History Fragemnt :","{${screeningItem.screeningID}}")
+
+        fetchScreeningHistory()
+        observeViewModel()
+
+
         return binding.root
     }
 
@@ -57,24 +92,101 @@ class HistoryFragment:Fragment() {
         binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
         historyViewAdapter = HistoryCardAdapter(historyItems)
         binding.recyclerHistory.adapter = historyViewAdapter
-        displayCardViews()
+
+        binding.titleScreenings.text = screeningItem.screeningType
     }
-    private fun displayCardViews() {
-        historyItems.clear()
-        historyItems.addAll(
-            listOf(
-                HistoryDataClass("11/08/2023","03:24PM", 60, 6/10),
-                HistoryDataClass("11/08/2023","03:24PM", 60, 6/10),
-                HistoryDataClass("11/08/2023","03:24PM", 60, 6/10),
-                HistoryDataClass("11/08/2023","03:24PM", 60, 6/10),
-            )
-        )
-        historyViewAdapter.notifyDataSetChanged()
-    }
+
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+
+    private fun fetchScreeningHistory() {
+
+        // Make API call to fetch screening history data
+        historyViewModel.getScreeningHistoryDetails(screeningItem.plid,screeningItem.patientID,screeningItem.clientID,screeningItem.screeningID)
+    }
+
+
+    private fun observeViewModel()
+    {
+        historyViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+            if(isLoading)
+            {
+                customProgressDialog.show("Loading...")
+            }
+            else
+            {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        historyViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess){
+
+                historyViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+                    if(successData!= null){
+
+                        historyResponse = successData.screeningHistory
+
+                        updateUI(historyResponse)
+                    }
+                })
+            }
+        })
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun updateUI(screeningHistory: List<ScreeningHistoryResponse>) {
+        // Clear previous data
+        historyItems.clear()
+
+
+
+        // Add API data to historyItems list
+        screeningHistory.forEach { history ->
+
+            val score = history.score ?: 0
+            val total =  history.totalScore ?: 0
+
+            val progressBarValue = calculateProgressBarValue(score, total)
+            val (date, time) = separateDateAndTime(history.completionDateTime)
+            historyItems.add(
+                HistoryDataClass(
+                    date = date,
+                    time = time,
+                    progressBarValue = progressBarValue,
+                    score = history.score,
+                    total = history.totalScore
+                )
+            )
+        }
+
+        historyViewAdapter.notifyDataSetChanged()
+    }
+
+    private fun calculateProgressBarValue(score: Int, total: Int): Int {
+        // Calculate the percentage
+        val percentage = if (total != 0) {
+            (score.toDouble() / total.toDouble()) * 100
+        } else {
+            0.0
+        }
+        return percentage.toInt()
+    }
+
+    fun separateDateAndTime(completionDateTime: String): Pair<String, String> {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val dateTime = formatter.parse(completionDateTime)
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd")
+        val timeFormatter = SimpleDateFormat("HH:mm:ss")
+
+        val date = dateFormatter.format(dateTime)
+        val time = timeFormatter.format(dateTime)
+
+        return Pair(date, time)
     }
 }

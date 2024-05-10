@@ -44,17 +44,28 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
 
 
 
-    private var fromDate: String = ""
-    private var patientLocationId: Int = -1
-    private var toDate: String = ""
-    private var screeningId: Int = -1
-    private var patientId: Int = -1
-    private var clientId: Int = -1
-    private var assessmentId: Int = -1
+    private var lastPatientLocationId: Int = -1
+    private var lastFromDate: String = ""
+    private var lastToDate: String = ""
+    private var lastScreeningId: Int = -1
+    private var lastPatientId: Int = -1
+    private var lastClientId: Int = -1
+    private var lastAssessmentId: Int = -1
 
 
     fun getScreeningQuestionsList(patientId: Int, clientId: Int, patientLocationId: Int, toDate: String?, fromDate: String?, assessmentId :Int, screeningId :Int) {
         loadingLiveData.value = true // Show loader
+        lastScreeningId = screeningId
+        lastClientId = clientId
+        lastPatientId = patientId
+        if (fromDate != null) {
+            lastFromDate = fromDate
+        }
+        if (toDate != null) {
+            lastToDate = toDate
+        }
+        lastAssessmentId = assessmentId
+        lastPatientLocationId = patientLocationId
         viewModelScope.launch {
             try {
                 val request = ScreeningsAssessmentRequest(fromDate,patientLocationId,toDate,screeningId,patientId,clientId,assessmentId)
@@ -115,6 +126,6 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
 
     // Function to retry fetching menu items
     fun retryScreeningsFetchMenuItems() {
-        getScreeningQuestionsList(patientId,clientId,patientLocationId,toDate,fromDate,assessmentId, screeningId)
+        getScreeningQuestionsList(lastPatientId,lastClientId,lastPatientLocationId,lastToDate,lastFromDate,lastAssessmentId, lastScreeningId)
     }
 }

@@ -52,7 +52,7 @@
                 android:src="@drawable/ic_doctor_logo" />
 
             <TextView
-                android:id="@+id/text1"
+                android:id="@+id/doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -60,7 +60,6 @@
                 android:layout_marginTop="@dimen/_18sdp"
                 android:layout_toRightOf="@+id/doctorlogo"
                 android:fontFamily="@font/lexendmedium"
-                android:text="@string/doctor_name1"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp" />
 
@@ -90,11 +89,11 @@
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
+                android:id="@+id/tv_Date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/lexendregular"
-                android:text="09/02/2023"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp" />
         </RelativeLayout>
@@ -118,12 +117,11 @@
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
-                android:id="@+id/phonenumber"
+                android:id="@+id/phoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/lexendregular"
-                android:text="@string/doctor_phone_number"
                 android:textColor="@color/example_7_button"
                 android:textSize="@dimen/_14sdp" />
         </RelativeLayout>
@@ -147,11 +145,11 @@
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
+                android:id="@+id/tv_Address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/lexendregular"
-                android:text="@string/doctor_address"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp" />
         </RelativeLayout>
@@ -175,11 +173,11 @@
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
+                android:id="@+id/tv_appointmentDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/lexendregular"
-                android:text="@string/general_check"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp" />
         </RelativeLayout>

@@ -12,8 +12,22 @@
 package com.calmscient.Interface
 
 import android.view.View
+import com.calmscient.di.remote.request.Alarm
+import com.calmscient.di.remote.request.AlarmInternal
+import com.calmscient.di.remote.request.AlarmUpdateRequest
+import com.calmscient.di.remote.request.AlarmUpdateRequestInternal
 
 interface BottomSheetListener {
     fun onShowBottomSheet()
     fun onShowEditBottomSheet(view: View, position: Int, description: String)
 }
+
+
+interface OnAlarmSelectedListener {
+    fun onAlarmSelected(alarm: AlarmInternal)
+}
+
+interface OnAlarmSelectedListenerUpdate {
+    fun onAlarmSelected(alarm: AlarmUpdateRequestInternal)
+}
+

@@ -20,6 +20,7 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +30,9 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import com.calmscient.R
 import com.calmscient.databinding.FragmentAppointmentdetailsBinding
-import com.calmscient.databinding.NextappointemtsItemBinding
+import com.calmscient.di.remote.response.AppointmentDetails
+import com.calmscient.di.remote.response.MedicalDetails
+import com.google.gson.Gson
 
 
 class AppointmentdetailsFragment:Fragment() {
@@ -40,6 +43,19 @@ class AppointmentdetailsFragment:Fragment() {
             loadFragment(NextAppointmentsFragment())
         }
     }
+
+    companion object {
+        fun newInstance(appointmentDetails: AppointmentDetails): AppointmentdetailsFragment {
+            val fragment = AppointmentdetailsFragment()
+            val args = Bundle()
+            val gson = Gson()
+            val appointmentDetailsJson = gson.toJson(appointmentDetails)
+            args.putString("appointmentDetailsJson", appointmentDetailsJson)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,13 +65,27 @@ class AppointmentdetailsFragment:Fragment() {
         binding.backIcon.setOnClickListener {
             loadFragment(NextAppointmentsFragment())
         }
+        val appointmentDetailsJson = arguments?.getString("appointmentDetailsJson")
+
+        // Parse the JSON string back to MedicalDetails object
+        val gson = Gson()
+        val appointmentDetails = gson.fromJson(appointmentDetailsJson, AppointmentDetails::class.java)
+
+        Log.d("Appointment Details","$appointmentDetails")
+
+        binding.doctorName.text = appointmentDetails.providerName
+        binding.phoneNumber.text = appointmentDetails.contact
+        binding.tvAddress.text = appointmentDetails.address
+        binding.tvDate.text = appointmentDetails.dateAndTime
+        binding.tvAppointmentDetails.text = appointmentDetails.appointmentDetails
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Get the TextViews
-        val hospitalNumber = view.findViewById<TextView>(R.id.phonenumber)
+        val hospitalNumber = view.findViewById<TextView>(R.id.phoneNumber)
 
 
         // Apply the click behavior for each TextView

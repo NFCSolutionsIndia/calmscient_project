@@ -132,6 +132,7 @@ class HomeFragment : Fragment() {
 
         menuViewModel.loadingLiveData.observe(requireActivity()) { isLoading ->
             if (isLoading) {
+                commonDialog.dismiss()
                 customProgressDialog.show("Loading...")
             } else {
 
@@ -142,7 +143,8 @@ class HomeFragment : Fragment() {
         menuViewModel.resultLiveData.observe(requireActivity()){isSuccess ->
             if(isSuccess)
             {
-
+                ServerTimeoutHandler.clearRetryListener()
+                ServerTimeoutHandler.dismissDialog()
                 menuResponseDate = menuViewModel.menuItemsLiveData.value!!
 
                 val jsonString = JsonUtil.toJsonString(menuResponseDate)
@@ -152,6 +154,11 @@ class HomeFragment : Fragment() {
 
 
                 if (menuResponseDate.size >= 2) {
+
+                    ServerTimeoutHandler.clearRetryListener()
+                    ServerTimeoutHandler.dismissDialog()
+
+
                     name.text = loginResponse.loginDetails.firstName
                     mediaclRecords.text = menuResponseDate[0].menuName
                     weeklySummary.text = menuResponseDate[1].menuName
@@ -171,6 +178,7 @@ class HomeFragment : Fragment() {
                         if (CommonClass.isNetworkAvailable(requireContext())) {
                             ServerTimeoutHandler.handleTimeoutException(requireContext()) {
                                 // Retry logic when the retry button is clicked
+
                                 menuViewModel.retryFetchMenuItems()
                             }
                         } else {

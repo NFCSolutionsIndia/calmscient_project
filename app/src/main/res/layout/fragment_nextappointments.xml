@@ -111,6 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/_5sdp"
+        android:visibility="gone"
         android:src="@drawable/ic_floatingicon" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
