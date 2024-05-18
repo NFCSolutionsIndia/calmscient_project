@@ -12,6 +12,7 @@
 package com.calmscient.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,8 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
 import com.calmscient.adapters.SummaryofMoodFragmentAdapter
@@ -26,7 +29,13 @@ import com.calmscient.data.remote.WeeklySummaryMoodTask
 import com.calmscient.databinding.CalendarDayLayoutBinding
 import com.calmscient.databinding.Summaryofphq9FragmentBinding
 import com.calmscient.databinding.SummaryofsleepFragmentBinding
+import com.calmscient.di.remote.response.SummaryOfPHQ9Response
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.LineChartView
 import com.calmscient.utils.getColorCompat
+import com.calmscient.viewmodels.GetSummaryOfPHQViewModel
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -45,6 +54,20 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+import android.graphics.Color
+import android.graphics.DashPathEffect
+import com.calmscient.utils.common.CustomMarkerView
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
+import okhttp3.internal.parseCookie
+
+
 class SummaryofPHQ9Fragment: Fragment() {
     private lateinit var binding: Summaryofphq9FragmentBinding
     private lateinit var dateView: TextView
@@ -53,6 +76,14 @@ class SummaryofPHQ9Fragment: Fragment() {
     private val dateFormatter = DateTimeFormatter.ofPattern("dd")
     private val summaryCardViewItems = mutableListOf<WeeklySummaryMoodTask>()
     private lateinit var summaryOfMoodAdapter: SummaryofMoodFragmentAdapter
+
+    private val getSummaryOfPHQViewModel :GetSummaryOfPHQViewModel by activityViewModels()
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var summaryOfPHQ9Response: SummaryOfPHQ9Response
+    private lateinit var lineChart: LineChart
+    private  lateinit var accessToken : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this){
@@ -65,6 +96,8 @@ class SummaryofPHQ9Fragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = Summaryofphq9FragmentBinding.inflate(inflater, container, false)
+        lineChart = binding.lineChartView
+
         binding.backIcon.setOnClickListener {
             loadFragment(WeeklySummaryFragment())
         }
@@ -86,6 +119,20 @@ class SummaryofPHQ9Fragment: Fragment() {
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+
+
+        if (CommonClass.isNetworkAvailable(requireContext())) {
+            apiCall()
+            observeViewModel()
+        }
+        else{
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -173,6 +220,8 @@ class SummaryofPHQ9Fragment: Fragment() {
         binding.recyclerViewSummaryMood.adapter = summaryOfMoodAdapter
         summaryOfMoodAdapter.updateTasks(summaryCardViewItems)
         displayCardViewsForSelectedDate()
+
+
     }
 
     private fun displayCardViewsForSelectedDate() {
@@ -240,4 +289,109 @@ class SummaryofPHQ9Fragment: Fragment() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
+    private fun apiCall()
+    {
+        getSummaryOfPHQViewModel.getSummaryOfPHQ(4,4,1,"04/21/2024","05/09/2024", accessToken)
+
+    }
+    private fun observeViewModel()
+    {
+
+        getSummaryOfPHQViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.dialogDismiss()
+                customProgressDialog.show("Loading...")
+            }
+            else
+            {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getSummaryOfPHQViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successDate->
+            if(successDate != null)
+            {
+                summaryOfPHQ9Response = successDate
+
+                Log.d("PHQ Response","$successDate")
+
+                handleApiResponse(summaryOfPHQ9Response)
+            }
+        })
+
+    }
+    private fun handleApiResponse(response: SummaryOfPHQ9Response) {
+        if (response.statusResponse.responseCode == 200) {
+            val phq9ByDateRange = response.PHQ9ByDateRange
+
+            val entries = ArrayList<Entry>()
+            val dateLabels = ArrayList<String>()
+
+            // Assuming PHQ9ByDateRange has a date and score
+            for (i in phq9ByDateRange.indices) {
+                val phqData = phq9ByDateRange[i]
+                val entry = Entry(i.toFloat(), phqData.score.toFloat())
+                entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
+                entries.add(entry)
+
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.date)
+                val formattedDate = SimpleDateFormat("M/dd", Locale.getDefault()).format(date)
+                dateLabels.add(formattedDate)
+            }
+
+            val dataSet = LineDataSet(entries, "PHQ9 Scores")
+            dataSet.color = Color.parseColor("#6E6BB3")
+            dataSet.valueTextColor = Color.BLACK
+            dataSet.setDrawCircles(true)
+            dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
+            dataSet.setDrawValues(true)
+
+            val lineData = LineData(dataSet)
+            lineChart.data = lineData
+
+            // Customize the chart
+            val xAxis = lineChart.xAxis
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.granularity = 1f
+            xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value.toInt() >= 0 && value.toInt() < dateLabels.size) {
+                        dateLabels[value.toInt()]
+                    } else {
+                        ""
+                    }
+                }
+            }
+            xAxis.setDrawGridLines(false) // Disable vertical grid lines
+
+            val yAxisLeft = lineChart.axisLeft
+            yAxisLeft.setDrawGridLines(true)
+            yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+
+            lineChart.axisRight.isEnabled = false
+
+            // Hide the axis lines
+            xAxis.setDrawAxisLine(false)
+            yAxisLeft.setDrawAxisLine(false)
+
+            // Set custom marker
+            val markerView = CustomMarkerView(requireContext(), R.layout.custom_marker_view)
+            lineChart.marker = markerView
+
+            // Disable zooming
+            lineChart.setScaleEnabled(false)
+            lineChart.isDragEnabled = false
+
+            lineChart.description.isEnabled = false
+
+            // Adding animations
+            lineChart.animateX(1000, Easing.EaseInOutQuad)
+            lineChart.animateY(1000, Easing.EaseInOutQuad)
+
+            lineChart.invalidate() // Refresh the chart
+        }
+    }
+
 }

@@ -27,7 +27,7 @@ import javax.inject.Singleton
 object ApplicationModule {
 
     // Define base URLs for different API endpoints
-    private const val BASE_URL = "http://20.197.5.97:8082/"
+    private const val BASE_URL = "http://20.197.5.97:8089/"
    // private const val BASE_URL_MENU = "http://20.197.5.97:8083/"
 
     @Provides

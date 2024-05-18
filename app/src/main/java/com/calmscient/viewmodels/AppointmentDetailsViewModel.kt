@@ -43,20 +43,22 @@ class AppointmentDetailsViewModel @Inject constructor(private val repository: Me
     private var lastClientId: Int = -1
     private var lastFromDate: String = ""
     private var lastToDate: String = ""
+    private var lastAccessToken: String = ""
 
     // Function to save patient answers
-    fun getAppointmentDetails(  patientLocationId: Int, patientId: Int, clientId: Int, fromDate:String,toDate : String) {
+    fun getAppointmentDetails(  patientLocationId: Int, patientId: Int, clientId: Int, fromDate:String,toDate : String,accessToken:String) {
         loadingLiveData.value = true // Show loader
         lastPatientLocationId = patientLocationId
         lastToDate= toDate
         lastClientId =clientId
         lastFromDate = fromDate
         lastPatientId = patientId
+        lastAccessToken= accessToken
 
         viewModelScope.launch {
             try {
                 val request = AppointmentDetailsRequestData(patientLocationId, patientId ,fromDate,toDate,clientId)
-                val response = repository.getAppointmentDetails(request)
+                val response = repository.getAppointmentDetails(request,accessToken)
                 Log.d("AppointmentDetailsViewModel", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
@@ -112,7 +114,7 @@ class AppointmentDetailsViewModel @Inject constructor(private val repository: Me
     fun retryGetAppointmentDetails() {
        if(lastPatientLocationId>0 && lastPatientId>0 && lastClientId>0 && lastFromDate.isNotEmpty() && lastToDate.isNotEmpty())
        {
-           getAppointmentDetails(lastPatientLocationId,lastPatientId,lastClientId,lastFromDate,lastToDate)
+           getAppointmentDetails(lastPatientLocationId,lastPatientId,lastClientId,lastFromDate,lastToDate,lastAccessToken)
        }
     }
 

@@ -34,6 +34,7 @@ import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.SaveScreeningAnswersViewModel
 import com.calmscient.viewmodels.ScreeningQuestionnaireViewModel
@@ -56,6 +57,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
     private var isNextButtonVisible = true
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
+    private  lateinit var accessToken : String
 
 
     private val selectedOptionsMap = mutableMapOf<Int, String?>()
@@ -97,6 +99,8 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 //        Log.d("Question Fragment ", screeningResponseJson.toString())
 
         screeningResponseList = listOf(screeningItem)
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
 
         Log.d("DAST Question Fragment", "$screeningResponseList")
 
@@ -150,7 +154,8 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
             "",
             "",
             screeningResponseList[0].assessmentID,
-            screeningResponseList[0].screeningID
+            screeningResponseList[0].screeningID,
+            accessToken
         )
 
         binding.nextQuestion.setOnClickListener {
@@ -324,7 +329,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
                 // Check if patient answers are not empty
                 if (patientAnswers.patientAnswers.isNotEmpty()) {
-                    saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers)
+                    saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers, accessToken)
 
                     saveScreeningAnswersViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
                         if (isLoading) {

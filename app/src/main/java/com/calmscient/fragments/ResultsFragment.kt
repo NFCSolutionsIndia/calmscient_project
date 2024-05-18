@@ -34,6 +34,7 @@ import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.LoginViewModel
 import com.calmscient.viewmodels.ScreeningResultsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,6 +51,7 @@ class ResultsFragment() : Fragment() {
     private lateinit var commonDialog: CommonAPICallDialog
     private  var screeningResponseJson :String? = null
     private  var screeningResponse : ScreeningItem? = null
+    private  lateinit var accessToken : String
     private val screeningResultsViewModel: ScreeningResultsViewModel by activityViewModels()
 
     companion object {
@@ -69,6 +71,11 @@ class ResultsFragment() : Fragment() {
                 YOUR_STRESS_FRAGMENT -> loadFragment(YourStressTriggersQuizFragment())
                 // Handle other fragments if needed
             }*/
+
+
+
+
+
             if (CommonClass.isNetworkAvailable(requireContext())) {
                 loadFragment(ScreeningsFragment())
             } else {
@@ -123,7 +130,6 @@ class ResultsFragment() : Fragment() {
                 YOUR_STRESS_FRAGMENT -> loadFragment(YourStressTriggersQuizFragment())
                 // Handle other fragments if needed
             }*/
-
 
 
             if (CommonClass.isNetworkAvailable(requireContext())) {
@@ -261,6 +267,9 @@ class ResultsFragment() : Fragment() {
 
     private fun observeViewModel()
     {
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+
+        Log.d("Access Token ","$accessToken")
         screeningResultsViewModel.clear()
 
         screeningResponse?.let { screeningItem ->
@@ -269,7 +278,8 @@ class ResultsFragment() : Fragment() {
                 screeningItem.screeningID,
                 screeningItem.patientID,
                 screeningResponse!!.clientID,
-                screeningItem.assessmentID
+                screeningItem.assessmentID,
+                accessToken
             )
         }
 

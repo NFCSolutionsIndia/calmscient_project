@@ -26,16 +26,16 @@ import javax.inject.Inject
 
 class ScreeningQuestionnaireRepository @Inject constructor(private val apiService: ApiService)
 {
-    fun fetchScreeningsMenuItems(screeningAssignmentRequest: ScreeningsAssessmentRequest): Call<ScreeningAssignmentResponse> {
-        return apiService.fetchScreeningsQuestionItems(screeningAssignmentRequest)
+    fun fetchScreeningsMenuItems(screeningAssignmentRequest: ScreeningsAssessmentRequest,accessToken: String): Call<ScreeningAssignmentResponse> {
+        return apiService.fetchScreeningsQuestionItems("Bearer $accessToken",screeningAssignmentRequest)
     }
 
-    fun saveScreeningQuestionAnswers(patientAnswerSaveRequest: PatientAnswersWrapper): Call<PatientAnswerSaveResponse>
+    fun saveScreeningQuestionAnswers(patientAnswerSaveRequest: PatientAnswersWrapper,accessToken: String): Call<PatientAnswerSaveResponse>
     {
-        return  apiService.saveScreeningQuestionAnswers(patientAnswerSaveRequest)
+        return  apiService.saveScreeningQuestionAnswers("Bearer $accessToken",patientAnswerSaveRequest)
     }
 
-    fun getScreeningsResults(screeningResultsRequest: ScreeningsResultsRequest):Call<ScreeningResultsResponse>{
-        return  apiService.getScreeningsResults(screeningResultsRequest)
+    fun getScreeningsResults(screeningResultsRequest: ScreeningsResultsRequest,accessToken: String):Call<ScreeningResultsResponse>{
+        return  apiService.getScreeningsResults("Bearer $accessToken",screeningResultsRequest)
     }
 }

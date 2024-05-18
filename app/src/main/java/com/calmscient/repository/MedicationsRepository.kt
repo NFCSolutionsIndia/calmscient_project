@@ -28,20 +28,20 @@ import javax.inject.Inject
 
 class MedicationsRepository @Inject constructor(private val apiService: ApiService)
 {
-    fun getMedicationDetails(medicationDetailsRequest: MedicationDetailsRequest): Call<MedicationDetailsResponse> {
-        return apiService.getMedicationDetails(medicationDetailsRequest)
+    fun getMedicationDetails(medicationDetailsRequest: MedicationDetailsRequest,accessToken: String): Call<MedicationDetailsResponse> {
+        return apiService.getMedicationDetails("Bearer $accessToken",medicationDetailsRequest)
     }
 
-    fun addMedicationDetails(medicationDetailsRequest: AddMedicationDetailsRequest): Call<AddMedicationResponse> {
-        return apiService.addMedicationDetails(medicationDetailsRequest)
+    fun addMedicationDetails(medicationDetailsRequest: AddMedicationDetailsRequest, accessToken: String): Call<AddMedicationResponse> {
+        return apiService.addMedicationDetails("Bearer $accessToken",medicationDetailsRequest)
     }
 
-    fun getAppointmentDetails(appointmentDetailsRequest: AppointmentDetailsRequestData): Call<AppointmentDetailsResponseData> {
-        return apiService.getAppointmentDetails(appointmentDetailsRequest)
+    fun getAppointmentDetails(appointmentDetailsRequest: AppointmentDetailsRequestData, accessToken: String): Call<AppointmentDetailsResponseData> {
+        return apiService.getAppointmentDetails("Bearer $accessToken",appointmentDetailsRequest)
     }
 
-    fun updatePatientMedicationDetails(appointmentDetailsRequest: AlarmWrapper): Call<AlarmUpdateResponse> {
-        return apiService.updatePatientMedicationDetails(appointmentDetailsRequest)
+    fun updatePatientMedicationDetails(appointmentDetailsRequest: AlarmWrapper, accessToken: String): Call<AlarmUpdateResponse> {
+        return apiService.updatePatientMedicationDetails("Bearer $accessToken",appointmentDetailsRequest)
     }
 }
 

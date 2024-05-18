@@ -584,7 +584,9 @@ class MedicationDetailFragment : Fragment(),
 
 
             if (request.alarms.isNotEmpty()) {
-                updateMedicationViewModel.updatePatientMedicationDetails(request)
+                loginResponse?.token?.let {
+                    updateMedicationViewModel.updatePatientMedicationDetails(request, it.access_token)
+                }
             }
             else{
 
@@ -608,7 +610,7 @@ class MedicationDetailFragment : Fragment(),
 
     private fun updateAlarmToggle(alarmsList: List<AlarmUpdateRequest>, time: String, isEnabled: Boolean) {
         val timeFormat12Hours = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        val timeFormat24Hours = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        val timeFormat24Hours = SimpleDateFormat("HH:mm", Locale.getDefault())
 
         // Parse the time from the UI binding
         val parsedTime: Date? = try {

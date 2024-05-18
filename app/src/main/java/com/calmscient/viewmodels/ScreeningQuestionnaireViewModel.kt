@@ -51,13 +51,15 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
     private var lastPatientId: Int = -1
     private var lastClientId: Int = -1
     private var lastAssessmentId: Int = -1
+    private var lastAccessToken: String = ""
 
 
-    fun getScreeningQuestionsList(patientId: Int, clientId: Int, patientLocationId: Int, toDate: String?, fromDate: String?, assessmentId :Int, screeningId :Int) {
+    fun getScreeningQuestionsList(patientId: Int, clientId: Int, patientLocationId: Int, toDate: String?, fromDate: String?, assessmentId :Int, screeningId :Int,accessToken: String) {
         loadingLiveData.value = true // Show loader
         lastScreeningId = screeningId
         lastClientId = clientId
         lastPatientId = patientId
+        lastAccessToken = accessToken
         if (fromDate != null) {
             lastFromDate = fromDate
         }
@@ -69,7 +71,7 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
         viewModelScope.launch {
             try {
                 val request = ScreeningsAssessmentRequest(fromDate,patientLocationId,toDate,screeningId,patientId,clientId,assessmentId)
-                val response = screeningQuestionnaireRepository.fetchScreeningsMenuItems(request)
+                val response = screeningQuestionnaireRepository.fetchScreeningsMenuItems(request,accessToken)
                 handleResponse(response)
             }
             catch (e: SocketTimeoutException) {
@@ -126,6 +128,6 @@ class ScreeningQuestionnaireViewModel @Inject constructor(private val screeningQ
 
     // Function to retry fetching menu items
     fun retryScreeningsFetchMenuItems() {
-        getScreeningQuestionsList(lastPatientId,lastClientId,lastPatientLocationId,lastToDate,lastFromDate,lastAssessmentId, lastScreeningId)
+        getScreeningQuestionsList(lastPatientId,lastClientId,lastPatientLocationId,lastToDate,lastFromDate,lastAssessmentId, lastScreeningId, lastAccessToken)
     }
 }

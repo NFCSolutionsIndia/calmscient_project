@@ -11,17 +11,30 @@
 
 package com.calmscient.di.remote.response
 
-
 data class LoginResponse(
+    val token: Token,
     val statusResponse: StatusResponse,
-    val authorizationCode: Int,
-    val authorizationMessage: String,
     val loginDetails: LoginDetails
 )
 
+data class Token(
+    val access_token: String,
+    val expires_in: Int,
+    val refresh_expires_in: Int,
+    val refresh_token: String,
+    val token_type: String,
+    val id_token: String?,
+    val not_before_policy: Int,
+    val session_state: String,
+    val scope: String,
+    val error: String?,
+    val error_description: String?,
+    val error_uri: String?
+)
+
 data class StatusResponse(
-    val responseMessage: String,
-    val responseCode: Int?
+    val responseCode: Int,
+    val responseMessage: String
 )
 
 data class LoginDetails(
@@ -37,15 +50,13 @@ data class LoginDetails(
     val securityGroupID: Int,
     val userCode: String,
     val lastActivity: String,
-    val lastLogin: String,
+    val lastLogin: String?,
     val loginCount: Int,
     val userType: String,
     val locationName: String,
     val address: String,
     val city: Int,
-    val providerName:String,
-    val providerID:Int,
-    val providerCode:String,
-
+    val providerID: Int,
+    val providerCode: String,
+    val providerName: String
 )
-

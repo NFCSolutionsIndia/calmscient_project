@@ -1,0 +1,37 @@
+/*
+ *
+ *      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+ *      All source code contained herein remains the property of NFC Solutions Incorporated
+ *      and protected by trade secret or copyright law of USA.
+ *      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+ *      there is a prior written permission or license agreement from NFC Solutions.
+ *
+ *      Author : @Pardha Saradhi
+ */
+
+package com.calmscient.di.remote.response
+
+data class SummaryOfPHQ9(
+    val screeningId: Int,
+    val plId: Int,
+    val score: Int,
+    val screening: String,
+    val firstName: String,
+    val lastName: String,
+    val scoreTitle: String,
+    val startDate: String,
+    val completionDate: String,
+    val pscreeningId: Int
+)
+
+data class PHQ9ByDateRange(
+    val date: String,
+    val score: Int,
+    val scoreTitle: String?
+)
+
+data class SummaryOfPHQ9Response(
+    val statusResponse: StatusResponse,
+    val summaryOfPHQ9: List<SummaryOfPHQ9>,
+    val PHQ9ByDateRange: List<PHQ9ByDateRange>
+)

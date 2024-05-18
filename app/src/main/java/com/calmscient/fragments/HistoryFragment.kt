@@ -31,6 +31,7 @@ import com.calmscient.di.remote.response.ScreeningHistoryResponseData
 import com.calmscient.di.remote.response.ScreeningItem
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.HistoryViewModel
 import com.calmscient.viewmodels.ScreeningQuestionnaireViewModel
 import java.text.SimpleDateFormat
@@ -52,6 +53,7 @@ class HistoryFragment(private val screeningItem: ScreeningItem):Fragment() {
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
     private var historyResponse: List<ScreeningHistoryResponse> = emptyList()
+    private  lateinit var accessToken : String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +78,7 @@ class HistoryFragment(private val screeningItem: ScreeningItem):Fragment() {
         customProgressDialog = CustomProgressDialog(requireContext())
         commonDialog = CommonAPICallDialog(requireContext())
 
-
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
         Log.d("History Fragemnt :","{${screeningItem.screeningID}}")
 
         fetchScreeningHistory()
@@ -107,7 +109,7 @@ class HistoryFragment(private val screeningItem: ScreeningItem):Fragment() {
     private fun fetchScreeningHistory() {
 
         // Make API call to fetch screening history data
-        historyViewModel.getScreeningHistoryDetails(screeningItem.plid,screeningItem.patientID,screeningItem.clientID,screeningItem.screeningID)
+        historyViewModel.getScreeningHistoryDetails(screeningItem.plid,screeningItem.patientID,screeningItem.clientID,screeningItem.screeningID,accessToken)
     }
 
 

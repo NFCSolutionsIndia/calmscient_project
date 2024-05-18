@@ -13,6 +13,7 @@ package com.calmscient.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -49,6 +50,8 @@ import com.calmscient.utils.network.ServerTimeoutHandler
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: LayoutLoginBinding
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var responseDate: LoginResponse
@@ -132,8 +135,11 @@ class LoginActivity : AppCompatActivity() {
                 val jsonString = JsonUtil.toJsonString(responseDate)
                 SharedPreferencesUtil.saveData(this, "loginResponse", jsonString)
 
-
                 Log.d("LoginActivity Response", "${responseDate.loginDetails}")
+                val accessToken = responseDate.token.access_token
+
+                SharedPreferencesUtil.saveData(this, "accessToken", accessToken)
+
                 navigateToDayScreen(responseDate)
             } else {
                 loginViewModel.failureResponseData.value?.let { failureMessage ->

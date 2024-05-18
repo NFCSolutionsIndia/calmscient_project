@@ -333,7 +333,8 @@ class CalendarFragment : Fragment(), CellClickListener {
             loginResponse!!.loginDetails.patientID,
             loginResponse!!.loginDetails.clientID,
             formattedSevenDaysBefore,
-            todayDate
+            todayDate,
+            loginResponse!!.token.access_token
         )
 
         medicationDetailsViewModel.loadingLiveData.observe(

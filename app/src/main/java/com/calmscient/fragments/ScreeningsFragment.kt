@@ -65,6 +65,7 @@ class ScreeningsFragment : Fragment() {
 
 
     private val screeningsMenuViewModel: ScreeningViewModel by viewModels()
+    private  lateinit var accessToken : String
 
 
 
@@ -102,6 +103,10 @@ class ScreeningsFragment : Fragment() {
 
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
          loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+
+        Log.d("Access Token ","$accessToken")
 
         if(medicalMenuJsonString.isNotEmpty())
         {
@@ -190,7 +195,8 @@ class ScreeningsFragment : Fragment() {
             screeningsMenuViewModel.getScreeningList(
                 it.patientID,
                 it.clientID,
-                it.patientLocationID
+                it.patientLocationID,
+                accessToken
             )
         }
 

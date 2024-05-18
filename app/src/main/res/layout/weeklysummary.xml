@@ -76,7 +76,7 @@
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:gravity="right">
                     <TextView
-                        android:id="@+id/mindfulnesstext"
+                        android:id="@+id/summaryOfMood"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -86,7 +86,6 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/summaryofmood"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
 
@@ -112,6 +111,7 @@
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:gravity="right">
                     <TextView
+                        android:id="@+id/summaryOfSleep"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -121,7 +121,6 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/summaryofsleep"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
@@ -158,6 +157,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/summaryOfPHQ"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -165,7 +165,6 @@
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/summaryof_phq_9"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
@@ -192,6 +191,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/summaryOfGAD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -200,7 +200,6 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/summaryof_gad"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
@@ -234,6 +233,7 @@
                     android:layout_marginHorizontal="@dimen/_3sdp"
                     android:gravity="right">
                     <TextView
+                        android:id="@+id/summaryOfAUDIT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -243,7 +243,6 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/summaryof_audit"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
 
@@ -274,7 +273,7 @@
                     android:gravity="right">
 
                     <TextView
-
+                        android:id="@+id/summaryOfDAST"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -284,7 +283,6 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/summaryof_dast"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
@@ -321,7 +319,7 @@
                     android:gravity="right">
 
                     <TextView
-
+                        android:id="@+id/progressOnCourceWork"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -330,7 +328,6 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/summaryof_progressofwork"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
 
@@ -361,6 +358,7 @@
                     android:gravity="right">
 
                     <TextView
+                        android:id="@+id/journalEntry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -370,7 +368,6 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/lexendregular"
                         android:padding="@dimen/_5sdp"
-                        android:text="@string/summaryof_journalentry"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>

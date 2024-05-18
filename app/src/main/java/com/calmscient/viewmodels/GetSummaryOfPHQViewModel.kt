@@ -14,11 +14,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.calmscient.di.remote.request.PatientAnswerSaveRequest
-import com.calmscient.di.remote.request.PatientAnswersWrapper
-import com.calmscient.di.remote.response.PatientAnswerSaveResponse
-import com.calmscient.di.remote.response.PatientAnswersStatusResponse
-import com.calmscient.repository.ScreeningQuestionnaireRepository
+import com.calmscient.di.remote.request.ScreeningHistoryRequest
+import com.calmscient.di.remote.request.SummaryOfPHQ9Request
+import com.calmscient.di.remote.response.ScreeningHistoryResponseData
+import com.calmscient.di.remote.response.SummaryOfPHQ9Response
+import com.calmscient.repository.ScreeningsRepository
+import com.calmscient.repository.WeeklySummaryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,35 +29,46 @@ import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
-class SaveScreeningAnswersViewModel @Inject constructor(private val repository: ScreeningQuestionnaireRepository) : ViewModel() {
+class GetSummaryOfPHQViewModel @Inject constructor(private val repository: WeeklySummaryRepository) : ViewModel() {
 
-    val saveResponseLiveData: MutableLiveData<PatientAnswerSaveResponse?> = MutableLiveData()
+    val saveResponseLiveData: MutableLiveData<SummaryOfPHQ9Response?> = MutableLiveData()
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val failureLiveData: MutableLiveData<String> = MutableLiveData()
-    val failureResponseData: MutableLiveData<PatientAnswersStatusResponse?> = MutableLiveData()
+    val failureResponseData: MutableLiveData<SummaryOfPHQ9Response?> = MutableLiveData()
 
-
-    private var lastRequestBody: PatientAnswersWrapper? = null
+    private var lastPatientLocationId: Int = -1
+    private var lastPatientId: Int = -1
+    private var lastClientId: Int = -1
+    private var lastFromDate: String = ""
+    private var lastToDate: String = ""
     private var lastAccessToken: String = ""
+
     // Function to save patient answers
-    fun savePatientAnswers(requestBody: PatientAnswersWrapper,accessToken : String) {
+    fun getSummaryOfPHQ(patientLocationId: Int, patientId: Int, clientId: Int,fromDate :String,toDate:String,accessToken:String ) {
         loadingLiveData.value = true // Show loader
-        lastRequestBody = requestBody
+
+        lastClientId = clientId
+        lastPatientId = patientId
+        lastPatientLocationId = patientLocationId
+        lastFromDate = fromDate
+        lastToDate = toDate
         lastAccessToken = accessToken
         viewModelScope.launch {
             try {
-                val response = repository.saveScreeningQuestionAnswers(requestBody,accessToken)
+                val request = SummaryOfPHQ9Request(patientLocationId,patientId,clientId,fromDate,toDate)
+                val response = repository.getSummaryOfPHQ(request,accessToken)
+                Log.d("GetSummaryOfPHQViewModel --- 1", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
                 // Handle timeout exception
                 failureLiveData.postValue("Timeout Exception: ${e.message}")
-                Log.e("SaveScreeningAnswersViewModel", "Timeout Exception: ${e.message}")
+                Log.e("GetSummaryOfPHQViewModel -- 2", "Timeout Exception: ${e.message}")
             } catch (e: Exception) {
                 e.printStackTrace()
-                failureLiveData.value = "Failed to save patient answers."
+                failureLiveData.value = "Failed to get Data."
             } finally {
                 loadingLiveData.value = false
             }
@@ -64,7 +76,7 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
     }
 
     // Function to handle API response
-    private suspend fun handleResponse(call: Call<PatientAnswerSaveResponse>) {
+    private suspend fun handleResponse(call: Call<SummaryOfPHQ9Response>) {
         withContext(Dispatchers.IO) {
             try {
                 val response = call.execute()
@@ -74,41 +86,46 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
                     if (isSuccess) {
                         saveResponseLiveData.postValue(response.body())
                         successLiveData.postValue(isSuccess)
-                    }
-                   else if(isNotAnswered)
-                    {
+                        Log.d("GetSummaryOfPHQViewModel ", "Success: ${response.body()}")
+                    } else if (isNotAnswered) {
                         saveResponseLiveData.postValue(response.body())
                         successNotAnsweredData.postValue(isNotAnswered)
-                    }
-                    else
-                    {
-                        failureResponseData.postValue(response.body()?.statusResponse)
+                    } else {
+                        failureResponseData.postValue(response.body())
                         val res = response.body()?.statusResponse?.responseMessage
-                        errorLiveData.postValue("Error Occure: $res")
+                        errorLiveData.postValue("Error Occurred: $res")
                         successNotAnsweredData.postValue(false)
-
                     }
-                }
-                else {
-                    errorLiveData.postValue("Failed to save patient answers.")
+                } else {
+                    errorLiveData.postValue("Failed to get data.")
                 }
             } catch (e: SocketTimeoutException) {
                 // Handle timeout exception
                 failureLiveData.postValue("Timeout Exception: ${e.message}")
                 errorLiveData.postValue("Timeout Exception: ${e.message}")
-                Log.e("SaveScreeningAnswersViewModel", "Timeout Exception: ${e.message}")
+                Log.e("GetSummaryOfPHQViewModel", "Timeout Exception: ${e.message}")
             } catch (e: Exception) {
                 e.printStackTrace()
-                failureLiveData.postValue("Failed to save patient answers.")
+                failureLiveData.postValue("Failed to get data.")
             }
         }
     }
 
-    // Function to retry saving patient answers
-    fun retrySavePatientAnswers() {
-      if(lastRequestBody != null && lastAccessToken.isNotEmpty())
-      {
-          savePatientAnswers(lastRequestBody!!,lastAccessToken)
-      }
+    // Function to retry get
+    fun retryGetSummaryOfPHQ() {
+        if (lastPatientLocationId > 0 && lastPatientId > 0 && lastClientId > 0  && lastFromDate.isNotEmpty() && lastToDate.isNotEmpty())
+            getSummaryOfPHQ(lastPatientLocationId,lastPatientId,lastClientId,lastFromDate,lastToDate,lastAccessToken)
+    }
+
+    fun clear() {
+        // Reset LiveData objects to their initial state
+        saveResponseLiveData.value = null
+        loadingLiveData.value = false
+        successLiveData.value = false
+        successNotAnsweredData.value = false
+        errorLiveData.value = ""
+        failureLiveData.value = ""
+        failureResponseData.value = null
+
     }
 }

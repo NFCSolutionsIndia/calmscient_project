@@ -11,7 +11,9 @@
 
 package com.calmscient.fragments
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +21,30 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
 import com.calmscient.adapters.SummaryofMoodFragmentAdapter
 import com.calmscient.data.remote.WeeklySummaryMoodTask
 import com.calmscient.databinding.CalendarDayLayoutBinding
 import com.calmscient.databinding.SummaryofauditFragmentBinding
+import com.calmscient.di.remote.response.SummaryOfAUDITResponse
+import com.calmscient.di.remote.response.SummaryOfGADResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.CustomMarkerView
+import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.getColorCompat
+import com.calmscient.viewmodels.GetSummaryOfAUDITViewModel
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -53,10 +72,25 @@ class SummaryOfAUDITFragment: Fragment() {
     private val summaryCardViewItems = mutableListOf<WeeklySummaryMoodTask>()
     private lateinit var summaryOfMoodAdapter: SummaryofMoodFragmentAdapter
 
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private val getSummaryOfAUDITViewModel: GetSummaryOfAUDITViewModel by activityViewModels()
+    private lateinit var summaryOfAUDITResponse: SummaryOfAUDITResponse
+    private lateinit var lineChart: LineChart
+    private  lateinit var accessToken : String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this){
-            loadFragment(WeeklySummaryFragment())
+            if(CommonClass.isNetworkAvailable(requireContext()))
+            {
+                loadFragment(WeeklySummaryFragment())
+            }
+            else
+            {
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
     }
     override fun onCreateView(
@@ -65,8 +99,27 @@ class SummaryOfAUDITFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = SummaryofauditFragmentBinding.inflate(inflater, container, false)
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        lineChart = binding.lineChartViewAUDIT
+
+
         binding.backIcon.setOnClickListener {
-            loadFragment(WeeklySummaryFragment())
+            if (CommonClass.isNetworkAvailable(requireContext())) {
+                loadFragment(WeeklySummaryFragment())
+            } else {
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+            apiCall()
+            observeViewModel()
+        }
+        else
+        {
+            CommonClass.showInternetDialogue(requireContext())
         }
         binding.calenderview.setOnClickListener {
             binding.newbackIcon.visibility = View.VISIBLE
@@ -83,6 +136,12 @@ class SummaryOfAUDITFragment: Fragment() {
             binding.scrollViewScreen.visibility = View.VISIBLE
 
         }
+
+
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
@@ -238,5 +297,122 @@ class SummaryOfAUDITFragment: Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun apiCall()
+    {
+        getSummaryOfAUDITViewModel.getSummaryOfAUDIT(4,4,1,"04/21/2024","05/09/2024",accessToken)
+
+    }
+
+    private fun observeViewModel()
+    {
+
+        getSummaryOfAUDITViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                customProgressDialog.dialogDismiss()
+                customProgressDialog.show("Loading...")
+            } else {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getSummaryOfAUDITViewModel.saveResponseLiveData.observe(
+            viewLifecycleOwner,
+            Observer { successDate ->
+                if (successDate != null) {
+                    summaryOfAUDITResponse = successDate
+
+                    Log.d("AUDIT Response", "$successDate")
+
+                    handleApiResponse(summaryOfAUDITResponse)
+                }
+            })
+
+    }
+
+    private fun handleApiResponse(response: SummaryOfAUDITResponse) {
+        if (response.statusResponse.responseCode == 200) {
+            val phq9ByDateRange = response.auditByDateRange
+
+            if (phq9ByDateRange.isEmpty()) {
+                showNoDataMessage()
+                return
+            }
+
+
+            val entries = ArrayList<Entry>()
+            val dateLabels = ArrayList<String>()
+
+            // Assuming PHQ9ByDateRange has a date and score
+            for (i in phq9ByDateRange.indices) {
+                val phqData = phq9ByDateRange[i]
+                val entry = Entry(i.toFloat(), phqData.score.toFloat())
+                entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
+                entries.add(entry)
+
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.date)
+                val formattedDate = SimpleDateFormat("M/dd", Locale.getDefault()).format(date)
+                dateLabels.add(formattedDate)
+            }
+
+            val dataSet = LineDataSet(entries, "AUDIT Scores")
+            dataSet.color = Color.parseColor("#6E6BB3")
+            dataSet.valueTextColor = Color.BLACK
+            dataSet.setDrawCircles(true)
+            dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
+            dataSet.setDrawValues(true)
+
+            val lineData = LineData(dataSet)
+            lineChart.data = lineData
+
+            // Customize the chart
+            val xAxis = lineChart.xAxis
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.granularity = 1f
+            xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value.toInt() >= 0 && value.toInt() < dateLabels.size) {
+                        dateLabels[value.toInt()]
+                    } else {
+                        ""
+                    }
+                }
+            }
+            xAxis.setDrawGridLines(false) // Disable vertical grid lines
+
+            val yAxisLeft = lineChart.axisLeft
+            yAxisLeft.setDrawGridLines(true)
+            yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+
+            lineChart.axisRight.isEnabled = false
+
+            // Hide the axis lines
+            xAxis.setDrawAxisLine(false)
+            yAxisLeft.setDrawAxisLine(false)
+
+            // Set custom marker
+            val markerView = CustomMarkerView(requireContext(), R.layout.custom_marker_view)
+            lineChart.marker = markerView
+
+            // Disable zooming
+            lineChart.setScaleEnabled(false)
+            lineChart.isDragEnabled = false
+
+            lineChart.description.isEnabled = false
+
+            // Adding animations
+            lineChart.animateX(1000, Easing.EaseInOutQuad)
+            lineChart.animateY(1000, Easing.EaseInOutQuad)
+
+
+            lineChart.invalidate() // Refresh the chart
+        }
+    }
+
+    private fun showNoDataMessage() {
+        lineChart.setNoDataText("No data available")
+        lineChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
+        lineChart.invalidate()
     }
 }

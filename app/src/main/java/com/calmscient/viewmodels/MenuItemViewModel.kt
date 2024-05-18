@@ -27,23 +27,25 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
     private var lastParentId: Int = -1
     private var lastPatientId: Int = -1
     private var lastClientId: Int = -1
+    private var lastAccessToken: String = ""
 
-    fun fetchMenuItems(plid: Int, parentId: Int, patientId: Int, clientId: Int) {
+    fun fetchMenuItems(plid: Int, parentId: Int, patientId: Int, clientId: Int, accessToken: String) {
         loadingLiveData.value = true // Show loader
         lastPlid = plid
         lastParentId = parentId
         lastPatientId = patientId
         lastClientId = clientId
+        lastAccessToken = accessToken
         viewModelScope.launch {
             try {
-                val newUrl = "http://20.197.5.97:8083/identity/menu/fetchMenus"
+               /* val newUrl = "http://20.197.5.97:8083/identity/menu/fetchMenus"
                 menuItemRepository.setBaseUrl(newUrl)
-                Log.d("URL", "Request URL: $newUrl")
+                Log.d("URL", "Request URL: $newUrl")*/
 
                 val request = MenuItemRequest(plid, parentId, patientId, clientId)
 
                 Log.d("MenuItemViewModel", "Request: $request")
-                val response = menuItemRepository.fetchMenuItems(request)
+                val response = menuItemRepository.fetchMenuItems(request, accessToken)
                 Log.d("MenuItemViewModel", "Response: $response")
                 handleResponse(response)
             }
@@ -101,6 +103,6 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
 
     // Function to retry fetching menu items
     fun retryFetchMenuItems() {
-        fetchMenuItems(lastPlid, lastParentId, lastPatientId, lastClientId)
+        fetchMenuItems(lastPlid, lastParentId, lastPatientId, lastClientId, lastAccessToken)
     }
 }

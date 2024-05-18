@@ -125,12 +125,17 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 app:cardCornerRadius="@dimen/_10sdp">
-                <ImageView
+              <!--  <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/graph_summaryofdast"/>
+                    android:src="@drawable/graph_summaryofdast"/>-->
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChartViewDAST"
+                    android:layout_width="@dimen/_280sdp"
+                    android:layout_height="@dimen/_250sdp"/>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
         </LinearLayout>

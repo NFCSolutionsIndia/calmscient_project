@@ -413,17 +413,20 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
 
         val currentDateTime = "$currentDate $currentTime"
 
+        val formattedDateTime = "$formattedDate $currentTime"
+
         // Create Alarm objects from AlarmInternal objects
         val alarmsList = alarmInternal.map { alarm ->
             Alarm(
                 alarm.alarmId,
-                alarm.alarmDate,
+                formattedDate,
                 alarm.repeat,
                 alarm.alarmInterval,
                 alarm.flag,
                 alarm.isEnabled,
                 alarm.medicineTime,
-                loginResponse!!.loginDetails.patientLocationID
+                loginResponse!!.loginDetails.patientLocationID,
+                0
             )
         }
 
@@ -438,7 +441,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
         alarmsList.getOrNull(0)?.isEnabled = if(binding.alarmToggleButtonMorning.isOn) 1 else 0
         alarmsList.getOrNull(1)?.isEnabled = if(binding.alarmToggleButtonAfternoon.isOn) 1 else 0
         alarmsList.getOrNull(2)?.isEnabled = if(binding.alarmToggleButtonEvening.isOn) 1 else 0
-        quantity = alarms.size
+        quantity = alarmsList.size
         isActive = 1
 
         // Create request object
@@ -464,7 +467,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
         // Now you can use the 'request' object to send data to the server or perform any other action
        if(CommonClass.isNetworkAvailable(requireContext()))
        {
-           addMedicationViewModel.addMedicationDetails(request)
+           addMedicationViewModel.addMedicationDetails(request, loginResponse!!.token.access_token)
        }
         else{
            CommonClass.showInternetDialogue(requireContext())
@@ -522,28 +525,37 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
             // Check the selected card and update the UI accordingly
             when (selectedCard) {
                 getString(R.string.morning) -> {
-                    val morningAlarm = alarmInternal.getOrNull(0)
-                    val morningAlarmTime = morningAlarm?.medicineTime ?: "00:00"
-                    val morningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(morningAlarmTime)!!)
-                    binding.morningTimeView.text = morningTime12Hours
-                    binding.morningAlarmTimeView.text = calculateAlarmTime(morningAlarmTime, morningAlarm?.alarmInterval ?: 10)
-                    alarmInternal.getOrNull(0)?.isEnabled = if (binding.alarmToggleButtonMorning.isOn) 1 else 0
+                    val morningAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == "Morning" }
+                    if (morningAlarmIndex != -1) {
+                        val morningAlarm = alarmInternal[morningAlarmIndex]
+                        val morningAlarmTime = morningAlarm.medicineTime ?: "00:00"
+                        val morningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(morningAlarmTime)!!)
+                        binding.morningTimeView.text = morningTime12Hours
+                        binding.morningAlarmTimeView.text = calculateAlarmTime(morningAlarmTime, morningAlarm.alarmInterval ?: 10)
+                        alarmInternal[morningAlarmIndex].isEnabled = if (binding.alarmToggleButtonMorning.isOn) 1 else 0
+                    }
                 }
                 getString(R.string.afternoon) -> {
-                    val afternoonAlarm = alarmInternal.getOrNull(1)
-                    val afternoonAlarmTime = afternoonAlarm?.medicineTime ?: "00:00"
-                    val afternoonTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(afternoonAlarmTime)!!)
-                    binding.afternoonTimeView.text = afternoonTime12Hours
-                    binding.afternoonAlarmTimeView.text = calculateAlarmTime(afternoonAlarmTime, afternoonAlarm?.alarmInterval ?: 10)
-                    alarmInternal.getOrNull(1)?.isEnabled = if (binding.alarmToggleButtonMorning.isOn) 1 else 0
+                    val afternoonAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == "Afternoon" }
+                    if (afternoonAlarmIndex != -1) {
+                        val afternoonAlarm = alarmInternal[afternoonAlarmIndex]
+                        val afternoonAlarmTime = afternoonAlarm.medicineTime ?: "00:00"
+                        val afternoonTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(afternoonAlarmTime)!!)
+                        binding.afternoonTimeView.text = afternoonTime12Hours
+                        binding.afternoonAlarmTimeView.text = calculateAlarmTime(afternoonAlarmTime, afternoonAlarm.alarmInterval ?: 10)
+                        alarmInternal[afternoonAlarmIndex].isEnabled = if (binding.alarmToggleButtonAfternoon.isOn) 1 else 0
+                    }
                 }
                 getString(R.string.evening) -> {
-                    val eveningAlarm = alarmInternal.getOrNull(2)
-                    val eveningAlarmTime = eveningAlarm?.medicineTime ?: "00:00"
-                    val eveningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(eveningAlarmTime)!!)
-                    binding.eveningTimeView.text = eveningTime12Hours
-                    binding.eveningAlarmTimeView.text = calculateAlarmTime(eveningAlarmTime, eveningAlarm?.alarmInterval ?: 10)
-                    alarmInternal.getOrNull(2)?.isEnabled = if (binding.alarmToggleButtonMorning.isOn) 1 else 0
+                    val eveningAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == "Evening" }
+                    if (eveningAlarmIndex != -1) {
+                        val eveningAlarm = alarmInternal[eveningAlarmIndex]
+                        val eveningAlarmTime = eveningAlarm.medicineTime ?: "00:00"
+                        val eveningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(eveningAlarmTime)!!)
+                        binding.eveningTimeView.text = eveningTime12Hours
+                        binding.eveningAlarmTimeView.text = calculateAlarmTime(eveningAlarmTime, eveningAlarm.alarmInterval ?: 10)
+                        alarmInternal[eveningAlarmIndex].isEnabled = if (binding.alarmToggleButtonEvening.isOn) 1 else 0
+                    }
                 }
             }
         } else {

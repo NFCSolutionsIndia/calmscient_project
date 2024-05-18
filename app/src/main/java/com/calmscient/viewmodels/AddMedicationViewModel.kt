@@ -43,17 +43,19 @@ class AddMedicationViewModel @Inject constructor(private val repository: Medicat
 
 
     private lateinit var  lastRequest : AddMedicationDetailsRequest
+    private lateinit var  lastAccessToken : String
 
 
     // Function to save patient answers
-    fun addMedicationDetails(request :AddMedicationDetailsRequest) {
+    fun addMedicationDetails(request :AddMedicationDetailsRequest,accessToken:String) {
         loadingLiveData.value = true // Show loader
         lastRequest= request
+        lastAccessToken = accessToken
         viewModelScope.launch {
             try {
                 //val request = AddMedicationDetailsRequest(request)
                 this@AddMedicationViewModel.lastRequest = request
-                val response = repository.addMedicationDetails(request)
+                val response = repository.addMedicationDetails(request, accessToken)
                 Log.d("Add Medication Response - 2", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
@@ -109,7 +111,7 @@ class AddMedicationViewModel @Inject constructor(private val repository: Medicat
     fun retryAddMedicationDetails() {
 
 
-        addMedicationDetails(lastRequest)
+        addMedicationDetails(lastRequest,lastAccessToken)
     }
 
     fun clear() {

@@ -18,19 +18,11 @@ import retrofit2.Call
 import javax.inject.Inject
 
 class MenuItemRepository @Inject constructor(private val apiService: ApiService) {
-    private var baseUrl: String = "http://20.197.5.97:8083/identity/menu/fetchMenus"
 
-    fun setBaseUrl(newUrl: String) {
-        baseUrl = newUrl
+
+    fun fetchMenuItems(menuItemRequest: MenuItemRequest, accessToken: String): Call<MenuItemsResponse> {
+        //val headers = mapOf("Authorization" to "Bearer $accessToken")
+        return apiService.fetchMenuItems("Bearer $accessToken", menuItemRequest)
     }
 
-    fun fetchMenuItems(menuItemRequest: MenuItemRequest): Call<MenuItemsResponse> {
-        val newMenuItemRequest = MenuItemRequest(
-            menuItemRequest.plid,
-            menuItemRequest.parentId,
-            menuItemRequest.patientId,
-            menuItemRequest.clientId
-        )
-        return apiService.fetchMenuItems(baseUrl,newMenuItemRequest)
-    }
 }

@@ -20,6 +20,7 @@ data class Alarm(
     var isEnabled: Int?,
     val medicineTime: String,
     val plId: Int,
+    val medicationId:Int
 )
 
 data class AlarmInternal(

@@ -330,7 +330,7 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
         appointmentDetailsViewModel.clear()
 
         loginResponse?.loginDetails?.let {
-            appointmentDetailsViewModel.getAppointmentDetails(4,4,1,"05/04/2024","05/09/2024")
+            appointmentDetailsViewModel.getAppointmentDetails(4,4,1,"05/04/2024","05/09/2024",loginResponse!!.token.access_token)
             //appointmentDetailsViewModel.getAppointmentDetails(it.patientLocationID,it.patientID,it.clientID,formattedSevenDaysBefore,todayDate)
         }
 

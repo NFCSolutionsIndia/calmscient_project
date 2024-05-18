@@ -41,6 +41,7 @@ class ScreeningResultsViewModel @Inject constructor(private val repository: Scre
     private var lastPatientId: Int = -1
     private var lastClientId: Int = -1
     private var lastAssessmentId : Int = -1
+    private var lastAccessToken : String = ""
 
     // Function to save patient answers
     fun getScreeningResultsData(
@@ -48,7 +49,8 @@ class ScreeningResultsViewModel @Inject constructor(private val repository: Scre
         screeningId: Int,
         patientId: Int,
         clientId: Int,
-        assessmentId: Int
+        assessmentId: Int,
+        accessToken: String
     ) {
         loadingLiveData.value = true // Show loader
         lastScreeningId = screeningId
@@ -56,10 +58,11 @@ class ScreeningResultsViewModel @Inject constructor(private val repository: Scre
         lastPatientId = patientId
         lastAssessmentId = assessmentId
         lastPatientLocationId = patientLocationId
+        lastAccessToken = accessToken
         viewModelScope.launch {
             try {
                 val request = ScreeningsResultsRequest(patientLocationId, screeningId, patientId, clientId, assessmentId)
-                val response = repository.getScreeningsResults(request)
+                val response = repository.getScreeningsResults(request,accessToken)
                 Log.d("Results Response - 2", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
@@ -149,8 +152,8 @@ class ScreeningResultsViewModel @Inject constructor(private val repository: Scre
 
     // Function to retry saving patient answers
     fun retryGetScreeningResultsData() {
-        if (lastPatientLocationId > 0 && lastScreeningId > 0 && lastPatientId > 0 && lastClientId > 0 && lastAssessmentId > 0)
-            getScreeningResultsData(lastPatientLocationId, lastScreeningId, lastPatientId, lastClientId, lastAssessmentId)
+        if (lastPatientLocationId > 0 && lastScreeningId > 0 && lastPatientId > 0 && lastClientId > 0 && lastAssessmentId > 0 && lastAccessToken.isNotEmpty())
+            getScreeningResultsData(lastPatientLocationId, lastScreeningId, lastPatientId, lastClientId, lastAssessmentId,lastAccessToken)
     }
 
     fun clear() {

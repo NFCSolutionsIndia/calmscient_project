@@ -46,17 +46,19 @@ class UpdateMedicationViewModel @Inject constructor(private val repository: Medi
 
 
     private lateinit var  lastRequest : AlarmWrapper
+    private lateinit var  lastAccessToken : String
 
 
     // Function to save patient answers
-    fun updatePatientMedicationDetails(request : AlarmWrapper) {
+    fun updatePatientMedicationDetails(request : AlarmWrapper,accessToken : String) {
         loadingLiveData.value = true // Show loader
         lastRequest= request
+        lastAccessToken = accessToken
         viewModelScope.launch {
             try {
 
                 this@UpdateMedicationViewModel.lastRequest = request
-                val response = repository.updatePatientMedicationDetails(request)
+                val response = repository.updatePatientMedicationDetails(request,accessToken)
                 Log.d("Add Medication Response - 2", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
@@ -112,7 +114,7 @@ class UpdateMedicationViewModel @Inject constructor(private val repository: Medi
     fun retryUpdateMedicationDetails() {
 
 
-        updatePatientMedicationDetails(lastRequest)
+        updatePatientMedicationDetails(lastRequest,lastAccessToken)
     }
 
     fun clear() {

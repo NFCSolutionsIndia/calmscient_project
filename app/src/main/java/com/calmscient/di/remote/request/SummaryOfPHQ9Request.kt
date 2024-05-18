@@ -11,7 +11,10 @@
 
 package com.calmscient.di.remote.request
 
-data class LoginRequest(
-    val userName: String,
-    val password: String
+data class SummaryOfPHQ9Request(
+    val plId: Int,
+    val patientId: Int,
+    val clientId: Int,
+    val fromDate: String,
+    val toDate: String
 )

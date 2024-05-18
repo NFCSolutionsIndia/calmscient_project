@@ -40,23 +40,26 @@ class HistoryViewModel @Inject constructor(private val repository: ScreeningsRep
     private var lastPatientId: Int = -1
     private var lastClientId: Int = -1
     private var lastScreeningId:Int = -1
+    private var lastAccessToken:String = ""
 
     // Function to save patient answers
     fun getScreeningHistoryDetails(
         patientLocationId: Int,
         patientId: Int,
         clientId: Int,
-        screeningId:Int
+        screeningId:Int,
+        accessToken :String
     ) {
         loadingLiveData.value = true // Show loader
         lastScreeningId = screeningId
         lastClientId = clientId
         lastPatientId = patientId
         lastPatientLocationId = patientLocationId
+        lastAccessToken = accessToken
         viewModelScope.launch {
             try {
                 val request = ScreeningHistoryRequest(patientLocationId,screeningId,patientId,clientId)
-                val response = repository.getScreeningsHistory(request)
+                val response = repository.getScreeningsHistory(request,accessToken)
                 Log.d("Add Medication Response - 2", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
@@ -111,6 +114,18 @@ class HistoryViewModel @Inject constructor(private val repository: ScreeningsRep
     // Function to retry get
     fun retryGetScreeningHistoryDetails() {
         if (lastPatientLocationId > 0 && lastPatientId > 0 && lastClientId > 0  && lastScreeningId>0)
-            getScreeningHistoryDetails(lastPatientLocationId,lastScreeningId,lastPatientId,lastClientId)
+            getScreeningHistoryDetails(lastPatientLocationId,lastScreeningId,lastPatientId,lastClientId,lastAccessToken)
+    }
+
+    fun clear() {
+        // Reset LiveData objects to their initial state
+        saveResponseLiveData.value = null
+        loadingLiveData.value = false
+        successLiveData.value = false
+        successNotAnsweredData.value = false
+        errorLiveData.value = ""
+        failureLiveData.value = ""
+        failureResponseData.value = null
+
     }
 }

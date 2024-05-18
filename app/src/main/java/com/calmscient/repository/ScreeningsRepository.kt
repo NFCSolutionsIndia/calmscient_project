@@ -24,11 +24,11 @@ import javax.inject.Inject
 
 class ScreeningsRepository  @Inject constructor(private val apiService: ApiService)
 {
-    fun fetchScreeningsMenuItems(screeningRequest: ScreeningRequest): Call<ScreeningResponse> {
-        return apiService.fetchScreeningsMenuItems(screeningRequest)
+    fun fetchScreeningsMenuItems(screeningRequest: ScreeningRequest,accessToken: String): Call<ScreeningResponse> {
+        return apiService.fetchScreeningsMenuItems("Bearer $accessToken",screeningRequest)
     }
 
-    fun getScreeningsHistory(screeningRequest: ScreeningHistoryRequest): Call<ScreeningHistoryResponseData> {
-        return apiService.getScreeningsHistory(screeningRequest)
+    fun getScreeningsHistory(screeningRequest: ScreeningHistoryRequest,accessToken: String): Call<ScreeningHistoryResponseData> {
+        return apiService.getScreeningsHistory("Bearer $accessToken",screeningRequest)
     }
 }

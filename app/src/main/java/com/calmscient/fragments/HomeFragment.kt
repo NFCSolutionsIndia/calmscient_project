@@ -15,46 +15,28 @@ package com.calmscient.fragments
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.ui.text.font.Typeface
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.text.buildSpannedString
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.calmscient.ApiService
 import com.calmscient.R
 import com.calmscient.activities.SettingsActivity
 import com.calmscient.activities.WeeklySummary
 import com.calmscient.adapters.AnxietyIntroductionAdapter
 import com.calmscient.adapters.CardItemDiffCallback
-import com.calmscient.adapters.VideoAdapter
-import com.calmscient.adapters.VideoItem
 import com.calmscient.databinding.FragmentHomeBinding
-import com.calmscient.databinding.LayoutLoginBinding
 import com.calmscient.di.remote.CardItemDataClass
 import com.calmscient.di.remote.ItemType
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.MenuItem
-import com.calmscient.di.remote.response.MenuItemsResponse
-import com.calmscient.repository.LoginRepository
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
@@ -125,7 +107,7 @@ class HomeFragment : Fragment() {
         if (CommonClass.isNetworkAvailable(requireContext())) {
 
             //menuItemRequest = MenuItemRequest(1,0,1,1)
-            menuViewModel.fetchMenuItems(loginResponse.loginDetails.patientLocationID,0,loginResponse.loginDetails.patientID,loginResponse.loginDetails.clientID)
+            menuViewModel.fetchMenuItems(loginResponse.loginDetails.patientLocationID,0,loginResponse.loginDetails.patientID,loginResponse.loginDetails.clientID,loginResponse.token.access_token)
         } else {
             CommonClass.showInternetDialogue(requireContext())
         }
@@ -279,7 +261,7 @@ class HomeFragment : Fragment() {
             if (CommonClass.isNetworkAvailable(requireContext())) {
 
                 //menuItemRequest = MenuItemRequest(1,0,1,1)
-                myMedicalMenuViewModel.fetchMenuItems(loginResponse.loginDetails.patientLocationID,menuResponseDate[0].menuId,loginResponse.loginDetails.patientID,loginResponse.loginDetails.clientID)
+                myMedicalMenuViewModel.fetchMenuItems(loginResponse.loginDetails.patientLocationID,menuResponseDate[0].menuId,loginResponse.loginDetails.patientID,loginResponse.loginDetails.clientID,loginResponse.token.access_token)
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -312,7 +294,15 @@ class HomeFragment : Fragment() {
         weeklySummaryLayout.setOnClickListener {
             //Toast.makeText(requireActivity(), "Coming Soon", Toast.LENGTH_LONG).show()
             //openWeeklySummaryActivity()
-            loadFragment(WeeklySummaryFragment())
+
+            if(CommonClass.isNetworkAvailable(requireContext()))
+            {
+                loadFragment(WeeklySummaryFragment())
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
+
         }
         return rootView
     }

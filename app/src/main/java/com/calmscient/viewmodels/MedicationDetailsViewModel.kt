@@ -44,6 +44,7 @@ class MedicationDetailsViewModel @Inject constructor(private val repository: Med
     private var lastClientId: Int = -1
     private var lastFromDate: String = "04/19/2024"
     private var lastToDate: String = "04/25/2024"
+    private var lastAccessToken: String =""
 
     // Function to save patient answers
     fun getMedicationDetails(
@@ -51,7 +52,8 @@ class MedicationDetailsViewModel @Inject constructor(private val repository: Med
         patientId: Int,
         clientId: Int,
         fromDate:String,
-        toDate : String
+        toDate : String,
+        accessToken : String
     ) {
         loadingLiveData.value = true // Show loader
 
@@ -60,11 +62,12 @@ class MedicationDetailsViewModel @Inject constructor(private val repository: Med
         lastClientId = clientId
         lastPatientId = patientId
         lastPatientLocationId = patientLocationId
+        lastAccessToken = accessToken
 
         viewModelScope.launch {
             try {
                 val request = MedicationDetailsRequest(patientId, patientLocationId,fromDate,toDate,clientId)
-                val response = repository.getMedicationDetails(request)
+                val response = repository.getMedicationDetails(request,accessToken)
                 Log.d("Medication Response - 2", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
@@ -118,7 +121,7 @@ class MedicationDetailsViewModel @Inject constructor(private val repository: Med
 
     // Function to retry get
     fun retryGetMedicationDetails() {
-        if (lastPatientLocationId > 0 && lastPatientId > 0 && lastClientId > 0 )
-            getMedicationDetails(lastPatientLocationId, lastPatientId,lastClientId,lastFromDate,lastToDate)
+        if (lastPatientLocationId > 0 && lastPatientId > 0 && lastClientId > 0 && lastAccessToken.isNotEmpty())
+            getMedicationDetails(lastPatientLocationId, lastPatientId,lastClientId,lastFromDate,lastToDate,lastAccessToken)
     }
 }
