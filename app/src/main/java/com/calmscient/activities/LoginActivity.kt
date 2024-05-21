@@ -136,11 +136,19 @@ class LoginActivity : AppCompatActivity() {
                 SharedPreferencesUtil.saveData(this, "loginResponse", jsonString)
 
                 Log.d("LoginActivity Response", "${responseDate.loginDetails}")
-                val accessToken = responseDate.token.access_token
+               if(responseDate.token != null)
+               {
+                   val accessToken = responseDate.token.access_token
 
-                SharedPreferencesUtil.saveData(this, "accessToken", accessToken)
+                   SharedPreferencesUtil.saveData(this, "accessToken", accessToken)
+                   navigateToDayScreen(responseDate)
 
-                navigateToDayScreen(responseDate)
+               }
+                else{
+                    commonDialog.showDialog("Something went wrong.\nPlease try after some time !!!")
+               }
+
+
             } else {
                 loginViewModel.failureResponseData.value?.let { failureMessage ->
                     failureMessage.statusResponse.responseMessage.let {
