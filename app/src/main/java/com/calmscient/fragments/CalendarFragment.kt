@@ -443,6 +443,8 @@ class CalendarFragment : Fragment(), CellClickListener {
         var morningTime :String?
         var eveningTime :String?
         if (isSuccess) {
+            customProgressDialog.dialogDismiss()
+            commonDialog.dismiss()
             medicationDetailsViewModel.saveResponseLiveData.observe(
                 viewLifecycleOwner,
                 Observer { successData ->
