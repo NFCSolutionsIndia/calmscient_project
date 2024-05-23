@@ -64,7 +64,7 @@
                     android:layout_centerInParent="true"
                     android:clickable="true"
                     android:fontFamily="@font/lexendregular"
-                    android:text="@string/taking_control_alcohol"
+                    android:text="Drinking"
                     android:textColor="@color/example_7_button"
                     android:textSize="@dimen/_13sdp" />
                 <View
@@ -89,7 +89,7 @@
                     android:layout_centerInParent="true"
                     android:clickable="true"
                     android:fontFamily="@font/lexendregular"
-                    android:text="@string/taking_control_substance"
+                    android:text="Smoking"
                     android:textColor="@color/grey_view"
                     android:textSize="16dp" />
                 <View
@@ -331,31 +331,73 @@
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:orientation="vertical">
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_basicKnowledge"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/lexendregular"
+                            android:background="@drawable/button_background_disabled"
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:gravity="center"
+                            android:textAllCaps="false"
+                            android:text="Basic knowledge"
+                            android:textSize="@dimen/_14sdp"
+                            android:enabled="true" />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_makeAPlan"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/lexendregular"
+                            android:background="@drawable/button_background_disabled"
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:gravity="center"
+                            android:textAllCaps="false"
+                            android:text="Make a plan"
+                            android:textSize="@dimen/_14sdp"
+                            android:enabled="true"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_summary"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
                             android:fontFamily="@font/lexendregular"
-                            android:background="@drawable/skip_border"
                             android:gravity="center"
                             android:textAllCaps="false"
                             android:text="@string/summary"
-                            android:textColor="@color/btn_gradient_color"
-                            android:textSize="@dimen/_14sdp" />
+                            android:textSize="@dimen/_14sdp"
+                            android:background="@drawable/button_background_disabled"
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:enabled="true"/>
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_drinkTracker"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
                             android:fontFamily="@font/lexendregular"
-                            android:background="@drawable/skip_border"
                             android:gravity="center"
                             android:textAllCaps="false"
                             android:text="@string/drink_tracker"
-                            android:textColor="@color/btn_gradient_color"
-                            android:textSize="@dimen/_14sdp" />
+                            android:textSize="@dimen/_14sdp"
+                            android:background="@drawable/button_background_disabled"
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:enabled="true"/>
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_eventTracker"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="center"
+                            android:textAllCaps="false"
+                            android:text="@string/events_tracker"
+                            android:textSize="@dimen/_14sdp"
+                            android:background="@drawable/button_background_disabled"
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:enabled="true"/>
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_seeTheInformation"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
@@ -363,7 +405,19 @@
                             android:background="@drawable/skip_border"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="@string/events_tracker"
+                            android:text="See the introduction"
+                            android:textColor="@color/btn_gradient_color"
+                            android:textSize="@dimen/_14sdp" />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_howToUse"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="@font/lexendregular"
+                            android:background="@drawable/skip_border"
+                            android:gravity="center"
+                            android:textAllCaps="false"
+                            android:text="How to use"
                             android:textColor="@color/btn_gradient_color"
                             android:textSize="@dimen/_14sdp" />
 

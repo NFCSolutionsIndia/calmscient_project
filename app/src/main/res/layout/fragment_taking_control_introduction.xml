@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.TakingControlIntroductionFragment"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/takingControl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/lexendmedium"
+            android:text="Taking control introduction"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_16sdp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/viewbackgroundcolor" />
+
+    <!--First Screen-->
+    <RelativeLayout
+        android:id="@+id/screenOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_44sdp"
+        android:visibility="visible">
+        <RelativeLayout
+            android:id="@+id/videoFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- ExoPlayerView -->
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/playerViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_300sdp"
+                android:layout_centerInParent="true"
+                app:buffered_color="@color/example_7_button"
+                app:resize_mode="fit"
+                app:show_buffering="always"
+                app:use_controller="true" />
+
+            <!-- Back Icon -->
+            <ImageButton
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Back"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_back_white"
+                android:visibility="gone" />
+
+            <!-- Favorites Icon -->
+            <ImageButton
+                android:id="@+id/favoritesIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Favorites"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_favorites_icon" />
+
+            <!-- Orientation Icon -->
+            <ImageButton
+                android:id="@+id/orientationBtn"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@id/playerViewLayout"
+                android:layout_alignEnd="@id/playerViewLayout"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_orientation_icon"
+                android:visibility="visible"
+                android:contentDescription="Orientation" />
+
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/firstScreenNextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_next_question"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <!--Second Screen-->
+    <LinearLayout
+        android:id="@+id/screenTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_marginHorizontal="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/headingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to taking control!"
+            android:fontFamily="@font/lexendmedium"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/black_head" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Thank you for willing to talk about the alcohol and drugs. Now let's begin with a brief assessment"
+            android:fontFamily="@font/lexendlight"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/black_head" />
+
+        <ImageView
+            android:id="@+id/taking_control_screening_bulb_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Bulb Icon"
+            android:src="@drawable/ic_bulb_recognize"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_gravity="end" />
+
+
+
+        <com.calmscient.utils.NonSwipeRecyclerView
+            android:id="@+id/takingControlScreeningRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_20sdp"/>
+
+    </LinearLayout>
+
+    <!--Third Screen -->
+    <RelativeLayout
+        android:id="@+id/screenThree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_44sdp">
+
+
+        <TextView
+            android:id="@+id/tv_descriptionScreenThree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Let’s talk about alcohol and drug. It won’t take much of your time. promise!\n\nWhy dive into this topic?\n\nWell, being able to openly discuss your
+alcohol or drug use is crucial for your health,
+mental well-being, and relationships with
+family and the community.
+But , you have full control over the decision
+regarding your habit.
+Ready?"
+            android:fontFamily="@font/lexendlight"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/black_head" />
+
+        <ImageView
+            android:id="@+id/thirdScreenNextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_next_question"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+    <!--Fourth Screen-->
+    <LinearLayout
+        android:id="@+id/screenFour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginHorizontal="@dimen/_10sdp">
+
+
+        <CheckBox
+            android:id="@+id/dontShowCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/purple_100"
+            android:checked="true"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginVertical="@dimen/_20sdp"
+            android:fontFamily="@font/lexendlight"
+            android:text="Do not show this tutorial from the next time" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/drinkCoachCardView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            app:cardCornerRadius="@dimen/_3sdp"
+            app:cardElevation="10dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:cardPreventCornerOverlap="false">
+
+
+            <TextView
+                android:id="@+id/drinkCoach"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lexendlight"
+                android:gravity="center"
+                android:textColor="@color/purple_100"
+                android:text="Drink coach"
+                android:textSize="@dimen/_12sdp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/substanceCoachCardView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            app:cardCornerRadius="@dimen/_3sdp"
+            app:cardElevation="10dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:cardPreventCornerOverlap="false">
+
+
+            <TextView
+                android:id="@+id/substanceCoach"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lexendlight"
+                android:gravity="center"
+                android:textColor="@color/purple_100"
+                android:text="Substance coach"
+                android:textSize="@dimen/_12sdp" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/tv_descriptionScreenFour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Remember, you can always take the AUDIT, DUST-10 and CAGE test, in the My medical records section"
+            android:fontFamily="@font/lexendlight"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/black_head" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

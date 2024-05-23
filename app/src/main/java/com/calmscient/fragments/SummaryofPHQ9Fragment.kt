@@ -56,7 +56,9 @@ import java.util.Locale
 
 import android.graphics.Color
 import android.graphics.DashPathEffect
+import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.common.CustomMarkerView
+import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
@@ -80,6 +82,7 @@ class SummaryofPHQ9Fragment: Fragment() {
     private val getSummaryOfPHQViewModel :GetSummaryOfPHQViewModel by activityViewModels()
     private lateinit var commonAPICallDialog: CommonAPICallDialog
     private lateinit var customProgressDialog: CustomProgressDialog
+    private var loginResponse : LoginResponse? = null
     private lateinit var summaryOfPHQ9Response: SummaryOfPHQ9Response
     private lateinit var lineChart: LineChart
     private  lateinit var accessToken : String
@@ -101,7 +104,7 @@ class SummaryofPHQ9Fragment: Fragment() {
         binding.backIcon.setOnClickListener {
             loadFragment(WeeklySummaryFragment())
         }
-        binding.calenderview.setOnClickListener {
+       /* binding.calenderview.setOnClickListener {
             binding.newbackIcon.visibility = View.VISIBLE
             binding.graphScreen.visibility = View.GONE
             binding.datesScreen.visibility = View.VISIBLE
@@ -115,7 +118,7 @@ class SummaryofPHQ9Fragment: Fragment() {
             binding.newbackIcon.visibility = View.GONE
             binding.scrollViewScreen.visibility = View.VISIBLE
 
-        }
+        }*/
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
@@ -123,6 +126,10 @@ class SummaryofPHQ9Fragment: Fragment() {
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
         customProgressDialog = CustomProgressDialog(requireContext())
         commonAPICallDialog = CommonAPICallDialog(requireContext())
+
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
 
 
         if (CommonClass.isNetworkAvailable(requireContext())) {
@@ -292,7 +299,7 @@ class SummaryofPHQ9Fragment: Fragment() {
 
     private fun apiCall()
     {
-        getSummaryOfPHQViewModel.getSummaryOfPHQ(4,4,1,"04/21/2024","05/09/2024", accessToken)
+        loginResponse?.loginDetails?.let { getSummaryOfPHQViewModel.getSummaryOfPHQ(it.patientLocationID,it.patientID,it.clientID,"04/21/2024","05/09/2024", accessToken) }
 
     }
     private fun observeViewModel()

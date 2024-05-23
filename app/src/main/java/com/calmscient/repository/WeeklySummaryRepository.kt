@@ -15,12 +15,16 @@ import com.calmscient.ApiService
 import com.calmscient.di.remote.request.SummaryOfAUDITRequest
 import com.calmscient.di.remote.request.SummaryOfDASTRequest
 import com.calmscient.di.remote.request.SummaryOfGADRequest
+import com.calmscient.di.remote.request.SummaryOfMoodRequest
 import com.calmscient.di.remote.request.SummaryOfPHQ9Request
+import com.calmscient.di.remote.request.SummaryOfSleepRequest
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
 import com.calmscient.di.remote.response.SummaryOfDASTResponse
 import com.calmscient.di.remote.response.SummaryOfGADResponse
+import com.calmscient.di.remote.response.SummaryOfMoodResponse
 import com.calmscient.di.remote.response.SummaryOfPHQ9
 import com.calmscient.di.remote.response.SummaryOfPHQ9Response
+import com.calmscient.di.remote.response.SummaryOfSleepResponse
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -45,6 +49,15 @@ class WeeklySummaryRepository @Inject constructor(private val apiService: ApiSer
     fun getSummaryOfDAST(summaryOfDASTRequest: SummaryOfDASTRequest,accessToken: String): Call<SummaryOfDASTResponse>
     {
         return  apiService.getSummaryOfDAST("Bearer $accessToken",summaryOfDASTRequest)
+    }
+
+    fun getSummaryOfSleep(summaryOfSleepRequest: SummaryOfSleepRequest,accessToken: String): Call<SummaryOfSleepResponse>
+    {
+        return  apiService.getSummaryOfSleep("Bearer $accessToken",summaryOfSleepRequest)
+    }
+    fun getSummaryOfMood(summaryOfMoodRequest: SummaryOfMoodRequest,accessToken: String): Call<SummaryOfMoodResponse>
+    {
+        return  apiService.getSummaryOfMood("Bearer $accessToken",summaryOfMoodRequest)
     }
 
 }

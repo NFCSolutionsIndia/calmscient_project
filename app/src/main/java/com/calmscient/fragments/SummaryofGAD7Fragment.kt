@@ -30,12 +30,14 @@ import com.calmscient.data.remote.WeeklySummaryMoodTask
 import com.calmscient.databinding.CalendarDayLayoutBinding
 import com.calmscient.databinding.Summaryofgad7FragmentBinding
 import com.calmscient.databinding.Summaryofphq9FragmentBinding
+import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.SummaryOfGADResponse
 import com.calmscient.di.remote.response.SummaryOfPHQ9Response
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.CustomMarkerView
+import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.getColorCompat
 import com.calmscient.viewmodels.GetSummaryOfGADViewModel
@@ -76,6 +78,7 @@ class SummaryofGAD7Fragment: Fragment() {
     private val getSummaryOfGADViewModel: GetSummaryOfGADViewModel by activityViewModels()
     private lateinit var commonAPICallDialog: CommonAPICallDialog
     private lateinit var customProgressDialog: CustomProgressDialog
+    private var loginResponse : LoginResponse? = null
     private lateinit var summaryOfGADResponse: SummaryOfGADResponse
     private lateinit var lineChart: LineChart
 
@@ -97,6 +100,9 @@ class SummaryofGAD7Fragment: Fragment() {
 
 
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
 
         lineChart = binding.lineChartViewGAD
 
@@ -118,7 +124,7 @@ class SummaryofGAD7Fragment: Fragment() {
             CommonClass.showInternetDialogue(requireContext())
         }
 
-        binding.calenderview.setOnClickListener {
+       /* binding.calenderview.setOnClickListener {
             binding.newbackIcon.visibility = View.VISIBLE
             binding.graphScreen.visibility = View.GONE
             binding.datesScreen.visibility = View.VISIBLE
@@ -132,7 +138,9 @@ class SummaryofGAD7Fragment: Fragment() {
             binding.newbackIcon.visibility = View.GONE
             binding.scrollViewScreen.visibility = View.VISIBLE
 
-        }
+        }*/
+
+
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
@@ -307,7 +315,7 @@ class SummaryofGAD7Fragment: Fragment() {
 
     private fun apiCall()
     {
-        getSummaryOfGADViewModel.getSummaryOfGAD(4,4,1,"04/21/2024","05/09/2024",accessToken)
+        loginResponse?.loginDetails?.let { getSummaryOfGADViewModel.getSummaryOfGAD(it.patientLocationID,it.patientID,it.clientID,"04/21/2024","05/09/2024", accessToken) }
 
     }
 
@@ -339,9 +347,9 @@ class SummaryofGAD7Fragment: Fragment() {
 
     private fun handleApiResponse(response: SummaryOfGADResponse) {
         if (response.statusResponse.responseCode == 200) {
-            val phq9ByDateRange = response.weeklyScores
+            val gad7WeeklyScores = response.weeklyScores
 
-            if (phq9ByDateRange.isEmpty()) {
+            if (gad7WeeklyScores.isEmpty()) {
                 showNoDataMessage()
                 return
             }
@@ -351,8 +359,8 @@ class SummaryofGAD7Fragment: Fragment() {
             val dateLabels = ArrayList<String>()
 
             // Assuming PHQ9ByDateRange has a date and score
-            for (i in phq9ByDateRange.indices) {
-                val phqData = phq9ByDateRange[i]
+            for (i in gad7WeeklyScores.indices) {
+                val phqData = gad7WeeklyScores[i]
                 val entry = Entry(i.toFloat(), phqData.score.toFloat())
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)

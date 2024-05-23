@@ -11,14 +11,23 @@
 
 package com.calmscient.fragments
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
 import com.calmscient.adapters.SummaryofMoodFragmentAdapter
@@ -26,7 +35,25 @@ import com.calmscient.data.remote.WeeklySummaryMoodTask
 import com.calmscient.databinding.CalendarDayLayoutBinding
 import com.calmscient.databinding.FragmentWeeklysummarymoodBinding
 import com.calmscient.databinding.SummaryofsleepFragmentBinding
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.SummaryOfPHQ9Response
+import com.calmscient.di.remote.response.SummaryOfSleepResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.CustomMarkerView
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.getColorCompat
+import com.calmscient.viewmodels.GetSummaryOfPHQViewModel
+import com.calmscient.viewmodels.GetSummaryOfSleepViewModel
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -54,6 +81,20 @@ class SummaryofSleepFragment : Fragment() {
     private val summaryCardViewItems = mutableListOf<WeeklySummaryMoodTask>()
     private lateinit var summaryOfMoodAdapter: SummaryofMoodFragmentAdapter
 
+    private val getSummaryOfSleepViewModel : GetSummaryOfSleepViewModel by activityViewModels()
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var summaryOfSleepResponse: SummaryOfSleepResponse
+    private var loginResponse : LoginResponse? = null
+    private lateinit var lineChart: LineChart
+    private  lateinit var accessToken : String
+
+    private lateinit var averageSleepTextView: TextView
+    private lateinit var averageSleepTextViewWithHours: TextView
+    private lateinit var maxSleepTextView: TextView
+    private lateinit var minSleepTextView: TextView
+    private lateinit var averageSleepProBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -70,7 +111,7 @@ class SummaryofSleepFragment : Fragment() {
         binding.backIcon.setOnClickListener {
             loadFragment(WeeklySummaryFragment())
         }
-        binding.calenderview.setOnClickListener {
+        /*binding.calenderview.setOnClickListener {
             binding.newbackIcon.visibility = View.VISIBLE
             binding.graphScreen.visibility = View.GONE
             binding.datesScreen.visibility = View.VISIBLE
@@ -84,7 +125,33 @@ class SummaryofSleepFragment : Fragment() {
             binding.newbackIcon.visibility = View.GONE
             binding.scrollViewScreen.visibility = View.VISIBLE
 
+        }*/
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
+
+        lineChart = binding.lineChartViewSleep
+
+        if (CommonClass.isNetworkAvailable(requireContext())) {
+            apiCall()
+            observeViewModel()
         }
+        else{
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
+
+        averageSleepTextView = binding.averageSleepHours
+        maxSleepTextView = binding.maxHoursSleep
+        minSleepTextView = binding.minHoursSleep
+        averageSleepTextViewWithHours = binding.tvAverageHoursSleep
+        averageSleepProBar = binding.averageSleepProgressBar
+
+
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
@@ -258,10 +325,146 @@ class SummaryofSleepFragment : Fragment() {
         }
     }
 
+    private fun apiCall()
+    {
+        loginResponse?.loginDetails?.let { getSummaryOfSleepViewModel.getSummaryOfSleep(it.patientLocationID,it.patientID,it.clientID,"05/10/2024","05/23/2024",it.userID, accessToken) }
+
+    }
+
+    private fun observeViewModel()
+    {
+
+        getSummaryOfSleepViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.dialogDismiss()
+                customProgressDialog.show("Loading...")
+            }
+            else
+            {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getSummaryOfSleepViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successDate->
+            if(successDate != null)
+            {
+                summaryOfSleepResponse = successDate
+
+                Log.d("PHQ Response","$successDate")
+
+                handleApiResponse(summaryOfSleepResponse)
+            }
+        })
+
+    }
+    private fun handleApiResponse(response: SummaryOfSleepResponse) {
+        if (response.statusResponse.responseCode == 200) {
+            val sleepByDateRange = response.sleepMonitorList
+
+
+            val entries = ArrayList<Entry>()
+            val dateLabels = ArrayList<String>()
+            val sleepHoursList = sleepByDateRange.map { it.sleepHours.toFloat() }
+
+            // Assuming PHQ9ByDateRange has a date and score
+            for (i in sleepByDateRange.indices) {
+                val phqData = sleepByDateRange[i]
+                val entry = Entry(i.toFloat(), phqData.sleepHours.toFloat())
+                entry.data = phqData.sleepHours // Set scoreTitle as data for each entry
+                entries.add(entry)
+
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.createdAt)
+                val formattedDate = SimpleDateFormat("dd", Locale.getDefault()).format(date)
+                dateLabels.add(formattedDate)
+            }
+
+            val dataSet = LineDataSet(entries, "Sleep Hours")
+            dataSet.color = Color.parseColor("#6E6BB3")
+            dataSet.valueTextColor = Color.BLACK
+            dataSet.setDrawCircles(true)
+            dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
+            dataSet.setDrawValues(true)
+
+            val lineData = LineData(dataSet)
+            lineChart.data = lineData
+
+            // Customize the chart
+            val xAxis = lineChart.xAxis
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.granularity = 1f
+            xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value.toInt() >= 0 && value.toInt() < dateLabels.size) {
+                        dateLabels[value.toInt()]
+                    } else {
+                        ""
+                    }
+                }
+            }
+            xAxis.setDrawGridLines(false) // Disable vertical grid lines
+
+            val yAxisLeft = lineChart.axisLeft
+            yAxisLeft.setDrawGridLines(true)
+            yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+
+            lineChart.axisRight.isEnabled = false
+
+            // Hide the axis lines
+            xAxis.setDrawAxisLine(false)
+            yAxisLeft.setDrawAxisLine(false)
+
+            // Set custom marker
+            val markerView = CustomMarkerView(requireContext(), R.layout.custom_marker_view)
+            lineChart.marker = markerView
+
+            // Disable zooming
+            lineChart.setScaleEnabled(false)
+            lineChart.isDragEnabled = false
+
+            lineChart.description.isEnabled = false
+
+            // Adding animations
+            lineChart.animateX(1000, Easing.EaseInOutQuad)
+            lineChart.animateY(1000, Easing.EaseInOutQuad)
+
+            lineChart.invalidate() // Refresh the chart
+
+            // Calculate average, max, and min sleep hours
+            val averageSleep = sleepHoursList.average().toFloat()
+            val maxSleep = sleepHoursList.maxOrNull() ?: 0f
+            val minSleep = sleepHoursList.minOrNull() ?: 0f
+
+            val formattedAverageSleep = String.format("%.2f", averageSleep)
+
+            // Display these values in the TextViews
+            averageSleepTextView.text = formattedAverageSleep+" /"
+            averageSleepTextViewWithHours.text = formattedAverageSleep+ getString(R.string.hrs)
+            maxSleepTextView.text = maxSleep.toString()+getString(R.string.hrs)
+            minSleepTextView.text = minSleep.toString()+getString(R.string.hrs)
+
+            binding.averageSleepProgressBar.progress = averageSleep.toInt()
+
+        }
+    }
+
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
+   /* private fun resultPercent(maxValue: Int, securedMarks: Int) {
+        // binding.progressbarResult.max = maxValue
+        val progressPercentage = (securedMarks.toFloat() / maxValue.toFloat() * 100).toInt()
+        val progressAnimator = ValueAnimator.ofInt(0, progressPercentage)
+        progressAnimator.addUpdateListener { valueAnimator ->
+           averageSleepProBar.progress = valueAnimator.animatedValue as Int
+        }
+        progressAnimator.interpolator = LinearInterpolator()
+        progressAnimator.duration = 2000 // Adjust duration as needed for the desired animation speed
+        progressAnimator.start()
+    }*/
+
 }

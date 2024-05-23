@@ -1,6 +1,8 @@
 package com.calmscient.fragments
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +10,36 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
 import com.calmscient.adapters.SummaryofMoodFragmentAdapter
 import com.calmscient.data.remote.WeeklySummaryMoodTask
 import com.calmscient.databinding.CalendarDayLayoutBinding
 import com.calmscient.databinding.FragmentWeeklysummarymoodBinding
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.MoodMonitor
+import com.calmscient.di.remote.response.SummaryOfMoodResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.CustomMarkerView
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.getColorCompat
+import com.calmscient.viewmodels.GetSummaryOfMoodViewModel
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -42,6 +67,19 @@ class SummaryofMoodFragment : Fragment() {
     private val summaryCardViewItems = mutableListOf<WeeklySummaryMoodTask>()
     private lateinit var summaryOfMoodAdapter: SummaryofMoodFragmentAdapter
 
+
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private val getSummaryOfMoodViewModel: GetSummaryOfMoodViewModel by activityViewModels()
+    private lateinit var summaryOfMoodResponse: SummaryOfMoodResponse
+    private var loginResponse : LoginResponse? = null
+    private lateinit var lineChart: LineChart
+    private lateinit var barChart: BarChart
+    private  lateinit var accessToken : String
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -55,10 +93,35 @@ class SummaryofMoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentWeeklysummarymoodBinding.inflate(inflater, container, false)
+
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
+        lineChart = binding.lineChartViewMood
+        barChart = binding.barChartViewMood
+
         binding.backIcon.setOnClickListener {
-            loadFragment(WeeklySummaryFragment())
+            if (CommonClass.isNetworkAvailable(requireContext())) {
+                loadFragment(WeeklySummaryFragment())
+            } else {
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
-        binding.calenderview.setOnClickListener {
+
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+            apiCall()
+            observeViewModel()
+        }
+        else
+        {
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
+
+        /*binding.calenderview.setOnClickListener {
             binding.newbackIcon.visibility = View.VISIBLE
             binding.graphScreen.visibility = View.GONE
             binding.datesScreen.visibility = View.VISIBLE
@@ -72,7 +135,12 @@ class SummaryofMoodFragment : Fragment() {
             binding.newbackIcon.visibility = View.GONE
             binding.scrollViewScreen.visibility = View.VISIBLE
 
-        }
+        }*/
+
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
@@ -229,5 +297,189 @@ class SummaryofMoodFragment : Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun apiCall()
+    {
+        loginResponse?.loginDetails?.let { getSummaryOfMoodViewModel.getSummaryOfMood(it.patientLocationID,it.patientID,it.clientID,"05/10/2024","05/23/2024",it.userID, accessToken) }
+
+    }
+
+    private fun observeViewModel()
+    {
+
+        getSummaryOfMoodViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                customProgressDialog.dialogDismiss()
+                customProgressDialog.show("Loading...")
+            } else {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getSummaryOfMoodViewModel.saveResponseLiveData.observe(
+            viewLifecycleOwner,
+            Observer { successDate ->
+                if (successDate != null) {
+                    summaryOfMoodResponse = successDate
+
+                    Log.d("Mood Response", "$successDate")
+
+                    handleApiResponse(summaryOfMoodResponse)
+                }
+            })
+
+    }
+
+    private fun handleApiResponse(response: SummaryOfMoodResponse) {
+        if (response.response.responseCode == 200) {
+            val moodMonitorList = response.moodMonitorList
+
+            if (moodMonitorList.isEmpty()) {
+                showNoDataMessage()
+                return
+            }
+
+
+
+            val entries = ArrayList<Entry>()
+            val dateLabels = ArrayList<String>()
+
+            // Assuming moodMonitorList has a date and moodScore
+            for (i in moodMonitorList.indices) {
+                val phqData = moodMonitorList[i]
+                val entry = Entry(i.toFloat(), phqData.moodScore.toFloat())
+                entry.data = phqData.moodScore // Set scoreTitle as data for each entry
+                entries.add(entry)
+
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.createdAt)
+                val formattedDate = date?.let {
+                    SimpleDateFormat("dd", Locale.getDefault()).format(
+                        it
+                    )
+                }
+                if (formattedDate != null) {
+                    dateLabels.add(formattedDate)
+                }
+            }
+
+            val dataSet = LineDataSet(entries, "Mood Scores")
+            dataSet.color = Color.parseColor("#6E6BB3")
+            dataSet.valueTextColor = Color.BLACK
+            dataSet.setDrawCircles(true)
+            dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
+            dataSet.setDrawValues(true)
+
+            val lineData = LineData(dataSet)
+            lineChart.data = lineData
+
+            // Customize the chart
+            val xAxis = lineChart.xAxis
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.granularity = 1f
+            xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value.toInt() >= 0 && value.toInt() < dateLabels.size) {
+                        dateLabels[value.toInt()]
+                    } else {
+                        ""
+                    }
+                }
+            }
+            xAxis.setDrawGridLines(false) // Disable vertical grid lines
+
+            val yAxisLeft = lineChart.axisLeft
+            yAxisLeft.setDrawGridLines(true)
+            yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+
+            lineChart.axisRight.isEnabled = false
+
+            // Hide the axis lines
+            xAxis.setDrawAxisLine(false)
+            yAxisLeft.setDrawAxisLine(false)
+
+            // Set custom marker
+            val markerView = CustomMarkerView(requireContext(), R.layout.custom_marker_view)
+            lineChart.marker = markerView
+
+            // Disable zooming
+            lineChart.setScaleEnabled(false)
+            lineChart.isDragEnabled = false
+
+            lineChart.description.isEnabled = false
+
+            // Adding animations
+            lineChart.animateX(1000, Easing.EaseInOutQuad)
+            lineChart.animateY(1000, Easing.EaseInOutQuad)
+
+
+            lineChart.invalidate() // Refresh the chart
+
+
+
+            configureBarChart(moodMonitorList)
+        }
+    }
+
+    private fun configureBarChart(moodMonitorList: List<MoodMonitor>) {
+        val barEntries = ArrayList<BarEntry>()
+        val moodLabels = ArrayList<String>()
+
+        for (i in moodMonitorList.indices) {
+            val moodData = moodMonitorList[i]
+            val barEntry = BarEntry(i.toFloat(), moodData.moodScore.toFloat())
+            barEntries.add(barEntry)
+            moodLabels.add(moodData.mood)
+        }
+
+        val barDataSet = BarDataSet(barEntries, "Mood Scores")
+        barDataSet.color = Color.parseColor("#6E6BB3")
+        barDataSet.valueTextColor = Color.BLACK
+
+        val barData = BarData(barDataSet)
+        barData.barWidth = 0.3f 
+        barChart.data = barData
+
+        val xAxis = barChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return if (value.toInt() >= 0 && value.toInt() < moodLabels.size) {
+                    moodLabels[value.toInt()]
+                } else {
+                    ""
+                }
+            }
+        }
+        xAxis.setDrawGridLines(false)
+
+        val yAxisLeft = barChart.axisLeft
+        yAxisLeft.setDrawGridLines(true)
+        yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+
+        barChart.axisRight.isEnabled = false
+        xAxis.setDrawAxisLine(false)
+        yAxisLeft.setDrawAxisLine(false)
+
+        barChart.setScaleEnabled(false)
+        barChart.isDragEnabled = false
+
+        barChart.description.isEnabled = false
+
+        barChart.animateY(1000, Easing.EaseInOutQuad)
+
+        barChart.invalidate()
+    }
+
+
+    private fun showNoDataMessage() {
+        lineChart.setNoDataText("No data available")
+        lineChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
+        lineChart.invalidate()
+
+        barChart.setNoDataText("No data available")
+        barChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
+        barChart.invalidate()
     }
 }

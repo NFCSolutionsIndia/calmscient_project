@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/_45sdp"
+    tools:context=".fragments.TakingControlMakeAPlanScreenTwoFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/makeAPlan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/lexendmedium"
+            android:text="Make a plan"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_16sdp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/viewbackgroundcolor" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendlight"
+                android:text="First of all, let's define what is the best for you.\n\n
+
+If you're considering changing your drinking, you'll need to decide whether to cut down or quit. It's a good idea to discuss different options with a healthcare professional, a friend, or someone else you trust. \n\n
+
+Please note, when someone who has been drinking heavily for a prolonged period of time suddenly stops drinking, the body can go into a painful or even potentially life-threatening process of withdrawal. \n\n
+
+Symptoms can include nausea, rapid heart rate, seizures, or other problems. Seek medical help to plan a safe recovery. Doctors can prescribe medications to address these symptoms and make the process safer and less distressing."
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Quitting is strongly advised if you:"
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text=" • Have tried cutting down but cannot stay within the limit you set.\n\n
+• Have a physical or mental health condition that is caused or being worsened by drinking.\n\n
+• Are taking medication that interacts with alcohol.\n\n
+• Are or might be pregnant."
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Also yo need to consider the following factors to determine what to do."
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text=" • A family history of alcohol problems.\n\n
+• Your age.\n\n
+• A history of drinking-related injuries.\n\n
+• Symptoms such as a sleep, pain, or anxiety disorder and sexual dysfunction."
+                android:textSize="@dimen/_12sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="With this in mind, tell us what you would like to do."
+                android:textSize="@dimen/_12sdp"/>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_quit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:layout_weight="1"
+                android:background="@drawable/no_border"
+                android:gravity="center"
+                android:fontFamily="@font/lexendmedium"
+                android:text="Quit"
+                android:textAllCaps="false"
+                android:textColor="@color/purple_100"
+                android:textSize="18sp">
+
+            </androidx.appcompat.widget.AppCompatButton>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cut_down"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:layout_weight="1"
+                android:fontFamily="@font/lexendmedium"
+                android:background="@drawable/no_border"
+                android:gravity="center"
+                android:text="Cut down"
+                android:textAllCaps="false"
+                android:textColor="@color/purple_100"
+                android:textSize="18sp">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <ImageView
+                android:id="@+id/secondScreenBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_question_back"
+                android:padding="@dimen/_10sdp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
