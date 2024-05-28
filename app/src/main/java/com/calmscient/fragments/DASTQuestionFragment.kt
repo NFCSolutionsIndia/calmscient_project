@@ -11,6 +11,7 @@
 
 package com.calmscient.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ import com.calmscient.R
 import com.calmscient.activities.CommonDialog
 import com.calmscient.adapters.QuestionAdapter
 import com.calmscient.databinding.FragmentDASTQuestionBinding
+import com.calmscient.databinding.FragmentQuestionBinding
 import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.response.QuestionnaireItem
@@ -40,6 +42,7 @@ import com.calmscient.viewmodels.SaveScreeningAnswersViewModel
 import com.calmscient.viewmodels.ScreeningQuestionnaireViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
+
 
 
 
@@ -102,7 +105,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
 
-        Log.d("DAST Question Fragment", "$screeningResponseList")
+        Log.d("DAST Fragmentttttttttt ", "$screeningResponseList")
 
         customProgressDialog = CustomProgressDialog(requireContext())
 
@@ -116,7 +119,6 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
             }
         }
 
-        binding
         return binding.root
     }
 
@@ -210,7 +212,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                                 val res =
                                     screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
                                 screeningQuestionResponse = res
-                                Log.d("QuestionFragment ", "$res")
+                                Log.d("DAST Fragment ", "$res")
 
                                 result = it
                                 displayQuestions(it)
@@ -248,7 +250,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
                     val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
                     screeningQuestionResponse = res
-                    Log.d("DAST Question Fragment ", "$res")
+                    Log.d("DASTFragment ", "$res")
                     result = it
                     displayQuestions(it)
                 }
@@ -280,12 +282,11 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
     private fun loadFragment(fragment: Fragment) {
 
-        Log.d("LoadFragment in DAST","$screeningResponseList")
+        Log.d("LoadFragment in DF","$screeningResponseList")
         val args = Bundle().apply {
             putString("screeningResponse", JsonUtil.toJsonString(screeningResponseList))
         }
         fragment.arguments = args
-
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
@@ -301,8 +302,8 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
             val selectedOptionId = questionAdapter.getSelectedOptionId(currentQuestionIndex)
             storeSelectedOption(currentQuestion.questionId, selectedOptionId)
 
-            Log.d("DAST Question ID", "${currentQuestion.questionId}")
-            Log.d("DAST Selected Option ID", "$selectedOptionId")
+            Log.d(" DAST Question ID", "${currentQuestion.questionId}")
+            Log.d(" DAST Selected Option ID", "$selectedOptionId")
 
             currentQuestionIndex++
 
@@ -329,7 +330,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
                 // Check if patient answers are not empty
                 if (patientAnswers.patientAnswers.isNotEmpty()) {
-                    saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers, accessToken)
+                    saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers,accessToken)
 
                     saveScreeningAnswersViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
                         if (isLoading) {
@@ -349,11 +350,12 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                                     }
                                 }
                             }
-                            /*saveScreeningAnswersViewModel.failureLiveData.value?.let { failureMessage ->
+                            saveScreeningAnswersViewModel.failureLiveData.value?.let { failureMessage ->
                                 failureMessage.let {
+                                    commonDialog.dismiss()
                                     commonDialog.showDialog(it)
                                 }
-                            }*/
+                            }
                         } else {
                             // Observe successLiveData to show the success message
                             saveScreeningAnswersViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
@@ -363,15 +365,17 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                                              commonDialog.showDialog(it)
                                          }
                                      })*/
-
-                                    flag= true
                                     commonDialog.dismiss()
-                                    loadFragment(ResultsFragment())
+                                    flag= true
+                                    if (CommonClass.isNetworkAvailable(requireContext())) {
+                                        loadFragment(ResultsFragment())
+                                    } else {
+                                        CommonClass.showInternetDialogue(requireContext())
+                                    }
                                 }
                             })
                         }
                     })
-
                     commonDialog.dismiss()
                     customProgressDialog.dialogDismiss()
                     //loadFragment(ResultsFragment())
@@ -381,7 +385,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                 binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
             }
         }
-        else if (patientAnswers?.patientAnswers.isNullOrEmpty() && !flag )  {
+        else if (patientAnswers?.patientAnswers.isNullOrEmpty() && !flag)  {
             commonDialog.showDialog(getString(R.string.please_answer_the_questions))
             Log.e("DAST Fragment", "screeningQuestionResponse is empty or currentQuestionIndex is out of bounds")
         }
@@ -398,18 +402,18 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
             val selectedOptionId = questionAdapter.getSelectedOptionId(currentQuestionIndex)
             storeSelectedOption(currentQuestion.questionId, selectedOptionId)
 
-            Log.d("Question ID", "${currentQuestion.questionId}")
-            Log.d("Selected Option ID", "$selectedOptionId")
+            Log.d("DAST Question ID", "${currentQuestion.questionId}")
+            Log.d("DAST Selected Option ID", "$selectedOptionId")
 
             currentQuestionIndex--
             if (currentQuestionIndex >= 0) {
                 binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
             } else {
                 // Handle the case where we are already at the beginning of the list
-                Log.e("DAST Question Fragment", "Reached the beginning of the questions list")
+                Log.e("DASTFragment", "Reached the beginning of the questions list")
             }
         } else {
-            Log.e("DAST Question Fragment", "currentQuestionIndex is out of bounds")
+            Log.e("DASTFragment", "currentQuestionIndex is out of bounds")
         }
     }
 
@@ -419,13 +423,16 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
         selectedOptionsMap[questionId] = selectedOptionId
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun constructPatientAnswers(): PatientAnswersWrapper {
         val patientAnswers = mutableListOf<PatientAnswerSaveRequest>()
 
         var answerId: String? = null
 
+
         // Iterate through all questions in screeningQuestionResponse
         screeningQuestionResponse.forEach { questionnaireItem ->
+
             // Find the selected option for the current question
             val selectedOptionId = selectedOptionsMap[questionnaireItem.questionId]
 
@@ -463,9 +470,11 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                         assessmentId = screeningItem.assessmentID
                     )
 
+
                     // Add the constructed PatientAnswer to the list
                     patientAnswers.add(patientAnswer)
-                    answerId==null
+
+                    answerId = null
                 }
             } /*else {
                 // If the question is not answered, construct the object with null for optionId

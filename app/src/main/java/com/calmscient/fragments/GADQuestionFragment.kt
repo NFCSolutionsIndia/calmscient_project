@@ -11,6 +11,7 @@
 
 package com.calmscient.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +27,6 @@ import com.calmscient.R
 import com.calmscient.activities.CommonDialog
 import com.calmscient.adapters.QuestionAdapter
 import com.calmscient.databinding.FragmentGadQuestionsBinding
-import com.calmscient.databinding.FragmentQuestionBinding
 import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.response.QuestionnaireItem
@@ -59,6 +59,7 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
     private  lateinit var accessToken : String
+
 
     private val selectedOptionsMap = mutableMapOf<Int, String?>()
     // Define a variable to store the last saved state of selected options
@@ -102,7 +103,7 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
 
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
 
-        Log.d("GAD Question Fragment", "$screeningResponseList")
+        Log.d("GAD Fragmentttttttttt ", "$screeningResponseList")
 
         customProgressDialog = CustomProgressDialog(requireContext())
 
@@ -116,7 +117,6 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
             }
         }
 
-        binding
         return binding.root
     }
 
@@ -210,7 +210,7 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
                                 val res =
                                     screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
                                 screeningQuestionResponse = res
-                                Log.d("QuestionFragment ", "$res")
+                                Log.d("GAD Fragment ", "$res")
 
                                 result = it
                                 displayQuestions(it)
@@ -248,7 +248,7 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
 
                     val res = screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
                     screeningQuestionResponse = res
-                    Log.d("GAD Question Fragment ", "$res")
+                    Log.d("GADFragment ", "$res")
                     result = it
                     displayQuestions(it)
                 }
@@ -280,7 +280,7 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
 
     private fun loadFragment(fragment: Fragment) {
 
-        Log.d("LoadFragment in GAD","$screeningResponseList")
+        Log.d("LoadFragment in DF","$screeningResponseList")
         val args = Bundle().apply {
             putString("screeningResponse", JsonUtil.toJsonString(screeningResponseList))
         }
@@ -293,15 +293,15 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
     }
 
     private fun moveToNextQuestion() {
-        var flag : Boolean = false
         var patientAnswers: PatientAnswersWrapper? = null
+        var flag : Boolean = false
         if (screeningQuestionResponse.isNotEmpty() && currentQuestionIndex < screeningQuestionResponse.size) {
             val currentQuestion = screeningQuestionResponse[currentQuestionIndex]
             val selectedOptionId = questionAdapter.getSelectedOptionId(currentQuestionIndex)
             storeSelectedOption(currentQuestion.questionId, selectedOptionId)
 
-            Log.d("GAD Question ID", "${currentQuestion.questionId}")
-            Log.d("GAD Selected Option ID", "$selectedOptionId")
+            Log.d(" GAD Question ID", "${currentQuestion.questionId}")
+            Log.d(" GAD Selected Option ID", "$selectedOptionId")
 
             currentQuestionIndex++
 
@@ -363,10 +363,13 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
                                              commonDialog.showDialog(it)
                                          }
                                      })*/
-
-                                    flag = true
                                     commonDialog.dismiss()
-                                    loadFragment(ResultsFragment())
+                                    flag= true
+                                    if (CommonClass.isNetworkAvailable(requireContext())) {
+                                        loadFragment(ResultsFragment())
+                                    } else {
+                                        CommonClass.showInternetDialogue(requireContext())
+                                    }
                                 }
                             })
                         }
@@ -397,18 +400,18 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
             val selectedOptionId = questionAdapter.getSelectedOptionId(currentQuestionIndex)
             storeSelectedOption(currentQuestion.questionId, selectedOptionId)
 
-            Log.d("Question ID", "${currentQuestion.questionId}")
-            Log.d("Selected Option ID", "$selectedOptionId")
+            Log.d("GAD Question ID", "${currentQuestion.questionId}")
+            Log.d("GAD Selected Option ID", "$selectedOptionId")
 
             currentQuestionIndex--
             if (currentQuestionIndex >= 0) {
                 binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
             } else {
                 // Handle the case where we are already at the beginning of the list
-                Log.e("GAD Question Fragment", "Reached the beginning of the questions list")
+                Log.e("GADFragment", "Reached the beginning of the questions list")
             }
         } else {
-            Log.e("GAD Question Fragment", "currentQuestionIndex is out of bounds")
+            Log.e("GADFragment", "currentQuestionIndex is out of bounds")
         }
     }
 
@@ -418,13 +421,16 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
         selectedOptionsMap[questionId] = selectedOptionId
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun constructPatientAnswers(): PatientAnswersWrapper {
         val patientAnswers = mutableListOf<PatientAnswerSaveRequest>()
 
         var answerId: String? = null
 
+
         // Iterate through all questions in screeningQuestionResponse
         screeningQuestionResponse.forEach { questionnaireItem ->
+
             // Find the selected option for the current question
             val selectedOptionId = selectedOptionsMap[questionnaireItem.questionId]
 
@@ -462,9 +468,11 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
                         assessmentId = screeningItem.assessmentID
                     )
 
+
                     // Add the constructed PatientAnswer to the list
                     patientAnswers.add(patientAnswer)
-                    answerId==null
+
+                    answerId = null
                 }
             } /*else {
                 // If the question is not answered, construct the object with null for optionId
