@@ -156,6 +156,7 @@ Let's set up a goal of your drink counts first."
                         android:textSize="@dimen/_12sdp"/>
 
                     <TextView
+                        android:id="@+id/goalsTextView"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -174,7 +175,26 @@ Let's set up a goal of your drink counts first."
 
             </androidx.cardview.widget.CardView>
 
+
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_set"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_weight="1"
+            android:background="@drawable/button_border"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:fontFamily="@font/lexendmedium"
+            android:text="Set"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp">
+
+        </androidx.appcompat.widget.AppCompatButton>
     </LinearLayout>
 
 

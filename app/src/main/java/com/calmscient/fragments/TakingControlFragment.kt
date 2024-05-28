@@ -80,6 +80,10 @@ class TakingControlFragment : Fragment() {
         binding.backIcon.setOnClickListener{
             loadFragment(DiscoveryFragment())
         }
+
+        binding.btnSeeTheInformation.setOnClickListener{
+            loadFragment(TakingControlIntroductionFragment())
+        }
         return binding.root
     }
 

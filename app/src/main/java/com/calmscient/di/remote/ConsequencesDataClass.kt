@@ -11,6 +11,10 @@
 
 package com.calmscient.di.remote
 
+data class ConsequencesDataClass(
+    val headingText : String?,
+    val dialogText : String?,
+    val descriptionText : String?,
+    val pointsText : String?
 
-data class ProgressWorksTask(val titleView:String?,val titlePercentage: String?, val textView1: String?,
-                              val textView2: String?,val textView3: String?,val textView4: String?,val textView5: String?,val textView6: String?,val textView7: String?,val textView8: String?)
+)

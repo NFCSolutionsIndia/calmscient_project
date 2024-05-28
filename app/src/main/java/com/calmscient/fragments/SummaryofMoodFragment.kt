@@ -437,7 +437,7 @@ class SummaryofMoodFragment : Fragment() {
         barDataSet.valueTextColor = Color.BLACK
 
         val barData = BarData(barDataSet)
-        barData.barWidth = 0.3f 
+        barData.barWidth = 0.3f
         barChart.data = barData
 
         val xAxis = barChart.xAxis
@@ -467,6 +467,8 @@ class SummaryofMoodFragment : Fragment() {
 
         barChart.description.isEnabled = false
 
+        // Adding animations
+        barChart.animateX(1000, Easing.EaseInOutQuad)
         barChart.animateY(1000, Easing.EaseInOutQuad)
 
         barChart.invalidate()

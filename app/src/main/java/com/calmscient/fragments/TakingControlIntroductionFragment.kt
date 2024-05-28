@@ -11,16 +11,21 @@
 
 package com.calmscient.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.calmscient.R
 import com.calmscient.adapters.ScreeningsCardAdapter
 import com.calmscient.adapters.TakingControlScreeningAdapter
 import com.calmscient.databinding.FragmentTakingControlIntroductionBinding
@@ -106,6 +111,7 @@ class TakingControlIntroductionFragment : Fragment() {
 
         binding.takingControlScreeningBulbIcon.setOnClickListener{
 
+                showCustomDialog(requireContext())
         }
 
         return  binding.root
@@ -159,5 +165,30 @@ class TakingControlIntroductionFragment : Fragment() {
         Log.d("TCF:","$screeningResponse")
 
     }
+
+
+    private fun showCustomDialog(context: Context) {
+        // Create and configure the custom dialog
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.taking_control_introduction_dialog_item, null)
+        val dialog = android.app.AlertDialog.Builder(context, R.style.CustomDialog)
+            .setView(dialogView)
+            .create()
+
+       /* // Initialize views in the custom dialog layout
+        val titleTextView = dialogView.findViewById<TextView>(R.id.dialog_title)
+        val iconImageView = dialogView.findViewById<ImageView>(R.id.dialog_icon)
+        val messageTextView = dialogView.findViewById<TextView>(R.id.dialog_message)
+*/
+
+        val closeIcon = dialogView.findViewById<ImageView>(R.id.dialogClose)
+        // Show the custom dialog
+        dialog.show()
+
+
+        closeIcon.setOnClickListener{
+            dialog.dismiss()
+        }
+    }
+
 
 }

@@ -407,6 +407,7 @@
                             android:textAllCaps="false"
                             android:text="See the introduction"
                             android:textColor="@color/btn_gradient_color"
+                            android:enabled="true"
                             android:textSize="@dimen/_14sdp" />
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_howToUse"

@@ -56,6 +56,9 @@ class CommonAPICallDialog(private val context: Context) {
         }
     }
 
+    fun isShowing(): Boolean {
+        return ::dialog.isInitialized && dialog.isShowing
+    }
 
 }
 

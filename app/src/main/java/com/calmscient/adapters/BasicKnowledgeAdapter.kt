@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
 import com.calmscient.di.remote.BasicKnowledgeItem
 import com.calmscient.fragments.AUDITQuestionFragment
+import com.calmscient.fragments.ConsequencesFragment
 import com.calmscient.fragments.DASTQuestionFragment
 import com.calmscient.fragments.GADQuestionFragment
 import com.calmscient.fragments.GuidelinesForDrinkingFragment
@@ -66,6 +67,7 @@ class BasicKnowledgeAdapter(private val fragmentManager: FragmentManager,private
                     "When is drink in moderation too much ?" -> ModerationDrinkingFragment()
                     "What happens to your brain when you drink?" -> WhatHappensToYourBrainFragment()
                     "What to expect when you quit drinking?" -> WhatExpectsWhenYouQuitDrinkingFragment()
+                    "What are the consequences?" -> ConsequencesFragment()
                     else -> null
                 }
 

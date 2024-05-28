@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -25,6 +27,7 @@ import java.util.Date
 import androidx.lifecycle.Observer
 import com.calmscient.ApiService
 import com.calmscient.AppController
+import com.calmscient.databinding.FragmentQuestionBinding
 import com.calmscient.di.remote.response.PatientMoodResponse
 import com.calmscient.retrofit.ApplicationModule
 import com.calmscient.utils.common.CommonClass
@@ -82,7 +85,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
         Log.d("Login Response in USERMOOD","$loginResponse")
 
         if(CommonClass.isNetworkAvailable(this)){
-            //observeViewModel()
+           // observeViewModel()
         }
         else
         {
@@ -141,6 +144,11 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
 
     }
+   /* override fun onStart() {
+        super.onStart()
+        binding.idWishes.text = patientMoodResponse.wish
+        binding.tvMeds.text = patientMoodResponse.medicineData?.medicineQuestion
+    }*/
 
     fun greeting() {
         val date = Date()
@@ -621,6 +629,19 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                 ServerTimeoutHandler.clearRetryListener()
                 ServerTimeoutHandler.dismissDialog()
 
+                getPatientMoodViewModel.saveResponseLiveData.observe(this, Observer { succesData->
+                    if(succesData != null)
+                    {
+                        patientMoodResponse = succesData
+
+                        bindUIData(patientMoodResponse)
+
+
+
+
+                   }
+                })
+
 
 
             }
@@ -642,5 +663,25 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
         })
 
+    }
+
+    private fun bindUIData(successData : PatientMoodResponse)
+    {
+        binding.idWishes.text = successData.wish
+        binding.tvMeds.text = successData.medicineData?.medicineQuestion
+
+        binding.idAfterMood.text = successData.moodData.moodQuestion
+        binding.idEvenMood.text = successData.moodData.moodQuestion
+        binding.idMornMood.text  = successData.moodData.moodQuestion
+
+        successData.moodData.options?.let { options ->
+            if (options.size >= 5) {
+                binding.tvAfterBad.text = options[0].optionType
+                binding.tvAfterBetter.text = options[1].optionType
+                binding.tvAfterFair.text = options[2].optionType
+                binding.tvAfterGood.text = options[3].optionType
+                binding.tvAfterXcellent.text = options[4].optionType
+            }
+        }
     }
 }

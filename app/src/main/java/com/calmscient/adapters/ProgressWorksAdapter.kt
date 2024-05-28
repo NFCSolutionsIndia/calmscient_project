@@ -18,8 +18,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
-import com.calmscient.data.remote.ProgressWorksTask
-import com.calmscient.data.remote.WeeklySummaryMoodTask
+import com.calmscient.di.remote.ProgressWorksTask
 import com.calmscient.utils.AnimationUtils
 class ProgressWorksAdapter (private val allTasks: MutableList<ProgressWorksTask>) :
     RecyclerView.Adapter<ProgressWorksAdapter.TaskViewHolder>() {
@@ -86,7 +85,7 @@ class ProgressWorksAdapter (private val allTasks: MutableList<ProgressWorksTask>
         val textView5: TextView = itemView.findViewById(R.id.textView5)
         val textView6: TextView = itemView.findViewById(R.id.textView6)
         val textView7: TextView = itemView.findViewById(R.id.textView7)
-        val textView8: TextView = itemView.findViewById(R.id.textView8)
+        //val textView8: TextView = itemView.findViewById(R.id.textView8)
         val taskTitleLayout: View = itemView.findViewById(R.id.taskTitleLayout)
 
         init {
@@ -98,7 +97,7 @@ class ProgressWorksAdapter (private val allTasks: MutableList<ProgressWorksTask>
             textView5.visibility = View.GONE
             textView6.visibility = View.GONE
             textView7.visibility = View.GONE
-            textView8.visibility = View.GONE
+            //textView8.visibility = View.GONE
             // Set an OnClickListener to handle expanding/collapsing
             taskTitleLayout.setOnClickListener {
                 if (isExpanded)
@@ -120,7 +119,7 @@ class ProgressWorksAdapter (private val allTasks: MutableList<ProgressWorksTask>
             textView5.text = task.textView5
             textView6.text = task.textView6
             textView7.text = task.textView7
-            textView8.text = task.textView8
+            //textView8.text = task.textView8
         }
 
         fun expand() {
@@ -131,7 +130,7 @@ class ProgressWorksAdapter (private val allTasks: MutableList<ProgressWorksTask>
             AnimationUtils.expand(textView5)
             AnimationUtils.expand(textView6)
             AnimationUtils.expand(textView7)
-            AnimationUtils.expand(textView8)
+            //AnimationUtils.expand(textView8)
             dropDownImage.setImageResource(R.drawable.minus)
             isExpanded = true
         }
@@ -143,7 +142,7 @@ class ProgressWorksAdapter (private val allTasks: MutableList<ProgressWorksTask>
             AnimationUtils.collapse(textView5)
             AnimationUtils.collapse(textView6)
             AnimationUtils.collapse(textView7)
-            AnimationUtils.collapse(textView8)
+           //AnimationUtils.collapse(textView8)
             dropDownImage.setImageResource(R.drawable.ic_expand)
             isExpanded = false
         }

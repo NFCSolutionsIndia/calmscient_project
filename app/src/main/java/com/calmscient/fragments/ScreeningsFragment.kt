@@ -38,6 +38,7 @@ import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.ScreeningViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -212,6 +213,8 @@ class ScreeningsFragment : Fragment() {
         screeningsMenuViewModel.screeningListLiveData.observe(viewLifecycleOwner, Observer { successData->
             if(successData!= null)
             {
+                commonDialog.dismiss()
+                customProgressDialog.dialogDismiss()
                 Log.d("Observeeeeee:","$successData")
                 screeningResponse = successData
                 displayCardViews(screeningResponse)
@@ -220,6 +223,23 @@ class ScreeningsFragment : Fragment() {
                 binding.recyclerViewMedications.adapter = cardViewAdapter
 
                 Log.d("OOOOObserve:","$screeningResponse")
+            }
+        })
+
+        screeningsMenuViewModel.errorLiveData.observe(viewLifecycleOwner, Observer { errorData->
+            if(errorData != null)
+            {
+                if(CommonClass.isNetworkAvailable(requireContext()))
+                {
+                    ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                        // Retry logic when the retry button is clicked
+                    screeningsMenuViewModel.retryScreeningsFetchMenuItems()
+                  }
+                }
+                else
+                {
+                    CommonClass.showInternetDialogue(requireContext())
+                }
             }
         })
 

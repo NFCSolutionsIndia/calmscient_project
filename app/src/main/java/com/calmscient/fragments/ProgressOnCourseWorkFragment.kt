@@ -1,23 +1,43 @@
 package com.calmscient.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
 import com.calmscient.adapters.ProgressWorksAdapter
-import com.calmscient.adapters.TakingControlSummaryCardAdapter
-import com.calmscient.data.remote.ProgressWorksTask
+import com.calmscient.adapters.SummaryOfProgressWorksAdapter
+import com.calmscient.di.remote.ProgressWorksTask
 import com.calmscient.databinding.ProgressoncourseworkFragmentBinding
-import com.calmscient.utils.AnimationUtils
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.PatientcourseWork
+import com.calmscient.di.remote.response.SummaryOfCourseWorkResponse
+import com.calmscient.di.remote.response.SummaryOfDASTResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.GetSummaryOfCourseWorkViewModel
+import com.calmscient.viewmodels.GetSummaryOfDASTViewModel
+import com.github.mikephil.charting.charts.LineChart
 
 class ProgressOnCourseWorkFragment : Fragment() {
     private lateinit var binding: ProgressoncourseworkFragmentBinding
-    private val progressWorksTask = mutableListOf<ProgressWorksTask>()
-    private lateinit var progressworksadapter: ProgressWorksAdapter
+
+
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private val getSummaryOfCourseWorkViewModel: GetSummaryOfCourseWorkViewModel by activityViewModels()
+    private lateinit var summaryOfCourseWorkResponse: SummaryOfCourseWorkResponse
+    private var loginResponse : LoginResponse? = null
+    private  lateinit var accessToken : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,86 +52,102 @@ class ProgressOnCourseWorkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ProgressoncourseworkFragmentBinding.inflate(inflater, container, false)
-        binding.backIcon1.setOnClickListener {
+
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
+
+        binding.backIcon.setOnClickListener {
             loadFragment(WeeklySummaryFragment())
         }
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
 
-        binding.bravingAnxietyImage.setOnClickListener {
-            binding.screen1.visibility = View.GONE
-            binding.screen2.visibility = View.VISIBLE
-            binding.backIcon1.visibility = View.GONE
-            binding.backIcon2.visibility = View.VISIBLE
+
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+            apiCall()
+            observeViewModel()
+        }
+        else
+        {
+            CommonClass.showInternetDialogue(requireContext())
         }
 
-        binding.backIcon2.setOnClickListener {
-            binding.screen1.visibility = View.VISIBLE
-            binding.screen2.visibility = View.GONE
-            binding.backIcon1.visibility = View.VISIBLE
-            binding.backIcon2.visibility = View.GONE
+        binding.backIcon.setOnClickListener{
+            loadFragment(WeeklySummaryFragment())
         }
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //  Initialize the RecyclerView and Adapter here
-        binding.recyclerViewProgressWorks.layoutManager = LinearLayoutManager(requireContext())
-        progressworksadapter = ProgressWorksAdapter(progressWorksTask)
-        binding.recyclerViewProgressWorks.adapter = progressworksadapter
-        progressworksadapter.updateTasks(progressWorksTask)
-        displayCardViews()
     }
 
-    private fun displayCardViews() {
-        progressWorksTask.clear()
-        val tasks = listOf(
-            ProgressWorksTask(
-                getString(R.string.bravinganxiety_anxietyworks),
-                "100%",
-                getString(R.string.progresswork_expand1_text1),
-                "100%",
-                getString(R.string.progresswork_expand1_text2),
-                "100%",
-                getString(R.string.progresswork_expand1_text3),
-                "100%",
-                getString(R.string.progresswork_expand1_text4),
-                "100%"
-            ),
-            ProgressWorksTask(
-                getString(R.string.braving_sleep),
-                "100%",
-                getString(R.string.progresswork_expand2_text1),
-                "100%",
-                getString(R.string.progresswork_expand2_text2),
-                "100%",
-                getString(R.string.progresswork_expand2_text3),
-                "100%",
-                getString(R.string.progresswork_expand2_text4),
-                "100%"
-            ),
-            ProgressWorksTask(
-                getString(R.string.braving_building),
-                "100%",
-                getString(R.string.progresswork_expand3_text1),
-                "100%",
-                getString(R.string.progresswork_expand3_text2),
-                "100%",
-                getString(R.string.progresswork_expand3_text3),
-                "100%",
-                getString(R.string.progresswork_expand3_text4),
-                "100%"
-            )
-        )
-        progressWorksTask.addAll(tasks)
-        progressworksadapter.notifyDataSetChanged()
-    }
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
+    private fun apiCall()
+    {
+        loginResponse?.loginDetails?.let { getSummaryOfCourseWorkViewModel.getSummaryOfCourseWork(it.patientID, accessToken) }
+
+    }
+
+    private fun observeViewModel()
+    {
+
+        getSummaryOfCourseWorkViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                customProgressDialog.dialogDismiss()
+                customProgressDialog.show("Loading...")
+            } else {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getSummaryOfCourseWorkViewModel.saveResponseLiveData.observe(
+            viewLifecycleOwner,
+            Observer { successDate ->
+                if (successDate != null) {
+                    summaryOfCourseWorkResponse = successDate
+
+                    val courseWorkList = successDate.patientcourseWorkList
+                    setupRecyclerView(courseWorkList)
+
+                    binding.totalPercentage.text = courseWorkList[0].completedPer.toString()
+                    binding.progressbarCourseWork.progress = courseWorkList[0].completedPer.toInt()
+
+                    Log.d("CourseWork Response", "$successDate")
+
+                    //handleApiResponse(summaryOfDASTResponse)
+                }
+            })
+
+    }
+
+    private fun setupRecyclerView(courseWorkList: List<PatientcourseWork>) {
+        val adapter = SummaryOfProgressWorksAdapter(requireContext(), courseWorkList) { selectedCourseWork, position ->
+            val fragment = ProgressOnCourseWorkCommonFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("selectedCourseWork", selectedCourseWork)
+                    putInt("selectedPosition", position)
+                }
+            }
+            loadFragment(fragment)
+        }
+        binding.courseProgressRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.courseProgressRecyclerView.adapter = adapter
+        binding.totalPercentage.text = courseWorkList[0].completedPer.toString()
+    }
+
+
 }

@@ -26,6 +26,7 @@ import com.calmscient.di.remote.request.ScreeningRequest
 import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
 import com.calmscient.di.remote.request.ScreeningsResultsRequest
 import com.calmscient.di.remote.request.SummaryOfAUDITRequest
+import com.calmscient.di.remote.request.SummaryOfCourseWorkRequest
 import com.calmscient.di.remote.request.SummaryOfDASTRequest
 import com.calmscient.di.remote.request.SummaryOfGADRequest
 import com.calmscient.di.remote.request.SummaryOfMoodRequest
@@ -45,6 +46,7 @@ import com.calmscient.di.remote.response.ScreeningHistoryResponseData
 import com.calmscient.di.remote.response.ScreeningResponse
 import com.calmscient.di.remote.response.ScreeningResultsResponse
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
+import com.calmscient.di.remote.response.SummaryOfCourseWorkResponse
 import com.calmscient.di.remote.response.SummaryOfDASTResponse
 import com.calmscient.di.remote.response.SummaryOfGADResponse
 import com.calmscient.di.remote.response.SummaryOfMoodResponse
@@ -103,7 +105,7 @@ interface ApiService {
     @POST("patients/api/v1/medications/addPatientMedicationAlarms")
     fun updatePatientMedicationDetails(@Header("Authorization") accessToken: String,@Body requestBody: AlarmWrapper): Call<AlarmUpdateResponse>
 
-    @POST("patients/api/v1/patientDetails/getPHQDashboardByDateRang")
+    @POST("patients/api/v1/patientDetails/getPHQDashboardByDateRange")
     fun getSummaryOfPHQ(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfPHQ9Request): Call<SummaryOfPHQ9Response>
 
     @POST("patients/api/v1/patientDetails/getGADDashboardByDateRange")
@@ -120,6 +122,9 @@ interface ApiService {
 
     @POST("patients/api/v1/patientDetails/getPatientSleepMonitoringById")
     fun getSummaryOfSleep(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfSleepRequest): Call<SummaryOfSleepResponse>
+
+    @POST("patients/api/v1/course/getPatientCourseWorkPercentageDetails")
+    fun getSummaryOfCourseWork(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfCourseWorkRequest): Call<SummaryOfCourseWorkResponse>
 
 }
 

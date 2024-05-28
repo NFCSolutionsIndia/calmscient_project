@@ -13,46 +13,28 @@
     tools:context=".fragments.ProgressOnCourseWorkFragment">
 
     <RelativeLayout
-        android:id="@+id/Settings"
+        android:id="@+id/takingControl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_10sdp">
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/layout_back"
+        <ImageView
+            android:id="@+id/back_icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/backIcon1"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:src="@drawable/ic_back" />
-
-            <ImageView
-                android:id="@+id/backIcon2"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:src="@drawable/ic_back"
-                android:visibility="gone" />
-        </RelativeLayout>
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:gravity="center"
-            android:layout_toEndOf="@+id/layout_back"
-            android:ellipsize="end"
             android:fontFamily="@font/lexendmedium"
-            android:maxLines="1"
             android:text="@string/summaryof_progressofwork"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
@@ -119,7 +101,7 @@
                         </LinearLayout>
 
                         <ProgressBar
-                            android:id="@+id/progressbar_history"
+                            android:id="@+id/progressbarCourseWork"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -127,7 +109,6 @@
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:indeterminate="false"
                             android:max="100"
-                            android:progress="16"
                             android:progressDrawable="@drawable/curved_progress_bar"
                             android:scaleY="1"
                             android:theme="@style/ProgressBarStyle" />
@@ -143,7 +124,7 @@
                             android:weightSum="2">
 
                             <TextView
-                                android:id="@+id/text2"
+                                android:id="@+id/totalPercentage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
@@ -208,347 +189,17 @@
 
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="330dp"
+
+                <com.calmscient.utils.NonSwipeRecyclerView
+                    android:id="@+id/courseProgressRecyclerView"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
-                    app:cardElevation="@dimen/_10sdp">
+                    android:layout_marginHorizontal="@dimen/_14sdp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:layout_width="@dimen/_140sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_15sdp"
-                            android:layout_weight="2"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="@string/summaryprogress_braving_Anxiety"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_60sdp"
-                            android:layout_weight=".5"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="46%"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <ImageView
-                            android:id="@+id/braving_AnxietyImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_weight=".5"
-                            android:src="@drawable/ic_next_new" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
-                    app:cardElevation="@dimen/_10sdp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:layout_width="@dimen/_140sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_15sdp"
-                            android:layout_weight="2"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="@string/summaryprogress_feeling_better"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_60sdp"
-                            android:layout_weight=".5"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="15%"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <ImageView
-                            android:id="@+id/feeling_image"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_weight=".5"
-                            android:src="@drawable/ic_next_new" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
-                    app:cardElevation="@dimen/_10sdp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:layout_width="@dimen/_140sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_15sdp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="@string/summaryprogress_taking_control"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_60sdp"
-                            android:layout_weight=".5"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="10%"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <ImageView
-                            android:id="@+id/taking_ControlImage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_next_new" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
-                    app:cardElevation="@dimen/_10sdp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:layout_width="@dimen/_170sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_15sdp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="@string/summaryprogress_building_confidence"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_30sdp"
-                            android:layout_weight=".5"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="11%"
-                            android:textColor="@color/black_head"
-                            android:textSize="@dimen/_12sdp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_weight=".5"
-                            android:src="@drawable/ic_next_new" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                </com.calmscient.utils.NonSwipeRecyclerView>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/screen2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_14sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_6sdp"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="0.0px"
-                    android:paddingBottom="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_8sdp"
-                    app:cardElevation="@dimen/_20sdp"
-                    app:cardPreventCornerOverlap="false">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/braving_AnxietyText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendregular"
-                                android:maxLines="1"
-                                android:padding="@dimen/_10sdp"
-                                android:text="@string/summaryprogress_braving_Anxiety"
-                                android:textColor="@color/black_head"
-                                android:textSize="@dimen/_12sdp" />
-                        </LinearLayout>
-
-                        <ProgressBar
-                            android:id="@+id/progressbar_history1"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:layout_marginHorizontal="@dimen/_10sdp"
-                            android:indeterminate="false"
-                            android:max="100"
-                            android:progress="46"
-                            android:progressDrawable="@drawable/curved_progress_bar"
-                            android:scaleY="1"
-                            android:theme="@style/ProgressBarStyle" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-                            <TextView
-                                android:id="@+id/percentage_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_5sdp"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="left"
-                                android:text="46%"
-                                android:textColor="@color/example_7_button"
-                                android:textSize="@dimen/_12sdp" />
-
-                            <TextView
-                                android:id="@+id/total_Percentage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="right"
-                                android:layout_marginStart="@dimen/_180sdp"
-                                android:layout_marginEnd="@dimen/_10sdp"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/lexendmedium"
-                                android:text="100%"
-                                android:textColor="@color/black_head"
-                                android:textDirection="ltr"
-                                android:textSize="@dimen/_12sdp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:id="@+id/braving_CourseTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lexendmedium"
-                        android:gravity="left"
-                        android:text="@string/summaryprogress_course"
-                        android:textColor="@color/example_7_button"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:id="@+id/braving_CompletedTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="right"
-                        android:layout_marginStart="@dimen/_130sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/lexendmedium"
-                        android:text="@string/summaryprogress_completed"
-                        android:textColor="@color/black_head"
-                        android:textDirection="ltr"
-                        android:textSize="@dimen/_12sdp" />
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewProgressWorks"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_300sdp"
-                    android:clickable="true"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:context=".fragments.ProgressOnWorksFragment" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
