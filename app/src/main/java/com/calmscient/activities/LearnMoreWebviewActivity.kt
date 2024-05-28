@@ -235,69 +235,6 @@ class LearnMoreWebviewActivity : AppCompat() {
         webView_learn!!.isHorizontalScrollBarEnabled = false
     }
 
-    /*// return here when file selected from camera or from SD Card
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        // code for all versions except of Lollipop
-       */
-    /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-
-            if (requestCode == FILECHOOSER_RESULTCODE) {
-                if (null == this.mUploadMessage) {
-                    return;
-                }
-
-                Uri result = null;
-
-                try {
-                    if (resultCode != RESULT_OK) {
-                        result = null;
-                    } else {
-                        // retrieve from the private variable if the intent is null
-                        result = data == null ? mCapturedImageURI : data.getData();
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "activity :" + e, Toast.LENGTH_LONG).show();
-                }
-
-                mUploadMessage.onReceiveValue(result);
-                mUploadMessage = null;
-            }
-
-        } // end of code for all versions except of Lollipop
-*/
-    /*
-        // start of code for Lollipop only
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            if (requestCode != FILECHOOSER_RESULTCODE || mFilePathCallback == null) {
-                super.onActivityResult(requestCode, resultCode, data);
-                return;
-            }
-
-            Uri[] results = null;
-
-            // check that the response is a good one
-            if (resultCode == Activity.RESULT_OK) {
-                if (data == null || data.getData() == null) {
-                    // if there is not data, then we may have taken a photo
-                    if (mCameraPhotoPath != null) {
-                        results = new Uri[]{Uri.parse(mCameraPhotoPath)};
-                    }
-                } else {
-                    String dataString = data.getDataString();
-                    if (dataString != null) {
-                        results = new Uri[]{Uri.parse(dataString)};
-                    }
-                }
-            }
-
-            mFilePathCallback.onReceiveValue(results);
-            mFilePathCallback = null;
-
-        } // end of code for Lollipop only
-    }*/
     private class MyWebChromeClient(var context: Context) :
         WebChromeClient()
     /*fun initToolbar(toolbarId: Int) {

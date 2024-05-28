@@ -464,6 +464,7 @@ class GADQuestionFragment(private val screeningItem: ScreeningItem) : Fragment()
 
                     // Add the constructed PatientAnswer to the list
                     patientAnswers.add(patientAnswer)
+                    answerId==null
                 }
             } /*else {
                 // If the question is not answered, construct the object with null for optionId
