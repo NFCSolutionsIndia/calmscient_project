@@ -201,7 +201,7 @@ class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: S
             }
 
             Log.d("Updated Alarm","$alarm")
-            Toast.makeText(requireContext(),"$alarm",Toast.LENGTH_LONG).show()
+            //Toast.makeText(requireContext(),"$alarm",Toast.LENGTH_LONG).show()
 
             dismiss()
         }

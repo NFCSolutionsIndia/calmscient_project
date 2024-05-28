@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.GuidelinesForDrinkingFragment"
+    android:orientation="vertical">
+
+
+
+    <RelativeLayout
+        android:id="@+id/basicKnowledge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/lexendmedium"
+            android:text="Basic knowledge"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_16sdp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/viewbackgroundcolor" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/_10sdp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/purple_100"
+            android:text="What are the U.S. guidelines for drinking?"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/lexendregular"
+            android:textSize="@dimen/_14sdp"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_head"
+            android:text="The 2020–2025 Dietary Guidelines for Americans states that adults of legal drinking age can choose not to drink or to drink in moderation by limiting intake to 2 drinks or less in a day for men and 1 drink or less in a day for women when alcohol is consumed. Drinking less is better for health than drinking more."
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/lexendlight"
+            android:textSize="@dimen/_12sdp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_head"
+            android:text="There are some adults who should not drink alcohol, such as women who are pregnant.  Adults who choose to drink, and are not among the individuals listed below who should not drink, are encouraged to limit daily consumption of alcohol to align with the Dietary Guidelines."
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/lexendlight"
+            android:textSize="@dimen/_12sdp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_head"
+            android:text="People who do not drink should not start drinking for any reason."
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/lexendlight"
+            android:textSize="@dimen/_12sdp"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

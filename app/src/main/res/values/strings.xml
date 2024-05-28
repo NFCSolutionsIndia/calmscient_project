@@ -2096,6 +2096,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="please_answer_the_questions">Please answer the Questions</string>
     <string name="please_select_at_least_one_day">Please select at least one day</string>
     <string name="please_enter_all_fields">Please enter all fields</string>
+    <string name="hrs">" hrs"</string>
 
 
 </resources>

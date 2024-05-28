@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/_50sdp"
+    tools:context=".fragments.ModerationDrinkingFragment"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/basicKnowledge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/lexendmedium"
+            android:text="Basic knowledge"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_16sdp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/viewbackgroundcolor" />
+
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_marginBottom="@dimen/_44sdp"
+           android:layout_marginHorizontal="@dimen/_10sdp">
+
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textColor="@color/purple_100"
+               android:text="When is drinking in moderation still too much?"
+               android:layout_marginTop="@dimen/_5sdp"
+               android:fontFamily="@font/lexendregular"
+               android:textSize="@dimen/_14sdp"/>
+
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textColor="@color/black_head"
+               android:text="According to the 2020-2025 Dietary Guidelines for Americans, certain individuals should not consume alcohol. It’s safest to void alcohol altogether if you are:"
+               android:layout_marginTop="@dimen/_5sdp"
+               android:fontFamily="@font/lexendlight"
+               android:textSize="@dimen/_12sdp"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textColor="@color/black_head"
+               android:text="There are some adults who should not drink alcohol, such as women who are pregnant.  Adults who choose to drink, and are not among the individuals listed below who should not drink, are encouraged to limit daily consumption of alcohol to align with the Dietary Guidelines."
+               android:layout_marginTop="@dimen/_10sdp"
+               android:fontFamily="@font/lexendlight"
+               android:textSize="@dimen/_12sdp"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textColor="@color/black_head"
+               android:text=" • Taking medications that interact with alcohol\n\n • Managing a medical condition that can be made Worse by drinking\n\n
+• Under the age of 21, the minimum legal drinking age in the United States\n\n
+
+• Recovering from alcohol use disorder (AUD) or unable to control the amount you drink\n\n
+
+• Pregnant or might be pregnant"
+               android:layout_marginTop="@dimen/_10sdp"
+               android:fontFamily="@font/lexendlight"
+               android:textSize="@dimen/_12sdp"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textColor="@color/black_head"
+               android:text="In addition, certain individuals, particularly older adults, who are planning to drive a vehicle or operate machinery-or who are participating in activities that require skill, coordination, and alertness-should avoid alcohol completely."
+               android:layout_marginTop="@dimen/_10sdp"
+               android:fontFamily="@font/lexendlight"
+               android:textSize="@dimen/_12sdp"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textColor="@color/black_head"
+               android:text="In addition, certain individuals, particularly older adults, who are planning to drive a vehicle or operate machinery-or who are participating in activities that require skill, coordination, and alertness-should avoid alcohol completely."
+               android:layout_marginTop="@dimen/_10sdp"
+               android:fontFamily="@font/lexendlight"
+               android:textSize="@dimen/_12sdp"/>
+
+       </LinearLayout>
+   </ScrollView>
+
+
+
+
+</LinearLayout>

@@ -28,7 +28,9 @@ import com.calmscient.di.remote.request.ScreeningsResultsRequest
 import com.calmscient.di.remote.request.SummaryOfAUDITRequest
 import com.calmscient.di.remote.request.SummaryOfDASTRequest
 import com.calmscient.di.remote.request.SummaryOfGADRequest
+import com.calmscient.di.remote.request.SummaryOfMoodRequest
 import com.calmscient.di.remote.request.SummaryOfPHQ9Request
+import com.calmscient.di.remote.request.SummaryOfSleepRequest
 import com.calmscient.di.remote.response.AddMedicationResponse
 import com.calmscient.di.remote.response.AlarmUpdateResponse
 import com.calmscient.di.remote.response.AppointmentDetailsResponseData
@@ -45,7 +47,9 @@ import com.calmscient.di.remote.response.ScreeningResultsResponse
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
 import com.calmscient.di.remote.response.SummaryOfDASTResponse
 import com.calmscient.di.remote.response.SummaryOfGADResponse
+import com.calmscient.di.remote.response.SummaryOfMoodResponse
 import com.calmscient.di.remote.response.SummaryOfPHQ9Response
+import com.calmscient.di.remote.response.SummaryOfSleepResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -110,6 +114,12 @@ interface ApiService {
 
     @POST("patients/api/v1/patientDetails/getSummaryOfDASTByDateRange")
     fun getSummaryOfDAST(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfDASTRequest): Call<SummaryOfDASTResponse>
+
+    @POST("patients/api/v1/patientDetails/getPatientMoodByPatientId")
+    fun getSummaryOfMood(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfMoodRequest): Call<SummaryOfMoodResponse>
+
+    @POST("patients/api/v1/patientDetails/getPatientSleepMonitoringById")
+    fun getSummaryOfSleep(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfSleepRequest): Call<SummaryOfSleepResponse>
 
 }
 

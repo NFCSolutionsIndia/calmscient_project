@@ -11,6 +11,8 @@
 
 package com.calmscient.fragments
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,8 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import com.calmscient.R
 import com.calmscient.databinding.FragmentTakingControlBinding
+import com.calmscient.utils.common.CommonClass
+
 class TakingControlFragment : Fragment() {
 
     private lateinit var binding: FragmentTakingControlBinding
@@ -35,6 +39,18 @@ class TakingControlFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTakingControlBinding.inflate(inflater, container, false)
+
+        binding.btnBasicKnowledge.setOnClickListener{
+            loadFragment(BasicKnowledgeFragment())
+        }
+        binding.btnMakeAPlan.setOnClickListener{
+            if(CommonClass.isNetworkAvailable(requireContext())){
+                loadFragment(TakingControlMakeAPlanScreenOneFragment())
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
         binding.btnSummary.setOnClickListener {
             loadFragment(SummaryTakingControlFragment())
         }
@@ -66,13 +82,27 @@ class TakingControlFragment : Fragment() {
         }
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //loadFragmentWithDelay(TakingControlIntroductionFragment())
+    }
+
+
     private fun updateViewBackgroundColor(view: View, colorResId: Int) {
         view.setBackgroundColor(ContextCompat.getColor(requireContext(), colorResId))
     }
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
-        transaction.addToBackStack(null) // This ensures that the previous fragment is added to the back stack
+        transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun loadFragmentWithDelay(fragment: Fragment) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            loadFragment(fragment)
+        }, 2000)
     }
 }

@@ -124,12 +124,19 @@
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     app:cardCornerRadius="@dimen/_10sdp">
-                    <ImageView
+                 <!--   <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_15sdp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/graph_summaryofsleep"/>
+                        android:src="@drawable/graph_summaryofsleep"/>-->
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChartViewSleep"
+                        android:layout_width="@dimen/_280sdp"
+                        android:layout_height="@dimen/_250sdp"/>
+
+
                 </androidx.cardview.widget.CardView>
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -163,7 +170,7 @@
                         </LinearLayout>
 
                         <ProgressBar
-                            android:id="@+id/progressbar_history"
+                            android:id="@+id/averageSleepProgressBar"
                             style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -171,7 +178,7 @@
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:indeterminate="false"
                             android:max="9"
-                            android:progress="4"
+                            android:progress="0"
                             android:progressDrawable="@drawable/curved_progress_bar"
                             android:scaleY="1"
                             android:theme="@style/ProgressBarStyle" />
@@ -185,11 +192,10 @@
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:layout_marginBottom="@dimen/_10sdp">
                             <TextView
-                                android:id="@+id/text2"
-                                android:layout_width="@dimen/_8sdp"
+                                android:id="@+id/averageSleepHours"
+                                android:layout_width="@dimen/_25sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight=".5"
-                                android:text="4/"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:textSize="@dimen/_11sdp"
                                 android:fontFamily="@font/lexendmedium"
@@ -241,9 +247,9 @@
                                     android:fontFamily="@font/lexendlight"
                                     android:textSize="@dimen/_11sdp"/>
                                 <TextView
+                                    android:id="@+id/maxHoursSleep"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="5.4 hrs"
                                     android:layout_weight=".5"
                                     android:gravity="right"
                                     android:textColor="@color/black_head"
@@ -274,9 +280,9 @@
                                     android:fontFamily="@font/lexendlight"
                                     android:textSize="@dimen/_11sdp"/>
                                 <TextView
+                                    android:id="@+id/tv_averageHoursSleep"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="9.0 hrs"
                                     android:layout_weight=".5"
                                     android:gravity="right"
                                     android:textColor="@color/black_head"
@@ -307,9 +313,9 @@
                                     android:fontFamily="@font/lexendlight"
                                     android:textSize="@dimen/_11sdp"/>
                                 <TextView
+                                    android:id="@+id/minHoursSleep"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="3.0 hrs"
                                     android:layout_weight=".5"
                                     android:gravity="right"
                                     android:textColor="@color/black_head"

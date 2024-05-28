@@ -29,12 +29,14 @@ import com.calmscient.adapters.SummaryofMoodFragmentAdapter
 import com.calmscient.data.remote.WeeklySummaryMoodTask
 import com.calmscient.databinding.CalendarDayLayoutBinding
 import com.calmscient.databinding.SummaryofauditFragmentBinding
+import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
 import com.calmscient.di.remote.response.SummaryOfGADResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.CustomMarkerView
+import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.getColorCompat
 import com.calmscient.viewmodels.GetSummaryOfAUDITViewModel
@@ -76,6 +78,7 @@ class SummaryOfAUDITFragment: Fragment() {
     private lateinit var commonAPICallDialog: CommonAPICallDialog
     private val getSummaryOfAUDITViewModel: GetSummaryOfAUDITViewModel by activityViewModels()
     private lateinit var summaryOfAUDITResponse: SummaryOfAUDITResponse
+    private var loginResponse : LoginResponse? = null
     private lateinit var lineChart: LineChart
     private  lateinit var accessToken : String
 
@@ -101,6 +104,9 @@ class SummaryOfAUDITFragment: Fragment() {
         binding = SummaryofauditFragmentBinding.inflate(inflater, container, false)
 
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
         lineChart = binding.lineChartViewAUDIT
 
 
@@ -121,7 +127,7 @@ class SummaryOfAUDITFragment: Fragment() {
         {
             CommonClass.showInternetDialogue(requireContext())
         }
-        binding.calenderview.setOnClickListener {
+        /*binding.calenderview.setOnClickListener {
             binding.newbackIcon.visibility = View.VISIBLE
             binding.graphScreen.visibility = View.GONE
             binding.datesScreen.visibility = View.VISIBLE
@@ -135,7 +141,7 @@ class SummaryOfAUDITFragment: Fragment() {
             binding.newbackIcon.visibility = View.GONE
             binding.scrollViewScreen.visibility = View.VISIBLE
 
-        }
+        }*/
 
 
         commonAPICallDialog = CommonAPICallDialog(requireContext())
@@ -301,7 +307,7 @@ class SummaryOfAUDITFragment: Fragment() {
 
     private fun apiCall()
     {
-        getSummaryOfAUDITViewModel.getSummaryOfAUDIT(4,4,1,"04/21/2024","05/09/2024",accessToken)
+        loginResponse?.loginDetails?.let { getSummaryOfAUDITViewModel.getSummaryOfAUDIT(it.patientLocationID,it.patientID,it.clientID,"04/21/2024","05/09/2024", accessToken) }
 
     }
 
@@ -333,9 +339,9 @@ class SummaryOfAUDITFragment: Fragment() {
 
     private fun handleApiResponse(response: SummaryOfAUDITResponse) {
         if (response.statusResponse.responseCode == 200) {
-            val phq9ByDateRange = response.auditByDateRange
+            val auditByDateRange = response.auditByDateRange
 
-            if (phq9ByDateRange.isEmpty()) {
+            if (auditByDateRange.isEmpty()) {
                 showNoDataMessage()
                 return
             }
@@ -345,8 +351,8 @@ class SummaryOfAUDITFragment: Fragment() {
             val dateLabels = ArrayList<String>()
 
             // Assuming PHQ9ByDateRange has a date and score
-            for (i in phq9ByDateRange.indices) {
-                val phqData = phq9ByDateRange[i]
+            for (i in auditByDateRange.indices) {
+                val phqData = auditByDateRange[i]
                 val entry = Entry(i.toFloat(), phqData.score.toFloat())
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)

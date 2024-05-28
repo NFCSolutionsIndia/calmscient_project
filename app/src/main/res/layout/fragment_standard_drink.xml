@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.StandardDrinkFragment"
+    android:layout_marginBottom="@dimen/_50sdp"
+    android:orientation="vertical">
+
+
+
+    <RelativeLayout
+        android:id="@+id/basicKnowledge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/lexendmedium"
+            android:text="Basic knowledge"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_16sdp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@color/viewbackgroundcolor" />
+
+
+ <ScrollView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content">
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         android:layout_marginHorizontal="@dimen/_10sdp">
+
+
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textAlignment="center"
+             android:textColor="@color/purple_100"
+             android:text="What’s a standard drink"
+             android:layout_marginTop="@dimen/_5sdp"
+             android:fontFamily="@font/lexendregular"
+             android:textSize="@dimen/_14sdp"/>
+
+
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textColor="@color/black_head"
+             android:text="In the United States, a “standard drink”
+(also known as an alcoholic drink equivalent) is defined
+as any drink that contains about 0.6 fluid ounces or
+14 grams of pure alcohol. Although the drinks pictured
+here are different sizes, each contains approximately
+the same amount of alcohol and counts as one
+U.S. standard drink or one alcoholic drink equivalent."
+             android:layout_marginTop="@dimen/_5sdp"
+             android:fontFamily="@font/lexendlight"
+             android:textSize="@dimen/_12sdp"/>
+
+         <ImageView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:src="@drawable/standard_drink_image"
+             android:layout_marginTop="@dimen/_10sdp"/>
+
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textColor="@color/black_head"
+             android:text="Each beverage portrayed above represents one
+standard drink (or one alcoholic drink equivalent),
+defined in the United States as any beverage
+containing 0.6 oz or 14 grams of pure alcohol.
+The percentage of pure alcohol, expressed here as
+alcohol by volume (alc/vol), varies within and across
+beverage types. Although the standard drink amounts
+are helpful for following health guidelines, they may
+not reflect customary serving sizes"
+             android:layout_marginTop="@dimen/_10sdp"
+             android:fontFamily="@font/lexendlight"
+             android:textSize="@dimen/_12sdp"/>
+
+     </LinearLayout>
+ </ScrollView>
+
+
+
+
+</LinearLayout>
