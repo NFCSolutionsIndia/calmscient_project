@@ -54,7 +54,6 @@
                         android:fontFamily="@font/lexendmedium"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
-                        android:text="@string/mood_right_now"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
 
@@ -84,8 +83,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:text="@string/bad"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -110,7 +107,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/be_better"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -135,7 +131,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/fair"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -160,7 +155,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/good"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -185,7 +179,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/excellent"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -221,7 +214,6 @@
                         android:fontFamily="@font/lexendmedium"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
-                        android:text="@string/day_today"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_15sdp" />
 
@@ -251,9 +243,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_3sdp"
+                                android:textAlignment="center"
                                 android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:text="@string/bad"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -280,7 +271,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
                                 android:layout_marginTop="@dimen/_3sdp"
-                                android:text="@string/be_better"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -308,7 +298,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
                                 android:layout_marginTop="@dimen/_3sdp"
-                                android:text="@string/fair"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -336,7 +325,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
                                 android:layout_marginTop="@dimen/_3sdp"
-                                android:text="@string/good"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -364,7 +352,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
                                 android:layout_marginTop="@dimen/_3sdp"
-                                android:text="@string/excellent"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -393,7 +380,6 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:fontFamily="@font/lexendmedium"
                         android:paddingHorizontal="16dp"
-                        android:text="@string/mood_right_now"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_15sdp" />
 
@@ -404,7 +390,6 @@
                         android:fontFamily="@font/lexendmedium"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
-                        android:text="@string/day_today"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp"
                         android:visibility="gone" />
@@ -436,9 +421,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
+                                android:textAlignment="center"
                                 android:layout_marginTop="@dimen/_3sdp"
-                                android:text="@string/bad"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -465,7 +449,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:layout_marginTop="@dimen/_3sdp"
                                 android:gravity="center"
-                                android:text="@string/be_better"
                                 android:textStyle="bold"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
@@ -494,7 +477,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
                                 android:layout_marginTop="@dimen/_3sdp"
-                                android:text="@string/fair"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -522,7 +504,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:layout_marginTop="@dimen/_3sdp"
                                 android:gravity="center"
-                                android:text="@string/good"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -550,7 +531,6 @@
                                 android:fontFamily="@font/lexendmedium"
                                 android:layout_marginTop="@dimen/_3sdp"
                                 android:gravity="center"
-                                android:text="@string/excellent"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -580,12 +560,12 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_withWhomSpentTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lexendmedium"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
-                        android:text="@string/spend_time"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_15sdp" />
 
@@ -616,7 +596,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/family"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -641,7 +620,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/friends"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -666,7 +644,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/workmates"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -693,7 +670,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/others"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -720,7 +696,6 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lexendmedium"
                                 android:gravity="center"
-                                android:text="@string/alone"
                                 android:textColor="@color/grey_light"
                                 android:textSize="@dimen/_8sdp" />
                         </LinearLayout>
@@ -749,12 +724,12 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_howManyHoursSleep"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lexendregular"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
-                        android:text="@string/hours_night"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_15sdp" />
 
@@ -882,16 +857,16 @@
                         android:paddingVertical="12dp"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_15sdp" />
-                   <!-- <TextView
-                        android:id="@+id/tv_eve_meds"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/sfprotextbold"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:text="@string/take_medic_evening"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15sdp" />-->
+                    <!-- <TextView
+                         android:id="@+id/tv_eve_meds"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:fontFamily="@font/sfprotextbold"
+                         android:paddingHorizontal="16dp"
+                         android:paddingVertical="12dp"
+                         android:text="@string/take_medic_evening"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_15sdp" />-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -939,12 +914,12 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_dailyJournal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lexendmedium"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp"
-                        android:text="@string/daily_journal"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_15sdp" />
 

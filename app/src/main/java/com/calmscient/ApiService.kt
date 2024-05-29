@@ -98,8 +98,8 @@ interface ApiService {
     fun getAppointmentDetails(@Header("Authorization") accessToken: String,@Body requestBody: AppointmentDetailsRequestData): Call<AppointmentDetailsResponseData>
 
 
-    @POST("patients/patientDetails/getPatientStartupScreen")
-    fun getPatientMood(@Body requestBody: PatientMoodRequest): Call<PatientMoodResponse>
+    @POST("patients/api/v1/patientDetails/getPatientStartupScreen")
+    fun getPatientMood(@Header("Authorization") accessToken: String,@Body requestBody: PatientMoodRequest): Call<PatientMoodResponse>
 
 
     @POST("patients/api/v1/medications/addPatientMedicationAlarms")

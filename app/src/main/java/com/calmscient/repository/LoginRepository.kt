@@ -14,7 +14,7 @@ class LoginRepository @Inject constructor(private val apiService: ApiService)
         return apiService.loginUser(loginRequest)
     }
 
-    fun getPatientMood(patientMoodRequest: PatientMoodRequest): Call<PatientMoodResponse> {
-        return apiService.getPatientMood(patientMoodRequest)
+    fun getPatientMood(patientMoodRequest: PatientMoodRequest,accessToken: String): Call<PatientMoodResponse> {
+        return apiService.getPatientMood("Bearer $accessToken",patientMoodRequest)
     }
 }

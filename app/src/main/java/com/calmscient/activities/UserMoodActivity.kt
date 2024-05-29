@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -85,7 +86,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
         Log.d("Login Response in USERMOOD","$loginResponse")
 
         if(CommonClass.isNetworkAvailable(this)){
-           // observeViewModel()
+            observeViewModel()
         }
         else
         {
@@ -176,9 +177,9 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             binding.cardMorniMood.visibility = View.VISIBLE
             binding.mornHoursSleepCard.visibility = View.VISIBLE
             binding.idMornMeds.visibility = View.VISIBLE
-            binding.tvMeds.text = getString(R.string.take_medic_morning)
-            binding.idSwitch.labelOn = getString(R.string.yes)
-            binding.idSwitch.labelOff = getString(R.string.no)
+            //binding.tvMeds.text = getString(R.string.take_medic_morning)
+//            binding.idSwitch.labelOn = getString(R.string.yes)
+//            binding.idSwitch.labelOff = getString(R.string.no)
             binding.layoutButton.visibility = View.VISIBLE
             //binding.cardDailyJournel.visibility = View.VISIBLE
         } else if (greeting == getString(R.string.good_afternoon)) {
@@ -189,9 +190,9 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             binding.spendTimeCard.visibility = View.VISIBLE
             binding.idMornMeds.visibility = View.VISIBLE
             binding.cardDailyJournel.visibility = View.VISIBLE
-            binding.tvMeds.text = getString(R.string.take_medic_evening)
-            binding.idSwitch.labelOn = getString(R.string.yes)
-            binding.idSwitch.labelOff = getString(R.string.no)
+            //binding.tvMeds.text = getString(R.string.take_medic_evening)
+//            binding.idSwitch.labelOn = getString(R.string.yes)
+//            binding.idSwitch.labelOff = getString(R.string.no)
             binding.layoutButton.visibility = View.VISIBLE
         }
     }
@@ -609,7 +610,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
     private fun observeViewModel()
     {
         val currentDatetime = getCurrentDateTime()
-        getPatientMoodViewModel.getPatientMood(loginResponse.loginDetails.patientLocationID,loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,currentDatetime)
+        getPatientMoodViewModel.getPatientMood(loginResponse.loginDetails.patientLocationID,loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,currentDatetime,loginResponse.token.access_token)
 
         getPatientMoodViewModel.loadingLiveData.observe(this, Observer { isLoading->
             if(isLoading)
@@ -648,7 +649,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
         })
 
         getPatientMoodViewModel.errorLiveData.observe(this, Observer { errorData->
-            if(errorData!= null)
+           /* if(errorData!= null)
             {
 
                 if (CommonClass.isNetworkAvailable(this)) {
@@ -660,28 +661,81 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                 } else {
                     CommonClass.showInternetDialogue(this)
                 }
-            }
+            }*/
         })
 
     }
 
-    private fun bindUIData(successData : PatientMoodResponse)
-    {
+    private fun bindUIData(successData : PatientMoodResponse) {
         binding.idWishes.text = successData.wish
         binding.tvMeds.text = successData.medicineData?.medicineQuestion
 
         binding.idAfterMood.text = successData.moodData.moodQuestion
         binding.idEvenMood.text = successData.moodData.moodQuestion
-        binding.idMornMood.text  = successData.moodData.moodQuestion
+        binding.idMornMood.text = successData.moodData.moodQuestion
 
-        successData.moodData.options?.let { options ->
-            if (options.size >= 5) {
-                binding.tvAfterBad.text = options[0].optionType
-                binding.tvAfterBetter.text = options[1].optionType
-                binding.tvAfterFair.text = options[2].optionType
-                binding.tvAfterGood.text = options[3].optionType
-                binding.tvAfterXcellent.text = options[4].optionType
+        binding.tvDailyJournal.text = successData.journalData?.journalKey
+
+        binding.tvMeds.text = successData.medicineData?.medicineQuestion
+
+      if(successData.medicineData != null)
+      {
+          binding.idSwitch.labelOn = successData.medicineData?.option1
+          binding.idSwitch.labelOff = successData.medicineData?.option2
+      }
+
+        binding.tvHowManyHoursSleep.text = successData.sleepData?.sleepQuestion
+
+       // Toast.makeText(this,"${successData.moodData.options}",Toast.LENGTH_LONG).show()
+
+
+           binding.idMornMood.text = successData.moodData.moodQuestion
+
+           successData.moodData.options.let { options ->
+               if (options.size >= 5) {
+                   //Toast.makeText(this,"$options",Toast.LENGTH_LONG).show()
+                   binding.tvBad.text = options[0].optionType
+                   binding.tvBetter.text = options[1].optionType
+                   binding.tvFair.text = options[2].optionType
+                   binding.tvGood.text = options[3].optionType
+                   binding.tvXcellent.text = options[4].optionType
+               }
+           }
+
+
+
+            binding.idEvenMood.text = successData.moodData.moodQuestion
+
+            successData.moodData.options.let { options ->
+                if (options.size >= 5) {
+                    binding.tvEveBad.text = options[0].optionType
+                    binding.tvEveBetter.text = options[1].optionType
+                    binding.tvEveFair.text = options[2].optionType
+                    binding.tvEveGood.text = options[3].optionType
+                    binding.tvEveXcellent.text = options[4].optionType
+                }
             }
-        }
+
+                binding.tvWithWhomSpentTime.text = successData.timeSpendData?.timeSpendQuestion
+
+                binding.tvFamily.text = successData.timeSpendData?.option1
+                binding.tvFriends.text = successData.timeSpendData?.option2
+                binding.tvWorkmates.text = successData.timeSpendData?.option3
+                binding.tvOthers.text = successData.timeSpendData?.option4
+                binding.tvAlone.text = successData.timeSpendData?.option5
+
+
+
+         successData.moodData.options.let { options ->
+             if (options.size >= 5) {
+                 binding.tvAfterBad.text = options[0].optionType
+                 binding.tvAfterBetter.text = options[1].optionType
+                 binding.tvAfterFair.text = options[2].optionType
+                 binding.tvAfterGood.text = options[3].optionType
+                 binding.tvAfterXcellent.text = options[4].optionType
+             }
+         }
+
+
     }
 }

@@ -45,20 +45,22 @@ class GetPatientMoodViewModel @Inject constructor(private val repository: LoginR
     private var lastClientId: Int = -1
     private var lastPatientId: Int = -1
     private var lastDateTime: String = ""
+    private var lastAccessToken: String = ""
 
     // Function to save patient answers
-    fun getPatientMood(  patientLocationId: Int,clientId: Int, patientId: Int,  dateTime:String) {
+    fun getPatientMood(  patientLocationId: Int,clientId: Int, patientId: Int,  dateTime:String,accessToken:String) {
         loadingLiveData.value = true // Show loader
 
         lastPatientLocationId = patientLocationId
         lastDateTime= dateTime
         lastClientId = clientId
         lastPatientId = patientId
+        lastAccessToken = accessToken
 
         viewModelScope.launch {
             try {
                 val request = PatientMoodRequest(patientLocationId,clientId,patientId,dateTime)
-                val response = repository.getPatientMood(request)
+                val response = repository.getPatientMood(request,accessToken)
                 Log.d("GetPatientMoodViewModel", "Response: $response")
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
@@ -117,7 +119,7 @@ class GetPatientMoodViewModel @Inject constructor(private val repository: LoginR
     fun retryGetPatientMood() {
         if(lastPatientLocationId>0 && lastPatientId>0 && lastClientId>0 && lastDateTime.isNotEmpty())
         {
-            getPatientMood(lastPatientLocationId,lastClientId,lastPatientId,lastDateTime)
+            getPatientMood(lastPatientLocationId,lastClientId,lastPatientId,lastDateTime,lastAccessToken)
         }
     }
 

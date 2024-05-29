@@ -16,7 +16,8 @@ data class PatientMoodResponse(
     val moodData: MoodData,
     val sleepData: SleepData? = null,
     val timeSpendData: TimeSpendData? = null,
-    val medicineData: MedicineData? = null
+    val medicineData: MedicineData? = null,
+    val journalData: JournalData? = null
 )
 
 data class MoodOption(
@@ -56,4 +57,9 @@ data class MedicineData(
     val medicineQuestion: String,
     val option1: String,
     val option2: String
+)
+
+data class JournalData(
+    val journalKey : String,
+    val optionType : String
 )
