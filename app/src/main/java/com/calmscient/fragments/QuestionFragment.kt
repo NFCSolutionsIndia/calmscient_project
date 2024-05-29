@@ -116,6 +116,7 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 
         binding.backIcon.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
+                commonDialog.dismiss()
                 loadFragment(ScreeningsFragment())
             } else {
                 CommonClass.showInternetDialogue(requireContext())
@@ -203,10 +204,12 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 
     private fun observeViewModel() {
 
-        screeningQuestionsViewModel.screeningsQuestionResultLiveData.observe(
+       /* screeningQuestionsViewModel.screeningsQuestionResultLiveData.observe(
             viewLifecycleOwner,
             Observer { isSuccess ->
                 if (isSuccess) {
+                    customProgressDialog.dialogDismiss()
+                    commonDialog.dismiss()
                     screeningQuestionsViewModel.screeningQuestionListLiveData.observe(
                         viewLifecycleOwner,
                         Observer { questionnaireItems ->
@@ -245,7 +248,7 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
                         }
                     }
                 }
-            })
+            })*/
         screeningQuestionsViewModel.screeningQuestionListLiveData.observe(
             viewLifecycleOwner,
             Observer { questionnaireItems ->
@@ -272,7 +275,8 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 
                     customProgressDialog.dialogDismiss()
                 }
-            })
+           }
+        )
     }
 
     private fun displayQuestions(questionnaireItems: List<QuestionnaireItem>) {
@@ -297,102 +301,76 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
         transaction.commit()
     }
 
+    private fun navigateToScreeningsFragment() {
+        commonDialog.dismiss()
+        if (CommonClass.isNetworkAvailable(requireContext())) {
+            loadFragment(ScreeningsFragment())
+        } else {
+            CommonClass.showInternetDialogue(requireContext())
+        }
+    }
+
+    private fun navigateToResultsFragment() {
+        commonDialog.dismiss()
+        if (CommonClass.isNetworkAvailable(requireContext())) {
+            loadFragment(ResultsFragment())
+        } else {
+            CommonClass.showInternetDialogue(requireContext())
+        }
+    }
+
     private fun moveToNextQuestion() {
-        var patientAnswers: PatientAnswersWrapper? = null
-        var flag : Boolean = false
         if (screeningQuestionResponse.isNotEmpty() && currentQuestionIndex < screeningQuestionResponse.size) {
             val currentQuestion = screeningQuestionResponse[currentQuestionIndex]
             val selectedOptionId = questionAdapter.getSelectedOptionId(currentQuestionIndex)
             storeSelectedOption(currentQuestion.questionId, selectedOptionId)
 
-            Log.d(" Question ID", "${currentQuestion.questionId}")
-            Log.d(" Selected Option ID", "$selectedOptionId")
-
             currentQuestionIndex++
 
-            // Check if the current question index is at the last question
-            if (currentQuestionIndex == screeningQuestionResponse.size && areSelectedOptionsChanged()) {
-                // Update the last saved state of selected options
-                updateLastSavedSelectedOptions()
+            if (currentQuestionIndex == screeningQuestionResponse.size) {
+                if (areSelectedOptionsChanged()) {
+                    updateLastSavedSelectedOptions()
+                    val patientAnswers = constructPatientAnswers()
 
-                saveScreeningAnswersViewModel.successNotAnsweredData.observe(viewLifecycleOwner, Observer { isNotAnswered ->
-                    if (isNotAnswered) {
-                        saveScreeningAnswersViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData ->
-                            successData?.statusResponse?.responseMessage?.let {
-                                commonDialog.dismiss()
-                                commonDialog.showDialog(it)
-                            }
-                        })
-                    }
-                })
-
-                // Call the method to construct patient answers and print the data in the log
-                val patientAnswers = constructPatientAnswers()
-
-                Log.d(" Patient Answer", patientAnswers.toString())
-
-                // Check if patient answers are not empty
-                if (patientAnswers.patientAnswers.isNotEmpty()) {
-                    saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers,accessToken)
-
-                    saveScreeningAnswersViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
-                        if (isLoading) {
-                            customProgressDialog.show("Loading...")
-                        } else {
-                            customProgressDialog.dialogDismiss()
+                    if (patientAnswers.patientAnswers.isNotEmpty()) {
+                        saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers, accessToken)
+                        saveScreeningAnswersViewModel.loadingLiveData.observe(viewLifecycleOwner) { isLoading ->
+                            if (isLoading) customProgressDialog.show("Loading...") else customProgressDialog.dialogDismiss()
                         }
-                    })
 
-                    saveScreeningAnswersViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
-                        if (!isSuccess) {
-                            saveScreeningAnswersViewModel.errorLiveData.value?.let { failureMessage ->
-                                failureMessage.let {
-                                    ServerTimeoutHandler.handleTimeoutException(requireContext()) {
-                                        // Retry logic when the retry button is clicked
-                                        saveScreeningAnswersViewModel.retrySavePatientAnswers()
-                                    }
-                                }
-                            }
-                            saveScreeningAnswersViewModel.failureLiveData.value?.let { failureMessage ->
-                                failureMessage.let {
-                                    commonDialog.dismiss()
-                                    commonDialog.showDialog(it)
-                                }
-                            }
-                        } else {
-                            // Observe successLiveData to show the success message
-                            saveScreeningAnswersViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
-                                if (isSuccess) {
-                                   /* saveScreeningAnswersViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData ->
-                                        successData?.statusResponse?.responseMessage?.let {
-                                            commonDialog.showDialog(it)
+                        saveScreeningAnswersViewModel.successLiveData.observe(viewLifecycleOwner) { isSuccess ->
+                            if (isSuccess) {
+                                saveScreeningAnswersViewModel.saveResponseLiveData.observe(viewLifecycleOwner) { successData ->
+                                    if (successData != null) {
+                                        commonDialog.showDialog(successData.statusResponse.responseMessage)
+                                        commonDialog.setOnDismissListener {
+                                            navigateToResultsFragment()
                                         }
-                                    })*/
-                                    commonDialog.dismiss()
-                                    flag= true
-                                    if (CommonClass.isNetworkAvailable(requireContext())) {
-                                        loadFragment(ResultsFragment())
-                                    } else {
-                                        CommonClass.showInternetDialogue(requireContext())
                                     }
                                 }
-                            })
+                            }
                         }
-                    })
-                    commonDialog.dismiss()
-                    customProgressDialog.dialogDismiss()
-                    //loadFragment(ResultsFragment())
+
+                        saveScreeningAnswersViewModel.successNotAnsweredDataMessage.observe(viewLifecycleOwner) { message ->
+                            commonDialog.showDialog(message)
+                            commonDialog.setOnDismissListener {
+                                navigateToScreeningsFragment()
+                            }
+                        }
+
+                        saveScreeningAnswersViewModel.errorLiveData.observe(viewLifecycleOwner) { errorMessage ->
+                            commonDialog.showDialog(errorMessage)
+                        }
+                    } else {
+                        commonDialog.showDialog(getString(R.string.please_answer_the_questions))
+                    }
                 }
             } else {
-                // Smooth scroll to the next question
                 binding.questionsRecyclerView.smoothScrollToPosition(currentQuestionIndex)
             }
         }
-        else if (patientAnswers?.patientAnswers.isNullOrEmpty() && !flag)  {
-            commonDialog.showDialog(getString(R.string.please_answer_the_questions))
-            Log.e(" Fragment", "screeningQuestionResponse is empty or currentQuestionIndex is out of bounds")
-        }
     }
+
 
 
     private fun moveToPreviousQuestion() {

@@ -8,7 +8,6 @@
  *
  *      Author : @Pardha Saradhi
  */
-
 package com.calmscient.utils
 
 import android.annotation.SuppressLint
@@ -16,49 +15,48 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import com.calmscient.R
 
 class CommonAPICallDialog(private val context: Context) {
-    lateinit var dialog: Dialog
+    private var dialog: Dialog? = null
+    private var onDismissListener: (() -> Unit)? = null
+
     @SuppressLint("MissingInflatedId")
     fun showDialog(message: String) {
-        dialog = Dialog(context)
+        dismiss()
+
         val dialogView = LayoutInflater.from(context).inflate(R.layout.layout_common_dialog, null)
         val infoTextView = dialogView.findViewById<TextView>(R.id.dialogInfoTextView)
         val okButton = dialogView.findViewById<AppCompatButton>(R.id.okButton)
         infoTextView.text = message
-        val dialogBuilder =
-            androidx.appcompat.app.AlertDialog.Builder(context, R.style.CustomDialog)
-                .setView(dialogView)
 
+        val dialogBuilder = AlertDialog.Builder(context, R.style.CustomDialog).setView(dialogView)
+        dialogBuilder.setCancelable(false)
         dialog = dialogBuilder.create()
-        dialog.show()
+        dialog?.show()
 
-        // Handle the close button click
-
-        okButton.setOnClickListener{
-           dialog.dismiss()
+        okButton.setOnClickListener {
+            dialog?.dismiss()
+            onDismissListener?.invoke()
         }
     }
 
     fun dismiss() {
-        if (::dialog.isInitialized && dialog.isShowing) {
-            dialog.dismiss()
+        dialog?.let {
+            if (it.isShowing) {
+                it.dismiss()
+            }
         }
+        dialog = null
     }
 
     fun setOnDismissListener(listener: () -> Unit) {
-        dialog.setOnDismissListener {
-            listener.invoke()
-        }
+        onDismissListener = listener
     }
 
     fun isShowing(): Boolean {
-        return ::dialog.isInitialized && dialog.isShowing
+        return dialog?.isShowing == true
     }
-
 }
-

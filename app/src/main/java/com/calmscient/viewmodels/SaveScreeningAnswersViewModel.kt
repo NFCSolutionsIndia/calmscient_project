@@ -34,28 +34,24 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
+    val successNotAnsweredDataMessage: MutableLiveData<String> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val failureLiveData: MutableLiveData<String> = MutableLiveData()
-    val failureResponseData: MutableLiveData<PatientAnswersStatusResponse?> = MutableLiveData()
-
 
     private var lastRequestBody: PatientAnswersWrapper? = null
     private var lastAccessToken: String = ""
-    // Function to save patient answers
-    fun savePatientAnswers(requestBody: PatientAnswersWrapper,accessToken : String) {
-        loadingLiveData.value = true // Show loader
+
+    fun savePatientAnswers(requestBody: PatientAnswersWrapper, accessToken: String) {
+        loadingLiveData.value = true
         lastRequestBody = requestBody
         lastAccessToken = accessToken
         viewModelScope.launch {
             try {
-                val response = repository.saveScreeningQuestionAnswers(requestBody,accessToken)
+                val response = repository.saveScreeningQuestionAnswers(requestBody, accessToken)
                 handleResponse(response)
             } catch (e: SocketTimeoutException) {
-                // Handle timeout exception
                 failureLiveData.postValue("Timeout Exception: ${e.message}")
-                Log.e("SaveScreeningAnswersViewModel", "Timeout Exception: ${e.message}")
             } catch (e: Exception) {
-                e.printStackTrace()
                 failureLiveData.value = "Failed to save patient answers."
             } finally {
                 loadingLiveData.value = false
@@ -63,52 +59,41 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
         }
     }
 
-    // Function to handle API response
     private suspend fun handleResponse(call: Call<PatientAnswerSaveResponse>) {
         withContext(Dispatchers.IO) {
             try {
                 val response = call.execute()
                 if (response.isSuccessful) {
-                    val isSuccess = response.body()?.statusResponse?.responseCode == 200
-                    val isNotAnswered = response.body()?.statusResponse?.responseCode == 300
-                    if (isSuccess) {
-                        saveResponseLiveData.postValue(response.body())
-                        successLiveData.postValue(isSuccess)
+                    val responseCode = response.body()?.statusResponse?.responseCode
+                    val responseMessage = response.body()?.statusResponse?.responseMessage ?: "Unknown error"
+                    when (responseCode) {
+                        200 -> {
+                            saveResponseLiveData.postValue(response.body())
+                            successLiveData.postValue(true)
+                        }
+                        300 -> {
+                            saveResponseLiveData.postValue(response.body())
+                            successNotAnsweredData.postValue(true)
+                            successNotAnsweredDataMessage.postValue(responseMessage)
+                        }
+                        else -> {
+                            errorLiveData.postValue("Error: ${response.body()?.statusResponse?.responseMessage}")
+                        }
                     }
-                   else if(isNotAnswered)
-                    {
-                        saveResponseLiveData.postValue(response.body())
-                        successNotAnsweredData.postValue(isNotAnswered)
-                    }
-                    else
-                    {
-                        failureResponseData.postValue(response.body()?.statusResponse)
-                        val res = response.body()?.statusResponse?.responseMessage
-                        errorLiveData.postValue("Error Occure: $res")
-                        successNotAnsweredData.postValue(false)
-
-                    }
-                }
-                else {
+                } else {
                     errorLiveData.postValue("Failed to save patient answers.")
                 }
             } catch (e: SocketTimeoutException) {
-                // Handle timeout exception
                 failureLiveData.postValue("Timeout Exception: ${e.message}")
                 errorLiveData.postValue("Timeout Exception: ${e.message}")
-                Log.e("SaveScreeningAnswersViewModel", "Timeout Exception: ${e.message}")
             } catch (e: Exception) {
-                e.printStackTrace()
                 failureLiveData.postValue("Failed to save patient answers.")
             }
         }
     }
 
-    // Function to retry saving patient answers
     fun retrySavePatientAnswers() {
-      if(lastRequestBody != null && lastAccessToken.isNotEmpty())
-      {
-          savePatientAnswers(lastRequestBody!!,lastAccessToken)
-      }
+        lastRequestBody?.let { savePatientAnswers(it, lastAccessToken) }
     }
 }
+
