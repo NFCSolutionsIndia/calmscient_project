@@ -25,7 +25,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
-import com.calmscient.activities.WebViewActivity
 import com.calmscient.adapters.AnxietyIntroductionAdapter
 import com.calmscient.adapters.CardItemDiffCallback
 import com.calmscient.adapters.ManageAnxietyChapterAdapter
@@ -217,14 +216,7 @@ class ManageAnxietyFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
-    private fun startWebViewActivity(url: String, chapterName: String?) {
-        val intent = Intent(requireContext(), WebViewActivity::class.java).apply {
-            putExtra(WebViewActivity.ARG_URL, url)
-            putExtra(WebViewActivity.CHAPTER_NAME, chapterName)
-        }
-        startActivity(intent)
-    }
-
+   
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
