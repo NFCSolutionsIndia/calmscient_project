@@ -15,8 +15,11 @@ import com.calmscient.di.remote.request.AddMedicationDetailsRequest
 import com.calmscient.di.remote.request.AlarmUpdateRequest
 import com.calmscient.di.remote.request.AlarmWrapper
 import com.calmscient.di.remote.request.AppointmentDetailsRequestData
+import com.calmscient.di.remote.request.CreateDrinkTrackerRequest
+import com.calmscient.di.remote.request.DrinkTrackerRequest
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.request.LoginRequest
+import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
 import com.calmscient.di.remote.request.MedicationDetailsRequest
 import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
@@ -25,6 +28,7 @@ import com.calmscient.di.remote.request.ScreeningHistoryRequest
 import com.calmscient.di.remote.request.ScreeningRequest
 import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
 import com.calmscient.di.remote.request.ScreeningsResultsRequest
+import com.calmscient.di.remote.request.SessionIdRequest
 import com.calmscient.di.remote.request.SummaryOfAUDITRequest
 import com.calmscient.di.remote.request.SummaryOfCourseWorkRequest
 import com.calmscient.di.remote.request.SummaryOfDASTRequest
@@ -35,8 +39,11 @@ import com.calmscient.di.remote.request.SummaryOfSleepRequest
 import com.calmscient.di.remote.response.AddMedicationResponse
 import com.calmscient.di.remote.response.AlarmUpdateResponse
 import com.calmscient.di.remote.response.AppointmentDetailsResponseData
+import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
+import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.MedicationDetailsResponse
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
@@ -45,6 +52,7 @@ import com.calmscient.di.remote.response.ScreeningHistoryResponse
 import com.calmscient.di.remote.response.ScreeningHistoryResponseData
 import com.calmscient.di.remote.response.ScreeningResponse
 import com.calmscient.di.remote.response.ScreeningResultsResponse
+import com.calmscient.di.remote.response.SessionIdResponse
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
 import com.calmscient.di.remote.response.SummaryOfCourseWorkResponse
 import com.calmscient.di.remote.response.SummaryOfDASTResponse
@@ -54,6 +62,7 @@ import com.calmscient.di.remote.response.SummaryOfPHQ9Response
 import com.calmscient.di.remote.response.SummaryOfSleepResponse
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Url
@@ -61,16 +70,29 @@ import retrofit2.http.Url
 
 interface ApiService {
 
+    //Login
     @POST("identity/api/v1/settings/userLogin")
     fun loginUser(@Body requestBody: LoginRequest): Call<LoginResponse>
+
+    //sessionId
+    @GET("identity/api/v1/user/getSession")
+    fun getSessionId(@Header("Authorization") accessToken: String) : Call<SessionIdResponse>
+
+    //Moods Screen
+    @POST("patients/api/v1/patientDetails/getPatientStartupScreen")
+    fun getPatientMood(@Header("Authorization") accessToken: String,@Body requestBody: PatientMoodRequest): Call<PatientMoodResponse>
+
 
 
 //    @POST("identity/menu/fetchMenus")
 //    fun fetchMenuItems(@Body requestBody: MenuItemRequest): Call<MenuItemsResponse>
 
+    //Menu
     @POST("identity/api/v1/menu/fetchMenus")
     fun fetchMenuItems(@Header("Authorization") accessToken: String, @Body requestBody: MenuItemRequest): Call<MenuItemsResponse>
 
+
+    //ScreeningsList
     @POST("patients/api/v1/screening/getScreeningListForMobile")
     fun fetchScreeningsMenuItems(@Header("Authorization") accessToken: String,@Body requestBody: ScreeningRequest): Call<ScreeningResponse>
 
@@ -87,24 +109,24 @@ interface ApiService {
     @POST("patients/api/v1/screening/getScreeningResultsForMobile")
     fun getScreeningsResults(@Header("Authorization") accessToken: String,@Body requestBody: ScreeningsResultsRequest): Call<ScreeningResultsResponse>
 
-
+    //Medications
     @POST("patients/api/v1/medications/getMedications")
     fun getMedicationDetails(@Header("Authorization") accessToken: String,@Body requestBody: MedicationDetailsRequest): Call<MedicationDetailsResponse>
 
     @POST("patients/api/v1/medications/addMedications")
     fun addMedicationDetails(@Header("Authorization") accessToken: String,@Body requestBody: AddMedicationDetailsRequest): Call<AddMedicationResponse>
 
-    @POST("patients/api/v1/patientDetails/getMedicalAppointmentsByPatientId")
-    fun getAppointmentDetails(@Header("Authorization") accessToken: String,@Body requestBody: AppointmentDetailsRequestData): Call<AppointmentDetailsResponseData>
-
-
-    @POST("patients/api/v1/patientDetails/getPatientStartupScreen")
-    fun getPatientMood(@Header("Authorization") accessToken: String,@Body requestBody: PatientMoodRequest): Call<PatientMoodResponse>
-
 
     @POST("patients/api/v1/medications/addPatientMedicationAlarms")
     fun updatePatientMedicationDetails(@Header("Authorization") accessToken: String,@Body requestBody: AlarmWrapper): Call<AlarmUpdateResponse>
 
+
+    //Medical Appointments
+    @POST("patients/api/v1/patientDetails/getMedicalAppointmentsByPatientId")
+    fun getAppointmentDetails(@Header("Authorization") accessToken: String,@Body requestBody: AppointmentDetailsRequestData): Call<AppointmentDetailsResponseData>
+
+
+    //WeeklySummary
     @POST("patients/api/v1/patientDetails/getPHQDashboardByDateRange")
     fun getSummaryOfPHQ(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfPHQ9Request): Call<SummaryOfPHQ9Response>
 
@@ -126,5 +148,14 @@ interface ApiService {
     @POST("patients/api/v1/course/getPatientCourseWorkPercentageDetails")
     fun getSummaryOfCourseWork(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfCourseWorkRequest): Call<SummaryOfCourseWorkResponse>
 
+    //ManageAnxiety
+    @POST("patients/api/v1/course/getPatientCourseIndex")
+    fun getManageAnxietyIndexData(@Header("Authorization") accessToken: String,@Body request: ManageAnxietyIndexRequest) :Call<ManageAnxietyIndexResponse>
+
+    @POST("patients/api/v1/alcohol/getDrinksList")
+    fun getDrinkTackerData(@Header("Authorization") accessToken: String,@Body request: DrinkTrackerRequest) :Call<DrinkTrackerResponse>
+
+    @POST("patients/api/v1/alcohol/createDrinkTracking")
+    fun createDrinkTrackerList(@Header("Authorization") accessToken: String,@Body request: CreateDrinkTrackerRequest) : Call<CreateDrinkTrackerResponse>
 }
 

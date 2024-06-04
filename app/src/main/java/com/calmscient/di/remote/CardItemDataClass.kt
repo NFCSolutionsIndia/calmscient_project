@@ -24,6 +24,16 @@ data class CardItemDataClass(val availableContentTypes: List<ItemType>,
                              val isCompleted: Boolean
 )
 
+data class ChapterDataClass(
+    val chapterId: Int,
+    val chapterName: String?,
+    val chapterUrl: String?,
+    val isCourseCompleted: Int,
+    val pageCount: Int,
+    val imageUrl: String,
+    val chapterOnlyReading: Boolean
+)
+
 enum class ItemType {
     VIDEO, AUDIO, QUIZ, LESSON
 }

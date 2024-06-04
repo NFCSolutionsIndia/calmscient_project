@@ -14,10 +14,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
-import com.calmscient.di.remote.response.PatientAnswersStatusResponse
 import com.calmscient.repository.ScreeningQuestionnaireRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

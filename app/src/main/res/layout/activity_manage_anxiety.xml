@@ -70,11 +70,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_introduction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/introduction"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -94,11 +94,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_lessonOne"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/lesson"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -119,11 +119,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_lessonTwo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/lesson_2"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -143,11 +143,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_lessonThree"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/lesson_3"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -167,11 +167,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_lessonFour"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/lesson_4"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -191,11 +191,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_lessonFive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/lesson_5"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -215,11 +215,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_lessonSix"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/lesson_6"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -232,6 +232,7 @@
 
                 <!-- Additional Resource  -->
                 <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -239,11 +240,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_additionalResource"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/additional_resources"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 

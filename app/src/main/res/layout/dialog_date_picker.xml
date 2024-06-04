@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calendar"
+        android:textSize="@dimen/_12sdp"
+        android:layout_gravity="center"
+        android:textColor="@color/black_head"
+        android:fontFamily="@font/lexendregular"/>
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="calendar"
+        android:dateTextAppearance="?android:attr/textAppearanceSmall"
+        android:weekDayTextAppearance="?android:attr/textAppearanceSmallInverse"
+        android:showWeekNumber="true"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lexendregular"
+            android:background="@drawable/skip_border"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textColor="@color/btn_gradient_color"
+            android:textSize="@dimen/_16sdp"
+            android:text="Cancel" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnOk"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lexendregular"
+            android:background="@drawable/button_border"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Ok"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp"/>
+    </LinearLayout>
+</LinearLayout>
