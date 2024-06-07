@@ -569,7 +569,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
 
         val calendar = Calendar.getInstance()
         calendar.time = formatter24Hours.parse(alarm)!!
-        calendar.add(Calendar.MINUTE, interval)
+        calendar.add(Calendar.MINUTE, -interval)
 
         return formatter12Hours.format(calendar.time)
     }

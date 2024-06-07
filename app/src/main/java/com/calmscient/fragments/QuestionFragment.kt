@@ -194,7 +194,7 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
 
     private fun setupRecyclerView() {
         // Assuming you have already initialized questionnaireItems in your ViewModel
-        questionAdapter = QuestionAdapter(requireContext(), emptyList())
+        questionAdapter = QuestionAdapter(requireContext(), emptyList(),screeningResponseList[0].screeningReminder)
         binding.questionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = questionAdapter

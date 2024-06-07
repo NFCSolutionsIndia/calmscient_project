@@ -122,13 +122,13 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="@dimen/_10sdp">
                         <TextView
+                            android:id="@+id/tv_alcoholFreeDays"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:layout_marginHorizontal="@dimen/_20sdp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_gravity="center"
-                            android:text="@string/taking_control_alcoholfeedays"
                             android:layout_weight="1"
                             android:fontFamily="@font/lexendregular"
                             android:textSize="@dimen/_14sdp"
@@ -172,12 +172,11 @@
                                 android:textColor="@color/black_head"/>
 
                             <TextView
-                                android:id="@+id/daysseven"
+                                android:id="@+id/tv_alcoholNowDays"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_35sdp"
                                 android:layout_marginTop="60dp"
-                                android:text="@string/taking_control_7_days"
                                 android:fontFamily="@font/lexendmedium"
                                 android:textSize="@dimen/_14sdp"
                                 android:textColor="@color/black_head" />
@@ -212,12 +211,11 @@
                                 android:textColor="@color/black_head" />
 
                             <TextView
-                                android:id="@+id/morningAlarm"
+                                android:id="@+id/tv_alcoholGoalDays"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_30sdp"
                                 android:layout_marginTop="60dp"
-                                android:text="@string/taking_control_10_days"
                                 android:fontFamily="@font/lexendmedium"
                                 android:textSize="@dimen/_14sdp"
                                 android:textColor="@color/black_head" />
@@ -229,12 +227,12 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tv_drinkCount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/_20sdp"
                             android:layout_gravity="center"
                             android:layout_marginBottom="@dimen/_5sdp"
-                            android:text="@string/taking_control_drink_count"
                             android:layout_weight="1"
                             android:fontFamily="@font/lexendregular"
                             android:textSize="@dimen/_14sdp"
@@ -275,12 +273,11 @@
                                 android:textColor="@color/black_head"/>
 
                             <TextView
-                                android:id="@+id/countsten"
+                                android:id="@+id/tv_drinkCountNowDays"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="60dp"
                                 android:layout_marginStart="@dimen/_30sdp"
-                                android:text="@string/taking_control_10_days"
                                 android:fontFamily="@font/lexendmedium"
                                 android:textSize="@dimen/_14sdp"
                                 android:textColor="@color/black_head" />
@@ -314,12 +311,11 @@
                                 android:textColor="@color/black_head"/>
 
                             <TextView
-                                android:id="@+id/countssixty"
+                                android:id="@+id/tv_drinkCountGoalDays"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="60dp"
                                 android:layout_marginStart="@dimen/_25sdp"
-                                android:text="@string/taking_control_60_days"
                                 android:fontFamily="@font/lexendmedium"
                                 android:textSize="@dimen/_14sdp"
                                 android:textColor="@color/black_head" />
@@ -340,9 +336,8 @@
                             android:textColor="@drawable/button_text_color_taking_control"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="Basic knowledge"
                             android:textSize="@dimen/_14sdp"
-                            android:enabled="true" />
+                            android:enabled="false" />
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_makeAPlan"
                             android:layout_width="match_parent"
@@ -353,9 +348,8 @@
                             android:textColor="@drawable/button_text_color_taking_control"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="Make a plan"
                             android:textSize="@dimen/_14sdp"
-                            android:enabled="true"/>
+                            android:enabled="false"/>
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_summary"
@@ -365,11 +359,10 @@
                             android:fontFamily="@font/lexendregular"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="@string/summary"
                             android:textSize="@dimen/_14sdp"
                             android:background="@drawable/button_background_disabled"
                             android:textColor="@drawable/button_text_color_taking_control"
-                            android:enabled="true"/>
+                            android:enabled="false"/>
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_drinkTracker"
                             android:layout_width="match_parent"
@@ -378,11 +371,10 @@
                             android:fontFamily="@font/lexendregular"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="@string/drink_tracker"
                             android:textSize="@dimen/_14sdp"
                             android:background="@drawable/button_background_disabled"
                             android:textColor="@drawable/button_text_color_taking_control"
-                            android:enabled="true"/>
+                            android:enabled="false"/>
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_eventTracker"
                             android:layout_width="match_parent"
@@ -391,23 +383,22 @@
                             android:fontFamily="@font/lexendregular"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="@string/events_tracker"
                             android:textSize="@dimen/_14sdp"
                             android:background="@drawable/button_background_disabled"
                             android:textColor="@drawable/button_text_color_taking_control"
-                            android:enabled="true"/>
+                            android:enabled="false"/>
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_seeTheInformation"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
                             android:fontFamily="@font/lexendregular"
-                            android:background="@drawable/skip_border"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="See the introduction"
-                            android:textColor="@color/btn_gradient_color"
-                            android:enabled="true"
+                            android:text="hjgcfdxxgcv"
+                            android:background="@drawable/button_background_disabled"
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:enabled="false"
                             android:textSize="@dimen/_14sdp" />
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_howToUse"
@@ -418,7 +409,6 @@
                             android:background="@drawable/skip_border"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:text="How to use"
                             android:textColor="@color/btn_gradient_color"
                             android:textSize="@dimen/_14sdp" />
 

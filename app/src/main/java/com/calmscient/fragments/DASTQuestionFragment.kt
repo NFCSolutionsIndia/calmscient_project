@@ -82,7 +82,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                loadFragment(ScreeningsFragment())
+                navigateBackToPreviousScreen()
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -113,7 +113,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
         binding.backIcon.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                loadFragment(ScreeningsFragment())
+                navigateBackToPreviousScreen()
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -190,7 +190,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
     private fun setupRecyclerView() {
         // Assuming you have already initialized questionnaireItems in your ViewModel
-        questionAdapter = QuestionAdapter(requireContext(), emptyList())
+        questionAdapter = QuestionAdapter(requireContext(), emptyList(),screeningResponseList[0].screeningReminder)
         binding.questionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = questionAdapter
@@ -472,4 +472,23 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
         return PatientAnswersWrapper(patientAnswers)
 
     }
+
+    private fun navigateBackToPreviousScreen() {
+        // Check if there's a fragment in the back stack
+        if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+            // Prepare the result data
+            val result = 3
+            val resultBundle = Bundle()
+            resultBundle.putInt("currentScreenIndex", result)
+
+            // Set the result and pop the back stack
+            parentFragmentManager.setFragmentResult("currentScreenIndex", resultBundle)
+            requireActivity().supportFragmentManager.popBackStack()
+        } else {
+            // If there's no fragment in the back stack, you can handle it accordingly
+            // For example, load the ScreeningsFragment directly
+            loadFragment(ScreeningsFragment())
+        }
+    }
+
 }

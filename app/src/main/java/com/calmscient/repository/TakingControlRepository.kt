@@ -14,10 +14,19 @@ package com.calmscient.repository
 import com.calmscient.ApiService
 import com.calmscient.di.remote.request.CreateDrinkTrackerRequest
 import com.calmscient.di.remote.request.DrinkTrackerRequest
+import com.calmscient.di.remote.request.GetEventsListRequest
+import com.calmscient.di.remote.request.GetTakingControlIndexRequest
+import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
+import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
+import com.calmscient.di.remote.response.GetEventsListResponse
+import com.calmscient.di.remote.response.GetTakingControlIndexResponse
+import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
+import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
+import com.calmscient.di.remote.response.TakingControlIntroduction
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -30,4 +39,21 @@ class TakingControlRepository @Inject constructor(private val apiService: ApiSer
     fun createDrinkTrackerList(createDrinkTrackerRequest: CreateDrinkTrackerRequest, accessToken: String) : Call<CreateDrinkTrackerResponse>{
         return apiService.createDrinkTrackerList("Bearer $accessToken",createDrinkTrackerRequest)
     }
+
+
+    fun getEventTackerData(getEventsListRequest: GetEventsListRequest, accessToken: String): Call<GetEventsListResponse> {
+        return apiService.getEventTackerData("Bearer $accessToken",getEventsListRequest)
+    }
+    fun getTakingControlIndex(getTakingControlIndexRequest: GetTakingControlIndexRequest, accessToken: String) : Call<GetTakingControlIndexResponse>{
+        return apiService.getTakingControlIndex("Bearer $accessToken",getTakingControlIndexRequest)
+    }
+
+    fun getTakingControlIntroductionData(getTakingControlIntroductionRequest: GetTakingControlIntroductionRequest,accessToken: String) : Call<GetTakingControlIntroductionResponse>{
+        return  apiService.getTakingControlIntroductionData("Bearer $accessToken",getTakingControlIntroductionRequest)
+    }
+    fun saveTakingControlIntroductionData(saveTakingControlIntroductionRequest: SaveTakingControlIntroductionRequest,accessToken: String) : Call<SaveTakingControlIntroductionResponse>{
+        return  apiService.saveTakingControlIntroductionData("Bearer $accessToken",saveTakingControlIntroductionRequest)
+    }
+
+
 }

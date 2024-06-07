@@ -13,6 +13,7 @@ package com.calmscient.adapters
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ import com.calmscient.fragments.DASTQuestionFragment
 import com.calmscient.fragments.GADQuestionFragment
 import com.calmscient.fragments.QuestionFragment
 import com.calmscient.utils.common.CommonClass
+import com.calmscient.viewmodels.FlagsViewModel
 
 class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager, private val items: List<TakingControlScreeningItem>, private val context: Context,private var screeningResponse: List<ScreeningItem>) :
     RecyclerView.Adapter<TakingControlScreeningAdapter.ViewHolder>() {
@@ -56,8 +58,8 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
                 val fragment = when (item.name) {
                     "PHQ-9" -> QuestionFragment(screeningResponse[position])
                     "GAD-7" -> GADQuestionFragment(screeningResponse[position])
-                    "AUDIT" -> AUDITQuestionFragment(screeningResponse[position])
-                    "DAST-10" -> DASTQuestionFragment(screeningResponse[position])
+                    "AUDIT" -> AUDITQuestionFragment(screeningResponse[1])
+                    "DAST-10" -> DASTQuestionFragment(screeningResponse[2])
                     // Add more cases for other screening types if needed
                     else -> null
                 }
@@ -93,13 +95,17 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
         val btnYes: AppCompatButton = dialogView.findViewById(R.id.buttonYes)
         val btnNo: AppCompatButton = dialogView.findViewById(R.id.btn_no)
 
-        descText.text = if (item.isApplied) "${item.name}  apply to you"  else  "${item.name} doesn’t apply to you"
+        descText.text = if (item.isApplied) "${item.name} apply to you"  else  "${item.name} doesn’t apply to you"
 
         btnYes.setOnClickListener {
             item.isApplied = !item.isApplied // Toggle the state
             item.buttonText = if (item.isApplied) "Apply to me" else "Doesn't apply for me"
             updateCardAppearance(holder, item.isApplied)
             dialogBuilder.dismiss()
+
+            val payload = constructPayload(item)
+
+            Log.d("payload","$payload")
         }
 
         btnNo.setOnClickListener {
@@ -116,5 +122,29 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
             holder.cardLinearLayout.setBackgroundResource(R.drawable.dialog_border)
         }
         holder.buttonDoesnotApply.text = if (isApplied) "Apply to me" else "Doesn't apply for me"
+    }
+
+    private fun constructPayload(item: TakingControlScreeningItem): String {
+        val patientId = 4
+        val clientId = 1
+        val plId = 4
+        val introductionFlag = 0
+        val auditFlag = if (item.name == "AUDIT" && item.isApplied) 1 else null
+        val dastFlag = if (item.name == "DAST-10" && item.isApplied) 1 else null
+        val cageFlag = if (item.name == "CAGE" && item.isApplied) 1 else null
+        val tutorialFlag = null
+
+        return """
+            {
+                "patientId": $patientId,
+                "clientId": $clientId,
+                "plId": $plId,
+                "introductionFlag": $introductionFlag,
+                "auditFlag": $auditFlag,
+                "dastFlag": $dastFlag,
+                "cageFlag": $cageFlag,
+                "tutorialFlag": $tutorialFlag
+            }
+        """.trimIndent()
     }
 }

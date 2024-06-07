@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginBottom="@dimen/_50sdp"
     tools:context=".fragments.EventsTrackerFragment">
 
     <RelativeLayout
@@ -38,12 +38,17 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="wrap_content"
+        android:id="@+id/view"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/eventstracker"
         android:background="@color/viewbackgroundcolor" />
+
     <RelativeLayout
+        android:id="@+id/monthtextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/view"
         android:padding="@dimen/_10sdp"
         android:paddingLeft="@dimen/_10sdp">
 
@@ -51,170 +56,33 @@
             android:id="@+id/monthtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/_10sdp"
             android:text="20 Jun 2023"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_14sdp"
             android:fontFamily="@font/lexendregular" />
     </RelativeLayout>
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@color/viewbackgroundcolor" />
-    <LinearLayout
+
+    <!-- RecyclerView below monthtext -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/eventTrackerRecycleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="3">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="20dp"
-            android:clickable="true"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="@dimen/_10sdp">
-
-            <ImageView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_weight="1"
-                android:paddingLeft="@dimen/_10sdp"
-                android:src="@drawable/ic_hangover" />
-
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_70sdp"
-                android:text="@string/events_tracker_text1"
-                android:textColor="@color/black_head"
-                android:textSize="@dimen/_14sdp"
-                android:fontFamily="@font/lexendmedium" />
-
-            <com.github.angads25.toggle.widget.LabeledSwitch
-                android:id="@+id/hangoverToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                android:textSize="14sp"
-                app:on="false" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="3">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="20dp"
-            android:clickable="true"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="@dimen/_10sdp">
-
-            <ImageView
-                android:id="@+id/appointments_logo1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_weight="1"
-                android:paddingLeft="@dimen/_10sdp"
-                android:src="@drawable/ic_argument" />
-
-            <TextView
-                android:id="@+id/AppointmentsNameTextView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/_70sdp"
-                android:gravity="center_vertical"
-                android:text="@string/events_tracker_text2"
-                android:textColor="@color/black_head"
-                android:textSize="@dimen/_14sdp"
-                android:fontFamily="@font/lexendmedium" />
-
-            <com.github.angads25.toggle.widget.LabeledSwitch
-                android:id="@+id/argumentToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                android:textSize="14sp"
-                app:on="false" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="3">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="20dp"
-            android:clickable="true"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="@dimen/_10sdp">
-
-            <ImageView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_weight="1"
-                android:paddingLeft="@dimen/_10sdp"
-                android:src="@drawable/ic_accident" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/_70sdp"
-                android:gravity="center_vertical"
-                android:text="@string/events_tracker_text3"
-                android:textColor="@color/black_head"
-                android:textSize="@dimen/_14sdp"
-                android:fontFamily="@font/lexendmedium" />
-
-            <com.github.angads25.toggle.widget.LabeledSwitch
-                android:id="@+id/accidentToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                android:textSize="14sp"
-                app:on="false" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+        android:layout_below="@id/monthtextLayout"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_10sdp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/_12sdp"
-        android:layout_marginTop="@dimen/_155sdp"
         android:fontFamily="@font/lexendregular"
         android:background="@drawable/button_border"
         android:text="@string/save"
-
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp" />
-</LinearLayout>
+
+</RelativeLayout>

@@ -17,6 +17,9 @@ import com.calmscient.di.remote.request.AlarmWrapper
 import com.calmscient.di.remote.request.AppointmentDetailsRequestData
 import com.calmscient.di.remote.request.CreateDrinkTrackerRequest
 import com.calmscient.di.remote.request.DrinkTrackerRequest
+import com.calmscient.di.remote.request.GetEventsListRequest
+import com.calmscient.di.remote.request.GetTakingControlIndexRequest
+import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.request.LoginRequest
 import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
@@ -24,6 +27,7 @@ import com.calmscient.di.remote.request.MedicationDetailsRequest
 import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.request.PatientMoodRequest
+import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.ScreeningHistoryRequest
 import com.calmscient.di.remote.request.ScreeningRequest
 import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
@@ -41,12 +45,16 @@ import com.calmscient.di.remote.response.AlarmUpdateResponse
 import com.calmscient.di.remote.response.AppointmentDetailsResponseData
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
+import com.calmscient.di.remote.response.GetEventsListResponse
+import com.calmscient.di.remote.response.GetTakingControlIndexResponse
+import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.MedicationDetailsResponse
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
+import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ScreeningAssignmentResponse
 import com.calmscient.di.remote.response.ScreeningHistoryResponse
 import com.calmscient.di.remote.response.ScreeningHistoryResponseData
@@ -152,10 +160,28 @@ interface ApiService {
     @POST("patients/api/v1/course/getPatientCourseIndex")
     fun getManageAnxietyIndexData(@Header("Authorization") accessToken: String,@Body request: ManageAnxietyIndexRequest) :Call<ManageAnxietyIndexResponse>
 
+
+    //Taking Control
     @POST("patients/api/v1/alcohol/getDrinksList")
     fun getDrinkTackerData(@Header("Authorization") accessToken: String,@Body request: DrinkTrackerRequest) :Call<DrinkTrackerResponse>
 
     @POST("patients/api/v1/alcohol/createDrinkTracking")
     fun createDrinkTrackerList(@Header("Authorization") accessToken: String,@Body request: CreateDrinkTrackerRequest) : Call<CreateDrinkTrackerResponse>
+
+    @POST("patients/api/v1/alcohol/getEventsList")
+    fun getEventTackerData(@Header("Authorization") accessToken: String,@Body request: GetEventsListRequest) :Call<GetEventsListResponse>
+
+
+    @POST("patients/api/v1/takingControl/getTakingControlIndex")
+    fun getTakingControlIndex(@Header("Authorization")accessToken: String,@Body request: GetTakingControlIndexRequest) : Call<GetTakingControlIndexResponse>
+
+    @POST("patients/api/v1/takingControl/getTakingControlIntroduction")
+    fun getTakingControlIntroductionData(@Header("Authorization")accessToken: String,@Body request: GetTakingControlIntroductionRequest) : Call<GetTakingControlIntroductionResponse>
+
+
+    @POST("patients/api/v1/takingControl/saveTakingControlIntroduction")
+    fun saveTakingControlIntroductionData(@Header("Authorization")accessToken: String,@Body request: SaveTakingControlIntroductionRequest) : Call<SaveTakingControlIntroductionResponse>
+
+
 }
 

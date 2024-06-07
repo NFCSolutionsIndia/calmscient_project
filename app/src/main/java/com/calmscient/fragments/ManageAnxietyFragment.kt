@@ -121,6 +121,8 @@ class ManageAnxietyFragment : Fragment() {
 
     private fun manageAnxietyIndexDataAPICall()
     {
+        clearRecyclerViewData()
+        getManageAnxietyIndexDataViewModel.clear()
 
         loginResponse?.loginDetails?.let {
             getManageAnxietyIndexDataViewModel.getManageAnxietyIndexData(2,it.patientLocationID,it.patientID,it.clientID,accessToken)
@@ -130,6 +132,7 @@ class ManageAnxietyFragment : Fragment() {
 
     private fun observeViewModel()
     {
+        getManageAnxietyIndexDataViewModel.clear()
         getManageAnxietyIndexDataViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
             if(isLoading)
             {
@@ -148,6 +151,9 @@ class ManageAnxietyFragment : Fragment() {
                         if(successData != null)
                         {
                             manageAnxietyIndexResponse = successData
+                            clearRecyclerViewData()  // Clear existing RecyclerView data
+                            getManageAnxietyIndexDataViewModel.clear()  // Clear ViewModel data
+
                             bindDataToRecyclerView(manageAnxietyIndexResponse.managingAnxiety)
                             bindUIData(manageAnxietyIndexResponse.managingAnxiety)
                         }
@@ -159,7 +165,7 @@ class ManageAnxietyFragment : Fragment() {
     private fun bindUIData(managingAnxiety: List<ManagingAnxiety>)
     {
 
-       if(managingAnxiety.size>=6)
+       if(managingAnxiety.size>=7)
        {
            binding.tvIntroduction.text = managingAnxiety[0].lessonName
            binding.tvLessonOne.text = managingAnxiety[1].lessonName
@@ -167,7 +173,8 @@ class ManageAnxietyFragment : Fragment() {
            binding.tvLessonThree.text = managingAnxiety[3].lessonName
            binding.tvLessonFour.text = managingAnxiety[4].lessonName
            binding.tvLessonFive.text = managingAnxiety[5].lessonName
-           binding.tvAdditionalResource.text = managingAnxiety[6].lessonName
+           binding.tvLessonSix.text = managingAnxiety[6].lessonName
+           binding.tvAdditionalResource.text = managingAnxiety[7].lessonName
        }
 
     }
@@ -216,7 +223,7 @@ class ManageAnxietyFragment : Fragment() {
         recyclerView.adapter = adapter
     }
 
-   
+
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
@@ -250,8 +257,21 @@ class ManageAnxietyFragment : Fragment() {
                 sessionIdResponse = successData
                 sessionId = sessionIdResponse.sessionId
 
-                Toast.makeText(requireContext(), sessionId,Toast.LENGTH_LONG).show()
+                //Toast.makeText(requireContext(), sessionId,Toast.LENGTH_LONG).show()
             }
         })
     }
+
+
+    private fun clearRecyclerViewData() {
+        binding.recyclerViewIntroduction.adapter = null
+        binding.recyclerViewLesson1.adapter = null
+        binding.recyclerViewLesson2.adapter = null
+        binding.recyclerViewLesson3.adapter = null
+        binding.recyclerViewLesson4.adapter = null
+        binding.recyclerViewLesson5.adapter = null
+        binding.recyclerViewLesson6.adapter = null
+        binding.recyclerViewAdditionalResource.adapter = null
+    }
+
 }

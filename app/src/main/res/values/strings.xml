@@ -2097,6 +2097,20 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="please_select_at_least_one_day">Please select at least one day</string>
     <string name="please_enter_all_fields">Please enter all fields</string>
     <string name="hrs">" hrs"</string>
+    <string name="taking_control_dialog_1">Do you enjoy a drink now or then? Many of us do, often when socializing with friends and family. Let\'s take a look at your drinking patterns and how they may affect your health.\n\nThe AUDIT questionnaire is designed to help in the self-assessment of alcohol consumption and to identify any implications for the person\'s health and well being, now and in the future.\n\nConduct a quick self-test with AUDIT above. Click on \“Submit\” at the end for an instant assessment.</string>
 
+    <string name="taking_control_dialog_2">“Drug use” refers to\n\n
+
+1. the use of prescribed or over-the-counter drugs in excess of the directions, and\n
+2. any non medical use of drugs.\n\n
+
+The various classes of drugs may include cannabis (marijuana, hashish), solvents (e.g., paint thinner), tranquilizers (e.g., valium), barbiturates, cocaine, stimulants (e.g., speed), hallucinogens (e.g., LSD) or narcotics (e.g., heroin). The questions do not include alcoholic beverages.\n\n
+
+Please answer the questions in this survey. If you have difficulty with a statement, simply choose the best response possible.\n\n
+
+These questions refer to drug use in the past 12 months. Please answer NO or YES to each question.</string>
+
+
+    <string name="taking_control_dialog_3">The CAGE questionnaire for smoking (modified from the familiar CAGE questionnaire for alcoholism), the “four Cs” test and the Lagerstrom Test for Nicotine Dependence help diagnose nicotine dependence based on standard criteria. Additional questions can  be used to determine a patient’s readiness to change and the nature of reinforcement the patient receives  from smoking. These tools can assist family physicians in guiding patients to quit smoking-the single most important thing smokers can do to improve their health.</string>
 
 </resources>

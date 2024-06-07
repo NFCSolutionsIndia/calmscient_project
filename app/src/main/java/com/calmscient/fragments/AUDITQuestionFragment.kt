@@ -79,7 +79,7 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                loadFragment(ScreeningsFragment())
+               navigateBackToPreviousScreen()
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -108,7 +108,7 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
 
         binding.backIcon.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                loadFragment(ScreeningsFragment())
+                navigateBackToPreviousScreen()
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -185,7 +185,7 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
 
     private fun setupRecyclerView() {
         // Assuming you have already initialized questionnaireItems in your ViewModel
-        questionAdapter = QuestionAdapter(requireContext(), emptyList())
+        questionAdapter = QuestionAdapter(requireContext(), emptyList(),screeningResponseList[0].screeningReminder)
         binding.questionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = questionAdapter
@@ -462,4 +462,17 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
         return PatientAnswersWrapper(patientAnswers)
 
     }
+
+    private fun navigateBackToPreviousScreen() {
+        // Check if there's a fragment in the back stack
+        if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
+            // Pop the back stack to go back to the previous fragment
+            requireActivity().supportFragmentManager.popBackStack()
+        } else {
+            // If there's no fragment in the back stack, you can handle it accordingly
+            // For example, load the ScreeningsFragment directly
+            loadFragment(ScreeningsFragment())
+        }
+    }
+
 }

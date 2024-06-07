@@ -13,12 +13,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_300sdp"
     android:layout_gravity="center">
 
    <LinearLayout
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
+       android:layout_height="@dimen/_300sdp"
        android:layout_marginHorizontal="@dimen/_10sdp"
        android:orientation="vertical">
        <RelativeLayout
@@ -38,7 +38,7 @@
        </RelativeLayout>
 
        <TextView
-           android:id="@+id/heading"
+           android:id="@+id/auditHeading"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:fontFamily="@font/lexendmedium"
@@ -46,7 +46,7 @@
            android:textSize="@dimen/_14sdp"
            android:textColor="@color/black_head"/>
        <TextView
-           android:id="@+id/subHeading"
+           android:id="@+id/auditSubHeading"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:fontFamily="@font/lexendregular"
@@ -55,7 +55,7 @@
            android:textColor="@color/black_head"/>
 
        <androidx.cardview.widget.CardView
-           android:id="@+id/substanceCoachCardView"
+           android:id="@+id/auditSubstanceCoachCardView"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginHorizontal="@dimen/_4sdp"
@@ -71,14 +71,106 @@
 
 
            <TextView
-               android:id="@+id/description"
+               android:id="@+id/auditDescription"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:fontFamily="@font/lexendlight"
                android:gravity="left"
                android:layout_margin="@dimen/_5sdp"
                android:textColor="@color/black_head"
-               android:text="@string/in_denial_dialog_text"
+               android:text="@string/taking_control_dialog_1"
+               android:textSize="@dimen/_12sdp" />
+
+       </androidx.cardview.widget.CardView>
+
+       <TextView
+           android:id="@+id/dastHeading"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/lexendmedium"
+           android:text="DUST-10"
+           android:textSize="@dimen/_14sdp"
+           android:textColor="@color/black_head"/>
+       <TextView
+           android:id="@+id/dastSubHeading"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/lexendregular"
+           android:text="(Drug Abuse Screening Test)"
+           android:textSize="@dimen/_12sdp"
+           android:textColor="@color/black_head"/>
+
+       <androidx.cardview.widget.CardView
+           android:id="@+id/dastSubstanceCoachCardView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginHorizontal="@dimen/_4sdp"
+           android:layout_marginTop="@dimen/_10sdp"
+           android:clipChildren="false"
+           android:clipToPadding="false"
+           android:divider="@android:color/transparent"
+           android:dividerHeight="0.0px"
+           app:cardCornerRadius="@dimen/_3sdp"
+           app:cardElevation="10dp"
+           android:layout_marginBottom="@dimen/_10sdp"
+           app:cardPreventCornerOverlap="false">
+
+
+           <TextView
+               android:id="@+id/dastDescription"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:fontFamily="@font/lexendlight"
+               android:gravity="left"
+               android:layout_margin="@dimen/_5sdp"
+               android:textColor="@color/black_head"
+               android:text="@string/taking_control_dialog_2"
+               android:textSize="@dimen/_12sdp" />
+
+       </androidx.cardview.widget.CardView>
+
+       <TextView
+           android:id="@+id/cageHeading"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/lexendmedium"
+           android:text="CAGE"
+           android:textSize="@dimen/_14sdp"
+           android:textColor="@color/black_head"/>
+       <TextView
+           android:id="@+id/cageSubHeading"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/lexendregular"
+           android:text="(Cut, Annoyed, Guilty and Eye)"
+           android:textSize="@dimen/_12sdp"
+           android:textColor="@color/black_head"/>
+
+       <androidx.cardview.widget.CardView
+           android:id="@+id/cageSubstanceCoachCardView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginHorizontal="@dimen/_4sdp"
+           android:layout_marginTop="@dimen/_10sdp"
+           android:clipChildren="false"
+           android:clipToPadding="false"
+           android:divider="@android:color/transparent"
+           android:dividerHeight="0.0px"
+           app:cardCornerRadius="@dimen/_3sdp"
+           app:cardElevation="10dp"
+           android:layout_marginBottom="@dimen/_10sdp"
+           app:cardPreventCornerOverlap="false">
+
+
+           <TextView
+               android:id="@+id/cageDescription"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:fontFamily="@font/lexendlight"
+               android:gravity="left"
+               android:layout_margin="@dimen/_5sdp"
+               android:textColor="@color/black_head"
+               android:text="@string/taking_control_dialog_3"
                android:textSize="@dimen/_12sdp" />
 
        </androidx.cardview.widget.CardView>

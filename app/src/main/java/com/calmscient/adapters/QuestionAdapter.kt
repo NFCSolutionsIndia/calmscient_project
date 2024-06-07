@@ -14,7 +14,7 @@ import com.calmscient.di.remote.response.QuestionnaireItem
 import androidx.viewpager2.widget.ViewPager2
 import com.calmscient.activities.CommonDialog
 
-class QuestionAdapter(private val context: Context, private var questionnaireItems: List<QuestionnaireItem>) :
+class QuestionAdapter(private val context: Context, private var questionnaireItems: List<QuestionnaireItem>, private var remainder : String? = null) :
     RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder>() {
 
         private var screeningId :Int =-1
@@ -78,6 +78,11 @@ class QuestionAdapter(private val context: Context, private var questionnaireIte
         // Set visibility of infoIcon based on position
         holder.infoIcon.visibility = if (position == 0) View.VISIBLE else View.GONE
 
+        holder.infoIcon.setOnClickListener {
+            val commonDialog = CommonDialog(context)
+            // Show the dialog with the text from the screening item
+            commonDialog.showDialog(remainder)
+        }
     }
 
     override fun getItemCount(): Int {

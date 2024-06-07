@@ -10,30 +10,54 @@
  */
 
 package com.calmscient.fragments
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
+import com.calmscient.adapters.EventTrackerAdapter
 import com.calmscient.databinding.FragmentEventsTrackerBinding
+import com.calmscient.di.remote.EventTrackerDataClass
+import com.calmscient.di.remote.response.Evevnts
+import com.calmscient.di.remote.response.GetEventsListResponse
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.SummaryOfAUDITResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.GetEventTrackerViewModel
+import com.calmscient.viewmodels.GetSummaryOfAUDITViewModel
+import com.github.mikephil.charting.charts.LineChart
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class EventsTrackerFragment : Fragment() {
     private  lateinit var binding: FragmentEventsTrackerBinding
     private lateinit var monthText: TextView
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private val getEventTrackerViewModel: GetEventTrackerViewModel by activityViewModels()
+    private lateinit var getEventsListResponse: GetEventsListResponse
+    private var loginResponse : LoginResponse? = null
+    private  lateinit var accessToken : String
+
+    private lateinit var eventTrackerAdapter: EventTrackerAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +74,15 @@ class EventsTrackerFragment : Fragment() {
     ): View? {
 
         binding = FragmentEventsTrackerBinding.inflate(inflater, container, false)
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+
         binding.backIcon.setOnClickListener {
             loadFragment(TakingControlFragment())
         }
@@ -63,41 +96,28 @@ class EventsTrackerFragment : Fragment() {
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateLabel(myCalendar)
         }
-        binding.hangoverToggleButton.labelOn = getString(R.string.yes)
-        binding.hangoverToggleButton.labelOff = getString(R.string.no)
 
-        binding.argumentToggleButton.labelOn = getString(R.string.yes)
-        binding.argumentToggleButton.labelOff = getString(R.string.no)
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+           getEventTrackerApiCall()
+        }
+        else
+        {
+            CommonClass.showInternetDialogue(requireContext())
+        }
 
-        binding.accidentToggleButton.labelOn = getString(R.string.yes)
-        binding.accidentToggleButton.labelOff = getString(R.string.no)
-//        calendarView.setOnClickListener {
-//            DatePickerDialog(
-//                requireContext(),
-//                datePickerListener,
-//                myCalendar.get(Calendar.YEAR),
-//                myCalendar.get(Calendar.MONTH),
-//                myCalendar.get(Calendar.DAY_OF_MONTH)
-//            ).show()
-//        }
+        binding.eventTrackerRecycleView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Initialize the monthText with the current date
+        eventTrackerAdapter = EventTrackerAdapter(emptyList())
+
+        binding.eventTrackerRecycleView.adapter = eventTrackerAdapter
+
         val currentDate = SimpleDateFormat("dd MMM yyyy", Locale.UK).format(Date())
-        monthText.text = currentDate
+        //monthText.text = currentDate
 
         return binding.root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EventsTrackerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
     private fun updateLabel(myCalendar: Calendar) {
         val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.UK)
         val formattedDate = sdf.format(myCalendar.time)
@@ -108,5 +128,62 @@ class EventsTrackerFragment : Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null) // This ensures that the previous fragment is added to the back stack
         transaction.commit()
+    }
+
+    private fun getEventTrackerApiCall()
+    {
+        loginResponse?.loginDetails?.let {
+            getEventTrackerViewModel.getEventTackerData("",
+                it.clientID,it.patientID,it.patientLocationID,accessToken)
+        }
+        observeViewModel()
+    }
+
+    private fun observeViewModel()
+    {
+        getEventTrackerViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.show("Loading...")
+            }
+            else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getEventTrackerViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess)
+            {
+                getEventTrackerViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+                    if(successData != null)
+                    {
+                        getEventsListResponse = successData
+                        setRecyclerViewData(getEventsListResponse.evevntsList)
+
+                        val formattedDate = convertDateFormat(getEventsListResponse.date)
+                        monthText.text = formattedDate
+
+                        Log.d("EventTrckerLIst : ","$getEventsListResponse")
+                    }
+                })
+            }
+        })
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setRecyclerViewData(eventsList: List<Evevnts>) {
+        val adapter = EventTrackerAdapter(eventsList.map { event ->
+            EventTrackerDataClass(event.imageUrl, event.eventName, event.eventFlag==1)
+        }.toMutableList())
+        binding.eventTrackerRecycleView.adapter = adapter
+
+        eventTrackerAdapter.notifyDataSetChanged()
+    }
+
+
+    private fun convertDateFormat(inputDate: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMM yyyy", Locale.UK)
+        val date = inputFormat.parse(inputDate)
+        return outputFormat.format(date)
     }
 }

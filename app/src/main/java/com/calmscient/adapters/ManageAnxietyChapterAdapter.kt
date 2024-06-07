@@ -11,6 +11,7 @@
 
 package com.calmscient.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class ManageAnxietyChapterAdapter(
         val chapter = chapters[position]
         holder.chapterName.text = chapter.chapterName
 
+        Log.d("Image URL :","${chapter.imageUrl}")
         // Use Glide to load the image
         Glide.with(holder.itemView.context)
             .load(chapter.imageUrl)
@@ -54,5 +56,7 @@ class ManageAnxietyChapterAdapter(
     override fun getItemCount(): Int {
         return chapters.size
     }
+
+
 }
 
