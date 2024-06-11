@@ -25,11 +25,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
+import com.calmscient.adapters.PayloadCallback
 import com.calmscient.adapters.TakingControlScreeningAdapter
 import com.calmscient.databinding.FragmentTakingControlIntroductionBinding
 import com.calmscient.di.remote.TakingControlScreeningItem
+import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
+import com.calmscient.di.remote.request.SaveTakingControlIntroductionWrapper
+import com.calmscient.di.remote.response.AppointmentDetails
+import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ScreeningItem
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
@@ -39,9 +45,12 @@ import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.FlagsViewModel
 import com.calmscient.viewmodels.GetTakingControlIntroductionViewModel
+import com.calmscient.viewmodels.SaveTakingControlIntroductionDataViewModel
 import com.calmscient.viewmodels.ScreeningViewModel
+import com.calmscient.viewmodels.UpdateTakingControlIndexViewModel
+import com.google.gson.Gson
 
-class TakingControlIntroductionFragment : Fragment() {
+class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
 
     private lateinit var binding: FragmentTakingControlIntroductionBinding
     private lateinit var recyclerView: NonSwipeRecyclerView
@@ -56,7 +65,30 @@ class TakingControlIntroductionFragment : Fragment() {
     private val getTakingControlIntroductionViewModel: GetTakingControlIntroductionViewModel by activityViewModels()
     private var getTakingControlIntroductionResponse: GetTakingControlIntroductionResponse? = null
 
-    private val flagsViewModel: FlagsViewModel by activityViewModels()
+    private val saveTakingControlIntroductionDataViewModel: SaveTakingControlIntroductionDataViewModel by activityViewModels()
+    private var saveTakingControlIntroductionResponse: SaveTakingControlIntroductionResponse? = null
+
+
+    private val updateTakingControlIndexViewModel: UpdateTakingControlIndexViewModel by activityViewModels()
+    private lateinit var getTakingControlIndexResponse: GetTakingControlIndexResponse
+
+    companion object {
+        fun newInstance(takingControlIndexResponse: GetTakingControlIndexResponse): TakingControlIntroductionFragment {
+            val fragment = TakingControlIntroductionFragment()
+            val args = Bundle()
+            val gson = Gson()
+            val appointmentDetailsJson = gson.toJson(takingControlIndexResponse)
+            args.putString("takingControlIndexResponse", appointmentDetailsJson)
+
+
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onPayloadConstructed(item: TakingControlScreeningItem) {
+        constructAndSendApiRequest(item)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +123,14 @@ class TakingControlIntroductionFragment : Fragment() {
         loginResponse = JsonUtil.fromJsonString(loginJsonString)
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
 
+
+        val takingControlIndexJson = arguments?.getString("takingControlIndexResponse")
+
+        val gson = Gson()
+        getTakingControlIndexResponse = gson.fromJson(takingControlIndexJson, GetTakingControlIndexResponse::class.java)
+
+        Log.d("getTakingControlIndexResponse","$getTakingControlIndexResponse")
+
         if (CommonClass.isNetworkAvailable(requireContext())) {
             observeViewModel()
             introductionApiCall()
@@ -123,16 +163,34 @@ class TakingControlIntroductionFragment : Fragment() {
         binding.backIcon.setOnClickListener{
             if(currentScreenIndex == 4)
             {
-
-                //Toast.makeText(requireContext(), "Received result: APICALL", Toast.LENGTH_LONG).show()
-                saveIntroductionRequestApiCall()
+                updateIndexApiCall()
             }
             loadFragment(TakingControlFragment())
         }
 
         binding.dontShowCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            // Update the ViewModel with the checkbox state
-            flagsViewModel.updateTutorialFlag(isChecked)
+
+            val request = loginResponse?.loginDetails?.let {
+                SaveTakingControlIntroductionRequest(
+                    auditFlag = null,
+                    cageFlag = null,
+                    clientId = it.clientID,
+                    dastFlag = null,
+                    introductionFlag = 1,
+                    patientId = it.patientID,
+                    plId = it.patientLocationID,
+                    tutorialFlag = if(isChecked) 1 else 0
+                )
+            }
+
+            Log.d("dontShowCheckBox", "Payload constructed: $request")
+
+            if (request != null) {
+                saveTakingControlIntroductionDataViewModel.saveTakingControlIntroductionData(request,accessToken)
+            }
+
+            observeSaveViewModel()
+
         }
 
         return binding.root
@@ -175,7 +233,8 @@ class TakingControlIntroductionFragment : Fragment() {
                 requireActivity().supportFragmentManager,
                 getScreeningItems(),
                 requireContext(),
-                screeningResponse
+                screeningResponse,
+                this
             )
             binding.takingControlScreeningRecyclerView.adapter = recyclerView.adapter
         }
@@ -231,10 +290,65 @@ class TakingControlIntroductionFragment : Fragment() {
         transaction.commit()
     }
 
-    private fun saveIntroductionRequestApiCall() {
+    private fun constructAndSendApiRequest(item: TakingControlScreeningItem) {
 
+        val introductionFlag = 0
+
+        // Initialize all flags as null
+        var auditFlag: Int? = null
+        var dastFlag: Int? = null
+        var cageFlag: Int? = null
+
+        // Set the flag based on the item name
+        when (item.name) {
+            "AUDIT" -> auditFlag = if (item.isApplied) 0 else 1
+            "DAST-10" -> dastFlag = if (item.isApplied) 0 else 1
+            "CAGE" -> cageFlag = if (item.isApplied) 0 else 1
+        }
+
+        val request = loginResponse?.loginDetails?.let {
+            SaveTakingControlIntroductionRequest(
+                auditFlag = auditFlag,
+                cageFlag = cageFlag,
+                clientId = it.clientID,
+                dastFlag = dastFlag,
+                introductionFlag = introductionFlag,
+                patientId = it.patientID,
+                plId = it.patientLocationID,
+                tutorialFlag = 0
+            )
+        }
+
+        Log.d("TakingControlFragment", "Payload constructed: $request")
+
+        if (request != null) {
+            saveTakingControlIntroductionDataViewModel.saveTakingControlIntroductionData(request,accessToken)
+        }
+
+        observeSaveViewModel()
 
     }
 
+    private  fun observeSaveViewModel()
+    {
+        saveTakingControlIntroductionDataViewModel.loadingLiveData.observe(viewLifecycleOwner,
+            Observer { isLoading->
+                if(isLoading)
+                {
+                    customProgressDialog.show("Loading...")
+                }
+                else{
+                    customProgressDialog.dialogDismiss()
+                }
+            })
+    }
 
+    private fun updateIndexApiCall()
+    {
+        val isCompleted  = 1
+        loginResponse?.loginDetails?.let {
+            updateTakingControlIndexViewModel.updateTakingControlIndexData(
+                it.clientID,getTakingControlIndexResponse.courseLists[0].courseId,isCompleted,it.patientID,it.patientLocationID, accessToken)
+        }
+    }
 }

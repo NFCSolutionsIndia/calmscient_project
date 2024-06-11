@@ -27,7 +27,10 @@ import com.calmscient.di.remote.request.MedicationDetailsRequest
 import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.request.PatientMoodRequest
+import com.calmscient.di.remote.request.SavePatientMoodRequest
+import com.calmscient.di.remote.request.SavePatientMoodWrapper
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
+import com.calmscient.di.remote.request.SaveTakingControlIntroductionWrapper
 import com.calmscient.di.remote.request.ScreeningHistoryRequest
 import com.calmscient.di.remote.request.ScreeningRequest
 import com.calmscient.di.remote.request.ScreeningsAssessmentRequest
@@ -40,6 +43,7 @@ import com.calmscient.di.remote.request.SummaryOfGADRequest
 import com.calmscient.di.remote.request.SummaryOfMoodRequest
 import com.calmscient.di.remote.request.SummaryOfPHQ9Request
 import com.calmscient.di.remote.request.SummaryOfSleepRequest
+import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
 import com.calmscient.di.remote.response.AddMedicationResponse
 import com.calmscient.di.remote.response.AlarmUpdateResponse
 import com.calmscient.di.remote.response.AppointmentDetailsResponseData
@@ -54,6 +58,7 @@ import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.MedicationDetailsResponse
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
+import com.calmscient.di.remote.response.SavePatientMoodResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ScreeningAssignmentResponse
 import com.calmscient.di.remote.response.ScreeningHistoryResponse
@@ -68,6 +73,7 @@ import com.calmscient.di.remote.response.SummaryOfGADResponse
 import com.calmscient.di.remote.response.SummaryOfMoodResponse
 import com.calmscient.di.remote.response.SummaryOfPHQ9Response
 import com.calmscient.di.remote.response.SummaryOfSleepResponse
+import com.calmscient.di.remote.response.UpdateTakingControlIndexResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -89,6 +95,11 @@ interface ApiService {
     //Moods Screen
     @POST("patients/api/v1/patientDetails/getPatientStartupScreen")
     fun getPatientMood(@Header("Authorization") accessToken: String,@Body requestBody: PatientMoodRequest): Call<PatientMoodResponse>
+
+
+    @POST("patients/api/v1/patientDetails/savePatientStartupScreen")
+    fun savePatientMoodData(@Header("Authorization") accessToken: String,@Body requestBody: SavePatientMoodWrapper): Call<SavePatientMoodResponse>
+
 
 
 
@@ -174,6 +185,9 @@ interface ApiService {
 
     @POST("patients/api/v1/takingControl/getTakingControlIndex")
     fun getTakingControlIndex(@Header("Authorization")accessToken: String,@Body request: GetTakingControlIndexRequest) : Call<GetTakingControlIndexResponse>
+
+    @POST("patients/api/v1/takingControl/updateTakingControlIndex")
+    fun updateTakingControlIndexData(@Header("Authorization")accessToken: String,@Body request: UpdateTakingControlIndexRequest) :Call<UpdateTakingControlIndexResponse>
 
     @POST("patients/api/v1/takingControl/getTakingControlIntroduction")
     fun getTakingControlIntroductionData(@Header("Authorization")accessToken: String,@Body request: GetTakingControlIntroductionRequest) : Call<GetTakingControlIntroductionResponse>

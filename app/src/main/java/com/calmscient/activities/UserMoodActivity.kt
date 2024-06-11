@@ -29,6 +29,9 @@ import androidx.lifecycle.Observer
 import com.calmscient.ApiService
 import com.calmscient.AppController
 import com.calmscient.databinding.FragmentQuestionBinding
+import com.calmscient.di.remote.request.PatientAnswerSaveRequest
+import com.calmscient.di.remote.request.SavePatientMoodRequest
+import com.calmscient.di.remote.request.SavePatientMoodWrapper
 import com.calmscient.di.remote.response.PatientMoodResponse
 import com.calmscient.retrofit.ApplicationModule
 import com.calmscient.utils.common.CommonClass
@@ -56,6 +59,19 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
+
+
+
+    var moodId: Int = 0 // Update based on selected mood
+    var sleepHours: Int = 0 // Update based on selected sleep hours
+    var spendTime: String = "" // Update based on selected spending time
+    var wish: String = "" // Update based on the user's wish
+    var sleepQuestion: String = ""
+    var moodQuestion: String = ""
+    var medicineQuestion: String = ""
+    var spendQuestion: String = ""
+    var journalText: String = ""
+    var medicineFlag: Int = -1
 
 
 
@@ -161,12 +177,22 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
         var greeting: String? = null
         if (hour in 0..11) {
             greeting = getString(R.string.good_morning)
+            wish = greeting
+            moodQuestion = "How is your mood right now?"
+            sleepQuestion = "How many hours did you sleep last night?"
+            medicineQuestion = "Did you take your meds this morning?"
         } else if (hour in 12..16) {
             //greeting = getString(R.string.good_afternoon)
+            moodQuestion = "How is your mood right now?"
             greeting = getString(R.string.good_afternoon)
+            wish = greeting
         } else if (hour in 17..23) {
             //greeting = getString(R.string.good_evening)
+            moodQuestion = "How was your day?"
+            spendQuestion = "Who did you spend time with?"
+            medicineQuestion =  "Did you take your meds this evening?"
             greeting = getString(R.string.good_evening)
+            wish = greeting
         } /*else if (hour in 21..23) {
                 greeting = "Good Night";
             } else {
@@ -209,6 +235,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             // Handle morning images click events
             R.id.img_mBad -> {
                 // Handle image click
+
+                moodId = 1
                 binding.imgMBad.elevation = 20.0F
                 binding.imgMBetter.setElevation(0.0F)
                 binding.imgMFair.setElevation(0.0F)
@@ -223,6 +251,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             // Handle other morning images click events similarly
 
             R.id.img_mBetter -> {
+                moodId = 2
                 //binding.imgMBetter.setImageResource(R.drawable.icon_better)
                 binding.imgMBetter.setElevation(20.0F)
                 binding.imgMBad.setElevation(0.0F)
@@ -237,7 +266,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_mFair -> {
-                //binding.imgMFair.setImageResource(R.drawable.icon_excellent)
+                moodId = 3
+                        //binding.imgMFair.setImageResource(R.drawable.icon_excellent)
                 binding.imgMFair.setElevation(20.0F)
                 binding.imgMBetter.setElevation(0.0F)
                 binding.imgMBad.setElevation(0.0F)
@@ -251,7 +281,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_mGood -> {
-                //binding.imgMGood.setImageResource(R.drawable.icon_excellent)
+                moodId = 4
+                        //binding.imgMGood.setImageResource(R.drawable.icon_excellent)
                 binding.imgMGood.setElevation(20.0F)
                 binding.imgMBetter.setElevation(0.0F)
                 binding.imgMBad.setElevation(0.0F)
@@ -265,7 +296,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_mExcellent -> {
-                //binding.imgMExcellent.setImageResource(R.drawable.icon_excellent)
+                moodId = 5
+                        //binding.imgMExcellent.setImageResource(R.drawable.icon_excellent)
                 binding.imgMExcellent.setElevation(20.0F)
                 binding.imgMGood.setElevation(0.0F)
                 binding.imgMBetter.setElevation(0.0F)
@@ -280,7 +312,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
             //afternoon click
             R.id.img_eve_bad -> {
-                //binding.imgMBad.setImageResource(R.drawable.icon_excellent)
+                moodId =1
+                        //binding.imgMBad.setImageResource(R.drawable.icon_excellent)
                 //binding.imgMBad.setImageResource(R.drawable.icon_excellent)
                 //binding.imgMBad.setBackgroundResource(R.drawable.drawable_circular_border)
                 binding.imgEveBad.setElevation(20.0F)
@@ -296,7 +329,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_eve_better -> {
-                //binding.imgMBetter.setImageResource(R.drawable.icon_better)
+                moodId =2
+                        //binding.imgMBetter.setImageResource(R.drawable.icon_better)
                 binding.imgEveBetter.setElevation(20.0F)
                 binding.imgEveFair.setElevation(0.0F)
                 binding.imgEveExcellent.setElevation(0.0F)
@@ -310,7 +344,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_eve_fair -> {
-                //binding.imgMFair.setImageResource(R.drawable.icon_excellent)
+                moodId =3
+                        //binding.imgMFair.setImageResource(R.drawable.icon_excellent)
                 binding.imgEveFair.setElevation(20.0F)
                 binding.imgEveExcellent.setElevation(0.0F)
                 binding.imgEveGood.setElevation(0.0F)
@@ -324,7 +359,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_eve_good -> {
-                //binding.imgMGood.setImageResource(R.drawable.icon_excellent)
+                moodId =4
+                        //binding.imgMGood.setImageResource(R.drawable.icon_excellent)
                 binding.imgEveGood.setElevation(20.0F)
                 binding.imgEveExcellent.setElevation(0.0F)
                 binding.imgEveBetter.setElevation(0.0F)
@@ -338,7 +374,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_eve_excellent -> {
-                //binding.imgMExcellent.setImageResource(R.drawable.icon_excellent)
+                moodId =5
+                        //binding.imgMExcellent.setImageResource(R.drawable.icon_excellent)
                 binding.imgEveExcellent.setElevation(20.0F)
                 binding.imgEveGood.setElevation(0.0F)
                 binding.imgEveBetter.setElevation(0.0F)
@@ -352,6 +389,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
             //morning sleep
             R.id.sleep_less -> {
+                sleepHours = -1
                 binding.sleepLess.setImageResource(R.drawable.less_icon)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -366,7 +404,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_4 -> {
-                binding.sleep4.setImageResource(R.drawable.selected_4)
+                sleepHours =4
+                    binding.sleep4.setImageResource(R.drawable.selected_4)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
                 binding.sleep6.setImageResource(R.drawable.sleep_6)
@@ -380,7 +419,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_5 -> {
-                binding.sleep5.setImageResource(R.drawable.selected_5)
+                sleepHours =5
+                    binding.sleep5.setImageResource(R.drawable.selected_5)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep6.setImageResource(R.drawable.sleep_6)
@@ -393,7 +433,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_6 -> {
-                binding.sleep6.setImageResource(R.drawable.selected_6)
+                sleepHours =6
+                    binding.sleep6.setImageResource(R.drawable.selected_6)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -406,7 +447,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_7 -> {
-                binding.sleep7.setImageResource(R.drawable.selected_7)
+                sleepHours =7
+                    binding.sleep7.setImageResource(R.drawable.selected_7)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -419,7 +461,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_8 -> {
-                binding.sleep8.setImageResource(R.drawable.selected_8)
+                sleepHours =8
+                    binding.sleep8.setImageResource(R.drawable.selected_8)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -432,7 +475,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_9 -> {
-                binding.sleep9.setImageResource(R.drawable.selected_9)
+                sleepHours =9
+                    binding.sleep9.setImageResource(R.drawable.selected_9)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -445,7 +489,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_10 -> {
-                binding.sleep10.setImageResource(R.drawable.selected_10)
+                sleepHours =10
+                    binding.sleep10.setImageResource(R.drawable.selected_10)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -458,7 +503,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.sleep_more -> {
-                binding.sleepMore.setImageResource(R.drawable.more_selected)
+                sleepHours = 11
+                    binding.sleepMore.setImageResource(R.drawable.more_selected)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -471,6 +517,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
             //evening images
             R.id.img_nig_bad -> {
+                moodId = 1
                 //binding.imgMBad.setImageResource(R.drawable.icon_excellent)
                 //binding.imgMBad.setImageResource(R.drawable.icon_excellent)
                 //binding.imgMBad.setBackgroundResource(R.drawable.drawable_circular_border)
@@ -487,6 +534,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_nig_better -> {
+                moodId = 2
                 //binding.imgMBetter.setImageResource(R.drawable.ic_better_selected)
                 binding.imgNigBetter.setElevation(20.0F)
                 binding.imgNigFair.setElevation(0.0F)
@@ -501,6 +549,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_nig_fair -> {
+                moodId =3
                 //binding.imgMFair.setImageResource(R.drawable.icon_excellent)
                 binding.imgNigFair.setElevation(20.0F)
                 binding.imgNigGood.setElevation(0.0F)
@@ -515,6 +564,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_nig_good -> {
+                moodId =4
                 //binding.imgMGood.setImageResource(R.drawable.icon_excellent)
                 binding.imgNigGood.setElevation(20.0F)
                 binding.imgNigExcellent.setElevation(0.0F)
@@ -529,6 +579,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_nig_excellent -> {
+                moodId =5
                 //binding.imgMExcellent.setImageResource(R.drawable.icon_excellent)
                 binding.imgNigExcellent.setElevation(20.0F)
                 binding.imgNigBad.setElevation(0.0F)
@@ -543,6 +594,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_family -> {
+                spendTime = "FAMILY"
                 binding.imgFamily.setElevation(20.0F)
                 binding.imgFamily.setImageResource(R.drawable.family_selected)
                 binding.imgFriends.setImageResource(R.drawable.friends)
@@ -552,6 +604,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_friends -> {
+                spendTime = "FRIENDS"
                 binding.imgFriends.setElevation(20.0F)
                 binding.imgFriends.setImageResource(R.drawable.friends_selected)
                 binding.imgFamily.setImageResource(R.drawable.family)
@@ -561,6 +614,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
 
             R.id.img_workmates -> {
+                spendTime = "WORKMATES"
                 binding.imgWorkmates.setElevation(20.0F)
                 binding.imgWorkmates.setImageResource(R.drawable.workmates_selected)
                 binding.imgFamily.setImageResource(R.drawable.family)
@@ -569,6 +623,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                 binding.imgAlone.setImageResource(R.drawable.alone)
             }
             R.id.img_others -> {
+                spendTime = "OTHERS"
                 binding.imgOthers.setElevation(20.0F)
                 binding.imgOthers.setImageResource(R.drawable.others_selected)
                 binding.imgWorkmates.setImageResource(R.drawable.workmates)
@@ -577,6 +632,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                 binding.imgAlone.setImageResource(R.drawable.alone)
             }
             R.id.img_alone -> {
+                spendTime = "ALONE"
                 binding.imgAlone.setElevation(20.0F)
                 binding.imgAlone.setImageResource(R.drawable.alone_selected)
                 binding.imgWorkmates.setImageResource(R.drawable.workmates)
@@ -586,6 +642,9 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
             R.id.btn_save -> {
                 //loadFragment(HomeFragment())
+
+                journalText = binding.tvDailyJournal.text.toString()
+                moodRequest()
                 startActivity(Intent(this, DashboardActivity::class.java))
             }
             R.id.btn_skip -> {
@@ -737,5 +796,29 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
          }
 
 
+    }
+
+    private fun moodRequest()
+    {
+
+
+        val patientAnswer = SavePatientMoodRequest(
+            clientId = loginResponse.loginDetails.clientID,
+            journal = journalText,
+            medicineFlag = if(binding.idSwitch.isOn) 1 else 0,
+            medicineQuestion = medicineQuestion,
+            moodId = moodId,
+            moodQuestion = moodQuestion,
+            patientId = loginResponse.loginDetails.patientID,
+            plId = loginResponse.loginDetails.patientLocationID,
+            sleepHours = sleepHours,
+            sleepQuestion = sleepQuestion,
+            spendQuestion = spendQuestion,
+            spendTime = spendTime,
+            wish = wish
+
+
+        )
+        Log.d("Save Patinet","$patientAnswer")
     }
 }

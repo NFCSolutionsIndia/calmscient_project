@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -122,7 +123,8 @@ class TakingControlFragment : Fragment() {
         }
 
         binding.btnSeeTheInformation.setOnClickListener{
-            loadFragment(TakingControlIntroductionFragment())
+            val introductionFragment = TakingControlIntroductionFragment.newInstance(getTakingControlIndexResponse)
+            loadFragment(introductionFragment)
         }
         return binding.root
     }
@@ -152,9 +154,9 @@ class TakingControlFragment : Fragment() {
 
     private fun apiCall()
     {
-        //loginResponse?.loginDetails?.let { getTakingControlIndexViewModel.getTakingControlIndex(it.clientID,it.patientID,it.patientLocationID,accessToken) }
+        loginResponse?.loginDetails?.let { getTakingControlIndexViewModel.getTakingControlIndex(it.clientID,it.patientID,it.patientLocationID,accessToken) }
 
-        getTakingControlIndexViewModel.getTakingControlIndex(1,1,1,accessToken)
+       // getTakingControlIndexViewModel.getTakingControlIndex(1,1,1,accessToken)
     }
 
     private fun observeViewModel()
@@ -245,34 +247,51 @@ class TakingControlFragment : Fragment() {
                 "Basic knowledge" -> {
                     binding.btnBasicKnowledge.isEnabled = course.isEnable == 1
                     binding.btnBasicKnowledge.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                    setButtonDrawable(binding.btnBasicKnowledge, course.isCompleted == 1)
                 }
                 "Make a plan" -> {
                     binding.btnMakeAPlan.isEnabled = course.isEnable == 1
                     binding.btnMakeAPlan.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                    setButtonDrawable(binding.btnMakeAPlan, course.isCompleted == 1)
                 }
                 "Summary" -> {
                     binding.btnSummary.isEnabled = course.isEnable == 1
                     binding.btnSummary.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                    setButtonDrawable(binding.btnSummary, course.isCompleted == 1)
                 }
                 "Drink tracker" -> {
                     binding.btnDrinkTracker.isEnabled = course.isEnable == 1
                     binding.btnDrinkTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                    setButtonDrawable(binding.btnDrinkTracker, course.isCompleted == 1)
                 }
                 "Event tracker" -> {
                     binding.btnEventTracker.isEnabled = course.isEnable == 1
                     binding.btnEventTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                    setButtonDrawable(binding.btnEventTracker, course.isCompleted == 1)
                 }
                 "See the introduction" -> {
                     binding.btnSeeTheInformation.isEnabled = course.isEnable == 1
                     binding.btnSeeTheInformation.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                    setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)
                 }
                 "How to use" -> {
                     binding.btnHowToUse.isEnabled = course.isEnable == 1
                     binding.btnHowToUse.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                    setButtonDrawable(binding.btnHowToUse, course.isCompleted == 1)
                 }
             }
         }
     }
+
+    private fun setButtonDrawable(button: AppCompatButton, isCompleted: Boolean) {
+        val drawable = if (isCompleted) {
+            ContextCompat.getDrawable(requireContext(), R.drawable.basic_knowledge_complete_icon)
+        } else {
+            null
+        }
+        button.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+    }
+
 
 
 }

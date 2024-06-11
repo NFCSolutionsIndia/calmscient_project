@@ -19,6 +19,8 @@ import com.calmscient.di.remote.request.GetTakingControlIndexRequest
 import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
+import com.calmscient.di.remote.request.SaveTakingControlIntroductionWrapper
+import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetEventsListResponse
@@ -27,6 +29,7 @@ import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.TakingControlIntroduction
+import com.calmscient.di.remote.response.UpdateTakingControlIndexResponse
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -51,8 +54,13 @@ class TakingControlRepository @Inject constructor(private val apiService: ApiSer
     fun getTakingControlIntroductionData(getTakingControlIntroductionRequest: GetTakingControlIntroductionRequest,accessToken: String) : Call<GetTakingControlIntroductionResponse>{
         return  apiService.getTakingControlIntroductionData("Bearer $accessToken",getTakingControlIntroductionRequest)
     }
-    fun saveTakingControlIntroductionData(saveTakingControlIntroductionRequest: SaveTakingControlIntroductionRequest,accessToken: String) : Call<SaveTakingControlIntroductionResponse>{
+    fun saveTakingControlIntroductionData(saveTakingControlIntroductionRequest: SaveTakingControlIntroductionRequest, accessToken: String) : Call<SaveTakingControlIntroductionResponse>{
         return  apiService.saveTakingControlIntroductionData("Bearer $accessToken",saveTakingControlIntroductionRequest)
+    }
+
+    fun updateTakingControlIndexData(updateTakingControlIndexRequest: UpdateTakingControlIndexRequest, accessToken: String): Call<UpdateTakingControlIndexResponse>
+    {
+        return apiService.updateTakingControlIndexData("Bearer $accessToken",updateTakingControlIndexRequest)
     }
 
 

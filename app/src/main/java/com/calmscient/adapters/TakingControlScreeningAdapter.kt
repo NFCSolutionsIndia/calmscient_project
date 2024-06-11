@@ -34,7 +34,11 @@ import com.calmscient.fragments.QuestionFragment
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.viewmodels.FlagsViewModel
 
-class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager, private val items: List<TakingControlScreeningItem>, private val context: Context,private var screeningResponse: List<ScreeningItem>) :
+interface PayloadCallback {
+    fun onPayloadConstructed(item: TakingControlScreeningItem)
+}
+
+class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager, private val items: List<TakingControlScreeningItem>, private val context: Context,private var screeningResponse: List<ScreeningItem>, private val callback: PayloadCallback) :
     RecyclerView.Adapter<TakingControlScreeningAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -103,9 +107,11 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
             updateCardAppearance(holder, item.isApplied)
             dialogBuilder.dismiss()
 
-            val payload = constructPayload(item)
+            callback.onPayloadConstructed(item)
 
-            Log.d("payload","$payload")
+           /* val payload = constructPayload(item)
+
+            Log.d("payload","$payload")*/
         }
 
         btnNo.setOnClickListener {
