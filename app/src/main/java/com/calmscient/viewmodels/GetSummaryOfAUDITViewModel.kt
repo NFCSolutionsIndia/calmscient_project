@@ -80,14 +80,14 @@ class GetSummaryOfAUDITViewModel @Inject constructor(private val repository: Wee
                 val response = call.execute()
                 if (response.isSuccessful) {
                     val isSuccess = response.body()?.statusResponse?.responseCode == 200
-                    val isNotAnswered = response.body()?.statusResponse?.responseCode == 300
+                    val isNotSuccess = response.body()?.statusResponse?.responseCode == 400
                     if (isSuccess) {
                         saveResponseLiveData.postValue(response.body())
                         successLiveData.postValue(isSuccess)
                         Log.d("GetSummaryOfAUDITViewModel ", "Success: ${response.body()}")
-                    } else if (isNotAnswered) {
+                    } else if (isNotSuccess) {
                         saveResponseLiveData.postValue(response.body())
-                        successNotAnsweredData.postValue(isNotAnswered)
+                        successNotAnsweredData.postValue(isNotSuccess)
                     } else {
                         failureResponseData.postValue(response.body())
                         val res = response.body()?.statusResponse?.responseMessage

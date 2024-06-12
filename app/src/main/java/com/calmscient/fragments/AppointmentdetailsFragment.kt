@@ -31,7 +31,8 @@ import androidx.core.content.ContextCompat
 import com.calmscient.R
 import com.calmscient.databinding.FragmentAppointmentdetailsBinding
 import com.calmscient.di.remote.response.AppointmentDetails
-import com.calmscient.di.remote.response.MedicalDetails
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import com.google.gson.Gson
 
 
@@ -73,10 +74,15 @@ class AppointmentdetailsFragment:Fragment() {
 
         Log.d("Appointment Details","$appointmentDetails")
 
+        val dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss")
+        val dateFormatterResponse = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+        val formattedDate = LocalDateTime.parse(appointmentDetails.dateAndTime, dateFormatterResponse).format(dateFormatter)
+
         binding.doctorName.text = appointmentDetails.providerName
         binding.phoneNumber.text = appointmentDetails.contact
         binding.tvAddress.text = appointmentDetails.address
-        binding.tvDate.text = appointmentDetails.dateAndTime
+        binding.tvDate.text = formattedDate
         binding.tvAppointmentDetails.text = appointmentDetails.appointmentDetails
 
         return binding.root

@@ -135,7 +135,7 @@
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/lineChartViewGAD"
                     android:layout_width="@dimen/_280sdp"
-                    android:layout_height="@dimen/_250sdp"/>
+                    android:layout_height="@dimen/_300sdp"/>
             </androidx.cardview.widget.CardView>
 
 

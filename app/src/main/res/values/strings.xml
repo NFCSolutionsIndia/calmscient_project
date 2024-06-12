@@ -745,7 +745,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="screenings">Screenings</string>
     <string name="add_appointment">Add appointment</string>
     <string name="plz_confirm">Please confirm.</string>
-    <string name="exit_app">Are you want to exit the app?</string>
+    <string name="exit_app">Do you want to exit the application?</string>
     <!--network errors-->
     <string name="network_connection_error">Internet connection lost, please retry again</string>
     <string name="network_default_error">Something wrong happened, please retry again</string>

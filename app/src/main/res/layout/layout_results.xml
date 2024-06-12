@@ -147,10 +147,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="end"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginEnd="@dimen/_18sdp"
+            android:layout_margin="@dimen/_12sdp"
             android:visibility="visible"
-            android:src="@drawable/ic_bulb_recognize" />
+            android:src="@drawable/ic_information" />
         <ImageView
             android:id="@+id/infoIcon"
             android:layout_width="wrap_content"

@@ -87,11 +87,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_understandingStressSigns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/understanding_the_stress_signs"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -111,11 +111,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_causeOfYourStress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/understanding_the_cause_of_your_stress"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -136,11 +136,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_stressResponse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="Understanding your stress response"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 
@@ -160,11 +160,11 @@
                     android:padding="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/tv_resources"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
-                        android:text="@string/resources"
                         android:textColor="#424242"
                         android:textSize="@dimen/_16sdp" />
 

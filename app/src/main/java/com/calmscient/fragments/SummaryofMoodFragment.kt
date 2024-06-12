@@ -158,16 +158,16 @@ class SummaryofMoodFragment : Fragment() {
         val currentDate: Date = calendar.time
 
         // Format the current date and calculate the date for next month
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         val currentDateString: String = dateFormat.format(currentDate)
 
         // Calculate the date for next month
-        calendar.add(Calendar.MONTH, 1)
-        val nextMonthDate: Date = calendar.time
-        val nextMonthDateString: String = dateFormat.format(nextMonthDate)
+        calendar.add(Calendar.MONTH, -1)
+        val previousMonthDate: Date = calendar.time
+        val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
         // Create the final date string
-        val finalDateString = "$currentDateString - $nextMonthDateString"
+        val finalDateString = "$previousMonthDateString - $currentDateString"
 
         // Set the date in the TextView
         dateView.text = finalDateString
@@ -301,7 +301,17 @@ class SummaryofMoodFragment : Fragment() {
 
     private fun apiCall()
     {
-        loginResponse?.loginDetails?.let { getSummaryOfMoodViewModel.getSummaryOfMood(it.patientLocationID,it.patientID,it.clientID,"05/10/2024","05/23/2024",it.userID, accessToken) }
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        // Get today's date
+        val toDate = dateFormat.format(calendar.time)
+
+        // Subtract one month from today's date
+        calendar.add(Calendar.MONTH, -1)
+        val fromDate = dateFormat.format(calendar.time)
+
+        loginResponse?.loginDetails?.let { getSummaryOfMoodViewModel.getSummaryOfMood(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate,it.userID, accessToken) }
 
     }
 
@@ -391,6 +401,7 @@ class SummaryofMoodFragment : Fragment() {
             val yAxisLeft = lineChart.axisLeft
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+            yAxisLeft.axisMinimum = 0f
 
             lineChart.axisRight.isEnabled = false
 
@@ -457,6 +468,7 @@ class SummaryofMoodFragment : Fragment() {
         val yAxisLeft = barChart.axisLeft
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+        yAxisLeft.axisMinimum = 0f
 
         barChart.axisRight.isEnabled = false
         xAxis.setDrawAxisLine(false)

@@ -28,6 +28,7 @@ import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.MenuItemViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -216,6 +217,21 @@ class WeeklySummaryFragment : Fragment() {
                 customProgressDialog.dialogDismiss()
             }
         })
+
+        menuViewModel.errorLiveData.value?.let { failureMessage ->
+            failureMessage.let {
+                if (CommonClass.isNetworkAvailable(requireContext())) {
+                    ServerTimeoutHandler.handleTimeoutException(requireContext()) {
+                        // Retry logic when the retry button is clicked
+
+                        menuViewModel.retryFetchMenuItems()
+                    }
+                } else {
+                    CommonClass.showInternetDialogue(requireContext())
+                }
+            }
+
+        }
 
         menuViewModel.menuItemsLiveData.observe(viewLifecycleOwner, Observer { successDate->
             if(successDate != null && successDate.size == 8)

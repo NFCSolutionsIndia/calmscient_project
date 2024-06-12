@@ -63,6 +63,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:textColor="@color/hospital_name"
                     android:textSize="@dimen/_14sdp"
+                    android:visibility="gone"
                     android:fontFamily="@font/lexendmedium" />
 
                 <TextView
@@ -82,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/doctor_logo"
                     android:layout_weight="1"
-                    android:layout_marginTop="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_22sdp"
                     android:textColor="@color/hospital_name"
                     android:textSize="@dimen/_14sdp"
                     android:fontFamily="@font/lexendmedium" />

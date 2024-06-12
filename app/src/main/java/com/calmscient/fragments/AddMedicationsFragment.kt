@@ -533,6 +533,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
                         binding.morningTimeView.text = morningTime12Hours
                         binding.morningAlarmTimeView.text = calculateAlarmTime(morningAlarmTime, morningAlarm.alarmInterval ?: 10)
                         alarmInternal[morningAlarmIndex].isEnabled = if (binding.alarmToggleButtonMorning.isOn) 1 else 0
+                        binding.alarmToggleButtonMorning.isOn = true
                     }
                 }
                 getString(R.string.afternoon) -> {
@@ -544,6 +545,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
                         binding.afternoonTimeView.text = afternoonTime12Hours
                         binding.afternoonAlarmTimeView.text = calculateAlarmTime(afternoonAlarmTime, afternoonAlarm.alarmInterval ?: 10)
                         alarmInternal[afternoonAlarmIndex].isEnabled = if (binding.alarmToggleButtonAfternoon.isOn) 1 else 0
+                        binding.alarmToggleButtonAfternoon.isOn = true
                     }
                 }
                 getString(R.string.evening) -> {
@@ -555,6 +557,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
                         binding.eveningTimeView.text = eveningTime12Hours
                         binding.eveningAlarmTimeView.text = calculateAlarmTime(eveningAlarmTime, eveningAlarm.alarmInterval ?: 10)
                         alarmInternal[eveningAlarmIndex].isEnabled = if (binding.alarmToggleButtonEvening.isOn) 1 else 0
+                        binding.alarmToggleButtonEvening.isOn = true
                     }
                 }
             }

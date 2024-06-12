@@ -11,74 +11,92 @@
 
 package com.calmscient.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.activity.addCallback
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
-import com.calmscient.adapters.AnxietyIntroductionAdapter
-import com.calmscient.adapters.CardItemDiffCallback1
 import com.calmscient.adapters.ChangingYourResponseAdapter
-import com.calmscient.di.remote.CardItemDataClass
-import com.calmscient.di.remote.ItemType
 import com.calmscient.databinding.FragmentChangingYourResponseBinding
+import com.calmscient.di.remote.ChapterDataClass
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
+import com.calmscient.di.remote.response.ManagingAnxiety
+import com.calmscient.di.remote.response.SessionIdResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SavePreferences
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.GetManageAnxietyIndexDataViewModel
+import com.calmscient.viewmodels.GetSessionIdViewModel
 
 class ChangingYourResponseFragment : Fragment() {
     private lateinit var savePrefData: SavePreferences
+    private lateinit var binding : FragmentChangingYourResponseBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this){
-            loadFragment(DiscoveryFragment())
-        }
-    }
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private val getManageAnxietyIndexDataViewModel: GetManageAnxietyIndexDataViewModel by activityViewModels()
+    private lateinit var manageAnxietyIndexResponse: ManageAnxietyIndexResponse
+    private var loginResponse : LoginResponse? = null
+    private  lateinit var accessToken : String
+
+
+    private val getSessionIdViewModel: GetSessionIdViewModel by activityViewModels()
+    private lateinit var sessionIdResponse: SessionIdResponse
+    private  lateinit var sessionId : String
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = FragmentChangingYourResponseBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentChangingYourResponseBinding.inflate(inflater, container, false)
         savePrefData = SavePreferences(requireContext())
+
+
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        customProgressDialog = CustomProgressDialog(requireContext())
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
         activity?.window?.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+            manageAnxietyIndexDataAPICall()
+            observeViewModel()
+        }
+        else
+        {
+            CommonClass.showInternetDialogue(requireContext())
+        }
 
-
-
-        // Data for Understanding the stress signs
-        val stressSignsItems = cardItemsStressSigns()
-        val stressSignsRecyclerView: RecyclerView = binding.recyclerViewUnderstandingStressSigns
-        val stressSignsAdapter = ChangingYourResponseAdapter(CardItemDiffCallback1())
-        setupRecyclerView(stressSignsRecyclerView, stressSignsItems, stressSignsAdapter)
-
-        // Data for Understanding the cause of your stress
-        val yourStressItems = cardItemsYourStress()
-        val yourStressRecyclerView: RecyclerView = binding.recyclerViewUnderstandingCauseOfYourStress
-        val yourStressAdapter = ChangingYourResponseAdapter(CardItemDiffCallback1())
-        setupRecyclerView(yourStressRecyclerView, yourStressItems, yourStressAdapter)
-
-        // Data for Understanding your stress response
-        val stressResponseItems = cardItemsStressResponse()
-        val stressResponseRecyclerView: RecyclerView = binding.recyclerViewUnderstandingStressResponse
-        val stressResponseAdapter = ChangingYourResponseAdapter(CardItemDiffCallback1())
-        setupRecyclerView(stressResponseRecyclerView, stressResponseItems, stressResponseAdapter)
-
-        // Data for Resources
-        val resourceItems = cardItemsResource()
-        val resourceRecyclerView: RecyclerView = binding.recyclerViewResources
-        val resourceAdapter = ChangingYourResponseAdapter(CardItemDiffCallback1())
-        setupRecyclerView(resourceRecyclerView, resourceItems, resourceAdapter)
-
-
+        if (CommonClass.isNetworkAvailable(requireContext()))
+        {
+            getSessionIdAPICall()
+        }
+        else
+        {
+            CommonClass.showInternetDialogue(requireContext())
+        }
 
         binding.icGlossary.setOnClickListener {
             //startActivity(Intent(requireContext(), GlossaryActivity::class.java))
@@ -87,292 +105,106 @@ class ChangingYourResponseFragment : Fragment() {
         }
         binding.backIcon.setOnClickListener {
             //requireActivity().onBackPressed()
-            loadFragment(DiscoveryFragment())
+            loadFragment(BeginManageAnxietyFragment())
         }
 
         return binding.root
     }
 
+    private fun manageAnxietyIndexDataAPICall()
+    {
+        clearRecyclerViewData()
+        getManageAnxietyIndexDataViewModel.clear()
+
+        loginResponse?.loginDetails?.let {
+            getManageAnxietyIndexDataViewModel.getManageAnxietyIndexData(3,it.patientLocationID,it.patientID,it.clientID,accessToken)
+        }
+
+    }
+
+    private fun observeViewModel()
+    {
+        getManageAnxietyIndexDataViewModel.clear()
+        getManageAnxietyIndexDataViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.show("Loading...")
+            }
+            else
+            {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getManageAnxietyIndexDataViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess)
+            {
+                getManageAnxietyIndexDataViewModel.saveResponseLiveData.observe(viewLifecycleOwner,Observer { successData->
+                    if(successData != null)
+                    {
+                        manageAnxietyIndexResponse = successData
+                        clearRecyclerViewData()  // Clear existing RecyclerView data
+                        getManageAnxietyIndexDataViewModel.clear()  // Clear ViewModel data
+
+                        bindDataToRecyclerView(manageAnxietyIndexResponse.managingAnxiety)
+                        bindUIData(manageAnxietyIndexResponse.managingAnxiety)
+                    }
+                })
+            }
+        })
+    }
+
+    private fun bindUIData(managingAnxiety: List<ManagingAnxiety>)
+    {
+
+        if(managingAnxiety.size>=4)
+        {
+            binding.tvUnderstandingStressSigns.text = managingAnxiety[0].lessonName
+            binding.tvCauseOfYourStress.text = managingAnxiety[1].lessonName
+            binding.tvStressResponse.text = managingAnxiety[2].lessonName
+            binding.tvResources.text = managingAnxiety[3].lessonName
+        }
+
+    }
+
+    private fun bindDataToRecyclerView(managingAnxiety: List<ManagingAnxiety>) {
+        managingAnxiety.forEach { lesson ->
+            val chapterItems = lesson.chapters.map { chapter ->
+                ChapterDataClass(
+                    chapterId = chapter.chapterId,
+                    chapterName = chapter.chapterName,
+                    chapterUrl = chapter.chapterUrl,
+                    isCourseCompleted = chapter.isCourseCompleted,
+                    pageCount = chapter.pageCount,
+                    imageUrl = chapter.imageUrl,
+                    chapterOnlyReading = chapter.chapterOnlyReading
+                )
+            }
+
+            val itemClickListener: (ChapterDataClass) -> Unit = { chapter ->
+                val url = "http://20.197.5.97:5000/?courseName=changingYourResponseToStress&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId"
+                Log.d("URL:","$url")
+                chapter.chapterName?.let { WebViewFragment.newInstance(url, it) }
+                    ?.let { loadFragment(it) }
+            }
+
+            when (lesson.lessonName) {
+                "Understanding the stress signs" -> setupRecyclerView(binding.recyclerViewUnderstandingStressSigns, chapterItems, itemClickListener)
+                "Understanding the cause of your stress" -> setupRecyclerView(binding.recyclerViewUnderstandingCauseOfYourStress, chapterItems, itemClickListener)
+                "Understanding your stress response" -> setupRecyclerView(binding.recyclerViewUnderstandingStressResponse, chapterItems, itemClickListener)
+                "Resources" -> setupRecyclerView(binding.recyclerViewResources, chapterItems, itemClickListener)
+            }
+        }
+    }
 
     private fun setupRecyclerView(
         recyclerView: RecyclerView,
-        cardItems: List<CardItemDataClass>,
-        adapter: ChangingYourResponseAdapter
+        chapterItems: List<ChapterDataClass>,
+        itemClickListener: (ChapterDataClass) -> Unit
     ) {
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val adapter = ChangingYourResponseAdapter(chapterItems, itemClickListener)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
-        adapter.submitList(cardItems)
-    }
-
-    private fun cardItemsStressSigns(): List<CardItemDataClass> {
-        val card1 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.VIDEO),
-            audioResourceId = null,
-            videoResourceId = "https://calmscient-videos.s3.ap-south-1.amazonaws.com/Where+can+stress+hide.mp4",
-            contentIcons = listOf(R.drawable.stress_signs_1),
-            description = getString(R.string.where_can_stress_hide),
-            isCompleted = true,
-            heading = null,
-            summary = getString(R.string.where_can_stress_hide_summary),
-            dialogText = null
-        )
-
-        val card2 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.AUDIO),
-            audioResourceId = "https://calmscient-videos.s3.ap-south-1.amazonaws.com/Lesson+1-2+Meet+Nora%2C+Austin+and+Melanie.wav",
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_signs_2),
-            description = getString(R.string.meet_nora_austin),
-            isCompleted = false,
-            heading = null,
-            summary = getString(R.string.let_s_meet_nora_austin_and_melanie),
-            dialogText = null
-        )
-        val card3 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.QUIZ),
-            audioResourceId = null, // Replace with actual audio resource ID
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.changing_response_quiz),
-            description = getString(R.string.your_physiological_signs_of_stress_quiz),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card4 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_signs_4),
-            description = getString(R.string.what_are_physiological_signs_of_stress),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card5 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.QUIZ),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.changing_response_quiz),
-            description = getString(R.string.your_emotional_signs_of_stress_quiz),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card6 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null, // Replace with actual audio resource ID
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_signs_6),
-            description = getString(R.string.emotional_signs_of_stress_fight_flight_freeze_shutdown),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card7 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_signs_7),
-            description = getString(R.string.window_of_tolerance),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card8 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.QUIZ),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.changing_response_quiz),
-            description = getString(R.string.your_behavioral_signs_of_stress_quiz),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card9 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null, // Replace with actual audio resource ID
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_signs_9),
-            description = getString(R.string.defense_response_and_behavioral_response),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        // Add more CardItemDataClass instances as needed for section 1
-        return listOf(card1, card2, card3,card4,card5,card6,card7,card8,card9)
-    }
-
-    private fun cardItemsYourStress(): List<CardItemDataClass> {
-        val card1 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.VIDEO),
-            audioResourceId = null,
-            videoResourceId = "https://calmscient-videos.s3.ap-south-1.amazonaws.com/What+is+causing+you+stress.mp4",
-            contentIcons = listOf(R.drawable.cause_your_stress_1),
-            description = getString(R.string.what_is_causing_you_stress),
-            isCompleted = false,
-            heading = null,
-            summary = getString(R.string.causing_your_stress_summary),
-            dialogText = null,
-        )
-
-        val card2 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.AUDIO),
-            audioResourceId = "https://calmscient-videos.s3.ap-south-1.amazonaws.com/Interview+Nora+Austin+and+Melanie.wav",
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.cause_your_stress_2),
-            description = getString(R.string.what_s_causing_nora_austin_and_melanie_stress),
-            isCompleted = false,
-            heading = null,
-            summary = getString(R.string.cause_your_stress_summary),
-            dialogText = null
-        )
-
-        val card3 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.cause_your_stress_3),
-            description = getString(R.string.what_triggers_our_stress),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card4 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.QUIZ),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.changing_response_quiz),
-            description = getString(R.string.your_stress_triggers_quiz),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        // Add more CardItemDataClass instances as needed for cardItemsYourStress
-        return listOf(card1, card2, card3, card4)
-    }
-
-    private fun cardItemsStressResponse(): List<CardItemDataClass> {
-        val card1 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.VIDEO),
-            audioResourceId = null,
-            videoResourceId = "https://calmscient-videos.s3.ap-south-1.amazonaws.com/What+is+your+response+to+stress_.mp4",// need to replace with the original URL
-            contentIcons = listOf(R.drawable.stress_response_1),
-            description = getString(R.string.what_is_your_response_to_stress),
-            isCompleted = false,
-            heading = null,
-            summary = getString(R.string.your_response_video_summary),
-            dialogText = null
-        )
-
-        val card2 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_response_2),
-            description = getString(R.string.push_away_avoidance),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card3 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_response_3),
-            description = getString(R.string.push_through),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card4 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_response_4),
-            description = getString(R.string.stress_hormones),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card5 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.stress_response_5),
-            description = getString(R.string.in_denial),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-
-        // Add more CardItemDataClass instances as needed for
-        return listOf(card1, card2, card3, card4, card5)
-    }
-
-    private fun cardItemsResource(): List<CardItemDataClass> {
-        val card1 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.resource_1),
-            description = getString(R.string.coping_with_stress),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-
-        val card2 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.resource_2),
-            description = getString(R.string.cost_benefit_analysis),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-
-        val card3 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.resource_3),
-            description = getString(R.string.relaxation_techniques),
-            isCompleted = false,
-            heading = null,
-            summary = null,
-            dialogText = null
-        )
-        val card4 = CardItemDataClass(
-            availableContentTypes = listOf(ItemType.LESSON),
-            audioResourceId = null,
-            videoResourceId = null,
-            contentIcons = listOf(R.drawable.resource_4),
-            description = getString(R.string.biased_thinking_and_stress),
-            isCompleted = false,
-            heading =null,
-            summary = null,
-            dialogText = null
-        )
-
-        // Add more CardItemDataClass instances as needed for
-        return listOf(card1, card2, card3, card4)
     }
 
 
@@ -382,4 +214,44 @@ class ChangingYourResponseFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
+    private fun getSessionIdAPICall()
+    {
+        getSessionIdViewModel.getSessionId(accessToken)
+
+        sessionIdObserveViewModel()
+
+    }
+
+    private fun sessionIdObserveViewModel()
+    {
+        getSessionIdViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.show("Loading...")
+            }
+            else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getSessionIdViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+            if(successData != null)
+            {
+                sessionIdResponse = successData
+                sessionId = sessionIdResponse.sessionId
+
+                //Toast.makeText(requireContext(), sessionId,Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+
+    private fun clearRecyclerViewData() {
+        binding.recyclerViewUnderstandingStressSigns.adapter = null
+        binding.recyclerViewUnderstandingCauseOfYourStress.adapter = null
+        binding.recyclerViewUnderstandingStressResponse.adapter = null
+        binding.recyclerViewResources.adapter = null
+    }
+
 }

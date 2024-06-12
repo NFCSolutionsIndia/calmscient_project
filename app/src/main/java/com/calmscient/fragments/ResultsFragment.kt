@@ -250,13 +250,13 @@ class ResultsFragment() : Fragment() {
         }.start()
     }*/
 
-    fun separateDateTime(dateTimeString: String): DateTime? {
+    private fun separateDateTime(dateTimeString: String): DateTime? {
         try {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             val date = dateFormat.parse(dateTimeString)
-            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val dateFormatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
             val timeFormatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-            val dateString = dateFormatter.format(date) // Date in format "yyyy-MM-dd"
+            val dateString = dateFormatter.format(date) // Date in format "MM/dd/yyyy"
             val timeString = timeFormatter.format(date) // Time in format "HH:mm:ss"
             return DateTime(dateString, timeString)
         } catch (e: Exception) {

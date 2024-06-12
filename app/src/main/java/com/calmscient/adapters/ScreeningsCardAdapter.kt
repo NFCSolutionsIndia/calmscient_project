@@ -55,6 +55,14 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
             activity.supportFragmentManager.beginTransaction()
                 .replace(R.id.flFragment, fragment).addToBackStack(null).commit()
         }*/
+
+        // Check the archiveFlag to set visibility of history icon
+        if (screeningResponse[position].archiveFlag == 0) {
+            holder.imageHistory.visibility = View.GONE
+        } else {
+            holder.imageHistory.visibility = View.VISIBLE
+        }
+
         holder.imageHistory.setOnClickListener {
             // Check internet connection
             if (CommonClass.isNetworkAvailable(holder.itemView.context)) {
@@ -117,8 +125,5 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
         val cardViewLayout: CardView = itemView.findViewById(R.id.screenings_item_card_view)
         val imageHistory: ImageView = itemView.findViewById(R.id.history_icon)
         val screeningsImageNext: ImageView = itemView.findViewById(R.id.screenings_next_icon)
-
-
-
     }
 }

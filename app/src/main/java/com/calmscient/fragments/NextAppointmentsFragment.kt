@@ -50,6 +50,7 @@ import com.kizitonwose.calendar.view.WeekDayBinder
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.Month
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -416,9 +417,9 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
         // Get the selected date
         val selectedDate = selectedDate
 
-        // Format the selected date as "yyyy-MM-dd" to match the date format in the response
-        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val selectedDateStr = selectedDate.format(dateFormatter)
+        // Format the selected date as "MM/dd/yyyy"
+        val dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+        val dateFormatterResponse = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
         // Calculate and set the next 6 days' dates as dateview1
         for (i in 0 until 7) { // Iterate for 7 days including the selected date
@@ -427,7 +428,8 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
 
             // Check if there are appointments for the current date
             val appointmentsForDate = appointmentDetailsResponseData.filter { appointment ->
-                appointment.date.startsWith(currentDateStr)
+                val appointmentDate = LocalDate.parse(appointment.date.substring(0, 10))
+                appointmentDate.isEqual(currentDate)
             }
 
             if (appointmentsForDate.isNotEmpty()) {
@@ -435,14 +437,15 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
                 appointmentsForDate.forEach { appointment ->
                     appointment.appointmentDetailsByDate.forEach { appointmentByDate ->
                         appointmentByDate.appointmentDetails.apply {
+                            val formattedDate = LocalDateTime.parse(dateAndTime, dateFormatterResponse).format(dateFormatter)
                             cardViewItems.add(
                                 CardViewItems(
-                                    dateAndTime,
+                                    formattedDate, // Use formatted date
                                     R.drawable.ic_doctor_logo,
                                     providerName,
                                     null,
                                     hospitalName,
-                                    R.drawable.ic_next,// Set the arrow when appointments are available
+                                    R.drawable.ic_next, // Set the arrow when appointments are available
                                     appointmentByDate.appointmentDetails
                                 )
                             )

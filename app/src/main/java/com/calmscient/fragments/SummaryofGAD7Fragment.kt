@@ -163,16 +163,16 @@ class SummaryofGAD7Fragment: Fragment() {
         val currentDate: Date = calendar.time
 
         // Format the current date and calculate the date for next month
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         val currentDateString: String = dateFormat.format(currentDate)
 
         // Calculate the date for next month
-        calendar.add(Calendar.MONTH, 1)
-        val nextMonthDate: Date = calendar.time
-        val nextMonthDateString: String = dateFormat.format(nextMonthDate)
+        calendar.add(Calendar.MONTH, -1)
+        val previousMonthDate: Date = calendar.time
+        val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
         // Create the final date string
-        val finalDateString = "$currentDateString - $nextMonthDateString"
+        val finalDateString = "$previousMonthDateString - $currentDateString"
 
         // Set the date in the TextView
         dateView.text = finalDateString
@@ -315,7 +315,16 @@ class SummaryofGAD7Fragment: Fragment() {
 
     private fun apiCall()
     {
-        loginResponse?.loginDetails?.let { getSummaryOfGADViewModel.getSummaryOfGAD(it.patientLocationID,it.patientID,it.clientID,"04/21/2024","05/09/2024", accessToken) }
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        // Get today's date
+        val toDate = dateFormat.format(calendar.time)
+
+        // Subtract one month from today's date
+        calendar.add(Calendar.MONTH, -1)
+        val fromDate = dateFormat.format(calendar.time)
+        loginResponse?.loginDetails?.let { getSummaryOfGADViewModel.getSummaryOfGAD(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate, accessToken) }
 
     }
 
@@ -349,7 +358,7 @@ class SummaryofGAD7Fragment: Fragment() {
         if (response.statusResponse.responseCode == 200) {
             val gad7WeeklyScores = response.weeklyScores
 
-            if (gad7WeeklyScores.isEmpty()) {
+            if (response.gadDashboardByDateRangeList.isEmpty()) {
                 showNoDataMessage()
                 return
             }
@@ -366,7 +375,7 @@ class SummaryofGAD7Fragment: Fragment() {
                 entries.add(entry)
 
                 val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.date)
-                val formattedDate = SimpleDateFormat("M/dd", Locale.getDefault()).format(date)
+                val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
                 dateLabels.add(formattedDate)
             }
 
@@ -398,6 +407,10 @@ class SummaryofGAD7Fragment: Fragment() {
             val yAxisLeft = lineChart.axisLeft
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+            yAxisLeft.axisMinimum = 0f // Ensure Y-axis starts from 0
+            yAxisLeft.axisMaximum = 30f
+            yAxisLeft.granularity = 2f // Set the interval to 2
+            yAxisLeft.labelCount = 16 // Ensure 15 intervals from 0 to 30
 
             lineChart.axisRight.isEnabled = false
 

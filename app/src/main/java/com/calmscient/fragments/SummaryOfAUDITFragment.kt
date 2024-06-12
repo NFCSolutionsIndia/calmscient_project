@@ -31,7 +31,6 @@ import com.calmscient.databinding.CalendarDayLayoutBinding
 import com.calmscient.databinding.SummaryofauditFragmentBinding
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
-import com.calmscient.di.remote.response.SummaryOfGADResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
@@ -74,28 +73,22 @@ class SummaryOfAUDITFragment: Fragment() {
     private val summaryCardViewItems = mutableListOf<WeeklySummaryMoodTask>()
     private lateinit var summaryOfMoodAdapter: SummaryofMoodFragmentAdapter
 
-    private lateinit var customProgressDialog: CustomProgressDialog
-    private lateinit var commonAPICallDialog: CommonAPICallDialog
     private val getSummaryOfAUDITViewModel: GetSummaryOfAUDITViewModel by activityViewModels()
-    private lateinit var summaryOfAUDITResponse: SummaryOfAUDITResponse
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private lateinit var customProgressDialog: CustomProgressDialog
     private var loginResponse : LoginResponse? = null
+    private lateinit var summaryOfAUDITResponse: SummaryOfAUDITResponse
     private lateinit var lineChart: LineChart
-    private  lateinit var accessToken : String
 
+    private  lateinit var accessToken : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this){
-            if(CommonClass.isNetworkAvailable(requireContext()))
-            {
-                loadFragment(WeeklySummaryFragment())
-            }
-            else
-            {
-                CommonClass.showInternetDialogue(requireContext())
-            }
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            loadFragment(WeeklySummaryFragment())
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -103,12 +96,13 @@ class SummaryOfAUDITFragment: Fragment() {
     ): View? {
         binding = SummaryofauditFragmentBinding.inflate(inflater, container, false)
 
+
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
-        lineChart = binding.lineChartViewAUDIT
 
+        lineChart = binding.lineChartViewAUDIT
 
         binding.backIcon.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
@@ -127,52 +121,56 @@ class SummaryOfAUDITFragment: Fragment() {
         {
             CommonClass.showInternetDialogue(requireContext())
         }
-        /*binding.calenderview.setOnClickListener {
-            binding.newbackIcon.visibility = View.VISIBLE
-            binding.graphScreen.visibility = View.GONE
-            binding.datesScreen.visibility = View.VISIBLE
-            binding.backIcon.visibility = View.GONE
-            binding.scrollViewScreen.visibility = View.GONE
-        }
-        binding.newbackIcon.setOnClickListener {
-            binding.backIcon.visibility = View.VISIBLE
-            binding.graphScreen.visibility = View.VISIBLE
-            binding.datesScreen.visibility = View.GONE
-            binding.newbackIcon.visibility = View.GONE
-            binding.scrollViewScreen.visibility = View.VISIBLE
 
-        }*/
+        /* binding.calenderview.setOnClickListener {
+             binding.newbackIcon.visibility = View.VISIBLE
+             binding.graphScreen.visibility = View.GONE
+             binding.datesScreen.visibility = View.VISIBLE
+             binding.backIcon.visibility = View.GONE
+             binding.scrollViewScreen.visibility = View.GONE
+         }
+         binding.newbackIcon.setOnClickListener {
+             binding.backIcon.visibility = View.VISIBLE
+             binding.graphScreen.visibility = View.VISIBLE
+             binding.datesScreen.visibility = View.GONE
+             binding.newbackIcon.visibility = View.GONE
+             binding.scrollViewScreen.visibility = View.VISIBLE
 
-
-        commonAPICallDialog = CommonAPICallDialog(requireContext())
-        customProgressDialog = CustomProgressDialog(requireContext())
+         }*/
 
 
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
         }
+
+
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        customProgressDialog = CustomProgressDialog(requireContext())
+
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Ensure that dateView is part of the FragmentWeeklysummarymoodBinding layout
         val dateView: TextView = binding.dateView
         val calenderDateView: TextView = binding.calenderDateView
+
         // Get the current date from the calendar
         val calendar = Calendar.getInstance()
         val currentDate: Date = calendar.time
 
         // Format the current date and calculate the date for next month
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         val currentDateString: String = dateFormat.format(currentDate)
 
         // Calculate the date for next month
-        calendar.add(Calendar.MONTH, 1)
-        val nextMonthDate: Date = calendar.time
-        val nextMonthDateString: String = dateFormat.format(nextMonthDate)
+        calendar.add(Calendar.MONTH, -1)
+        val previousMonthDate: Date = calendar.time
+        val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
         // Create the final date string
-        val finalDateString = "$currentDateString - $nextMonthDateString"
+        val finalDateString = "$previousMonthDateString - $currentDateString"
 
         // Set the date in the TextView
         dateView.text = finalDateString
@@ -191,6 +189,7 @@ class SummaryOfAUDITFragment: Fragment() {
                     }
                 }
             }
+
             fun bind(day: WeekDay) {
                 this.day = day
                 bind.exSevenDateText.text = dateFormatter.format(day.date)
@@ -232,10 +231,11 @@ class SummaryOfAUDITFragment: Fragment() {
         )
         binding.exSevenCalendar.scrollToDate(LocalDate.now())
         binding.recyclerViewSummaryMood.layoutManager = LinearLayoutManager(requireContext())
-        summaryOfMoodAdapter = SummaryofMoodFragmentAdapter(summaryCardViewItems )
+        summaryOfMoodAdapter = SummaryofMoodFragmentAdapter(summaryCardViewItems)
         binding.recyclerViewSummaryMood.adapter = summaryOfMoodAdapter
         summaryOfMoodAdapter.updateTasks(summaryCardViewItems)
-        displayCardViewsForSelectedDate()
+
+        //displayCardViewsForSelectedDate()
     }
 
     private fun displayCardViewsForSelectedDate() {
@@ -261,15 +261,16 @@ class SummaryOfAUDITFragment: Fragment() {
 
     private fun getCardDescription(cardPosition: Int): String {
         return when (cardPosition) {
-            0 -> getString(R.string.audit_text1_weeklysummary)
-            1 -> getString(R.string.audit_text2_weeklysummary)
-            2 -> getString(R.string.audit_text2_weeklysummary)
-            3 -> getString(R.string.audit_text2_weeklysummary)
-            4 -> getString(R.string.audit_text2_weeklysummary)
-            5 -> getString(R.string.audit_text2_weeklysummary)
-            else -> getString(R.string.audit_text1_weeklysummary)
+            0 -> getString(R.string.gad7_text1_weeklysummary)
+            1 -> getString(R.string.gad7_text1_weeklysummary)
+            2 -> getString(R.string.gad7_text1_weeklysummary)
+            3 -> getString(R.string.gad7_text1_weeklysummary)
+            4 -> getString(R.string.gad7_text2_weeklysummary)
+            5 -> getString(R.string.gad7_text1_weeklysummary)
+            else -> getString(R.string.gad7_text1_weeklysummary)
         }
     }
+
     fun getWeekPageTitle(week: Week): String {
         val firstDate = week.days.first().date
         val lastDate = week.days.last().date
@@ -307,7 +308,16 @@ class SummaryOfAUDITFragment: Fragment() {
 
     private fun apiCall()
     {
-        loginResponse?.loginDetails?.let { getSummaryOfAUDITViewModel.getSummaryOfAUDIT(it.patientLocationID,it.patientID,it.clientID,"04/21/2024","05/09/2024", accessToken) }
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        // Get today's date
+        val toDate = dateFormat.format(calendar.time)
+
+        // Subtract one month from today's date
+        calendar.add(Calendar.MONTH, -1)
+        val fromDate = dateFormat.format(calendar.time)
+        loginResponse?.loginDetails?.let { getSummaryOfAUDITViewModel.getSummaryOfAUDIT(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate, accessToken) }
 
     }
 
@@ -339,9 +349,9 @@ class SummaryOfAUDITFragment: Fragment() {
 
     private fun handleApiResponse(response: SummaryOfAUDITResponse) {
         if (response.statusResponse.responseCode == 200) {
-            val auditByDateRange = response.auditByDateRange
+            val auditWeeklyScores = response.auditByDateRange
 
-            if (auditByDateRange.isEmpty()) {
+            if (response.summaryOfAUDIT.isEmpty()) {
                 showNoDataMessage()
                 return
             }
@@ -351,14 +361,14 @@ class SummaryOfAUDITFragment: Fragment() {
             val dateLabels = ArrayList<String>()
 
             // Assuming PHQ9ByDateRange has a date and score
-            for (i in auditByDateRange.indices) {
-                val phqData = auditByDateRange[i]
+            for (i in auditWeeklyScores.indices) {
+                val phqData = auditWeeklyScores[i]
                 val entry = Entry(i.toFloat(), phqData.score.toFloat())
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
 
                 val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.date)
-                val formattedDate = SimpleDateFormat("M/dd", Locale.getDefault()).format(date)
+                val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
                 dateLabels.add(formattedDate)
             }
 
@@ -390,6 +400,10 @@ class SummaryOfAUDITFragment: Fragment() {
             val yAxisLeft = lineChart.axisLeft
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+            yAxisLeft.axisMinimum = 0f // Ensure Y-axis starts from 0
+            yAxisLeft.axisMaximum = 30f
+            yAxisLeft.granularity = 2f // Set the interval to 2
+            yAxisLeft.labelCount = 16 // Ensure 15 intervals from 0 to 30
 
             lineChart.axisRight.isEnabled = false
 
@@ -411,8 +425,13 @@ class SummaryOfAUDITFragment: Fragment() {
             lineChart.animateX(1000, Easing.EaseInOutQuad)
             lineChart.animateY(1000, Easing.EaseInOutQuad)
 
-
             lineChart.invalidate() // Refresh the chart
+        }
+        else{
+            if (response.summaryOfAUDIT.isEmpty()) {
+                showNoDataMessage()
+                return
+            }
         }
     }
 

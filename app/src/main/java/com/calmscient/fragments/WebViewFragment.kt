@@ -115,6 +115,16 @@ class WebViewFragment : Fragment() {
         webViewLearn!!.loadUrl(url)
     }
 
+    override fun onPause() {
+        super.onPause()
+        webViewLearn?.onPause()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        webViewLearn?.destroy()
+    }
+
     private inner class CustomWebViewClient : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {

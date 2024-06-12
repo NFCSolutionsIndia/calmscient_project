@@ -152,16 +152,16 @@ class SummaryofPHQ9Fragment: Fragment() {
         val currentDate: Date = calendar.time
 
         // Format the current date and calculate the date for next month
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         val currentDateString: String = dateFormat.format(currentDate)
 
         // Calculate the date for next month
-        calendar.add(Calendar.MONTH, 1)
-        val nextMonthDate: Date = calendar.time
-        val nextMonthDateString: String = dateFormat.format(nextMonthDate)
+        calendar.add(Calendar.MONTH, -1)
+        val previousMonthDate: Date = calendar.time
+        val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
         // Create the final date string
-        val finalDateString = "$currentDateString - $nextMonthDateString"
+        val finalDateString = "$previousMonthDateString - $currentDateString"
 
         // Set the date in the TextView
         dateView.text = finalDateString
@@ -333,6 +333,11 @@ class SummaryofPHQ9Fragment: Fragment() {
         if (response.statusResponse.responseCode == 200) {
             val phq9ByDateRange = response.PHQ9ByDateRange
 
+            if (response.summaryOfPHQ9.isEmpty()) {
+                showNoDataMessage()
+                return
+            }
+
             val entries = ArrayList<Entry>()
             val dateLabels = ArrayList<String>()
 
@@ -344,7 +349,7 @@ class SummaryofPHQ9Fragment: Fragment() {
                 entries.add(entry)
 
                 val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.date)
-                val formattedDate = SimpleDateFormat("M/dd", Locale.getDefault()).format(date)
+                val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
                 dateLabels.add(formattedDate)
             }
 
@@ -376,6 +381,7 @@ class SummaryofPHQ9Fragment: Fragment() {
             val yAxisLeft = lineChart.axisLeft
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+            yAxisLeft.axisMinimum = 0f
 
             lineChart.axisRight.isEnabled = false
 
@@ -399,6 +405,12 @@ class SummaryofPHQ9Fragment: Fragment() {
 
             lineChart.invalidate() // Refresh the chart
         }
+    }
+
+    private fun showNoDataMessage() {
+        lineChart.setNoDataText("No data available")
+        lineChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
+        lineChart.invalidate()
     }
 
 }
