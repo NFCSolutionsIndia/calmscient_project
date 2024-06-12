@@ -15,12 +15,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import com.calmscient.R
 import com.calmscient.databinding.LayoutBeginanxietyBinding
 class BeginManageAnxietyFragment : Fragment() {
     private lateinit var binding: LayoutBeginanxietyBinding
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            loadFragment(DiscoveryFragment())
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

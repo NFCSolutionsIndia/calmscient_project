@@ -105,7 +105,7 @@ class ChangingYourResponseFragment : Fragment() {
         }
         binding.backIcon.setOnClickListener {
             //requireActivity().onBackPressed()
-            loadFragment(BeginManageAnxietyFragment())
+            loadFragment(DiscoveryFragment())
         }
 
         return binding.root

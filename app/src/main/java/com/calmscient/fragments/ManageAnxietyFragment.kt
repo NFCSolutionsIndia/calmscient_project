@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -65,6 +66,14 @@ class ManageAnxietyFragment : Fragment() {
     private lateinit var sessionIdResponse: SessionIdResponse
     private  lateinit var sessionId : String
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            loadFragment(BeginManageAnxietyFragment())
+        }
+    }
 
 
     override fun onCreateView(
