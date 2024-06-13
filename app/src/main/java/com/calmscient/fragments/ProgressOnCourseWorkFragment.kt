@@ -123,8 +123,16 @@ class ProgressOnCourseWorkFragment : Fragment() {
                     val courseWorkList = successDate.patientcourseWorkList
                     setupRecyclerView(courseWorkList)
 
-                    binding.totalPercentage.text = courseWorkList[0].completedPer.toString()
-                    binding.progressbarCourseWork.progress = courseWorkList[0].completedPer.toInt()
+                  if(courseWorkList.isNotEmpty())
+                  {
+                      binding.totalPercentage.text = courseWorkList[0].completedPer.toString()
+                      binding.progressbarCourseWork.progress = courseWorkList[0].completedPer.toInt()
+                  }
+                  else{
+
+                      binding.totalPercentage.text = 0.toString()
+                      binding.progressbarCourseWork.progress = 0
+                  }
 
                     Log.d("CourseWork Response", "$successDate")
 
@@ -146,7 +154,7 @@ class ProgressOnCourseWorkFragment : Fragment() {
         }
         binding.courseProgressRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.courseProgressRecyclerView.adapter = adapter
-        binding.totalPercentage.text = courseWorkList[0].completedPer.toString()
+        binding.totalPercentage.text = if(courseWorkList.isNotEmpty()) courseWorkList[0].completedPer.toString() else 0.toString()
     }
 
 

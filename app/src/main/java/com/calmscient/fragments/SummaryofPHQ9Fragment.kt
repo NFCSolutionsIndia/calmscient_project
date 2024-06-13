@@ -331,7 +331,7 @@ class SummaryofPHQ9Fragment: Fragment() {
     }
     private fun handleApiResponse(response: SummaryOfPHQ9Response) {
         if (response.statusResponse.responseCode == 200) {
-            val phq9ByDateRange = response.PHQ9ByDateRange
+            val phq9ByDateRange = response.summaryOfPHQ9
 
             if (response.summaryOfPHQ9.isEmpty()) {
                 showNoDataMessage()
@@ -348,7 +348,7 @@ class SummaryofPHQ9Fragment: Fragment() {
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
 
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.date)
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.completionDate)
                 val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
                 dateLabels.add(formattedDate)
             }

@@ -356,7 +356,7 @@ class SummaryofGAD7Fragment: Fragment() {
 
     private fun handleApiResponse(response: SummaryOfGADResponse) {
         if (response.statusResponse.responseCode == 200) {
-            val gad7WeeklyScores = response.weeklyScores
+            val gad7WeeklyScores = response.gadDashboardByDateRangeList
 
             if (response.gadDashboardByDateRangeList.isEmpty()) {
                 showNoDataMessage()
@@ -374,7 +374,7 @@ class SummaryofGAD7Fragment: Fragment() {
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
 
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.date)
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.completionDate)
                 val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
                 dateLabels.add(formattedDate)
             }
