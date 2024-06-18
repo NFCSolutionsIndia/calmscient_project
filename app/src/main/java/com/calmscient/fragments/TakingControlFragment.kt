@@ -245,37 +245,37 @@ class TakingControlFragment : Fragment() {
         for (course in courseLists) {
             when (course.courseName) {
                 "Basic knowledge" -> {
-                    binding.btnBasicKnowledge.isEnabled = course.isEnable == 1
+                    binding.btnBasicKnowledge.isEnabled = true//course.isEnable == 1
                     binding.btnBasicKnowledge.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnBasicKnowledge, course.isCompleted == 1)
                 }
                 "Make a plan" -> {
-                    binding.btnMakeAPlan.isEnabled = course.isEnable == 1
+                    binding.btnMakeAPlan.isEnabled = true//course.isEnable == 1
                     binding.btnMakeAPlan.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnMakeAPlan, course.isCompleted == 1)
                 }
                 "Summary" -> {
-                    binding.btnSummary.isEnabled = course.isEnable == 1
+                    binding.btnSummary.isEnabled = true//course.isEnable == 1
                     binding.btnSummary.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSummary, course.isCompleted == 1)
                 }
                 "Drink tracker" -> {
-                    binding.btnDrinkTracker.isEnabled = course.isEnable == 1
+                    binding.btnDrinkTracker.isEnabled = true//course.isEnable == 1
                     binding.btnDrinkTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnDrinkTracker, course.isCompleted == 1)
                 }
                 "Event tracker" -> {
-                    binding.btnEventTracker.isEnabled = course.isEnable == 1
+                    binding.btnEventTracker.isEnabled = true//course.isEnable == 1
                     binding.btnEventTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnEventTracker, course.isCompleted == 1)
                 }
                 "See the introduction" -> {
-                    binding.btnSeeTheInformation.isEnabled = course.isEnable == 1
+                    binding.btnSeeTheInformation.isEnabled = true//course.isEnable == 1
                     binding.btnSeeTheInformation.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)
                 }
                 "How to use" -> {
-                    binding.btnHowToUse.isEnabled = course.isEnable == 1
+                    binding.btnHowToUse.isEnabled = true//course.isEnable == 1
                     binding.btnHowToUse.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnHowToUse, course.isCompleted == 1)
                 }

@@ -12,6 +12,7 @@
 // ConsequencesFragment.kt
 package com.calmscient.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -65,7 +66,8 @@ class ConsequencesFragment : Fragment() {
             binding.step2Indicator,
             binding.step3Indicator,
             binding.step4Indicator,
-            binding.step5Indicator
+            binding.step5Indicator,
+            binding.step6Indicator
         )
 
         return view
@@ -73,22 +75,65 @@ class ConsequencesFragment : Fragment() {
 
     private fun initializeAdapter() {
         binding.consequencesRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        consequencesAdapter = ConsequencesAdapter(consequencesData)
+        consequencesAdapter = ConsequencesAdapter(requireContext(),consequencesData)
         binding.consequencesRecyclerView.adapter = consequencesAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun displayConsequencesData() {
         // Add duplicate data to the list
-        for (i in 1..5) {
-            consequencesData.add(
-                ConsequencesDataClass(
-                    headingText = "Heading $i",
-                    dialogText = "Dialog $i",
-                    descriptionText = "Description $i",
-                    pointsText = "Points $i"
-                )
+        consequencesData.add(
+            ConsequencesDataClass(
+                headingText = null,
+                dialogText = null,
+                descriptionText = getString(R.string.consequences_card_1_description),
+                pointsText = null
             )
-        }
+        )
+        consequencesData.add(
+            ConsequencesDataClass(
+                headingText = getString(R.string.consequences_card_2_heading),
+                dialogText = getString(R.string.consequences_card_2_dilaog),
+                descriptionText = getString(R.string.consequences_card_2_description),
+                pointsText = getString(R.string.consequences_card_2_points)
+            )
+        )
+
+        consequencesData.add(
+            ConsequencesDataClass(
+                headingText = getString(R.string.consequences_card_3_heading),
+                dialogText = null,
+                descriptionText = getString(R.string.consequences_card_3_description),
+                pointsText = getString(R.string.consequences_card_3_points)
+            )
+        )
+
+        consequencesData.add(
+            ConsequencesDataClass(
+                headingText = getString(R.string.consequences_card_4_heading),
+                dialogText = null,
+                descriptionText = getString(R.string.consequences_card_4_description),
+                pointsText = getString(R.string.consequences_card_4_points)
+            )
+        )
+
+        consequencesData.add(
+            ConsequencesDataClass(
+                headingText = getString(R.string.consequences_card_5_heading),
+                dialogText = null,
+                descriptionText = getString(R.string.consequences_card_5_description),
+                pointsText = null
+            )
+        )
+
+        consequencesData.add(
+            ConsequencesDataClass(
+                headingText = getString(R.string.consequences_card_6_heading),
+                dialogText = null,
+                descriptionText = getString(R.string.consequences_card_6_description),
+                pointsText = null
+            )
+        )
 
         consequencesAdapter.notifyDataSetChanged()
     }
