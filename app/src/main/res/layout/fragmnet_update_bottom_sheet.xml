@@ -30,7 +30,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/lexendmedium"
                 android:gravity="center"
-                android:text="@string/add_time_alarm"
+                android:text="@string/update_time_alarm"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_16sdp" />
 

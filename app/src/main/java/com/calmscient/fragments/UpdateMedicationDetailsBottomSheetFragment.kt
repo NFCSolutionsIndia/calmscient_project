@@ -22,7 +22,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.calmscient.Interface.OnAlarmSelectedListenerUpdate
 import com.calmscient.R
-import com.calmscient.databinding.FragmentBottomSheetBinding
+import com.calmscient.databinding.FragmnetUpdateBottomSheetBinding
 import com.calmscient.di.remote.request.AlarmUpdateRequest
 import com.calmscient.di.remote.request.AlarmUpdateRequestInternal
 import com.calmscient.di.remote.response.LoginResponse
@@ -40,7 +40,7 @@ class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: S
     private var onAlarmSelectedListener: OnAlarmSelectedListenerUpdate? = null
 
     lateinit var save: ImageView
-    private lateinit var binding: FragmentBottomSheetBinding
+    private lateinit var binding: FragmnetUpdateBottomSheetBinding
     private val selectedTextViews: MutableList<TextView> = mutableListOf()
     private var selectedTimeInterval: TextView? = null
     private lateinit var commonDialog: CommonAPICallDialog
@@ -73,7 +73,7 @@ class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: S
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
+        binding = FragmnetUpdateBottomSheetBinding.inflate(inflater, container, false)
 
 
         val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")

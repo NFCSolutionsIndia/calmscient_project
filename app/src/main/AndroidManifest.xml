@@ -70,6 +70,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.NoActionBar" />
         <activity
+            android:name=".activities.WebViewActivity"
+            android:configChanges="locale|orientation"
+            android:exported="false"
+            android:label="WebView Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NoActionBar" />
+        <activity
             android:name=".activities.LoginActivity"
             android:configChanges="locale|orientation"
             android:screenOrientation="portrait"
