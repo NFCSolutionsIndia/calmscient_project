@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -38,6 +39,13 @@ class ConsequencesFragment : Fragment() {
     private val maxProgress = 99
     private lateinit var progressBar: ProgressBar
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +63,11 @@ class ConsequencesFragment : Fragment() {
 
         // Set the initial progress
         progressBar.progress = currentQuestionIndex * (maxProgress / (consequencesData.size - 1))
+
+
+        binding.backIcon.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
         setupNavigation()
         initializeAdapter()
@@ -206,5 +219,12 @@ class ConsequencesFragment : Fragment() {
             // Update the step indicators (ImageViews) as active or inactive
             updateStepIndicators()
         }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.flFragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

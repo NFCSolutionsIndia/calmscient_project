@@ -12,10 +12,12 @@
 package com.calmscient.fragments
 
 import android.os.Bundle
+import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import com.calmscient.R
@@ -47,6 +49,10 @@ class ModerationDrinkingFragment : Fragment() {
         binding.backIcon.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()
         }
+
+        val textView: TextView =  binding.tvThree
+        textView.text = Html.fromHtml(getString(R.string.drinking_in_moderation_still_desc_3))
+
         return binding.root
     }
 

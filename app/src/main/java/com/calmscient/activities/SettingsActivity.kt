@@ -89,7 +89,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         aslParentLayout.setOnClickListener(this)
 
         binding.backIcon.setOnClickListener {
-            onBackPressed()
+            super.onBackPressed()
         }
         binding.privacyLayout.setOnClickListener {
             val privacyActivity = PrivacyBottomSheet()
@@ -109,7 +109,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        startActivity(Intent(this, DashboardActivity::class.java))
+        super.onBackPressed()
     }
 
     /*override fun onResume() {
@@ -202,4 +202,5 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
 
         currentClickedLayoutId = currentId
     }
+
 }

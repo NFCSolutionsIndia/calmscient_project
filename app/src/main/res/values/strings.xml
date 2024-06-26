@@ -2127,5 +2127,24 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="consequences_card_3_points">1. Memory problem; alcohol can impair both short-term and long-term memory. I can lead to blackouts(Can’t recall events that occurred while one is intoxicated).\n\n2. Reduced cognitive function; negatively affects one’s attention, concentration, and processing speed, makes and perform tasks that require mental clarity and concentration.\n\n3. Mood swings and anxiety; alcohol is a “depressant” that leads to mood swings, irritability, and increased risk of developing depression and anxiety.</string>
     <string name="consequences_card_2_points"><![CDATA[• 30% of suicides. \n\n• 40% of fatal burn injuries.\n\n• 50% of fatal drownings and of homicides, and about 65 percent of fatal falls.\n\n• 31% of all fatal crashes in 2021.\n\n• A significant number of sexual assaults.]]></string>
     <string name="consequences_card_2_dilaog">Above 1.5 million people are arrested each year for driving under the influence of alcohol or drugs. DUI citations typically remain on your criminal record for many years, leading to higher insurance rates, difficulty in securing employment, and many other problems. Can you imagine the long-term negative consequences on your life and the stress it could cause? If someone has more than two DUIs, it doesn’t matter if they occur within days or over a ten-year period. They will be regarded as compounding offenses, resulting in increased penalties and possible imprisonment.</string>
+    <string name="basic_knowledge_standard_drink_text1">In the United States, a “standard drink” (also known as an alcoholic drink equivalent) is defined as any drink that contains about <font color="#6E6BB3">0.6 fluid ounces</font> or <font color="#6E6BB3">14 grams </font> of pure alcohol. Although the drinks pictured here are different sizes, each contains approximately the same amount of alcohol and counts as one U.S. standard drink or one alcoholic drink equivalent.</string>
+    <string name="basic_knowledge_standard_drink_text2">Each beverage portrayed above represents one standard drink (or one alcoholic drink equivalent), defined in the United States as any beverage containing 0.6 oz or 14 grams of pure alcohol. The percentage of pure alcohol, expressed here as alcohol by volume (alc/vol), varies within and across beverage types. Although the standard drink amounts are helpful for following health guidelines, they may not reflect customary serving sizes</string>
+    <string name="what_s_a_standard_drink">What’s a standard drink</string>
+    <string name="what_are_the_u_s_guidelines_for_drinking">What are the U.S. guidelines for drinking?</string>
+    <string name="what_are_the_u_s_guidelines_text1">The 2020–2025 Dietary Guidelines for Americans states that adults of legal drinking age can choose not to drink or to drink in moderation by limiting intake to <font color="#6E6BB3">2 drinks or less in a day</font> for men and <font color="#6E6BB3">1 drink or less in a day</font> for women when alcohol is consumed. Drinking less is better for health than drinking more.</string>
+    <string name="when_is_drinking_in_moderation_still_too_much">When is drinking in moderation still too much?</string>
+    <string name="drinking_in_moderation_still_desc_1">According to the 2020–2025 Dietary Guidelines for Americans, certain individuals should not consume alcohol. It’s safest to void alcohol altogether if you are:</string>
+    <string name="drinking_in_moderation_still_points">• Taking medications that interact with alcohol\n\n • Managing a medical condition that can be made Worse by drinking\n\n • Under the age of 21, the minimum legal drinking age in the United States\n\n • Recovering from alcohol use disorder (AUD) or unable to control the amount you drink\n\n • Pregnant or might be pregnant</string>
+    <string name="drinking_in_moderation_still_desc_2">In addition, certain individuals, particularly older adults, who are planning to drive a vehicle or operate machinery-or who are participating in activities that require skill, coordination, and alertness-should avoid alcohol completely.</string>
+    <string name="drinking_in_moderation_still_desc_3">
+    <![CDATA[
+        What is alcohol misuse?<br><br>
+        NIAAA defines heavy drinking as follows:<br><br>
+        For women:<br>
+       <font color="#6E6BB3">4 or more drinks on any day or 8 or more per week</font><br><br>
+        For men:<br>
+       <font color="#6E6BB3">5 or more drinks on any day or 15 or more per week.</font><br><br>
+    ]]>
+</string>
 
 </resources>

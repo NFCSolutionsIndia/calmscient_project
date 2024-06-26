@@ -39,12 +39,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="90dp"
             android:layout_marginBottom="10dp"
             android:background="#E8E7F4">
 
             <ImageView
-                android:id="@+id/doctorlogo"
+                android:id="@+id/tablets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -52,27 +52,26 @@
                 android:src="@drawable/ic_doctor_logo" />
 
             <TextView
-                android:id="@+id/doctorName"
+                android:id="@+id/tv_doctorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:layout_toRightOf="@+id/doctorlogo"
                 android:fontFamily="@font/lexendmedium"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_toEndOf="@+id/tablets"
                 android:textColor="@color/black_head"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_16sdp" />
 
             <TextView
+                android:id="@+id/tv_hospitalName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text1"
+                android:layout_below="@+id/tv_doctorName"
+                android:fontFamily="@font/lexendregular"
                 android:layout_marginHorizontal="@dimen/_16sdp"
-                android:layout_toRightOf="@+id/doctorlogo"
-                android:text="Dr. Hannan Johnson"
-                android:textColor="#000000"
-                android:textSize="@dimen/_14sdp"
-                android:visibility="gone" />
+                android:layout_toEndOf="@+id/tablets"
+                android:textColor="@color/black_head"
+                android:textSize="@dimen/_12sdp" />
         </RelativeLayout>
 
         <RelativeLayout

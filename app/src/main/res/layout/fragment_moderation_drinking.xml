@@ -67,7 +67,7 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColor="@color/purple_100"
-               android:text="When is drinking in moderation still too much?"
+               android:text="@string/when_is_drinking_in_moderation_still_too_much"
                android:layout_marginTop="@dimen/_5sdp"
                android:fontFamily="@font/lexendregular"
                android:textSize="@dimen/_14sdp"/>
@@ -77,7 +77,7 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColor="@color/black_head"
-               android:text="According to the 2020-2025 Dietary Guidelines for Americans, certain individuals should not consume alcohol. It’s safest to void alcohol altogether if you are:"
+               android:text="@string/drinking_in_moderation_still_desc_1"
                android:layout_marginTop="@dimen/_5sdp"
                android:fontFamily="@font/lexendlight"
                android:textSize="@dimen/_12sdp"/>
@@ -86,7 +86,8 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColor="@color/black_head"
-               android:text="There are some adults who should not drink alcohol, such as women who are pregnant.  Adults who choose to drink, and are not among the individuals listed below who should not drink, are encouraged to limit daily consumption of alcohol to align with the Dietary Guidelines."
+               android:layout_marginStart="@dimen/_8sdp"
+               android:text="@string/drinking_in_moderation_still_points"
                android:layout_marginTop="@dimen/_10sdp"
                android:fontFamily="@font/lexendlight"
                android:textSize="@dimen/_12sdp"/>
@@ -95,30 +96,16 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColor="@color/black_head"
-               android:text=" • Taking medications that interact with alcohol\n\n • Managing a medical condition that can be made Worse by drinking\n\n
-• Under the age of 21, the minimum legal drinking age in the United States\n\n
-
-• Recovering from alcohol use disorder (AUD) or unable to control the amount you drink\n\n
-
-• Pregnant or might be pregnant"
+               android:text="@string/drinking_in_moderation_still_desc_2"
                android:layout_marginTop="@dimen/_10sdp"
                android:fontFamily="@font/lexendlight"
                android:textSize="@dimen/_12sdp"/>
 
            <TextView
+               android:id="@+id/tv_three"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColor="@color/black_head"
-               android:text="In addition, certain individuals, particularly older adults, who are planning to drive a vehicle or operate machinery-or who are participating in activities that require skill, coordination, and alertness-should avoid alcohol completely."
-               android:layout_marginTop="@dimen/_10sdp"
-               android:fontFamily="@font/lexendlight"
-               android:textSize="@dimen/_12sdp"/>
-
-           <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:textColor="@color/black_head"
-               android:text="In addition, certain individuals, particularly older adults, who are planning to drive a vehicle or operate machinery-or who are participating in activities that require skill, coordination, and alertness-should avoid alcohol completely."
                android:layout_marginTop="@dimen/_10sdp"
                android:fontFamily="@font/lexendlight"
                android:textSize="@dimen/_12sdp"/>

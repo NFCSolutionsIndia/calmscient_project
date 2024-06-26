@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textColor="@color/purple_100"
-            android:text="What are the U.S. guidelines for drinking?"
+            android:text="@string/what_are_the_u_s_guidelines_for_drinking"
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/lexendregular"
             android:textSize="@dimen/_14sdp"/>
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black_head"
-            android:text="The 2020–2025 Dietary Guidelines for Americans states that adults of legal drinking age can choose not to drink or to drink in moderation by limiting intake to 2 drinks or less in a day for men and 1 drink or less in a day for women when alcohol is consumed. Drinking less is better for health than drinking more."
+            android:text="@string/what_are_the_u_s_guidelines_text1"
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/lexendlight"
             android:textSize="@dimen/_12sdp"/>

@@ -187,6 +187,7 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_100))
                 selectedTimeInterval = null
                 textView.isSelected = false // Explicitly set isSelected to false
+                textView.elevation = 0f // Remove elevation
             } else {
                 // Deselect the previously selected time interval
                 selectedTimeInterval?.setBackgroundResource(R.drawable.circle_background)
@@ -196,6 +197,7 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 selectedTimeInterval = textView
                 textView.isSelected = true // Explicitly set isSelected to true
+                textView.elevation = resources.getDimension(com.intuit.sdp.R.dimen._4sdp) // Apply elevation when selected
             }
         } else {
             // If a day TextView is clicked
@@ -205,15 +207,18 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.purple_100))
                 selectedTextViews.remove(textView)
                 textView.isSelected = false // Explicitly set isSelected to false
+                textView.elevation = 0f // Remove elevation
             } else {
                 // If the TextView is not selected, select it
                 textView.setBackgroundResource(R.drawable.selected_circle_background)
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 selectedTextViews.add(textView)
                 textView.isSelected = true // Explicitly set isSelected to true
+                textView.elevation = resources.getDimension(com.intuit.sdp.R.dimen._4sdp) // Apply elevation when selected
             }
         }
     }
+
 
     private fun getSelectedIntervals(): List<Int> {
         val selectedIntervals = mutableListOf<Int>()

@@ -47,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="@font/lexendlight"
         android:textColor="@color/black_head"
         android:text="Alcohol-related deaths are increasing in the United States. "/>

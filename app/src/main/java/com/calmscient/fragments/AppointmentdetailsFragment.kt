@@ -79,7 +79,8 @@ class AppointmentdetailsFragment:Fragment() {
 
         val formattedDate = LocalDateTime.parse(appointmentDetails.dateAndTime, dateFormatterResponse).format(dateFormatter)
 
-        binding.doctorName.text = appointmentDetails.providerName
+        binding.tvDoctorName.text = appointmentDetails.providerName
+        binding.tvHospitalName.text = appointmentDetails.hospitalName
         binding.phoneNumber.text = appointmentDetails.contact
         binding.tvAddress.text = appointmentDetails.address
         binding.tvDate.text = formattedDate
