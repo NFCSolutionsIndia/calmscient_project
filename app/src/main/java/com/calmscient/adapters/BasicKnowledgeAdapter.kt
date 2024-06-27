@@ -30,6 +30,7 @@ import com.calmscient.fragments.DASTQuestionFragment
 import com.calmscient.fragments.GADQuestionFragment
 import com.calmscient.fragments.GuidelinesForDrinkingFragment
 import com.calmscient.fragments.ModerationDrinkingFragment
+import com.calmscient.fragments.MyDrinkingHabitFragment
 import com.calmscient.fragments.QuestionFragment
 import com.calmscient.fragments.StandardDrinkFragment
 import com.calmscient.fragments.WhatExpectsWhenYouQuitDrinkingFragment
@@ -68,6 +69,7 @@ class BasicKnowledgeAdapter(private val fragmentManager: FragmentManager,private
                     "What happens to your brain when you drink?" -> WhatHappensToYourBrainFragment()
                     "What to expect when you quit drinking?" -> WhatExpectsWhenYouQuitDrinkingFragment()
                     "What are the consequences?" -> ConsequencesFragment()
+                    "My drinking habit" -> MyDrinkingHabitFragment()
                     else -> null
                 }
 

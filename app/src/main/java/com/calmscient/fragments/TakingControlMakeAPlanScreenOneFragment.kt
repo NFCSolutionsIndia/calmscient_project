@@ -75,6 +75,10 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
             loadFragment(TakingControlFragment())
         }
 
+        binding.btnQuitCut.setOnClickListener{
+            loadFragment(TakingControlMakeAPlanScreenFourFragment())
+        }
+
         return binding.root
     }
 

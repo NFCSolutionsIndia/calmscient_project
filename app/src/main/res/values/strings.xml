@@ -2146,5 +2146,36 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
        <font color="#6E6BB3">5 or more drinks on any day or 15 or more per week.</font><br><br>
     ]]>
 </string>
+    <string name="depression">Depression</string>
+    <string name="anxiety_paranoia_panic">Anxiety, paranoia, panic</string>
+    <string name="decreased_memory_and_problem_solving_ability">Decreased memory and problem solving ability</string>
+    <string name="sleep_problems">Sleep problems</string>
+    <string name="mood_swings">Mood swings</string>
+    <string name="family_relationships_more_fighting_and_arguing">Family relationships—more fighting and arguing</string>
+    <string name="health_problems">Health problems</string>
+    <string name="getting_in_trouble_with_the_law">Getting in trouble with the law</string>
+    <string name="accidents_and_injuries">Accidents and injuries</string>
+    <string name="now_let_s_see_what_drinking_habits_do_you_have">Now let’s see what drinking habits do you have</string>
+    <string name="what_kind_of_alcohol_do_you_drink_each_time_and_how_much">2. What kind of alcohol do you drink each time? and how much?</string>
+    <string name="total">Total</string>
+    <string name="count">count</string>
+    <string name="what_is_the_reason_behind">4. What is the reason behind?</string>
+    <string name="what_do_you_feel_about_your_drinking_habit">3. What do you feel about your drinking habit?</string>
+    <string name="no_intention_on_changing">No intention on changing</string>
+    <string name="my_drinking_habit_screen_three_text_one">• I only drink to relax, it’s not a big deal.\n\n • I enjoy drinking, and I don’t see any reason to stop.\n\n • If work (or something else) wasn’t so stressful, I wouldn’t need to drink.\n</string>
+    <string name="aware_of_problem_but_not_ready_to_change">Aware of problem but not ready to change</string>
+    <string name="my_drinking_habit_screen_three_text_two">• I\'m not sure if I want to quit entirely, but I know I need to do something different.\n\n • My friends and family have mentioned concerns about my drinking, and I can see that it\'s affecting my life.\n\n • I\'m starting to see that alcohol is getting in the way of my goals. I need to do something about it.\n</string>
+    <string name="already_have_a_plan_to_change">Already have a plan to change</string>
+    <string name="my_drinking_habit_screen_three_text_three">•I\'ve decided that it\'s time to make a change, and I\'m researching treatment options.\n\n • I\'m looking into support groups or counseling to help me through this process.\n\n • I\'ve set a date to start cutting back on my drinking, and I\'m telling my friends and family for support.\n</string>
+    <string name="achieved_modification_goals">Achieved modification/goals</string>
+    <string name="my_drinking_habit_screen_three_text_four">• I\'ve made significant lifestyle changes and stopped drinking, I\'m committed to maintain sobriety.\n\n • I\'ve started taking medication to manage craving, I\'m working with a therapist or I\'m attending a support group meeting.\n\n • I\'ve informed my friends and family about my decision, and they\'re providing support.\n</string>
+    <string name="what_is_your_understanding_of_how_these_things_are_affect_yourself">1. What is your understanding of how these things are affect yourself?</string>
+    <string name="what_is_your_understanding_of_how_these_things_are_affect_people">2. What is your understanding of how these things are affect people?</string>
+    <string name="and_if_you_are_comfortable_sharing_which_of_these_impact_are_you_dealing_with_right_now">3. And if you are comfortable sharing, which of these impact are you dealing with right now?</string>
+    <string name="how_many_days_a_week_do_you_drink">1. How many days a week do you drink?</string>
+    <string name="none">None</string>
+    <string name="less_than_2_days">Less than 2 days</string>
+    <string name="almost_everyday">Almost everyday</string>
+    <string name="everyday_1">Everyday</string>
 
 </resources>

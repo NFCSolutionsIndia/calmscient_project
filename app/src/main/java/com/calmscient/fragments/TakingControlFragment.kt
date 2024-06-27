@@ -26,6 +26,7 @@ import androidx.lifecycle.Observer
 import com.calmscient.R
 import com.calmscient.databinding.FragmentTakingControlBinding
 import com.calmscient.di.remote.response.CourseLists
+import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.SummaryOfSleepResponse
@@ -34,9 +35,12 @@ import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.GetDrinkTrackerViewModel
 import com.calmscient.viewmodels.GetSummaryOfSleepViewModel
 import com.calmscient.viewmodels.GetTakingControlIndexViewModel
 import com.github.mikephil.charting.charts.LineChart
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class TakingControlFragment : Fragment() {
 
@@ -49,6 +53,10 @@ class TakingControlFragment : Fragment() {
     private lateinit var getTakingControlIndexResponse: GetTakingControlIndexResponse
     private var loginResponse : LoginResponse? = null
     private  lateinit var accessToken : String
+
+
+    private val getDrinkTrackerViewModel: GetDrinkTrackerViewModel by activityViewModels()
+    private lateinit var drinkTrackerResponse: DrinkTrackerResponse
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +82,7 @@ class TakingControlFragment : Fragment() {
         {
             apiCall()
             observeViewModel()
+            drinkTrackerApiCall()
         }
         else
         {
@@ -157,6 +166,55 @@ class TakingControlFragment : Fragment() {
         loginResponse?.loginDetails?.let { getTakingControlIndexViewModel.getTakingControlIndex(it.clientID,it.patientID,it.patientLocationID,accessToken) }
 
        // getTakingControlIndexViewModel.getTakingControlIndex(1,1,1,accessToken)
+    }
+
+    private fun getCurrentDate(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+        return currentDate.format(formatter)
+    }
+
+    private fun drinkTrackerApiCall() {
+
+        getDrinkTrackerViewModel.clear()
+
+        val date = getCurrentDate()
+        loginResponse?.loginDetails?.let {
+            getDrinkTrackerViewModel.getDrinkTackerData(
+                date,
+                it.clientID,
+                it.patientID,
+                it.patientLocationID,
+                accessToken
+            )
+        }
+
+        drinkTrackerObserveViewModel()
+    }
+    private fun drinkTrackerObserveViewModel() {
+        getDrinkTrackerViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+                customProgressDialog.show("Loading...")
+            } else {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getDrinkTrackerViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
+            if (isSuccess) {
+                getDrinkTrackerViewModel.saveResponseLiveData.observe(
+                    viewLifecycleOwner,
+                    Observer { successData ->
+                        if (successData != null) {
+                            drinkTrackerResponse = successData
+
+                            val jsonString = JsonUtil.toJsonString(drinkTrackerResponse)
+                            SharedPreferencesUtil.saveData(requireContext(), "drinkTrackerData", jsonString)
+                        }
+                    }
+                )
+            }
+        })
     }
 
     private fun observeViewModel()

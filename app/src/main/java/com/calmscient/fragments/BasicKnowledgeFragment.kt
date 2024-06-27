@@ -76,7 +76,7 @@ class BasicKnowledgeFragment : Fragment() {
             BasicKnowledgeItem("When is drink in moderation too much ?", R.drawable.basic_knowledge_complete_icon),
             BasicKnowledgeItem("What happens to your brain when you drink?", R.drawable.basic_knowledge_complete_icon),
             BasicKnowledgeItem("What are the consequences?", R.drawable.basic_knowledge_complete_icon),
-            BasicKnowledgeItem("My drinking habit", null),
+            BasicKnowledgeItem("My drinking habit", R.drawable.basic_knowledge_complete_icon),
             BasicKnowledgeItem("What to expect when you quit drinking?", R.drawable.basic_knowledge_complete_icon),
         )
     }

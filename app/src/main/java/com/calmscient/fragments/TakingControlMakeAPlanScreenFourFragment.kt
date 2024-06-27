@@ -46,6 +46,10 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() {
         binding.goalsTextView.setOnClickListener{
             showBottomSheet()
         }
+
+        binding.backIcon.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         return binding.root
     }
 
