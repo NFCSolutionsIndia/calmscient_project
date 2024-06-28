@@ -253,14 +253,13 @@ class TakingControlFragment : Fragment() {
     private fun bindUIData(getTakingControlIndexResponse: GetTakingControlIndexResponse) {
         // Check if index list is not null and has at least 2 elements
 
-        if(getTakingControlIndexResponse.index.size == 1)
-        {
+
             getTakingControlIndexResponse.index[0]?.let {
                 binding.tvDrinkCount.text = it.goalType ?: "N/A"
                 binding.tvDrinkCountGoalDays.text = it.goal?.toString() ?: "0"
                 binding.tvDrinkCountNowDays.text = it.now?.toString() ?: "0"
             }
-        }
+
         if (getTakingControlIndexResponse.index.size > 1) {
 
 
