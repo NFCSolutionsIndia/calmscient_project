@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -35,7 +36,9 @@ import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.MedicalDetails
 import com.calmscient.di.remote.response.ScheduledTimeDetails
 import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.DatePickerUtil
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
@@ -48,6 +51,8 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.yearMonth
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -71,7 +76,7 @@ data class CardViewItem(
     var medicalDetails :MedicalDetails
 )
 
-class CalendarFragment : Fragment(), CellClickListener {
+class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnDateSelectedListener{
     private lateinit var binding: CalendarFragmentLayoutBinding
     private var selectedDate = LocalDate.now()
     private val dateFormatter = DateTimeFormatter.ofPattern("dd")
@@ -93,6 +98,10 @@ class CalendarFragment : Fragment(), CellClickListener {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
+    }
+    override fun onDateSelected(date: CalendarDay) {
+
+        Toast.makeText(requireContext(),"$date",Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateView(
@@ -133,6 +142,13 @@ class CalendarFragment : Fragment(), CellClickListener {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
         observeViewModel()
+
+        binding.toolbarCalIcon.setOnClickListener{
+            val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")
+            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+        }
         return binding.root
     }
 
@@ -194,15 +210,17 @@ class CalendarFragment : Fragment(), CellClickListener {
             )
         }
 
-        binding.toolbarCalIcon.setOnClickListener {
-
-            showDatePickerDialog()
+       /* binding.toolbarCalIcon.setOnClickListener {
+            DatePickerUtil.showDatePickerDialog(requireContext(), selectedDate) { date ->
+                onDateSelected(date)
+            }
         }
 
         binding.exSevenToolbar.setOnClickListener {
-
-            showDatePickerDialog()
-        }
+            DatePickerUtil.showDatePickerDialog(requireContext(), selectedDate) { date ->
+                onDateSelected(date)
+            }
+        }*/
 
         val currentMonth = YearMonth.now()
         binding.exSevenCalendar.setup(
@@ -548,6 +566,24 @@ class CalendarFragment : Fragment(), CellClickListener {
         }, currentYear, currentMonth, currentDay)
 
         datePickerDialog.show()
+    }
+
+
+    private fun onDateSelected(date: LocalDate) {
+        // Remove the selection indicator from the previously selected date
+        val previousSelectedDate = selectedDate
+        previousSelectedDate?.let {
+            binding.exSevenCalendar.notifyDateChanged(it)
+        }
+
+        // Update the selectedDate variable
+        selectedDate = date
+
+        // Scroll the WeekCalendarView to the selected month and day
+        binding.exSevenCalendar.scrollToDate(date)
+
+        // Notify the WeekCalendarView to update the selected date UI
+        binding.exSevenCalendar.notifyDateChanged(selectedDate)
     }
 
 

@@ -9,34 +9,24 @@
   ~      Author : @Pardha Saradhi
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calendar"
-        android:textSize="@dimen/_12sdp"
-        android:layout_gravity="center"
-        android:textColor="@color/black_head"
-        android:fontFamily="@font/lexendregular"/>
-
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:datePickerMode="calendar"
-        android:dateTextAppearance="?android:attr/textAppearanceSmall"
-        android:weekDayTextAppearance="?android:attr/textAppearanceSmallInverse"
-        android:showWeekNumber="true"/>
-
+        app:mcv_selectionColor="@color/colorAccent"
+        app:mcv_showOtherDates="all" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_60sdp"
         android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center">
 
         <androidx.appcompat.widget.AppCompatButton

@@ -11,24 +11,25 @@
 
 package com.calmscient.fragments
 
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.NumberPicker
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.activity.addCallback
 import com.calmscient.R
 import com.calmscient.databinding.FragmentTakingControlMakeAPlanScreenFourBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
-
+import com.calmscient.utils.CustomCalendarView
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 
 class TakingControlMakeAPlanScreenFourFragment : Fragment() {
 
     private lateinit var binding: FragmentTakingControlMakeAPlanScreenFourBinding
-    private var selectedNumber = 1
-
+    private lateinit var customCalendarView: CustomCalendarView
+    private val selectedMonths = mutableSetOf<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,40 +39,87 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentTakingControlMakeAPlanScreenFourBinding.inflate(inflater, container, false)
+        customCalendarView = binding.customCalendarView
+        customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE)
 
-        binding =  FragmentTakingControlMakeAPlanScreenFourBinding.inflate(inflater, container, false)
-
-        binding.goalsTextView.setOnClickListener{
-            showBottomSheet()
-        }
-
-        binding.backIcon.setOnClickListener{
+        binding.backIcon.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
+
+        binding.previousQuestion.setOnClickListener{
+           loadFragment(TakingControlMakeAPlanScreenTwoFragment())
+        }
+
+        binding.nextQuestion.setOnClickListener{
+            loadFragment(TakingControlMakeAPlanScreenFiveFragment())
+        }
+
+        setupMonthSelection()
         return binding.root
     }
 
-    private fun showBottomSheet() {
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-        val bottomSheetView = layoutInflater.inflate(R.layout.layout_drink_goals_bottomsheet, null)
-        bottomSheetDialog.setContentView(bottomSheetView)
+    private fun setupMonthSelection() {
+        val months = listOf(
+            binding.jan, binding.feb, binding.march, binding.april, binding.may, binding.jun,
+            binding.july, binding.aug, binding.sep, binding.oct, binding.nov, binding.dec
+        )
 
-        val numberPicker = bottomSheetView.findViewById<NumberPicker>(R.id.number_picker)
-        numberPicker.minValue = 1
-        numberPicker.maxValue = 40
-        numberPicker.value = selectedNumber
-
-        val saveButton = bottomSheetView.findViewById<ImageView>(R.id.saveButton)
-        saveButton.setOnClickListener {
-            selectedNumber = numberPicker.value
-            binding.goalsTextView.text = selectedNumber.toString()
-            bottomSheetDialog.dismiss()
+        months.forEach { monthTextView ->
+            monthTextView.setOnClickListener {
+                toggleMonthSelection(monthTextView)
+            }
         }
 
-        bottomSheetDialog.show()
+        binding.all.setOnClickListener {
+            if (selectedMonths.size == months.size) {
+                clearAllSelections(months)
+            } else {
+                selectAllMonths(months)
+            }
+        }
     }
 
+    private fun toggleMonthSelection(textView: TextView) {
+        if (selectedMonths.contains(textView)) {
+            deselectMonth(textView)
+        } else {
+            selectMonth(textView)
+        }
+    }
 
+    private fun selectMonth(textView: TextView) {
+        selectedMonths.add(textView)
+        textView.setBackgroundResource(R.drawable.card_selected_background)
+        textView.setTextColor(Color.WHITE)
+    }
+
+    private fun deselectMonth(textView: TextView) {
+        selectedMonths.remove(textView)
+        textView.setBackgroundResource(R.drawable.card_default_background)
+        textView.setTextColor(Color.parseColor("#424242"))
+    }
+
+    private fun clearAllSelections(months: List<TextView>) {
+        selectedMonths.clear()
+        months.forEach { monthTextView ->
+            deselectMonth(monthTextView)
+        }
+    }
+
+    private fun selectAllMonths(months: List<TextView>) {
+        months.forEach { monthTextView ->
+            selectMonth(monthTextView)
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.flFragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 }

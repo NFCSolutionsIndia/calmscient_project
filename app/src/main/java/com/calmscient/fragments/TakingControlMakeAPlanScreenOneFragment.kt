@@ -68,15 +68,15 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
             adapter = consAdapter
         }
 
-        binding.btnTrackAlcohol.setOnClickListener{
+        /*binding.btnTrackAlcohol.setOnClickListener{
             loadFragment(TakingControlMakeAPlanScreenTwoFragment())
-        }
+        }*/
         binding.backIcon.setOnClickListener{
             loadFragment(TakingControlFragment())
         }
 
         binding.btnQuitCut.setOnClickListener{
-            loadFragment(TakingControlMakeAPlanScreenFourFragment())
+            loadFragment(TakingControlMakeAPlanScreenTwoFragment())
         }
 
         return binding.root
