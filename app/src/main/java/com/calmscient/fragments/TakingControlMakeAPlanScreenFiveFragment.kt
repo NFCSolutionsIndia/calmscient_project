@@ -13,6 +13,7 @@ package com.calmscient.fragments
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import com.calmscient.R
 import com.calmscient.databinding.FragmentTakingControlMakeAPlanScreenFiveBinding
@@ -61,7 +63,54 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         binding.previousQuestion.setOnClickListener {
             loadFragment(TakingControlMakeAPlanScreenFourFragment())
         }
+
+        binding.btnSet.setOnClickListener{
+
+            showSetDialog()
+        }
+
+
+        binding.makeAPlanBulbIcon.setOnClickListener{
+            showBulbDialog()
+        }
         return binding.root
+    }
+    private fun showBulbDialog() {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.make_a_plan_screen_five_dialog, null)
+
+        val closeButton = dialogView.findViewById<ImageView>(R.id.closeButton)
+
+        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomDialog)
+            .setView(dialogView)
+
+        val dialog = dialogBuilder.create()
+        dialog.show()
+
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun showSetDialog() {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.make_a_plan_congrats_dilalog, null)
+
+        val closeButton = dialogView.findViewById<ImageView>(R.id.closeButton)
+        val introButton = dialogView.findViewById<AppCompatButton>(R.id.btn_seeTheIntro)
+
+        val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomDialog)
+            .setView(dialogView)
+
+        val dialog = dialogBuilder.create()
+        dialog.show()
+
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        introButton.setOnClickListener{
+            dialog.dismiss()
+            loadFragment(TakingControlFragment())
+        }
     }
 
     private fun showBottomSheet() {

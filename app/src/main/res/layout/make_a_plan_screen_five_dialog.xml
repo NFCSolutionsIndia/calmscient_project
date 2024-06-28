@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_border"
+    android:orientation="vertical"
+    android:padding="@dimen/_5sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <!-- Title TextView -->
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/lexendlight"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_16sdp" />
+
+        <!-- Close Button -->
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_50sdp"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_recognize_close"
+            android:clickable="true"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_30sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remember,  the US guideline of moderate drinking is:"
+                android:textColor="@color/black_head"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:layout_margin="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• 2 drinks or less in a day for men \n\n• 1 drink or less in a day for women"
+                android:textColor="@color/purple_100"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginHorizontal="@dimen/_14sdp"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Also NIAAA defines heavy drinking as:"
+                android:textColor="@color/black_head"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:layout_margin="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• 5 or more drinks on any day or 15 or more per week drink or less in a day for women \n\n• 4 or more drinks on any day or 8 or more per week for men"
+                android:textColor="@color/purple_100"
+                android:fontFamily="@font/lexendlight"
+                android:layout_marginHorizontal="@dimen/_14sdp"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -2146,6 +2146,17 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
        <font color="#6E6BB3">5 or more drinks on any day or 15 or more per week.</font><br><br>
     ]]>
 </string>
+
+
+    <string name="make_a_plan_screen_five_dilaog">Remember,  the US guideline of moderate drinking is:\n\n
+
+       <font color="#6E6BB3">• 2 drinks or less in a day for men</font>
+       <font color="#6E6BB3">• 1 drink or less in a day for women</font>\n\n
+       Also NIAAA defines heavy drinking as:\n\n
+       <font color="#6E6BB3">• 5 or more drinks on any day or 15 or more per week drink or less in a day for women</font>
+       <font color="#6E6BB3">• 4 or more drinks on any day or 8 or more per week for men</font>\n\n</string>
+
+
     <string name="depression">Depression</string>
     <string name="anxiety_paranoia_panic">Anxiety, paranoia, panic</string>
     <string name="decreased_memory_and_problem_solving_ability">Decreased memory and problem solving ability</string>
