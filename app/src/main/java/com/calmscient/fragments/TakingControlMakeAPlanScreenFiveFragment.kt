@@ -75,6 +75,7 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         }
         return binding.root
     }
+
     private fun showBulbDialog() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.make_a_plan_screen_five_dialog, null)
 

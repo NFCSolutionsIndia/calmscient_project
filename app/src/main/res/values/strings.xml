@@ -800,7 +800,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="drinks">Drinks</string>
     <string name="argument">Argument</string>
     <string name="drink_count">Drink counts</string>
-    <string name="terms">Accept <u>terms and conditions</u></string>
+    <string name="terms">Accept <u>Terms and Conditions</u></string>
     <!--Emergency Resource Page strings-->
     <string name="emergency_resource">Emergency resource</string>
     <string name="doctor_name">Dr. Samuel parker</string>

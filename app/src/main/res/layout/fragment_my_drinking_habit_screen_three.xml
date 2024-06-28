@@ -21,75 +21,80 @@
         android:id="@+id/main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/now_let_s_see_what_drinking_habits_do_you_have"
         android:fontFamily="@font/lexendlight"
-        android:textSize="@dimen/_12sdp"
-        android:textColor="@color/black_head"/>
+        android:text="@string/now_let_s_see_what_drinking_habits_do_you_have"
+        android:textColor="@color/black_head"
+        android:textSize="@dimen/_12sdp" />
 
     <TextView
         android:id="@+id/tv_questionTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/what_do_you_feel_about_your_drinking_habit"
-        android:textSize="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:fontFamily="@font/lexendmedium"
-        android:textColor="@color/black_head"/>
+        android:text="@string/what_do_you_feel_about_your_drinking_habit"
+        android:textColor="@color/black_head"
+        android:textSize="@dimen/_14sdp" />
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_300sdp"
             android:orientation="vertical">
 
-
-
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0.0px"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="10dp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 app:cardPreventCornerOverlap="false">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/layoutOne"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lexendmedium"
-                    android:text="@string/no_intention_on_changing"
-                    android:textSize="@dimen/_14sdp"
-                    android:padding="@dimen/_8sdp"
-                    android:textColor="@color/black_head"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/headingOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lexendmedium"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/no_intention_on_changing"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_14sdp" />
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/lexendlight"
-                    android:gravity="left"
-                    android:padding="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:textColor="@color/black_head"
-                    android:text="@string/my_drinking_habit_screen_three_text_one"
-                    android:textSize="@dimen/_12sdp" />
+                    <TextView
+                        android:id="@+id/descOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:gravity="left"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/my_drinking_habit_screen_three_text_one"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
 
 
             <androidx.cardview.widget.CardView
@@ -98,36 +103,45 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0.0px"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="10dp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 app:cardPreventCornerOverlap="false">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/layoutTwo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lexendmedium"
-                    android:text="@string/aware_of_problem_but_not_ready_to_change"
-                    android:textSize="@dimen/_14sdp"
-                    android:padding="@dimen/_8sdp"
-                    android:textColor="@color/black_head"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/headingTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lexendmedium"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/aware_of_problem_but_not_ready_to_change"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_14sdp" />
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/lexendlight"
-                    android:gravity="left"
-                    android:padding="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_40sdp"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:textColor="@color/black_head"
-                    android:text="@string/my_drinking_habit_screen_three_text_two"
-                    android:textSize="@dimen/_12sdp" />
+                    <TextView
+                        android:id="@+id/descTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:gravity="left"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/my_drinking_habit_screen_three_text_two"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -137,36 +151,45 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0.0px"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="10dp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 app:cardPreventCornerOverlap="false">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/layoutThree"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lexendmedium"
-                    android:text="@string/already_have_a_plan_to_change"
-                    android:textSize="@dimen/_14sdp"
-                    android:padding="@dimen/_8sdp"
-                    android:textColor="@color/black_head"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/headingThree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lexendmedium"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/already_have_a_plan_to_change"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_14sdp" />
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/lexendlight"
-                    android:gravity="left"
-                    android:padding="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:textColor="@color/black_head"
-                    android:text="@string/my_drinking_habit_screen_three_text_three"
-                    android:textSize="@dimen/_12sdp" />
+                    <TextView
+                        android:id="@+id/descThree"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:gravity="left"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/my_drinking_habit_screen_three_text_three"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -176,36 +199,46 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_4sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0.0px"
                 app:cardCornerRadius="@dimen/_3sdp"
                 app:cardElevation="10dp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 app:cardPreventCornerOverlap="false">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/layoutFour"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lexendmedium"
-                    android:text="@string/achieved_modification_goals"
-                    android:textSize="@dimen/_14sdp"
-                    android:padding="@dimen/_8sdp"
-                    android:textColor="@color/black_head"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/headingFour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lexendmedium"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/achieved_modification_goals"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_14sdp" />
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/lexendlight"
-                    android:gravity="left"
-                    android:padding="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_30sdp"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:textColor="@color/black_head"
-                    android:text="@string/my_drinking_habit_screen_three_text_four"
-                    android:textSize="@dimen/_12sdp" />
+                    <TextView
+                        android:id="@+id/descFour"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:gravity="left"
+                        android:padding="@dimen/_8sdp"
+                        android:text="@string/my_drinking_habit_screen_three_text_four"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
