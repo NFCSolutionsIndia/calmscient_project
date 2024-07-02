@@ -71,19 +71,20 @@ class WebViewFragment : Fragment() {
         headingText.text = arguments?.getString(ARG_CHAPTER_NAME)
         url = arguments?.getString(ARG_URL)
 
+        if (savedInstanceState != null) {
+            webViewLearn?.restoreState(savedInstanceState)
+        } else if (url != null) {
+            initializeWebView(url!!)
+        } else {
+            Log.e("WebViewFragment", "No URL provided")
+        }
+
         return rootView
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (url == null) {
-            Log.e("WebViewFragment", "No URL provided")
-            return
-        }
-
-        initializeWebView(url!!)
 
         icBack!!.setOnClickListener {
             activity?.onBackPressed()
@@ -118,6 +119,16 @@ class WebViewFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         webViewLearn?.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        webViewLearn?.onResume()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        webViewLearn?.saveState(outState)
     }
 
     override fun onDestroyView() {
