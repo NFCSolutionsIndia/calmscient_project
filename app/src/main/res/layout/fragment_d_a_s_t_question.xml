@@ -15,7 +15,7 @@
         app:popupTheme="@style/AppTheme.PopupOverlay">-->
 
         <RelativeLayout
-            android:id="@+id/PHQ"
+            android:id="@+id/dast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_5sdp"
@@ -48,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:layout_marginBottom="10dp"
+        android:layout_below="@+id/dast"
         android:background="@color/viewbackgroundcolor" />
 
     <!-- RecyclerView below the toolbar -->
@@ -61,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_height="@dimen/_400sdp"
-            android:layout_below="@+id/PHQ"
+            android:layout_below="@+id/separator"
             android:layout_marginHorizontal="@dimen/_10sdp" />
     <!--</ScrollView>-->
 

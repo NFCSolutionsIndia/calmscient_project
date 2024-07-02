@@ -773,7 +773,6 @@
                             android:id="@+id/sleep_6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/_2sdp"
                             android:layout_weight="1"
                             android:src="@drawable/sleep_6" />
 
@@ -808,7 +807,7 @@
                         <ImageView
                             android:id="@+id/sleep_more"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@drawable/sleep_more" />
                     </androidx.appcompat.widget.LinearLayoutCompat>

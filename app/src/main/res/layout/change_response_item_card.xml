@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_80sdp"
                 android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_anixity_tick" />
+                android:src="@drawable/ic_anixity_tick"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/titleTextView"

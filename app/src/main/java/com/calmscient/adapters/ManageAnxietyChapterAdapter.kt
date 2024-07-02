@@ -48,6 +48,12 @@ class ManageAnxietyChapterAdapter(
             .placeholder(R.drawable.placeholder)
             .into(holder.chapterImage)
 
+        if (chapter.isCourseCompleted == 1) {
+            holder.itemView.findViewById<ImageView>(R.id.tickImageView).visibility = View.VISIBLE
+        } else {
+            holder.itemView.findViewById<ImageView>(R.id.tickImageView).visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
             itemClickListener(chapter)
         }
