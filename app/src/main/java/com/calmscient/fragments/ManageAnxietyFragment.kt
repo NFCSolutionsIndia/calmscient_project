@@ -209,7 +209,7 @@ class ManageAnxietyFragment : Fragment() {
                     ?.let { loadFragment(it) }
             }
 
-            when (lesson.lessonName) {
+           /* when (lesson.lessonName) {
                 "Introduction" -> setupRecyclerView(binding.recyclerViewIntroduction, chapterItems, itemClickListener)
                 "Lesson 1" -> setupRecyclerView(binding.recyclerViewLesson1, chapterItems, itemClickListener)
                 "Lesson 2" -> setupRecyclerView(binding.recyclerViewLesson2, chapterItems, itemClickListener)
@@ -218,7 +218,19 @@ class ManageAnxietyFragment : Fragment() {
                 "Lesson 5" -> setupRecyclerView(binding.recyclerViewLesson5, chapterItems, itemClickListener)
                 "Lesson 6" -> setupRecyclerView(binding.recyclerViewLesson6, chapterItems, itemClickListener)
                 "Additional Resources" -> setupRecyclerView(binding.recyclerViewAdditionalResource, chapterItems, itemClickListener)
+            }*/
+
+            when {
+                lesson.lessonName == "Introduction" || lesson.lessonName == "Introducción" -> setupRecyclerView(binding.recyclerViewIntroduction, chapterItems, itemClickListener)
+                lesson.lessonName == "Lesson 1" || lesson.lessonName == "Lección 1" -> setupRecyclerView(binding.recyclerViewLesson1, chapterItems, itemClickListener)
+                lesson.lessonName == "Lesson 2" || lesson.lessonName == "Lección 2" -> setupRecyclerView(binding.recyclerViewLesson2, chapterItems, itemClickListener)
+                lesson.lessonName == "Lesson 3" || lesson.lessonName == "Lección 3" -> setupRecyclerView(binding.recyclerViewLesson3, chapterItems, itemClickListener)
+                lesson.lessonName == "Lesson 4" || lesson.lessonName == "Lección 4" -> setupRecyclerView(binding.recyclerViewLesson4, chapterItems, itemClickListener)
+                lesson.lessonName == "Lesson 5" || lesson.lessonName == "Lección 5" -> setupRecyclerView(binding.recyclerViewLesson5, chapterItems, itemClickListener)
+                lesson.lessonName == "Lesson 6" || lesson.lessonName == "Lección 6" -> setupRecyclerView(binding.recyclerViewLesson6, chapterItems, itemClickListener)
+                lesson.lessonName == "Additional Resources" || lesson.lessonName == "Recursos Adicionales" -> setupRecyclerView(binding.recyclerViewAdditionalResource, chapterItems, itemClickListener)
             }
+
         }
     }
 
