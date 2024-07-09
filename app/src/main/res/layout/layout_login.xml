@@ -115,7 +115,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-
                 android:paddingTop="16dp"
                 app:boxBackgroundColor="#ffffff"
                 app:boxStrokeColor="@color/example_7_button"

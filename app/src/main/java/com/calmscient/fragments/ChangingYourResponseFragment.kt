@@ -13,6 +13,8 @@ package com.calmscient.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -130,9 +132,10 @@ class ChangingYourResponseFragment : Fragment() {
             {
                 customProgressDialog.show("Loading...")
             }
-            else
-            {
-                customProgressDialog.dialogDismiss()
+            else {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    customProgressDialog.dialogDismiss()
+                }, 6000) // Delay of 3 seconds
             }
         })
 
@@ -230,8 +233,10 @@ class ChangingYourResponseFragment : Fragment() {
             {
                 customProgressDialog.show("Loading...")
             }
-            else{
-                customProgressDialog.dialogDismiss()
+            else {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    customProgressDialog.dialogDismiss()
+                }, 6000) // Delay of 3 seconds
             }
         })
 

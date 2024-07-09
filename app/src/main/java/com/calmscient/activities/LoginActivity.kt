@@ -18,6 +18,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
@@ -50,6 +51,7 @@ import com.calmscient.utils.network.ServerTimeoutHandler
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: LayoutLoginBinding
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -69,6 +71,21 @@ class LoginActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+
+        // Create InputFilter to block spaces
+        val noSpaceFilter = InputFilter { source, _, _, _, _, _ ->
+            if (source == " ") {
+                ""
+            } else {
+                null
+            }
+        }
+
+        // Apply InputFilter to the UserName EditText
+        binding.userName.filters = arrayOf(noSpaceFilter)
+
+        // Apply InputFilter to the Password EditText
+        binding.editPassword.filters = arrayOf(noSpaceFilter)
 
         customProgressDialog = CustomProgressDialog(this)
 
@@ -136,17 +153,15 @@ class LoginActivity : AppCompatActivity() {
                 SharedPreferencesUtil.saveData(this, "loginResponse", jsonString)
 
                 Log.d("LoginActivity Response", "${responseDate.loginDetails}")
-               if(responseDate.token != null)
-               {
-                   val accessToken = responseDate.token.access_token
+                if (responseDate.token != null) {
+                    val accessToken = responseDate.token.access_token
 
-                   SharedPreferencesUtil.saveData(this, "accessToken", accessToken)
-                   navigateToDayScreen(responseDate)
+                    SharedPreferencesUtil.saveData(this, "accessToken", accessToken)
+                    navigateToDayScreen(responseDate)
 
-               }
-                else{
+                } else {
                     commonDialog.showDialog("Something went wrong.\nPlease try after some time !!!")
-               }
+                }
 
 
             } else {
@@ -158,7 +173,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 loginViewModel.errorLiveData.value?.let { failureMessage ->
-                    failureMessage.let{
+                    failureMessage.let {
                         ServerTimeoutHandler.handleTimeoutException(this) {
                             // Retry logic when the retry button is clicked
                             loginViewModel.retryLogin()
@@ -191,14 +206,25 @@ class LoginActivity : AppCompatActivity() {
             val username = binding.userName.text.toString()
             val password = binding.editPassword.text.toString()
 
+            if (username.isEmpty()) {
+                showError(binding.userNameTextInputLayout, "Enter Valid Username")
+            }
+            if (password.isEmpty()) {
+
+                showError(binding.TinPassword, "Enter Valid Password")
+            }
+
             if (!username.isEmpty() && !password.isEmpty()) {
                 if (CommonClass.isNetworkAvailable(this)) {
                     loginViewModel.loginUser(username, password)
                 } else {
                     CommonClass.showInternetDialogue(this)
                 }
-            } else {
-                showError(binding.TinPassword, "Enter Valid Username & Password")
+            } else if (username.isEmpty()) {
+                showError(binding.userNameTextInputLayout, "Enter Valid Username")
+            } else if (password.isEmpty()) {
+
+                showError(binding.TinPassword, "Enter Valid Password")
             }
             /*
 
