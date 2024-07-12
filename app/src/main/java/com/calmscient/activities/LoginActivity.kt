@@ -100,6 +100,10 @@ class LoginActivity : AppCompatActivity() {
         binding.userName.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 binding.userName.hint = "xxxxxxxxxxxx@gmail.com"
+                view.post {
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+                }
             }
             if (!hasFocus) {
                 binding.userName.setHint(R.string.username)
@@ -108,6 +112,10 @@ class LoginActivity : AppCompatActivity() {
         binding.editPassword.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 binding.editPassword.hint = "**********"
+                view.post {
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+                }
             }
             if (!hasFocus) {
                 binding.editPassword.setHint(R.string.password)
@@ -148,6 +156,10 @@ class LoginActivity : AppCompatActivity() {
                 // Login successful, navigate to the next screen
                 responseDate = loginViewModel.responseData.value!!
                 //handleLoginResponse(responseDate)
+
+                // Clear existing data
+                SharedPreferencesUtil.clearData(this, "loginResponse")
+                SharedPreferencesUtil.clearData(this, "accessToken")
 
                 val jsonString = JsonUtil.toJsonString(responseDate)
                 SharedPreferencesUtil.saveData(this, "loginResponse", jsonString)

@@ -13,7 +13,8 @@ package com.calmscient.di.remote.response
 
 data class ManageAnxietyIndexResponse(
     val managingAnxiety: List<ManagingAnxiety>,
-    val statusResponse: StatusResponse
+    val statusResponse: StatusResponse,
+    val patientSessionDetails: PatientSessionDetails
 )
 
 data class ManagingAnxiety(
@@ -30,4 +31,11 @@ data class Chapter(
     val imageUrl: String,
     val isCourseCompleted: Int,
     val pageCount: Int
+)
+
+
+data class PatientSessionDetails(
+    val userSessionID: String,
+    val languageId: Int,
+    val languageName: String
 )

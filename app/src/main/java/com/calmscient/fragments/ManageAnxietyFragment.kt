@@ -163,6 +163,8 @@ class ManageAnxietyFragment : Fragment() {
                         if(successData != null)
                         {
                             manageAnxietyIndexResponse = successData
+                            sessionId = manageAnxietyIndexResponse.patientSessionDetails.userSessionID
+                            Log.d("sessionId", sessionId)
                             clearRecyclerViewData()  // Clear existing RecyclerView data
                             getManageAnxietyIndexDataViewModel.clear()  // Clear ViewModel data
 
@@ -273,11 +275,11 @@ class ManageAnxietyFragment : Fragment() {
             else {
                 Handler(Looper.getMainLooper()).postDelayed({
                     customProgressDialog.dialogDismiss()
-                }, 7000) // Delay of 3 seconds
+                }, 5000) // Delay of 3 seconds
             }
         })
 
-        getSessionIdViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+        /*getSessionIdViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
             if(successData != null)
             {
                 sessionIdResponse = successData
@@ -285,7 +287,7 @@ class ManageAnxietyFragment : Fragment() {
 
                 //Toast.makeText(requireContext(), sessionId,Toast.LENGTH_LONG).show()
             }
-        })
+        })*/
     }
 
 

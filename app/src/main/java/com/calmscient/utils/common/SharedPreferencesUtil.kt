@@ -28,4 +28,11 @@ object SharedPreferencesUtil {
         val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return sharedPref.getString(key, defaultValue) ?: defaultValue
     }
+
+    fun clearData(context: Context, key: String) {
+        val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.remove(key)
+        editor.apply()
+    }
 }

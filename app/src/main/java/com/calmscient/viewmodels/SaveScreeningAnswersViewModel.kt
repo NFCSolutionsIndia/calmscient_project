@@ -28,11 +28,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SaveScreeningAnswersViewModel @Inject constructor(private val repository: ScreeningQuestionnaireRepository) : ViewModel() {
 
-    val saveResponseLiveData: MutableLiveData<PatientAnswerSaveResponse?> = MutableLiveData()
+    var saveResponseLiveData: MutableLiveData<PatientAnswerSaveResponse?> = MutableLiveData()
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val successLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
-    val successNotAnsweredDataMessage: MutableLiveData<String> = MutableLiveData()
+    var successLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    var successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
+    var successNotAnsweredDataMessage: MutableLiveData<String?> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val failureLiveData: MutableLiveData<String> = MutableLiveData()
 

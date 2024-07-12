@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -296,6 +297,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
     private fun navigateToScreeningsFragment() {
         commonDialog.dismiss()
+        customProgressDialog.dialogDismiss()
         if (CommonClass.isNetworkAvailable(requireContext())) {
             loadFragment(ScreeningsFragment())
         } else {
@@ -321,6 +323,9 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
             currentQuestionIndex++
 
             if (currentQuestionIndex == screeningQuestionResponse.size) {
+                saveScreeningAnswersViewModel.successNotAnsweredData = MutableLiveData(false)
+                saveScreeningAnswersViewModel.successNotAnsweredDataMessage = MutableLiveData(null)
+                saveScreeningAnswersViewModel.saveResponseLiveData = MutableLiveData(null)
                 if (areSelectedOptionsChanged()) {
                     updateLastSavedSelectedOptions()
                     val patientAnswers = constructPatientAnswers()
@@ -345,7 +350,9 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                         }
 
                         saveScreeningAnswersViewModel.successNotAnsweredDataMessage.observe(viewLifecycleOwner) { message ->
-                            commonDialog.showDialog(message)
+                            if (message != null) {
+                                commonDialog.showDialog(message)
+                            }
                             commonDialog.setOnDismissListener {
                                 navigateToScreeningsFragment()
                             }
