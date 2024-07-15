@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginHorizontal="@dimen/_13sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:fontFamily="@font/lexendlight"
             android:textAllCaps="false"
             android:textColor="@color/black_head"
@@ -31,9 +31,9 @@
             android:layout_marginHorizontal="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:fontFamily="@font/lexendlight"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_14sdp"
+            android:textAllCaps="false" />
 
         <!--<ImageView
             android:id="@+id/exercisesBellIcon"

@@ -949,10 +949,11 @@ The most important thing is to do it! Do you have some time today to get started
     <!--    Hand over your heart Exercise-->
     <string name="handoveryourHeart_titletext">Hand over your heart</string>
     <string name="handoveryourHeart_text">How to do it</string>
-    <string name="handoveryourHeart_text_desc">&#8226; Rest the heel of your hand on your sternum around your heart area.<br />\n
-    &#8226; Apply a steady, gentle, but firm pressure.<br />\n
-    &#8226; For added effect, you can place your other hand across your forehead or on your abdomen.<br />\n
-    &#8226; Experiment with the various placements and wait until you feel a shift. It may take up to 5 or 10 minutes of deep breathing in this position to shift if you are very activated.</string>
+    <string name="bullet">&#8226;</string>
+    <string name="handoveryourHeart_point1">Rest the heel of your hand on your sternum around your heart area.</string>
+    <string name="handoveryourHeart_point2">Apply a steady, gentle, but firm pressure.</string>
+    <string name="handoveryourHeart_point3">For added effect, you can place your other hand across your forehead or on your abdomen.</string>
+    <string name="handoveryourHeart_point4">Experiment with the various placements and wait until you feel a shift. It may take up to 5 or 10 minutes of deep breathing in this position to shift if you are very activated.</string>
 
     <!--    Dancing Exercise-->
     <string name="dancingexercise_titletext">Movement: dance</string>

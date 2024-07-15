@@ -7,10 +7,7 @@
     android:orientation="vertical"
     tools:context=".activities.HandOverYourHeartActivity"
     tools:ignore="MissingConstraints">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,45 +40,144 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_1sdp"
         android:background="@color/viewbackgroundcolor"/>
-    <LinearLayout
-        android:id="@+id/contentText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:orientation="vertical">
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/handoveryourheart_exercies_image"/>
-            <ImageView
-                android:id="@+id/favoritesIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_250sdp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:src="@drawable/mindfullexercise_heart__image"/>
-        </RelativeLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:text="@string/handoveryourHeart_text"
-            android:textColor="@color/black_head"
-            android:fontFamily="@font/lexendlight"
-            android:textSize="@dimen/_16sdp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColor="@color/black_head"
-            android:text="@string/handoveryourHeart_text_desc"
-            android:fontFamily="@font/lexendlight"
-            android:textSize="@dimen/_12sdp"/>
-    </LinearLayout>
-    </LinearLayout>
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginBottom="@dimen/_20sdp">
+       <LinearLayout
+           android:id="@+id/contentText1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:visibility="visible"
+           android:orientation="vertical">
+           <RelativeLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+               <ImageView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/handoveryourheart_exercies_image"/>
+               <ImageView
+                   android:id="@+id/favoritesIcon"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="@dimen/_250sdp"
+                   android:layout_marginTop="@dimen/_25sdp"
+                   android:src="@drawable/mindfullexercise_heart__image"/>
+           </RelativeLayout>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginHorizontal="@dimen/_10sdp"
+               android:text="@string/handoveryourHeart_text"
+               android:fontFamily="@font/lexendlight"
+               android:textColor="@color/black_head"
+               android:textSize="@dimen/_16sdp"/>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:padding="@dimen/_10sdp">
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginBottom="@dimen/_10sdp">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/bullet"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"/>
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/handoveryourHeart_point1"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"
+                       android:layout_marginStart="@dimen/_4sdp"/>
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginBottom="@dimen/_10sdp">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/bullet"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"/>
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/handoveryourHeart_point2"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"
+                       android:layout_marginStart="@dimen/_4sdp"/>
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginBottom="@dimen/_10sdp">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/bullet"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"/>
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/handoveryourHeart_point3"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"
+                       android:layout_marginStart="@dimen/_4sdp"/>
+               </LinearLayout>
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   android:layout_marginBottom="@dimen/_40sdp">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/bullet"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"/>
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="@string/handoveryourHeart_point4"
+                       android:fontFamily="@font/lexendlight"
+                       android:textColor="@color/black_head"
+                       android:textSize="@dimen/_14sdp"
+                       android:layout_marginStart="@dimen/_4sdp"/>
+               </LinearLayout>
+
+           </LinearLayout>
+
+
+       </LinearLayout>
+   </ScrollView>
 </LinearLayout>

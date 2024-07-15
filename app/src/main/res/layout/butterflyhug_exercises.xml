@@ -56,7 +56,7 @@
                 android:id="@+id/contentText1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -79,6 +79,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:text="@string/butterflyScreen1_text1"
                     android:fontFamily="@font/lexendlight"
+                    android:textColor="@color/black_head"
                     android:textSize="@dimen/_14sdp"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,13 +88,14 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:text="@string/butterflyScreen1_text2"
                     android:fontFamily="@font/lexendlight"
+                    android:textColor="@color/black_head"
                     android:textSize="@dimen/_14sdp"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/contentText2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -102,14 +104,15 @@
                     android:text="@string/how_to_do"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/lexendlight"
                     android:textColor="@color/black_head"
-                    android:fontFamily="@font/lexendregular"
                     android:textSize="@dimen/_14sdp"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:weightSum="5"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_10sdp">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -141,9 +144,9 @@
                                     android:layout_height="wrap_content"
                                     android:padding="@dimen/_10sdp"
                                     android:text="@string/butterflyScreen2_text1"
-                                    android:fontFamily="@font/lexendregular"
+                                    android:fontFamily="@font/lexendlight"
                                     android:textColor="@color/black_head"
-                                    android:textSize="@dimen/_12sdp"/>
+                                    android:textSize="@dimen/_14sdp"/>
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -170,10 +173,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/butterflyScreen2_text2"
-                                    android:fontFamily="@font/lexendregular"
                                     android:padding="@dimen/_10sdp"
+                                    android:fontFamily="@font/lexendlight"
                                     android:textColor="@color/black_head"
-                                    android:textSize="@dimen/_12sdp"/>
+                                    android:textSize="@dimen/_14sdp"/>
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -182,21 +185,20 @@
                             </LinearLayout>
                         </androidx.cardview.widget.CardView>
                         <androidx.cardview.widget.CardView
-                            android:layout_width="@dimen/_250sdp"
+                            android:layout_width="@dimen/_230sdp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/_20sdp"
                             app:cardCornerRadius="@dimen/_12sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginHorizontal="@dimen/_15sdp">
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="@dimen/_230sdp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/butterflyScreen2_text3"
-                                android:fontFamily="@font/lexendregular"
-                                android:paddingHorizontal="@dimen/_10sdp"
                                 android:padding="@dimen/_10sdp"
+                                android:fontFamily="@font/lexendlight"
                                 android:textColor="@color/black_head"
-                                android:textSize="@dimen/_12sdp"/>
+                                android:textSize="@dimen/_14sdp"/>
                         </androidx.cardview.widget.CardView>
 
                     </LinearLayout>

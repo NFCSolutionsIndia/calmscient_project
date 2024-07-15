@@ -120,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_405sdp">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.calmscient.utils.NonSwipeRecyclerView
                 android:id="@+id/optionsRecyclerView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

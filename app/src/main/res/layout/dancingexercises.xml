@@ -70,6 +70,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:text="@string/dancingexercises_text"
                 android:fontFamily="@font/lexendlight"
+                android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp"/>
         </LinearLayout>
 

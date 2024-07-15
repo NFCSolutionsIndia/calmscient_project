@@ -1061,10 +1061,13 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <!--    Hand over your heart Exercise-->
     <string name="handoveryourHeart_titletext">La mano sobre el corazón</string>
     <string name="handoveryourHeart_text">CÓMO HACERLO</string>
-    <string name="handoveryourHeart_text_desc">&#8226; Coloca el talón de tu mano sobre el esternón, alrededor del área del corazón.\n
-    &#8226; Aplica una presión constante, suave pero firme.\n
-    &#8226; Para obtener un efecto adicional, puedes colocar la otra mano sobre tu frente o sobre tu abdomen.\n
-    &#8226; Experimenta con las diferentes posiciones y espera hasta sentir un cambio. Puede tomar hasta 5 o 10 minutos de respiración profunda en esta posición para lograr un cambio si estás muy activado.</string>
+
+    <string name="bullet">&#8226;</string>
+    <string name="handoveryourHeart_point1">Coloca el talón de tu mano sobre el esternón, alrededor del área del corazón.</string>
+    <string name="handoveryourHeart_point2">Aplica una presión constante, suave pero firme.</string>
+    <string name="handoveryourHeart_point3">Para obtener un efecto adicional, puedes colocar la otra mano sobre tu frente o sobre tu abdomen.</string>
+    <string name="handoveryourHeart_point4">Experimenta con las diferentes posiciones y espera hasta sentir un cambio. Puede tomar hasta 5 o 10 minutos de respiración profunda en esta posición para lograr un cambio si estás muy activado.</string>
+
     <string name="lesson1_video_summary">
         La ansiedad es una respuesta normal del cerebro al estrés. Las respuestas de Lucha, Huida y Congelación nos ayudan a enfrentar las demandas de posibles amenazas. Las cosas que pueden causar ansiedad son:<br />
         \n
