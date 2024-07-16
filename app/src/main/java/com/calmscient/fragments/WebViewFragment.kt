@@ -16,6 +16,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +35,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.calmscient.R
+import com.calmscient.utils.CustomProgressDialog
 
 class WebViewFragment : Fragment() {
 
@@ -55,6 +58,7 @@ class WebViewFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var headingText: TextView
     private var url: String? = null
+    private lateinit var customProgressDialog: CustomProgressDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +71,7 @@ class WebViewFragment : Fragment() {
         headingText = rootView.findViewById(R.id.webViewTitle)
         icBack = rootView.findViewById(R.id.backIcon)
         icGlossary = rootView.findViewById(R.id.ic_glossary)
-
+        customProgressDialog = CustomProgressDialog(requireContext())
         headingText.text = arguments?.getString(ARG_CHAPTER_NAME)
         url = arguments?.getString(ARG_URL)
 
@@ -145,13 +149,17 @@ class WebViewFragment : Fragment() {
 
         override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-            progressBar.visibility = View.VISIBLE
+            //progressBar.visibility = View.VISIBLE
+            customProgressDialog.show("Loading...")
         }
 
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
             webViewLearn!!.visibility = View.VISIBLE
-            progressBar.visibility = View.GONE
+            //progressBar.visibility = View.GONE
+            Handler(Looper.getMainLooper()).postDelayed({
+                customProgressDialog.dialogDismiss()
+            }, 7000)
         }
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
