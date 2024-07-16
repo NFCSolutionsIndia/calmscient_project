@@ -333,6 +333,7 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
                 saveScreeningAnswersViewModel.successNotAnsweredData = MutableLiveData(false)
                 saveScreeningAnswersViewModel.successNotAnsweredDataMessage = MutableLiveData(null)
                 saveScreeningAnswersViewModel.saveResponseLiveData = MutableLiveData(null)
+                saveScreeningAnswersViewModel.failureLiveData = MutableLiveData(null)
                 if (areSelectedOptionsChanged()) {
                     updateLastSavedSelectedOptions()
                     val patientAnswers = constructPatientAnswers()

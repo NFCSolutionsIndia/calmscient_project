@@ -930,8 +930,8 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="deepbreathing_exercises">Deep breathing</string>
     <string name="musclerelaxation_exercises">Progressive muscle relaxation</string>
     <!--    Exercise_items-->
-    <string name="screen1">Have you ever caught your mind wandering or daydreaming while you are in the middle of a familiar or repetitive task? You could be walking, working or even driving your car, and your mind is miles away, perhaps fantasizing about going on vacation, thinking about your to-do list, or worrying about some upcoming event. In either case, you are not focusing on the current situation and not in touch with the ‘here and now’.  This mode of operation is often referred to as automatic pilot.</string>
-    <string name="screen2">Mindfulness is the opposite of automatic pilot. It is about experiencing the world that is firmly in the ‘here and now’. This is referred to as the being mode. It liberates you from automatic and unhelpful thoughts and responses.</string>
+    <string name="screen1"><![CDATA[<font color="#6E6BB3">Have you ever caught your mind wandering or daydreaming </font>while you are in the middle of a familiar or repetitive task? You could be walking, working or even driving your car, and your mind is miles away, perhaps fantasizing about going on vacation, thinking about your to-do list, or worrying about some upcoming event.<br/><br/>In either case, you are not focusing on the current situation and not in touch with the ‘here and now’.  This mode of operation is often referred to as<font color="#6E6BB3"> automatic pilot</font>.]]></string>
+    <string name="screen2"><![CDATA[<font color="#6E6BB3">Mindfulness</font> is the opposite of automatic pilot. It is about experiencing the world that is firmly in the ‘here and now’. This is referred to as the <font color="#6E6BB3">being</font> mode. It liberates you from automatic and unhelpful thoughts and responses.]]></string>
     <string name="screen3_heading">How does mindfulness help with anxiety?</string>
     <string name="screen3_belowheading">When we allow our brain to enter automatic pilot mode too often, it can be at risk of being conditioned to be overly preoccupied about the future, past experiences or our emotions in negative ways. If we have fallen into this old and unhelpful habit, we can unlearn it and replace it with skills that help us resist ‘buying into’ automatic worry and anxiety. </string>
     <string name="screen4">Mindfulness reminds us that we don’t have to take immediate control of, remove or fix unpleasant experiences. Instead, we can identify and actively engage in something that will give us a sense of safety and connection.</string>
@@ -1431,8 +1431,8 @@ The most important thing is to do it! Do you have some time today to get started
 
     <!--    Mindful walking exercise>-->
     <string name="mindfulwalking_exercises_text1">What are the benefits of mindful walking?</string>
-    <string name="mindfulwalking_exercises_text2">1.Stress Reduction: Engaging in mindful walking can be an effective way to reduce stress and promote relaxation. By directing your attention to the physical sensations of walking, you create a mental break from everyday stressors. This practice activates the relaxation response in your body, leading to a calmer state of mind.\n
-    2.Emotional Regulation: Engaging in mindful walking can help regulate your emotions. By observing your thoughts and emotions as they arise during the practice, you develop a non-judgmental and accepting attitude towards them. This can enhance emotional resilience and provide you with a greater sense of control over your reactions to challenging situations.</string>
+    <string name="mindfulwalking_exercises_text2">1. <font color="#6E6BB3">Stress Reduction</font>: Engaging in mindful walking can be an effective way to reduce stress and promote relaxation. By directing your attention to the physical sensations of walking, you create a mental break from everyday stressors. This practice activates the relaxation response in your body, leading to a calmer state of mind.\n
+        2. <font color="#6E6BB3">Emotional Regulation</font>: Engaging in mindful walking can help regulate your emotions. By observing your thoughts and emotions as they arise during the practice, you develop a non-judgmental and accepting attitude towards them. This can enhance emotional resilience and provide you with a greater sense of control over your reactions to challenging situations.</string>
     <string name="journal_entry">Journal entry</string>
     <string name="no_entries">No Entries</string>
     <string name="delete">Delete</string>
@@ -2189,5 +2189,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="less_than_2_days">Less than 2 days</string>
     <string name="almost_everyday">Almost everyday</string>
     <string name="everyday_1">Everyday</string>
+    <string name="breathing_technic">Breathing technic</string>
+    <string name="_4_7_8_breathing_exercise">4-7-8 Breathing exercise</string>
 
 </resources>

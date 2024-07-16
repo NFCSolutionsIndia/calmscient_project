@@ -8,7 +8,6 @@
  *
  *      Author : @Pardha Saradhi
  */
-
 package com.calmscient.utils
 
 import android.app.Dialog
@@ -23,6 +22,9 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 
 class CustomCalendarDialog : DialogFragment() {
+
+    private var onCancelClickListener: (() -> Unit)? = null
+    private var onOkClickListener: (() -> Unit)? = null
 
     interface OnDateSelectedListener {
         fun onDateSelected(date: CalendarDay)
@@ -40,8 +42,19 @@ class CustomCalendarDialog : DialogFragment() {
         calendarView.setOnDateChangedListener { widget, date, selected ->
             if (selected) {
                 listener?.onDateSelected(date)
-                dismiss()
             }
+        }
+
+        val btnCancel: View = view.findViewById(R.id.btnCancel)
+        btnCancel.setOnClickListener {
+            dismiss()
+            onCancelClickListener?.invoke()
+        }
+
+        val btnOk: View = view.findViewById(R.id.btnOk)
+        btnOk.setOnClickListener {
+            dismiss()
+            onOkClickListener?.invoke()
         }
 
         return view
@@ -55,5 +68,13 @@ class CustomCalendarDialog : DialogFragment() {
         return Dialog(requireContext(), theme).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
         }
+    }
+
+    fun setOnOkClickListener(listener: () -> Unit) {
+        onOkClickListener = listener
+    }
+
+    fun setOnCancelClickListener(listener: () -> Unit) {
+        onCancelClickListener = listener
     }
 }

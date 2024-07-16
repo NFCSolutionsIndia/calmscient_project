@@ -124,4 +124,16 @@ class MedicationDetailsViewModel @Inject constructor(private val repository: Med
         if (lastPatientLocationId > 0 && lastPatientId > 0 && lastClientId > 0 && lastAccessToken.isNotEmpty())
             getMedicationDetails(lastPatientLocationId, lastPatientId,lastClientId,lastFromDate,lastToDate,lastAccessToken)
     }
+
+    fun clear() {
+        // Reset LiveData objects to their initial state
+        saveResponseLiveData.value = null
+        loadingLiveData.value = false
+        successLiveData.value = false
+        successNotAnsweredData.value = false
+        errorLiveData.value = ""
+        failureLiveData.value = ""
+        failureResponseData.value = null
+
+    }
 }

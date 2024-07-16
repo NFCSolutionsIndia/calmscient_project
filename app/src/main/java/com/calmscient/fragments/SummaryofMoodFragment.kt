@@ -22,6 +22,7 @@ import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.MoodMonitor
 import com.calmscient.di.remote.response.SummaryOfMoodResponse
 import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.CustomMarkerView
@@ -47,6 +48,7 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.yearMonth
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -58,7 +60,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class SummaryofMoodFragment : Fragment() {
+class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedListener {
     private lateinit var binding: FragmentWeeklysummarymoodBinding
     private lateinit var dateView: TextView
     private lateinit var calenderDateView: TextView
@@ -78,7 +80,26 @@ class SummaryofMoodFragment : Fragment() {
     private  lateinit var accessToken : String
 
 
+    override fun onDateSelected(date: CalendarDay) {
 
+        // Convert CalendarDay to LocalDate
+        val localDate = date.toLocalDate()
+
+        // Remove the selection indicator from the previously selected date
+        val previousSelectedDate = selectedDate
+        previousSelectedDate?.let {
+            binding.exSevenCalendar.notifyDateChanged(it)
+        }
+
+        // Update the selectedDate variable
+        selectedDate = localDate
+
+        // Scroll the WeekCalendarView to the selected month and day
+        binding.exSevenCalendar.scrollToDate(localDate)
+
+        // Notify the WeekCalendarView to update the selected date UI
+        binding.exSevenCalendar.notifyDateChanged(localDate)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,6 +164,17 @@ class SummaryofMoodFragment : Fragment() {
 
         binding.needToTalkWithSomeOne.setOnClickListener {
             loadFragment(EmergencyResourceFragment())
+        }
+
+        binding.calenderView.setOnClickListener{
+            val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")
+            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+
+           /* dialog.setOnOkClickListener {
+                apiCall(selectedDate.toString())
+            }*/
         }
         return binding.root
     }
@@ -495,5 +527,8 @@ class SummaryofMoodFragment : Fragment() {
         barChart.setNoDataText("No data available")
         barChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
         barChart.invalidate()
+    }
+    fun CalendarDay.toLocalDate(): LocalDate {
+        return LocalDate.of(this.year, this.month + 1, this.day) // Note: CalendarDay month is 0-based, LocalDate is 1-based
     }
 }

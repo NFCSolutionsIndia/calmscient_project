@@ -10,6 +10,7 @@
  */
 
 package com.calmscient.adapters
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,7 @@ class MindfulnessScreensAdapter (private val items: List<MindfulnessExercisesTex
             holder.text2.visibility = View.GONE
         } else {
 
-            holder.text2.text = item.text2
+            holder.text2.text = Html.fromHtml(item.text2, Html.FROM_HTML_MODE_LEGACY)
             holder.text2.visibility = View.VISIBLE
         }
         /*holder.text1.text = item.text1

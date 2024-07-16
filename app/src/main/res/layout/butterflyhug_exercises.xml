@@ -56,7 +56,7 @@
                 android:id="@+id/contentText1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                 android:id="@+id/contentText2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,7 +131,6 @@
                             android:layout_width="@dimen/_230sdp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-
                             app:cardCornerRadius="@dimen/_12sdp"
                             android:layout_marginHorizontal="@dimen/_10sdp">
                             <LinearLayout

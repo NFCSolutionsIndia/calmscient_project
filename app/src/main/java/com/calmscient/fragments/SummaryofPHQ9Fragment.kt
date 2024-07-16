@@ -57,6 +57,7 @@ import java.util.Locale
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.common.CustomMarkerView
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
@@ -67,10 +68,11 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import okhttp3.internal.parseCookie
 
 
-class SummaryofPHQ9Fragment: Fragment() {
+class SummaryofPHQ9Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedListener {
     private lateinit var binding: Summaryofphq9FragmentBinding
     private lateinit var dateView: TextView
     private lateinit var calenderDateView: TextView
@@ -87,6 +89,26 @@ class SummaryofPHQ9Fragment: Fragment() {
     private lateinit var lineChart: LineChart
     private  lateinit var accessToken : String
 
+    override fun onDateSelected(date: CalendarDay) {
+
+        // Convert CalendarDay to LocalDate
+        val localDate = date.toLocalDate()
+
+        // Remove the selection indicator from the previously selected date
+        val previousSelectedDate = selectedDate
+        previousSelectedDate?.let {
+            binding.exSevenCalendar.notifyDateChanged(it)
+        }
+
+        // Update the selectedDate variable
+        selectedDate = localDate
+
+        // Scroll the WeekCalendarView to the selected month and day
+        binding.exSevenCalendar.scrollToDate(localDate)
+
+        // Notify the WeekCalendarView to update the selected date UI
+        binding.exSevenCalendar.notifyDateChanged(localDate)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this){
@@ -138,6 +160,17 @@ class SummaryofPHQ9Fragment: Fragment() {
         }
         else{
             CommonClass.showInternetDialogue(requireContext())
+        }
+
+        binding.calenderView.setOnClickListener{
+            val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")
+            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+
+            /* dialog.setOnOkClickListener {
+                 apiCall(selectedDate.toString())
+             }*/
         }
 
         return binding.root
@@ -299,7 +332,16 @@ class SummaryofPHQ9Fragment: Fragment() {
 
     private fun apiCall()
     {
-        loginResponse?.loginDetails?.let { getSummaryOfPHQViewModel.getSummaryOfPHQ(it.patientLocationID,it.patientID,it.clientID,"04/21/2024","05/09/2024", accessToken) }
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        // Get today's date
+        val toDate = dateFormat.format(calendar.time)
+
+        // Subtract one month from today's date
+        calendar.add(Calendar.MONTH, -1)
+        val fromDate = dateFormat.format(calendar.time)
+        loginResponse?.loginDetails?.let { getSummaryOfPHQViewModel.getSummaryOfPHQ(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate, accessToken) }
 
     }
     private fun observeViewModel()
@@ -413,4 +455,7 @@ class SummaryofPHQ9Fragment: Fragment() {
         lineChart.invalidate()
     }
 
+    fun CalendarDay.toLocalDate(): LocalDate {
+        return LocalDate.of(this.year, this.month + 1, this.day) // Note: CalendarDay month is 0-based, LocalDate is 1-based
+    }
 }

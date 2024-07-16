@@ -34,7 +34,7 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
     var successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
     var successNotAnsweredDataMessage: MutableLiveData<String?> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
-    val failureLiveData: MutableLiveData<String> = MutableLiveData()
+    var failureLiveData: MutableLiveData<String> = MutableLiveData()
 
     private var lastRequestBody: PatientAnswersWrapper? = null
     private var lastAccessToken: String = ""

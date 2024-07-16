@@ -101,7 +101,23 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
     }
     override fun onDateSelected(date: CalendarDay) {
 
-        Toast.makeText(requireContext(),"$date",Toast.LENGTH_LONG).show()
+        // Convert CalendarDay to LocalDate
+        val localDate = date.toLocalDate()
+
+        // Remove the selection indicator from the previously selected date
+        val previousSelectedDate = selectedDate
+        previousSelectedDate?.let {
+            binding.exSevenCalendar.notifyDateChanged(it)
+        }
+
+        // Update the selectedDate variable
+        selectedDate = localDate
+
+        // Scroll the WeekCalendarView to the selected month and day
+        binding.exSevenCalendar.scrollToDate(localDate)
+
+        // Notify the WeekCalendarView to update the selected date UI
+        binding.exSevenCalendar.notifyDateChanged(localDate)
     }
 
     override fun onCreateView(
@@ -143,11 +159,16 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
 
         observeViewModel()
 
-        binding.toolbarCalIcon.setOnClickListener{
+        binding.exSevenToolbar.setOnClickListener{
             val dialog = CustomCalendarDialog()
             dialog.setOnDateSelectedListener(this)
             dialog.show(parentFragmentManager, "CustomCalendarDialog")
             //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+
+            dialog.setOnOkClickListener {
+
+                apiCall(selectedDate.toString())
+            }
         }
         return binding.root
     }
@@ -210,17 +231,6 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
             )
         }
 
-       /* binding.toolbarCalIcon.setOnClickListener {
-            DatePickerUtil.showDatePickerDialog(requireContext(), selectedDate) { date ->
-                onDateSelected(date)
-            }
-        }
-
-        binding.exSevenToolbar.setOnClickListener {
-            DatePickerUtil.showDatePickerDialog(requireContext(), selectedDate) { date ->
-                onDateSelected(date)
-            }
-        }*/
 
         val currentMonth = YearMonth.now()
         binding.exSevenCalendar.setup(
@@ -335,6 +345,36 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
         loadFragment(medicationDetailFragment)
     }
 
+    private fun apiCall(selectedDate: String) {
+        // Formatter for the incoming date format
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        // Formatter for the desired output date format
+        val outputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+
+        // Parse the selected date using the input formatter
+        val selectedLocalDate = LocalDate.parse(selectedDate, inputFormatter)
+        // Calculate the date seven days before
+        val sevenDaysBefore = selectedLocalDate.minusDays(7)
+
+        // Format both dates using the output formatter
+        val formattedSelectedDate = selectedLocalDate.format(outputFormatter)
+        val formattedSevenDaysBefore = sevenDaysBefore.format(outputFormatter)
+
+        medicationDetailsViewModel.clear()
+        // Pass the formatted dates to the API call
+        medicationDetailsViewModel.getMedicationDetails(
+            loginResponse!!.loginDetails.patientLocationID,
+            loginResponse!!.loginDetails.patientID,
+            loginResponse!!.loginDetails.clientID,
+            formattedSevenDaysBefore,
+            formattedSelectedDate,
+            loginResponse!!.token.access_token
+        )
+        observeViewModelOne()
+    }
+
+
+
     private fun observeViewModel() {
         // Get today's date
         val today = Calendar.getInstance()
@@ -346,6 +386,8 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
         sevenDaysBefore.add(Calendar.DAY_OF_YEAR, -7)
         val formattedSevenDaysBefore = dateFormat.format(sevenDaysBefore.time)
 
+        medicationDetailsViewModel.clear()
+
         medicationDetailsViewModel.getMedicationDetails(
             loginResponse!!.loginDetails.patientLocationID,
             loginResponse!!.loginDetails.patientID,
@@ -354,7 +396,12 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
             todayDate,
             loginResponse!!.token.access_token
         )
+        observeViewModelOne()
 
+    }
+
+    private fun observeViewModelOne()
+    {
         medicationDetailsViewModel.loadingLiveData.observe(
             viewLifecycleOwner,
             Observer { isLoading ->
@@ -366,8 +413,8 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
             })
 
         medicationDetailsViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
-                filterData(isSuccess)
-            })
+            filterData(isSuccess)
+        })
     }
 
    /* @SuppressLint("NotifyDataSetChanged")
@@ -569,24 +616,6 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
     }
 
 
-    private fun onDateSelected(date: LocalDate) {
-        // Remove the selection indicator from the previously selected date
-        val previousSelectedDate = selectedDate
-        previousSelectedDate?.let {
-            binding.exSevenCalendar.notifyDateChanged(it)
-        }
-
-        // Update the selectedDate variable
-        selectedDate = date
-
-        // Scroll the WeekCalendarView to the selected month and day
-        binding.exSevenCalendar.scrollToDate(date)
-
-        // Notify the WeekCalendarView to update the selected date UI
-        binding.exSevenCalendar.notifyDateChanged(selectedDate)
-    }
-
-
     private fun convertTo12HourFormat(time24Hour: String): String {
         val timeParts = time24Hour.split(":")
         val hour = timeParts[0].toInt()
@@ -643,6 +672,10 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
             }
         }
         return if (eveningTimes.isNotEmpty()) eveningTimes.last() else ""
+    }
+
+    fun CalendarDay.toLocalDate(): LocalDate {
+        return LocalDate.of(this.year, this.month + 1, this.day) // Note: CalendarDay month is 0-based, LocalDate is 1-based
     }
 
 }

@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/deepbreathing_exercises"
+            android:text="@string/breathing_technic"
             android:layout_marginTop="@dimen/_3sdp"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp"

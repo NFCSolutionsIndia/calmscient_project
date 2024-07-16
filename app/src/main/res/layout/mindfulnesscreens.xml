@@ -24,7 +24,7 @@
                 android:layout_height="35dp"
                 android:layout_centerVertical="true"
                 android:clickable="true"
-                android:src="@drawable/ic_manageanxietyicon" />
+                android:src="@drawable/ic_back" />
 
             <TextView
                 android:id="@+id/textView10"

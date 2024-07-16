@@ -33,6 +33,7 @@ import com.calmscient.di.remote.response.Appointment
 import com.calmscient.di.remote.response.AppointmentDetails
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
@@ -47,6 +48,7 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.yearMonth
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekDayBinder
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -69,7 +71,7 @@ data class CardViewItems(
     val img_arrow1: Int?,
     var appointmentDetails: AppointmentDetails?
 )
-class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
+class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, CustomCalendarDialog.OnDateSelectedListener{
     private lateinit var binding: FragmentNextappointmentsBinding
     private var selectedDate = LocalDate.now()
     private val dateFormatter = DateTimeFormatter.ofPattern("dd")
@@ -101,6 +103,27 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
         {
             Toast.makeText(requireContext(),getString(R.string.no_appointments),Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDateSelected(date: CalendarDay) {
+
+        // Convert CalendarDay to LocalDate
+        val localDate = date.toLocalDate()
+
+        // Remove the selection indicator from the previously selected date
+        val previousSelectedDate = selectedDate
+        previousSelectedDate?.let {
+            binding.exSevenCalendar.notifyDateChanged(it)
+        }
+
+        // Update the selectedDate variable
+        selectedDate = localDate
+
+        // Scroll the WeekCalendarView to the selected month and day
+        binding.exSevenCalendar.scrollToDate(localDate)
+
+        // Notify the WeekCalendarView to update the selected date UI
+        binding.exSevenCalendar.notifyDateChanged(localDate)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,6 +170,17 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
         else
         {
             CommonClass.showInternetDialogue(requireContext())
+        }
+
+        binding.exSevenToolbar.setOnClickListener{
+            val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")
+            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+
+            dialog.setOnOkClickListener {
+                apiCall(selectedDate.toString())
+            }
         }
 
 
@@ -281,6 +315,29 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
          cardViewAdapter.notifyDataSetChanged()
      }*/
 
+    private fun apiCall(selectedDate: String){
+
+        // Formatter for the incoming date format
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        // Formatter for the desired output date format
+        val outputFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+
+        // Parse the selected date using the input formatter
+        val selectedLocalDate = LocalDate.parse(selectedDate, inputFormatter)
+        // Calculate the date seven days before
+        val sevenDaysBefore = selectedLocalDate.minusDays(7)
+
+        // Format both dates using the output formatter
+        val formattedSelectedDate = selectedLocalDate.format(outputFormatter)
+        val formattedSevenDaysBefore = sevenDaysBefore.format(outputFormatter)
+
+        appointmentDetailsViewModel.clear()
+
+        loginResponse?.loginDetails?.let {
+            //appointmentDetailsViewModel.getAppointmentDetails(4,4,1,"05/04/2024","05/09/2024",loginResponse!!.token.access_token)
+            appointmentDetailsViewModel.getAppointmentDetails(it.patientLocationID,it.patientID,it.clientID,formattedSevenDaysBefore, formattedSelectedDate,loginResponse!!.token.access_token)
+        }
+    }
     fun getWeekPageTitle(week: Week): String {
         val firstDate = week.days.first().date
         val lastDate = week.days.last().date
@@ -331,8 +388,8 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
         appointmentDetailsViewModel.clear()
 
         loginResponse?.loginDetails?.let {
-            appointmentDetailsViewModel.getAppointmentDetails(4,4,1,"05/04/2024","05/09/2024",loginResponse!!.token.access_token)
-            //appointmentDetailsViewModel.getAppointmentDetails(it.patientLocationID,it.patientID,it.clientID,formattedSevenDaysBefore,todayDate)
+            //appointmentDetailsViewModel.getAppointmentDetails(4,4,1,"05/04/2024","05/09/2024",loginResponse!!.token.access_token)
+            appointmentDetailsViewModel.getAppointmentDetails(it.patientLocationID,it.patientID,it.clientID,formattedSevenDaysBefore,todayDate,loginResponse!!.token.access_token)
         }
 
         appointmentDetailsViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
@@ -472,6 +529,8 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments {
         cardViewAdapter.notifyDataSetChanged()
     }
 
-
+    fun CalendarDay.toLocalDate(): LocalDate {
+        return LocalDate.of(this.year, this.month + 1, this.day) // Note: CalendarDay month is 0-based, LocalDate is 1-based
+    }
 
 }
