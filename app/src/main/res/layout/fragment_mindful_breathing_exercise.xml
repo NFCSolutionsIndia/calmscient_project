@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,7 +17,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginBottom="@dimen/_50sdp"
-    tools:context=".fragments.FourSevenEightBreathingExerciseFragment">
+    tools:context=".fragments.MindfulBreathingExerciseFragment">
 
 
     <RelativeLayout
@@ -29,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/_4_7_8_breathing_exercise"
+            android:text="@string/mindful_breathing_exercise"
             android:layout_marginTop="@dimen/_3sdp"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp"
@@ -77,7 +88,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="First find a comfortable seated position. Ensure that you are at ease before beginning the rhythmic breathing pattern.\n\nPlace the tip of your tongue gently against the tissue just behind your top front teeth"
+                        android:text="First find a comfortable to either sit down or lay down. You can close your eyes if you want to."
                         android:textSize="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_30sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
@@ -90,7 +101,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Let’s learn how to do the 4-7-8 breathing exercise."
+                    android:text="Let’s learn how to do the mindful breathing exercise."
                     android:textSize="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textColor="@color/black_head"
@@ -116,7 +127,6 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginEnd="@dimen/_4sdp">
 
@@ -127,7 +137,7 @@
                             android:layout_height="0dp"
                             android:background="@color/purple_100"
                             app:layout_constraintTop_toTopOf="@+id/step1Indicator"
-                            app:layout_constraintBottom_toBottomOf="@+id/step5Indicator"
+                            app:layout_constraintBottom_toBottomOf="@+id/step6Indicator"
                             app:layout_constraintStart_toStartOf="@+id/step1Indicator"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintWidth_percent="0.02"/>
@@ -137,43 +147,51 @@
                             android:id="@+id/guideline1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintGuide_percent="0.2"
+                            app:layout_constraintGuide_percent="0.15"
                             android:orientation="horizontal" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintGuide_percent="0.3"
+                            app:layout_constraintGuide_percent="0.28"
                             android:orientation="horizontal" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintGuide_percent="0.6"
+                            app:layout_constraintGuide_percent="0.48"
                             android:orientation="horizontal" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintGuide_percent="0.8"
+                            app:layout_constraintGuide_percent="0.58"
                             android:orientation="horizontal" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintGuide_percent="1.0"
+                            app:layout_constraintGuide_percent="0.78"
                             android:orientation="horizontal" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.8"
+                            app:layout_constraintGuide_begin="525dp" />
+
 
                         <!-- Step 1 Indicator -->
                         <ImageView
                             android:id="@+id/step1Indicator"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:layout_marginTop="8dp"
                             android:src="@drawable/ic_purple_circle"
                             app:layout_constraintStart_toStartOf="@id/progressBar2"
                             app:layout_constraintEnd_toEndOf="@id/progressBar2"
@@ -228,6 +246,18 @@
                             app:layout_constraintTop_toBottomOf="@id/guideline4"
                             app:layout_constraintBottom_toTopOf="@id/guideline5"/>
 
+                        <!-- Step 6 Indicator -->
+                        <ImageView
+                            android:id="@+id/step6Indicator"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/ic_purple_circle"
+                            app:layout_constraintStart_toStartOf="@id/progressBar2"
+                            app:layout_constraintEnd_toEndOf="@id/progressBar2"
+                            app:layout_constraintTop_toBottomOf="@id/guideline6"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -253,7 +283,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 1: Emptying the lungs"
+                                android:text="Step 1: Inhale"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -263,7 +293,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Begin by completely emptying your lungs of air. Allow yourself a moment to release any tension."
+                                android:text="Inhale through your nose until the tummy expands."
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_4sdp"
@@ -293,7 +323,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 2: Inhaling quietly"
+                                android:text="Step 2: Exhale slowly and repeat it"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -303,7 +333,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Inhale quietly through your nose, counting to 4 seconds. Fell the breath entering your body, bringing calmness."
+                                android:text="Exhale slowly through your mouse. And repeat the process."
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -332,7 +362,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 3: Hold the breath"
+                                android:text="Step 3: Focus on the breath"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -342,7 +372,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Hold your breath for  a steady count of 7 seconds. Embrace the stillness within, allowing the breath to settle."
+                                android:text="Once settled into the pattern, focus on the breath coming in through the nose and out through the mouth"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -371,7 +401,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 4: Force exhalation"
+                                android:text="Step 4: Focus on the tummy"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -381,7 +411,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Exhale forcefully through your mouth, pursing your lips, and create a distinct “whoosh” sound for 8 seconds. Feel the release of tension as you expel the breath."
+                                android:text="Notice the rise and fall of the tummy as the breath come in and out"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -411,7 +441,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 5: Repeat the process"
+                                android:text="Step 5: Focus on the mind"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -421,7 +451,47 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Repeat this entire cycle up to 4 times. Each repetition contributes to a deepening sense of relaxation."
+                                android:text="As thoughts come into the head, notice that they are there without judgment, then let them go and bring the attention back to the breathing."
+                                android:textSize="@dimen/_12sdp"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:textColor="@color/black_head"
+                                android:fontFamily="@font/lexendlight"/>
+
+
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:cardCornerRadius="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Step 6: Focus on the connection between mind and body."
+                                android:textSize="@dimen/_12sdp"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:textColor="@color/black_head"
+                                android:fontFamily="@font/lexendregular"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Carry on until feeling calm, then start to be aware of how the body and mind feel."
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -441,7 +511,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Now, let’s dive into it.\nPay careful attention to the following video."
+                android:text="Now, let’s dive into it. Pay careful attention to the following video."
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -525,7 +595,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Engage in this practice regularly, allowing the 4-7-8 technique to guide you towards a state of tranquility and mindful breathing."
+                android:text="Engage in this practice regularly, allowing the mindful breathing technique to guide you towards a state of tranquility and mindful breathing."
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"

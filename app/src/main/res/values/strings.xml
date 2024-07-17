@@ -2191,5 +2191,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="everyday_1">Everyday</string>
     <string name="breathing_technic">Breathing technic</string>
     <string name="_4_7_8_breathing_exercise">4-7-8 Breathing exercise</string>
+    <string name="mindful_breathing_exercise">Mindful breathing exercise</string>
+    <string name="diaphragmatic_breathing_exercise">Diaphragmatic breathing exercise</string>
 
 </resources>

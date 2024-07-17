@@ -386,7 +386,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lexendregular"
                             android:padding="@dimen/_5sdp"
-                            android:text="@string/deepbreathing_exercises"
+                            android:text="@string/breathing_technic"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_11sdp" />
                     </RelativeLayout>

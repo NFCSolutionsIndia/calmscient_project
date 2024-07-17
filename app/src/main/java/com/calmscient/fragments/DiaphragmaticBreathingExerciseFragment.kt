@@ -16,21 +16,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import com.calmscient.R
-import com.calmscient.databinding.FragmentFourSevenEightBreathingExerciseBinding
+import com.calmscient.databinding.FragmentDiaphragmaticBreathingExerciseBinding
+import com.calmscient.databinding.FragmentMindfulBreathingExerciseBinding
 
+class DiaphragmaticBreathingExerciseFragment : Fragment() {
 
-class FourSevenEightBreathingExerciseFragment : Fragment() {
-
-    private lateinit var binding : FragmentFourSevenEightBreathingExerciseBinding
+    private lateinit var binding: FragmentDiaphragmaticBreathingExerciseBinding
     private var isFavorite = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this){
-            loadFragment(DeepBreathingExerciseFragment())
-        }
+
     }
 
     override fun onCreateView(
@@ -38,11 +35,7 @@ class FourSevenEightBreathingExerciseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-      binding = FragmentFourSevenEightBreathingExerciseBinding.inflate(inflater,container,false)
-
-        binding.backIcon.setOnClickListener{
-            loadFragment(DeepBreathingExerciseFragment())
-        }
+        binding = FragmentDiaphragmaticBreathingExerciseBinding.inflate(inflater,container,false)
 
         val favoritesIcon = binding.favoritesIcon
         favoritesIcon.setOnClickListener {
@@ -53,9 +46,14 @@ class FourSevenEightBreathingExerciseFragment : Fragment() {
                 favoritesIcon.setImageResource(R.drawable.ic_favorites_red)
             }
         }
-        return binding.root
-    }
 
+        binding.backIcon.setOnClickListener{
+            loadFragment(DeepBreathingExerciseFragment())
+        }
+
+        return binding.root
+
+    }
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)

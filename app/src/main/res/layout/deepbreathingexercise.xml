@@ -2,10 +2,11 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".activities.DancingExercisesActivity"
+    tools:context=".activities.DeepBreathingExerciseActivity"
     tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
@@ -61,15 +62,73 @@
                 android:clickable="true"
                 android:src="@drawable/mindfullexercise_heart__image"/>
         </RelativeLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:text="@string/deepbreathingexercise_text"
-            android:fontFamily="@font/lexendlight"
-            android:textColor="@color/black_head"
-            android:textSize="@dimen/_14sdp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/fourSevenEightBE"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_4sdp"
+            app:cardCornerRadius="@dimen/_8sdp"
+            android:elevation="@dimen/_8sdp"
+            app:cardElevation="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4-7-8 Breathing exercise"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/purple_100"
+                android:padding="@dimen/_8sdp"
+                android:fontFamily="@font/lexendregular"/>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mindfulBE"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_horizontal"
+            app:cardCornerRadius="@dimen/_8sdp"
+            android:elevation="@dimen/_8sdp"
+            app:cardElevation="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mindful breathing exercise"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/purple_100"
+                android:padding="@dimen/_8sdp"
+                android:fontFamily="@font/lexendregular"/>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/diaphragmaticBE"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_horizontal"
+            app:cardCornerRadius="@dimen/_8sdp"
+            android:elevation="@dimen/_8sdp"
+            app:cardElevation="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Diaphragmatic breathing exercise"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/purple_100"
+                android:padding="@dimen/_8sdp"
+                android:fontFamily="@font/lexendregular"/>
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </LinearLayout>

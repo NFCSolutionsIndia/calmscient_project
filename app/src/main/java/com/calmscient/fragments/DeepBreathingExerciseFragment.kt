@@ -50,6 +50,16 @@ class DeepBreathingExerciseFragment : Fragment() {
         binding.menuicon.setOnClickListener {
             loadFragment(ExerciseFragment())
         }
+        binding.mindfulBE.setOnClickListener{
+            loadFragment(MindfulBreathingExerciseFragment())
+        }
+        binding.fourSevenEightBE.setOnClickListener{
+
+            loadFragment(FourSevenEightBreathingExerciseFragment())
+        }
+        binding.diaphragmaticBE.setOnClickListener{
+            loadFragment(DiaphragmaticBreathingExerciseFragment())
+        }
         return binding.root
     }
 

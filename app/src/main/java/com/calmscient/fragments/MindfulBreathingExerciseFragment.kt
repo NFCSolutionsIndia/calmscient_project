@@ -18,16 +18,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import com.calmscient.R
-import com.calmscient.databinding.FragmentFourSevenEightBreathingExerciseBinding
+import com.calmscient.databinding.FragmentMindfulBreathingExerciseBinding
 
 
-class FourSevenEightBreathingExerciseFragment : Fragment() {
+class MindfulBreathingExerciseFragment : Fragment() {
 
-    private lateinit var binding : FragmentFourSevenEightBreathingExerciseBinding
+    private lateinit var binding : FragmentMindfulBreathingExerciseBinding
     private var isFavorite = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(this){
             loadFragment(DeepBreathingExerciseFragment())
         }
@@ -38,11 +40,7 @@ class FourSevenEightBreathingExerciseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-      binding = FragmentFourSevenEightBreathingExerciseBinding.inflate(inflater,container,false)
-
-        binding.backIcon.setOnClickListener{
-            loadFragment(DeepBreathingExerciseFragment())
-        }
+        binding = FragmentMindfulBreathingExerciseBinding.inflate(inflater,container,false)
 
         val favoritesIcon = binding.favoritesIcon
         favoritesIcon.setOnClickListener {
@@ -53,6 +51,11 @@ class FourSevenEightBreathingExerciseFragment : Fragment() {
                 favoritesIcon.setImageResource(R.drawable.ic_favorites_red)
             }
         }
+
+        binding.backIcon.setOnClickListener{
+            loadFragment(DeepBreathingExerciseFragment())
+        }
+
         return binding.root
     }
 
@@ -62,5 +65,6 @@ class FourSevenEightBreathingExerciseFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
 
 }
