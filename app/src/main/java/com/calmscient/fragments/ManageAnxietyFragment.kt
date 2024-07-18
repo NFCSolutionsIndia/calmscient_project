@@ -152,7 +152,7 @@ class ManageAnxietyFragment : Fragment() {
             else {
                 Handler(Looper.getMainLooper()).postDelayed({
                     customProgressDialog.dialogDismiss()
-                }, 7000)
+                }, 4000)
             }
         })
 

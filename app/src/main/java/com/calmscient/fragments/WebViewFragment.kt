@@ -159,7 +159,7 @@ class WebViewFragment : Fragment() {
             //progressBar.visibility = View.GONE
             Handler(Looper.getMainLooper()).postDelayed({
                 customProgressDialog.dialogDismiss()
-            }, 7000)
+            }, 4000)
         }
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
