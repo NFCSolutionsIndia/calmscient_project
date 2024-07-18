@@ -302,4 +302,28 @@ class ManageAnxietyFragment : Fragment() {
         binding.recyclerViewAdditionalResource.adapter = null
     }
 
+/*
+    override fun onResume() {
+        super.onResume()
+
+        getManageAnxietyIndexDataViewModel.clear()
+        //clearRecyclerViewData()
+        if (CommonClass.isNetworkAvailable(requireContext())) {
+            manageAnxietyIndexDataAPICall()
+            getSessionIdAPICall()
+        } else {
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
+        getManageAnxietyIndexDataViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
+            if (isSuccess) {
+                getManageAnxietyIndexDataViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData ->
+                    if (successData != null) {
+                        manageAnxietyIndexResponse = successData
+                    }
+                })
+            }
+        })
+    }*/
 }
+

@@ -19,8 +19,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,8 +28,6 @@ import com.calmscient.adapters.TakingControlScreeningAdapter
 import com.calmscient.databinding.FragmentTakingControlIntroductionBinding
 import com.calmscient.di.remote.TakingControlScreeningItem
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
-import com.calmscient.di.remote.request.SaveTakingControlIntroductionWrapper
-import com.calmscient.di.remote.response.AppointmentDetails
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.LoginResponse
@@ -43,7 +39,6 @@ import com.calmscient.utils.NonSwipeRecyclerView
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
-import com.calmscient.viewmodels.FlagsViewModel
 import com.calmscient.viewmodels.GetTakingControlIntroductionViewModel
 import com.calmscient.viewmodels.SaveTakingControlIntroductionDataViewModel
 import com.calmscient.viewmodels.ScreeningViewModel
@@ -72,14 +67,19 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
     private val updateTakingControlIndexViewModel: UpdateTakingControlIndexViewModel by activityViewModels()
     private lateinit var getTakingControlIndexResponse: GetTakingControlIndexResponse
 
+    private var courseTempId = 0
+
     companion object {
-        fun newInstance(takingControlIndexResponse: GetTakingControlIndexResponse): TakingControlIntroductionFragment {
+        fun newInstance(
+            takingControlIndexResponse: GetTakingControlIndexResponse,
+            courseId: Int
+        ): TakingControlIntroductionFragment {
             val fragment = TakingControlIntroductionFragment()
             val args = Bundle()
             val gson = Gson()
             val appointmentDetailsJson = gson.toJson(takingControlIndexResponse)
             args.putString("takingControlIndexResponse", appointmentDetailsJson)
-
+            args.putInt("courseId",courseId)
 
             fragment.arguments = args
             return fragment
@@ -98,9 +98,9 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
             val result = bundle.getInt("currentScreenIndex")
 
             // Handle the result data here
-            if(result == 3) {
+            if (result == 3) {
                 currentScreenIndex = 3
-                Log.d("Result : ","$result")
+                Log.d("Result : ", "$result")
                 //Toast.makeText(requireContext(), "Received result: $result", Toast.LENGTH_LONG).show()
                 // Handle the logic to show the appropriate screen or perform any other action
                 binding.screenOne.visibility = View.GONE
@@ -125,11 +125,15 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
 
 
         val takingControlIndexJson = arguments?.getString("takingControlIndexResponse")
+        courseTempId = arguments?.getInt("courseId")!!
+
+        Log.d("CourseTempId : ","$courseTempId")
 
         val gson = Gson()
-        getTakingControlIndexResponse = gson.fromJson(takingControlIndexJson, GetTakingControlIndexResponse::class.java)
+        getTakingControlIndexResponse =
+            gson.fromJson(takingControlIndexJson, GetTakingControlIndexResponse::class.java)
 
-        Log.d("getTakingControlIndexResponse","$getTakingControlIndexResponse")
+        Log.d("getTakingControlIndexResponse", "$getTakingControlIndexResponse")
 
         if (CommonClass.isNetworkAvailable(requireContext())) {
             observeViewModel()
@@ -160,9 +164,8 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         binding.takingControlScreeningBulbIcon.setOnClickListener {
             showCustomDialog(requireContext())
         }
-        binding.backIcon.setOnClickListener{
-            if(currentScreenIndex == 4)
-            {
+        binding.backIcon.setOnClickListener {
+            if (currentScreenIndex == 4) {
                 updateIndexApiCall()
             }
             loadFragment(TakingControlFragment())
@@ -179,14 +182,17 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
                     introductionFlag = 1,
                     patientId = it.patientID,
                     plId = it.patientLocationID,
-                    tutorialFlag = if(isChecked) 1 else 0
+                    tutorialFlag = if (isChecked) 1 else 0
                 )
             }
 
             Log.d("dontShowCheckBox", "Payload constructed: $request")
 
             if (request != null) {
-                saveTakingControlIntroductionDataViewModel.saveTakingControlIntroductionData(request,accessToken)
+                saveTakingControlIntroductionDataViewModel.saveTakingControlIntroductionData(
+                    request,
+                    accessToken
+                )
             }
 
             observeSaveViewModel()
@@ -197,17 +203,31 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
     }
 
     private fun getScreeningItems(): List<TakingControlScreeningItem> {
-        val introduction = getTakingControlIntroductionResponse?.takingControlIntroduction ?: return emptyList()
+        val introduction =
+            getTakingControlIntroductionResponse?.takingControlIntroduction ?: return emptyList()
         return listOf(
-            TakingControlScreeningItem("AUDIT", "Doesn't apply for me", introduction.auditFlag != 1),
-            TakingControlScreeningItem("DAST-10", "Doesn't apply for me", introduction.dastFlag != 1),
+            TakingControlScreeningItem(
+                "AUDIT",
+                "Doesn't apply for me",
+                introduction.auditFlag != 1
+            ),
+            TakingControlScreeningItem(
+                "DAST-10",
+                "Doesn't apply for me",
+                introduction.dastFlag != 1
+            ),
             TakingControlScreeningItem("CAGE", "Doesn't apply for me", introduction.cageFlag != 1)
         )
     }
 
     private fun observeViewModel() {
         loginResponse?.loginDetails?.let {
-            screeningsMenuViewModel.getScreeningList(it.patientID, it.clientID, it.patientLocationID, accessToken)
+            screeningsMenuViewModel.getScreeningList(
+                it.patientID,
+                it.clientID,
+                it.patientLocationID,
+                accessToken
+            )
         }
 
         screeningsMenuViewModel.loadingLiveData.observe(requireActivity()) { isLoading ->
@@ -218,13 +238,15 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
             }
         }
 
-        screeningsMenuViewModel.screeningListLiveData.observe(viewLifecycleOwner, Observer { successData ->
-            if (successData != null) {
-                Log.d("TCF:", "$successData")
-                screeningResponse = successData
-                updateAdapter()
-            }
-        })
+        screeningsMenuViewModel.screeningListLiveData.observe(
+            viewLifecycleOwner,
+            Observer { successData ->
+                if (successData != null) {
+                    Log.d("TCF:", "$successData")
+                    screeningResponse = successData
+                    updateAdapter()
+                }
+            })
     }
 
     private fun updateAdapter() {
@@ -254,33 +276,41 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
     private fun introductionApiCall() {
         loginResponse?.loginDetails?.let {
             getTakingControlIntroductionViewModel.getTakingControlIntroductionData(
-                it.clientID,it.patientID,it.patientLocationID, accessToken)
+                it.clientID, it.patientID, it.patientLocationID, accessToken
+            )
         }
         observeIntroductionData()
     }
 
     private fun observeIntroductionData() {
-        getTakingControlIntroductionViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
-            if (isLoading) {
-                customProgressDialog.show("Loading")
-            } else {
-                customProgressDialog.dialogDismiss()
-            }
-        })
+        getTakingControlIntroductionViewModel.loadingLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isLoading ->
+                if (isLoading) {
+                    customProgressDialog.show("Loading")
+                } else {
+                    customProgressDialog.dialogDismiss()
+                }
+            })
 
-        getTakingControlIntroductionViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
-            if (isSuccess) {
-                getTakingControlIntroductionViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData ->
-                    if (successData != null) {
-                        getTakingControlIntroductionResponse = successData
-                        Log.d("Intro Fragment : ", "$getTakingControlIntroductionResponse")
-                        updateAdapter()
+        getTakingControlIntroductionViewModel.successLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isSuccess ->
+                if (isSuccess) {
+                    getTakingControlIntroductionViewModel.saveResponseLiveData.observe(
+                        viewLifecycleOwner,
+                        Observer { successData ->
+                            if (successData != null) {
+                                getTakingControlIntroductionResponse = successData
+                                Log.d("Intro Fragment : ", "$getTakingControlIntroductionResponse")
+                                updateAdapter()
 
-                        binding.dontShowCheckBox.isChecked = getTakingControlIntroductionResponse?.takingControlIntroduction?.tutorialFlag  == 1
-                    }
-                })
-            }
-        })
+                                binding.dontShowCheckBox.isChecked =
+                                    getTakingControlIntroductionResponse?.takingControlIntroduction?.tutorialFlag == 1
+                            }
+                        })
+                }
+            })
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -322,33 +352,38 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         Log.d("TakingControlFragment", "Payload constructed: $request")
 
         if (request != null) {
-            saveTakingControlIntroductionDataViewModel.saveTakingControlIntroductionData(request,accessToken)
+            saveTakingControlIntroductionDataViewModel.saveTakingControlIntroductionData(
+                request,
+                accessToken
+            )
         }
 
         observeSaveViewModel()
 
     }
 
-    private  fun observeSaveViewModel()
-    {
+    private fun observeSaveViewModel() {
         saveTakingControlIntroductionDataViewModel.loadingLiveData.observe(viewLifecycleOwner,
-            Observer { isLoading->
-                if(isLoading)
-                {
+            Observer { isLoading ->
+                if (isLoading) {
                     customProgressDialog.show("Loading...")
-                }
-                else{
+                } else {
                     customProgressDialog.dialogDismiss()
                 }
             })
     }
 
-    private fun updateIndexApiCall()
-    {
-        val isCompleted  = 1
+    private fun updateIndexApiCall() {
+        val isCompleted = 1
         loginResponse?.loginDetails?.let {
             updateTakingControlIndexViewModel.updateTakingControlIndexData(
-                it.clientID,getTakingControlIndexResponse.courseLists[0].courseId,isCompleted,it.patientID,it.patientLocationID, accessToken)
+                it.clientID,
+                courseTempId,
+                isCompleted,
+                it.patientID,
+                it.patientLocationID,
+                accessToken
+            )
         }
     }
 }

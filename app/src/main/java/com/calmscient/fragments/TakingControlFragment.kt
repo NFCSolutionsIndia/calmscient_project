@@ -29,16 +29,13 @@ import com.calmscient.di.remote.response.CourseLists
 import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.LoginResponse
-import com.calmscient.di.remote.response.SummaryOfSleepResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.GetDrinkTrackerViewModel
-import com.calmscient.viewmodels.GetSummaryOfSleepViewModel
 import com.calmscient.viewmodels.GetTakingControlIndexViewModel
-import com.github.mikephil.charting.charts.LineChart
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -53,6 +50,13 @@ class TakingControlFragment : Fragment() {
     private lateinit var getTakingControlIndexResponse: GetTakingControlIndexResponse
     private var loginResponse : LoginResponse? = null
     private  lateinit var accessToken : String
+    private  var courseIdBasicKnowledge : Int = 0
+    private  var courseIdMakeAPlan : Int = 0
+    private  var courseIdSummary : Int = 0
+    private  var courseIdDrinkTracker : Int = 0
+    private  var courseIdEventTracker : Int = 0
+    private  var courseIdSeeTheIntro : Int = 0
+    private  var courseIdHowToUse : Int = 0
 
 
     private val getDrinkTrackerViewModel: GetDrinkTrackerViewModel by activityViewModels()
@@ -132,7 +136,7 @@ class TakingControlFragment : Fragment() {
         }
 
         binding.btnSeeTheInformation.setOnClickListener{
-            val introductionFragment = TakingControlIntroductionFragment.newInstance(getTakingControlIndexResponse)
+            val introductionFragment = TakingControlIntroductionFragment.newInstance(getTakingControlIndexResponse,courseIdSeeTheIntro)
             loadFragment(introductionFragment)
         }
         return binding.root
@@ -271,7 +275,7 @@ class TakingControlFragment : Fragment() {
         }
 
         // Check if courseLists is not null and has at least 7 elements
-        if (getTakingControlIndexResponse.courseLists.size > 6) {
+       /* if (getTakingControlIndexResponse.courseLists.size > 6) {
             binding.btnSeeTheInformation.text = getTakingControlIndexResponse.courseLists[0].courseName
             binding.btnHowToUse.text = getTakingControlIndexResponse.courseLists[1].courseName
             binding.btnBasicKnowledge.text = getTakingControlIndexResponse.courseLists[2].courseName
@@ -279,7 +283,7 @@ class TakingControlFragment : Fragment() {
             binding.btnSummary.text = getTakingControlIndexResponse.courseLists[4].courseName
             binding.btnDrinkTracker.text = getTakingControlIndexResponse.courseLists[5].courseName
             binding.btnEventTracker.text = getTakingControlIndexResponse.courseLists[6].courseName
-        }
+        }*/
 
         updateButtons(getTakingControlIndexResponse.courseLists)
     }
@@ -301,40 +305,48 @@ class TakingControlFragment : Fragment() {
     private fun updateButtons(courseLists: List<CourseLists>) {
         for (course in courseLists) {
             when (course.courseName) {
-                "Basic knowledge" -> {
+                getString(R.string.basic_knowledge) -> {
                     binding.btnBasicKnowledge.isEnabled = true//course.isEnable == 1
                     binding.btnBasicKnowledge.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnBasicKnowledge, course.isCompleted == 1)
+                    courseIdBasicKnowledge = course.courseId
+
                 }
-                "Make a plan" -> {
+                getString(R.string.make_a_plan)-> {
                     binding.btnMakeAPlan.isEnabled = true//course.isEnable == 1
                     binding.btnMakeAPlan.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnMakeAPlan, course.isCompleted == 1)
+                    courseIdMakeAPlan = course.courseId
                 }
-                "Summary" -> {
+                getString(R.string.summary) -> {
                     binding.btnSummary.isEnabled = true//course.isEnable == 1
                     binding.btnSummary.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSummary, course.isCompleted == 1)
+                    courseIdSummary = course.courseId
                 }
-                "Drink tracker" -> {
+                getString(R.string.drink_tracker)-> {
                     binding.btnDrinkTracker.isEnabled = true//course.isEnable == 1
                     binding.btnDrinkTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnDrinkTracker, course.isCompleted == 1)
+                    courseIdDrinkTracker = course.courseId
                 }
-                "Event tracker" -> {
+                getString(R.string.event_tracker) -> {
                     binding.btnEventTracker.isEnabled = true//course.isEnable == 1
                     binding.btnEventTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnEventTracker, course.isCompleted == 1)
+                    courseIdEventTracker = course.courseId
                 }
-                "See the introduction" -> {
+                getString(R.string.see_the_introduction) -> {
                     binding.btnSeeTheInformation.isEnabled = true//course.isEnable == 1
                     binding.btnSeeTheInformation.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)
+                    courseIdSeeTheIntro = course.courseId
                 }
-                "How to use" -> {
+                getString(R.string.how_to_use) -> {
                     binding.btnHowToUse.isEnabled = true//course.isEnable == 1
                     binding.btnHowToUse.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnHowToUse, course.isCompleted == 1)
+                    courseIdHowToUse = course.courseId
                 }
             }
         }

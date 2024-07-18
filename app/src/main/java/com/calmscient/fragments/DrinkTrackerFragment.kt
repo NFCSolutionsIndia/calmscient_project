@@ -37,12 +37,14 @@ import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.CreateDrinkTrackerViewModel
 import com.calmscient.viewmodels.GetDrinkTrackerViewModel
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -50,7 +52,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class DrinkTrackerFragment : Fragment() {
+class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedListener{
     private lateinit var binding: FragmentDrinkTrackerBinding
     private lateinit var calendarView: ImageView
     private lateinit var monthText: TextView
@@ -62,9 +64,30 @@ class DrinkTrackerFragment : Fragment() {
     private lateinit var drinkTrackerResponse: DrinkTrackerResponse
     private var loginResponse: LoginResponse? = null
     private lateinit var accessToken: String
+    private var selectedDate = LocalDate.now()
 
     private val createDrinkTrackerViewModel: CreateDrinkTrackerViewModel by activityViewModels()
     private lateinit var createDrinkTrackerResponse: CreateDrinkTrackerResponse
+
+    override fun onDateSelected(date: CalendarDay) {
+
+        // Convert CalendarDay to LocalDate
+        val localDate = date.toLocalDate()
+
+        // Remove the selection indicator from the previously selected date
+        val previousSelectedDate = selectedDate
+
+
+        // Update the selectedDate variable
+        selectedDate = localDate
+
+        binding.tvDate.text = selectedDate.toString()
+
+    }
+
+    fun CalendarDay.toLocalDate(): LocalDate {
+        return LocalDate.of(this.year, this.month + 1, this.day) // Note: CalendarDay month is 0-based, LocalDate is 1-based
+    }
 
 
     override fun onCreateView(
@@ -100,11 +123,15 @@ class DrinkTrackerFragment : Fragment() {
             updateLabel(myCalendar)
         }
 
-        calendarView.setOnClickListener {
-            showDatePickerDialog(requireContext()) { selectedDate ->
-                // Do something with the selected date
-            }
+        binding.calenderview.setOnClickListener{
+            val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")
+            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
 
+            /* dialog.setOnOkClickListener {
+                 apiCall(selectedDate.toString())
+             }*/
         }
 
 

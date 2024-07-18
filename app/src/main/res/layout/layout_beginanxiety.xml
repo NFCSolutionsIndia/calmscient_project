@@ -50,10 +50,23 @@
             android:text="@string/lets_begin"
             android:layout_weight="1"
             android:lineSpacingExtra="@dimen/_5sdp"
+            android:textStyle="bold"
             android:fontFamily="@font/lexendlight"
             android:layout_marginBottom="@dimen/_20sdp"
             android:textSize="@dimen/_13sdp"
             android:textColor="@color/example_7_white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lets_begin_description"
+            android:layout_weight="1"
+            android:lineSpacingExtra="@dimen/_5sdp"
+            android:fontFamily="@font/lexendlight"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:textSize="@dimen/_13sdp"
+            android:textColor="@color/example_7_white"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

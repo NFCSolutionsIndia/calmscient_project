@@ -742,7 +742,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="settings">Configuración</string>
     <string name="profile">Perfil</string>
     <string name="theme">Tema</string>
-    <string name="dark_mode">Oscuro</string>
+    <string name="dark_modedark_mode">Oscuro</string>
     <string name="language">Idioma</string>
     <string name="english">Inglés</string>
     <string name="spanish">Español</string>
@@ -771,18 +771,18 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
 
     <string name="add_medications">Agregar medicamentos</string>
     <string name="alarm">Alarma</string>
-    <string name="schedule_time_and_alarm">Configurar La hora y alarma</string>
+    <string name="schedule_time_and_alarm">Configurar La Yora y Alarma</string>
     <string name="with_meal">Con alimentos</string>
     <string name="time">Hora</string>
     <string name="morning">La Mañana</string>
     <string name="evening">La Noche</string>
     <string name="cancel">Cancelar</string>
     <!--Emergency Resource Page strings-->
-    <string name="emergency_resource">Recurso de emergencia</string>
+    <string name="emergency_resource">Recurso de Emergencia</string>
     <string name="doctor_name">Dr. Samuel Parker</string>
-    <string name="hospital_name">Hospital del parque central</string>
+    <string name="hospital_name">Hospital del Parque Central</string>
     <string name="doctor_phone_number"><u><a href="tel:(804)0938172"><font color="#6E6BB3">(804)0938172</font></a></u></string>
-    <string name="suicide_heading">988 Suicidio y crisis lifeline</string>
+    <string name="suicide_heading">988 Suicidio y Crisis Lifeline</string>
     <string name="suicide_text">Llame o envíe un mensaje de texto al 988 o chatee en 988lifeline.org. 988 Suicide &amp; Crisis Lifeline es una red nacional de centros locales de crisis que brinda apoyo emocional gratuito y confidencial a personas en crisis suicida o angustia emocional las 24 horas del día, los 7 días de la semana.</string>
     <string name="disaster_heading">Línea de ayuda para casos de desastre</string>
     <string name="disaster_text">
@@ -790,11 +790,11 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
         Llame o envíe un mensaje de texto al <u><a href="tel:1-800-985-5990"><font color="#6E6BB3">1-800-985-5990</font></a></u> para conectarse con un consejero capacitado y atento, las 24 horas del día, los 7 días de la semana, los 365 días del año.
 </string>
     <string name="lets_begin_btn">Empezamos</string>
-    <string name="lets_begin_are_ready">¿Estás listo?</string>
+    <string name="lets_begin_are_ready">¿Estás Listo?</string>
     <string name="lets_begin">El descubrimiento de Calmscient será tan efectivo como usted lo haga. \nAsí que esté decidido a dedicar tiempo a seguir y completar los ejercicios. Cada sección tiene contenido interesante e informativo diseñado para mantenerlo pensando activamente en sus desafíos específicos. Pero, al igual que hacer un viaje por carretera a un destino desconocido, ¡deberás comprometerte a seguir el mapa! Puede que suponga un poco más de trabajo del que estás acostumbrado, pero al final dará sus frutos.</string>
-    <string name="crisis_heading">Línea de texto de crisis</string>
+    <string name="crisis_heading">Línea de Texto de Crisis</string>
     <string name="crisis_text">Envíe un mensaje de texto con MHA al 741741 y lo conectarán con un consejero de crisis capacitado. Crisis Text Line brinda soporte gratuito basado en texto las 24 horas del día, los 7 días de la semana.</string>
-    <string name="trevor_heading">El proyecto trevor</string>
+    <string name="trevor_heading">El Proyecto Trevor</string>
     <string name="trevor_text">Llama al <u><a href="tel:1-866-488-7386"><font color="#6E6BB3">1-866-488-7386</font></a></u> oenvía START al <a href="sms:678678"><font color="#6E6BB3">678678</font></a>.Una línea nacional de ayuda confidencial, gratuita y disponible las 24 horas para jóvenes LGBTQ en riesgo de suicidio.
 </string>
     <string name="doctor_name1">Dr.Hannah Johnson</string>
@@ -858,7 +858,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="repeat">Repetir</string>
     <string name="everyday">Cada día</string>
     <string name="afternoon">Tarde</string>
-    <string name="add_time_alarm">Agregar hora y hora alarma</string>
+    <string name="add_time_alarm">Agregar hora y Yora Alarma</string>
     <string name="page_1.1">¿SABÍAS?</string>
     <string name="page_2_1">¿Qué es la ansiedad?</string>
     <string name="page_7.1"><font color="#6E6BB3">Si una persona pudiera simplemente “recordar” experiencias pasadas,</font></string>
@@ -885,12 +885,12 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="mindfulness_exercises">La Conciencia Plena - ¿QUÉ ES?</string>
     <string name="butterflyhug_exercises">El toque y el abrazo de la mariposa</string>
     <string name="handover_esxercises">Entrega tu oído</string>
-    <string name="mindfulwalking_exercises">Caminata la conciencia plena</string>
-    <string name="dance_exercises">Movimiento: danza</string>
-    <string name="running_exercises">Movimiento: correr</string>
-    <string name="body_moment_exercies">Movimiento corporal consciente</string>
-    <string name="deepbreathing_exercises">Respiración profunda</string>
-    <string name="musclerelaxation_exercises">Relajación muscular progresiva</string>
+    <string name="mindfulwalking_exercises">Caminata la Conciencia Plena</string>
+    <string name="dance_exercises">Movimiento: Danza</string>
+    <string name="running_exercises">Movimiento: Correr</string>
+    <string name="body_moment_exercies">Movimiento Corporal Consciente</string>
+    <string name="deepbreathing_exercises">Respiración Profunda</string>
+    <string name="musclerelaxation_exercises">Relajación Muscular Progresiva</string>
 
     <string name="calming_body">Calmar el cuerpo</string>
     <string name="anxiety_worry">Ansiedad y preocupación</string>
@@ -1136,7 +1136,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="two_tablets">2 Tabletas</string>
     <string name="one_tablet">1 Tableta</string>
 
-    <string name="update_time_alarm">Actualizar hora y alarmaa</string>
+    <string name="update_time_alarm">Actualizar Hora y Alarmaa</string>
     <string name="phq_heading">PHQ-9</string>
     <string name="gad_heading">GAD-7</string>
     <string name="audit_heading">AUDIT</string>
@@ -1326,7 +1326,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="drink_tracker_text8">Bebidas espirituosas destiladas (1,5 onzas líquidas) aproximadamente 40% de alcohol</string>
     <string name="total_text">Total</string>
     <string name="count_text">contar</string>
-    <string name="drink_tracker">Rastreador de bebidas</string>
+    <string name="drink_tracker">Rastreador de Debidas</string>
     <string name="how_to_do">CÓMO HACERLO</string>
     <string name="lesson_intro">Introducción</string>
     <string name="lesson">Lección 1</string>
@@ -1360,7 +1360,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <!--bodymovemet Exercise-->
     <string name="bodymovementexercise_titletext">Movimiento Corporal con la conciencia plena</string>
     <!--    summary-->
-    <string name="summary_alcohol_free">Ningún alcohol</string>
+    <string name="summary_alcohol_free">Ningún Alcohol</string>
     <string name="summary_drinks">Bebidas</string>
     <string name="summary_argument">Discusiones</string>
     <string name="summary_accident">Accidentes</string>

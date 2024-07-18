@@ -700,7 +700,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="create_new_account">Create a new account</string>
+    <string name="create_new_account">Create an new account</string>
     <string name="or">or</string>
     <string name="happy_to_see_you">We are happy to see you.</string>
     <string name="hello">Hello</string>
@@ -770,7 +770,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="settings">Settings</string>
     <string name="profile">Profile</string>
     <string name="theme">Theme</string>
-    <string name="dark_mode">Dark mode</string>
+    <string name="dark_mode">Dark Mode</string>
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="spanish">Spanish</string>
@@ -787,7 +787,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="time">Time</string>
     <string name="place">Place</string>
     <string name="duration">Duration</string>
-    <string name="schedule_time_and_alarm">Schedule time &amp; alarm</string>
+    <string name="schedule_time_and_alarm">Schedule Time &amp; Alarm</string>
     <string name="with_meal">With meal</string>
     <string name="morning">Morning</string>
     <string name="evening">Evening</string>
@@ -802,22 +802,22 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="drink_count">Drink counts</string>
     <string name="terms">Accept <u>Terms and Conditions</u></string>
     <!--Emergency Resource Page strings-->
-    <string name="emergency_resource">Emergency resource</string>
-    <string name="doctor_name">Dr. Samuel parker</string>
-    <string name="hospital_name">Central park hospital</string>
+    <string name="emergency_resource">Emergency Resource</string>
+    <string name="doctor_name">Dr. Samuel Parker</string>
+    <string name="hospital_name">Central Park Hospital</string>
     <string name="doctor_phone_number"><u><a href="tel:(804)0938172"><font color="#6E6BB3">(804)0938172</font></a></u></string>
-    <string name="suicide_heading">988 Suicide &amp; crisis lifeline</string>
+    <string name="suicide_heading">988 Suicide &amp; Crisis Lifeline</string>
     <string name="suicide_text">Call or text 988 or chat 988lifeline.org. The 988 Suicide &amp; Crisis Lifeline is a national network of local crisis centers that provides free and confidential emotional support to people in suicidal crisis or emotional distress 24 hours a day, 7 days a week.</string>
-    <string name="disaster_heading">Disaster distress helpline</string>
+    <string name="disaster_heading">Disaster Distress Helpline</string>
     <string name="disaster_text">The national Disaster Distress Helpline is available for anyone experiencing emotional distress related to natural or human-caused disasters.Call or text <u><a href="tel:1-800-985-5990"><font color="#6E6BB3">1-800-985-5990</font></a></u> to be connected to a trained, caring counselor, 24/7/365.
 </string>
-    <string name="crisis_heading">Crisis text line</string>
+    <string name="crisis_heading">Crisis Text Line</string>
     <string name="crisis_text">Text MHA to<a href="sms:678678"><font color="#6E6BB3"> 741741</font></a> and you\'ll be connected to a trained Crisis Counselor. Crisis Text Line provides free, text-based support 24/7.</string>
-    <string name="trevor_heading">The trevor project</string>
+    <string name="trevor_heading">The Trevor Project</string>
     <string name="trevor_text">
         Call <u><a href="tel:1-866-488-7386"><font color="#6E6BB3">1-866-488-7386</font></a></u> or text START to <a href="sms:678678"><font color="#6E6BB3">678678</font></a>.A national 24-hour, toll free confidential suicide hotline for LGBTQ youth.
 </string>
-    <string name="trans_helpline_heading">Trans lifeline</string>
+    <string name="trans_helpline_heading">Trans Lifeline</string>
     <string name="trans_helpline_text">Dial <u><a href="tel:877-565-8860"><font color="#6E6BB3">877-565-8860</font></a></u> for US and <u><a href="tel:877-330-6366"><font color="#6E6BB3">877-330-6366</font></a></u> for Canada.Trans Lifeline\'s Hotline is a peer support service run by trans people, for trans and questioning callers.
 </string>
     <string name="disaster_number">1-800-985-5990</string>
@@ -879,12 +879,12 @@ The most important thing is to do it! Do you have some time today to get started
         \nThe various classes of drugs may include cannabis , solvents , tranquilizers, barbiturates, cocaine, stimulants, hallucinogens or narcotics . The questions do not include alcoholic beverages.\nPlease answer every question. If you have difficulty with a statement, then choose the response that is mostly right.</string>
 
     <string name="afternoon">Afternoon</string>
-    <string name="add_time_alarm">Add time &amp; alarm</string>
+    <string name="add_time_alarm">Add Time &amp; Alarm</string>
     <string name="page_1.1">Did you know?</string>
     <string name="page_2_1">What is anxiety?</string>
     <string name="lets_begin_btn">Let\'s begin!</string>
     <string name="lets_begin_are_ready">Are you ready?</string>
-    <string name="lets_begin">The Calmscient discovery will only be as effective as you make it. \nSo be determined to dedicate time to following along and completing the exercises. Each section has interesting and informative content that is designed to keep you actively thinking about your specific challenges. But, like taking a road trip to an unknown destination, you’ll need to be committed to following the map! It may be a little more work than you’re used to, but it will absolutely pay off in the end.</string>
+    <string name="lets_begin">The Calmscient discovery will only be as effective as you make it.</string>
     <string name="page_7.1"><font color="#6E6BB3">If a person could simply “remember” past experiences,</font></string>
     <!-- lesson 1-->
     <string name="lesson1_video_summary">
@@ -920,15 +920,15 @@ The most important thing is to do it! Do you have some time today to get started
 
     <!--Exrercises-->
 
-    <string name="mindfulness_exercises">Mindfulness – what is it?</string>
-    <string name="butterflyhug_exercises">Touch and the butterfly hug</string>
-    <string name="handover_esxercises">Hand over your heart</string>
-    <string name="mindfulwalking_exercises">Mindful walking</string>
-    <string name="dance_exercises">Movement: dance</string>
-    <string name="running_exercises">Movement: running</string>
-    <string name="body_moment_exercies">Mindful body movement</string>
-    <string name="deepbreathing_exercises">Deep breathing</string>
-    <string name="musclerelaxation_exercises">Progressive muscle relaxation</string>
+    <string name="mindfulness_exercises">Mindfulness – What is it?</string>
+    <string name="butterflyhug_exercises">Touch and the Butterfly Hug</string>
+    <string name="handover_esxercises">Hand Over Your Heart</string>
+    <string name="mindfulwalking_exercises">Mindful Walking</string>
+    <string name="dance_exercises">Movement: Dance</string>
+    <string name="running_exercises">Movement: Running</string>
+    <string name="body_moment_exercies">Mindful Body Movement</string>
+    <string name="deepbreathing_exercises">Deep Breathing</string>
+    <string name="musclerelaxation_exercises">Progressive Muscle Relaxation</string>
     <!--    Exercise_items-->
     <string name="screen1"><![CDATA[<font color="#6E6BB3">Have you ever caught your mind wandering or daydreaming </font>while you are in the middle of a familiar or repetitive task? You could be walking, working or even driving your car, and your mind is miles away, perhaps fantasizing about going on vacation, thinking about your to-do list, or worrying about some upcoming event.<br/><br/>In either case, you are not focusing on the current situation and not in touch with the ‘here and now’.  This mode of operation is often referred to as<font color="#6E6BB3"> automatic pilot</font>.]]></string>
     <string name="screen2"><![CDATA[<font color="#6E6BB3">Mindfulness</font> is the opposite of automatic pilot. It is about experiencing the world that is firmly in the ‘here and now’. This is referred to as the <font color="#6E6BB3">being</font> mode. It liberates you from automatic and unhelpful thoughts and responses.]]></string>
@@ -947,7 +947,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="butterflyScreen2_text3">Breathe slowly and deeply (abdominal breathing) while you mentally observe what is going through your mind and body—thoughts, images, sounds, odors, feelings, and physical sensation.</string>
 
     <!--    Hand over your heart Exercise-->
-    <string name="handoveryourHeart_titletext">Hand over your heart</string>
+    <string name="handoveryourHeart_titletext">Hand Over Your Heart</string>
     <string name="handoveryourHeart_text">How to do it</string>
     <string name="bullet">&#8226;</string>
     <string name="handoveryourHeart_point1">Rest the heel of your hand on your sternum around your heart area.</string>
@@ -956,7 +956,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="handoveryourHeart_point4">Experiment with the various placements and wait until you feel a shift. It may take up to 5 or 10 minutes of deep breathing in this position to shift if you are very activated.</string>
 
     <!--    Dancing Exercise-->
-    <string name="dancingexercise_titletext">Movement: dance</string>
+    <string name="dancingexercise_titletext">Movement: Dance</string>
     <string name="dancingexercises_text">Moving your body to music can be a fun and fast way to shift your state and reconnect with your body, rhythm and expression.</string>
     <!--bodymovemet Exercise-->
     <string name="bodymovementexercise_text">There are many movement routines that invite you to reconnect with your body. Pilates, yoga and other similar stretching exercises incorporate mindful awareness of movements and postures. Additionally, coordinating body movement and breath further potentiates your ability to shift your state.</string>
@@ -1316,11 +1316,11 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="anxiety_calming_card_making_heading1">Mindfulness-what is it?</string>
     <string name="anxiety_calming_card_making_heading2">Progressive muscle relaxation</string>
     <string name="anxiety_calming_card_making_heading3">Touch and butterfly hug</string>
-    <string name="anxiety_calming_card_making_heading4">Hand over your heart</string>
+    <string name="anxiety_calming_card_making_heading4">Hand Over Your Heart</string>
     <string name="anxiety_calming_card_making_heading5">Mindful walking</string>
     <string name="anxiety_calming_card_making_heading6">Mindful dance</string>
     <string name="anxiety_calming_card_making_heading7">Mindful running</string>
-    <string name="anxiety_calming_card_making_heading8">Mindful body movement</string>
+    <string name="anxiety_calming_card_making_heading8">Mindful Body Movement</string>
     <!--Audio Player text and its dialog Text -->
     <string name="meet_nora_austrin_melanie_description">Sometimes, seeing anxiety through others’ eyes can help us understand it better. Let’s meet three friends who view and respond to stress differently. Though their personalities and lifestyles are different, you will probably relate to one of them.</string>
     <string name="nora_audio_text1">First, let’s meet Nora. Nora tends to push away and avoid stressful situations. See if you can identify this in the way she expresses herself:</string>
@@ -1411,7 +1411,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="vitamin">Vitamin</string>
     <string name="two_tablets">2 Tablets</string>
     <string name="one_tablet">1 Tablet</string>
-    <string name="update_time_alarm">Update time &amp; alarm</string>
+    <string name="update_time_alarm">Update Time &amp; Alarm</string>
     <string name="phq_heading">PHQ-9</string>
     <string name="gad_heading">GAD-7</string>
     <string name="audit_heading">AUDIT</string>
@@ -1595,7 +1595,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="drink_tracker_text8">Distilled spirits (1.5 fl oz)about 40% alcohol</string>
     <string name="total_text">Total</string>
     <string name="count_text">count</string>
-    <string name="drink_tracker">Drink tracker</string>
+    <string name="drink_tracker">Drink Tracker</string>
     <string name="how_to_do">How to do it</string>
     <string name="lesson_intro">Introduction</string>
     <string name="lesson">Lesson 1</string>
@@ -1622,12 +1622,12 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="privacy_heading">Data from Calmscient can be transmitted to your doctor for clinical review purposes. Please indicate which data you allow to be shared with your doctor by selecting either <b>Yes</b> or <b>No</b> next to each data element below</string>
 
     <!-- Running Exercise-->
-    <string name="runningexercise_titletext">Movement: running</string>
+    <string name="runningexercise_titletext">Movement: Running</string>
     <string name="runningexercises_text">It’s not easy to move when you have a shutdown or are feeling numb. Running can quickly shift you out of the shutdown state and re-energize you.</string>
 
     <string name="version">Version 2.10</string>
     <!--bodymovemet Exercise-->
-    <string name="bodymovementexercise_titletext">Mindful body movement</string>
+    <string name="bodymovementexercise_titletext">Mindful Body Movement</string>
     <!--summary of sleep-->
     <string name="chart_sleep_avg_sleep_score">Average hours of sleep</string>
     <string name="chart_sleep_moresleepneeded">More sleep needed</string>
@@ -1636,7 +1636,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="chart_sleep_leaset_hours_slept">Least hours slept</string>
 
     <!--    summary-->
-    <string name="summary_alcohol_free">Alcohol-free</string>
+    <string name="summary_alcohol_free">Alcohol-Free</string>
     <string name="summary_drinks">Drinks</string>
     <string name="summary_argument">Argument</string>
     <string name="summary_accident">Accident</string>
@@ -2193,5 +2193,11 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="_4_7_8_breathing_exercise">4-7-8 Breathing exercise</string>
     <string name="mindful_breathing_exercise">Mindful breathing exercise</string>
     <string name="diaphragmatic_breathing_exercise">Diaphragmatic breathing exercise</string>
+    <string name="basic_knowledge">Basic knowledge</string>
+    <string name="make_a_plan">Make a plan</string>
+    <string name="event_tracker">Event tracker</string>
+    <string name="see_the_introduction">See the introduction</string>
+    <string name="how_to_use">How to use</string>
+    <string name="lets_begin_description">So be determined to dedicate time to following along and completing the exercises. Each section has interesting and informative content that is designed to keep you actively thinking about your specific challenges. But, like taking a road trip to an unknown destination, you’ll need to be committed to following the map! It may be a little more work than you’re used to, but it will absolutely pay off in the end.</string>
 
 </resources>

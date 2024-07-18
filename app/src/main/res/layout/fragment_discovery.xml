@@ -23,7 +23,7 @@
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
             android:gravity="center"
-            android:text="@string/discovery_lower"
+            android:text="@string/discovery"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_18sdp" />
 
