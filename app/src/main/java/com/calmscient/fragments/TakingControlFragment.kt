@@ -95,7 +95,8 @@ class TakingControlFragment : Fragment() {
 
 
         binding.btnBasicKnowledge.setOnClickListener{
-            loadFragment(BasicKnowledgeFragment())
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(courseIdBasicKnowledge)
+            loadFragment(basicKnowledgeFragment)
         }
         binding.btnMakeAPlan.setOnClickListener{
             if(CommonClass.isNetworkAvailable(requireContext())){
@@ -306,44 +307,44 @@ class TakingControlFragment : Fragment() {
         for (course in courseLists) {
             when (course.courseName) {
                 getString(R.string.basic_knowledge) -> {
-                    binding.btnBasicKnowledge.isEnabled = true//course.isEnable == 1
+                    binding.btnBasicKnowledge.isEnabled = course.isEnable == 1
                     binding.btnBasicKnowledge.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnBasicKnowledge, course.isCompleted == 1)
                     courseIdBasicKnowledge = course.courseId
 
                 }
                 getString(R.string.make_a_plan)-> {
-                    binding.btnMakeAPlan.isEnabled = true//course.isEnable == 1
+                    binding.btnMakeAPlan.isEnabled = course.isEnable == 1
                     binding.btnMakeAPlan.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnMakeAPlan, course.isCompleted == 1)
                     courseIdMakeAPlan = course.courseId
                 }
                 getString(R.string.summary) -> {
-                    binding.btnSummary.isEnabled = true//course.isEnable == 1
+                    binding.btnSummary.isEnabled = course.isEnable == 1
                     binding.btnSummary.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSummary, course.isCompleted == 1)
                     courseIdSummary = course.courseId
                 }
                 getString(R.string.drink_tracker)-> {
-                    binding.btnDrinkTracker.isEnabled = true//course.isEnable == 1
+                    binding.btnDrinkTracker.isEnabled = course.isEnable == 1
                     binding.btnDrinkTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnDrinkTracker, course.isCompleted == 1)
                     courseIdDrinkTracker = course.courseId
                 }
                 getString(R.string.event_tracker) -> {
-                    binding.btnEventTracker.isEnabled = true//course.isEnable == 1
+                    binding.btnEventTracker.isEnabled = course.isEnable == 1
                     binding.btnEventTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnEventTracker, course.isCompleted == 1)
                     courseIdEventTracker = course.courseId
                 }
                 getString(R.string.see_the_introduction) -> {
-                    binding.btnSeeTheInformation.isEnabled = true//course.isEnable == 1
+                    binding.btnSeeTheInformation.isEnabled = course.isEnable == 1
                     binding.btnSeeTheInformation.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)
                     courseIdSeeTheIntro = course.courseId
                 }
                 getString(R.string.how_to_use) -> {
-                    binding.btnHowToUse.isEnabled = true//course.isEnable == 1
+                    binding.btnHowToUse.isEnabled = course.isEnable == 1
                     binding.btnHowToUse.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnHowToUse, course.isCompleted == 1)
                     courseIdHowToUse = course.courseId

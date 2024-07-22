@@ -9,11 +9,16 @@
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote
+package com.calmscient.di.remote.response
 
-data class BasicKnowledgeItem(
-    val name: String,
-    val tickImg :Int?,
-    var isCompleted: Boolean = false,
+data class GetBasicKnowledgeIndexResponse(
+    val index: List<BasicKnowledgeIndex>,
+    val statusResponse: StatusResponse
+)
+
+data class BasicKnowledgeIndex(
+    val isCompleted: Int,
+    val patientId: Int,
     val sectionId: Int,
+    val sectionName: String
 )

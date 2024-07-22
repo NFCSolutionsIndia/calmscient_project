@@ -9,11 +9,9 @@
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote
+package com.calmscient.di.remote.response
 
-data class BasicKnowledgeItem(
-    val name: String,
-    val tickImg :Int?,
-    var isCompleted: Boolean = false,
-    val sectionId: Int,
+data class SendNotificationToDoctorMakeAPlanResponse(
+    val rowCount: Int,
+    val statusResponse: StatusResponse
 )

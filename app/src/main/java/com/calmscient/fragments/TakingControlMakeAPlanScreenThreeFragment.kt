@@ -13,23 +13,36 @@ package com.calmscient.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.calmscient.R
 import com.calmscient.activities.LearnMoreWebviewActivity
 import com.calmscient.databinding.FragmentTakingControlMakeAPlanScreenThreeBinding
-
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.SendNotificationToDoctorMakeAPlanViewModel
 
 class TakingControlMakeAPlanScreenThreeFragment : Fragment() {
 
-    private lateinit var binding : FragmentTakingControlMakeAPlanScreenThreeBinding
+    private lateinit var binding: FragmentTakingControlMakeAPlanScreenThreeBinding
+
+    private val sendNotificationToDoctorMakeAPlanViewModel: SendNotificationToDoctorMakeAPlanViewModel by activityViewModels()
+    private lateinit var commonAPICallDialog: CommonAPICallDialog
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var loginResponse: LoginResponse
+    private lateinit var accessToken: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this){
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
             loadFragment(TakingControlMakeAPlanScreenTwoFragment())
         }
     }
@@ -38,80 +51,41 @@ class TakingControlMakeAPlanScreenThreeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       binding = FragmentTakingControlMakeAPlanScreenThreeBinding.inflate(inflater,container,false)
+        binding = FragmentTakingControlMakeAPlanScreenThreeBinding.inflate(inflater, container, false)
 
-        binding.notifyComplete.visibility = View.GONE
-        binding.notifyCompleteTwo.visibility = View.GONE
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonAPICallDialog = CommonAPICallDialog(requireContext())
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
-        // Add click listener to the TextView
-      /*  binding.textNotify.setOnClickListener {
+        binding.notifyCompleteDoctor.visibility = View.GONE
+        binding.notifyCompleteMedicane.visibility = View.GONE
 
-            binding.loaderOne.visibility = View.VISIBLE
-
-            binding.notifyComplete.visibility = View.GONE
-
-            // Use Handler to delay execution and make complete image visible after 1 second
-            Handler().postDelayed({
-                // Hide loader
-                binding.loaderOne.visibility = View.GONE
-
-
-                binding.notifyComplete.visibility = View.VISIBLE
-            }, 1000)
+        binding.notifyDoctor.setOnClickListener {
+            apiCall(1, 0)
+            showLoader(binding.loaderDoctor, binding.notifyCompleteDoctor)
         }
 
-        binding.textNotifyTwo.setOnClickListener {
-
-            binding.loaderTwo.visibility = View.VISIBLE
-
-            binding.notifyCompleteTwo.visibility = View.GONE
-
-            // Use Handler to delay execution and make complete image visible after 1 second
-            Handler().postDelayed({
-                // Hide loader
-                binding.loaderTwo.visibility = View.GONE
-
-
-                binding.notifyCompleteTwo.visibility = View.VISIBLE
-            }, 1000)
-        }*/
-        binding.textNotify.setOnClickListener {
-            showLoaderAndHideCompleteImage(
-                binding.loaderOne,
-                binding.notifyComplete,
-                binding.textNotify
-            )
-            // Perform other actions if needed
+        binding.notifyMedicane.setOnClickListener {
+            apiCall(0, 1)
+            showLoader(binding.loaderMedication, binding.notifyCompleteMedicane)
         }
 
-        binding.textNotifyTwo.setOnClickListener {
-            showLoaderAndHideCompleteImage(
-                binding.loaderTwo,
-                binding.notifyCompleteTwo,
-                binding.textNotifyTwo
-            )
-            // Perform other actions if needed
-        }
-
-        binding.link.setOnClickListener{
+        binding.link.setOnClickListener {
             val intent = Intent(activity, LearnMoreWebviewActivity::class.java)
             intent.putExtra("988_url", "https://alcoholtreatment.niaaa.nih.gov/")
             startActivity(intent)
         }
 
-        binding.thirdScreenBackButton.setOnClickListener{
-            loadFragment(TakingControlMakeAPlanScreenTwoFragment())
-        }
-        binding.backIcon.setOnClickListener{
+        binding.thirdScreenBackButton.setOnClickListener {
             loadFragment(TakingControlMakeAPlanScreenTwoFragment())
         }
 
-        binding.backIcon.setOnClickListener{
+        binding.backIcon.setOnClickListener {
             loadFragment(TakingControlMakeAPlanScreenTwoFragment())
         }
-        binding.thirdScreenBackButton.setOnClickListener{
-            loadFragment(TakingControlMakeAPlanScreenTwoFragment())
-        }
+
 
 
 
@@ -125,20 +99,40 @@ class TakingControlMakeAPlanScreenThreeFragment : Fragment() {
         transaction.commit()
     }
 
-
-    private fun showLoaderAndHideCompleteImage(loader: View, completeImage: View, notifyText: View) {
-        // Show loader
-        loader.visibility = View.VISIBLE
-
-        // Hide complete image
-        completeImage.visibility = View.GONE
-
-        Handler().postDelayed({
-
-            loader.visibility = View.GONE
-
-            completeImage.visibility = View.VISIBLE
-        }, 1000)
+    private fun apiCall(notifyToPCPDoctor: Int, notifyToPCPMedicine: Int) {
+        sendNotificationToDoctorMakeAPlanViewModel.sendNotificationToDoctor(
+            loginResponse.loginDetails.patientID,
+            loginResponse.loginDetails.clientID,
+            loginResponse.loginDetails.patientLocationID,
+            notifyToPCPDoctor,
+            notifyToPCPMedicine,
+            accessToken
+        )
+        observeViewModel(notifyToPCPDoctor,notifyToPCPMedicine)
     }
 
+    private fun observeViewModel(notifyToPCPDoctor: Int, notifyToPCPMedicine: Int) {
+
+        sendNotificationToDoctorMakeAPlanViewModel.successLiveData.observe(viewLifecycleOwner, Observer { success ->
+            if (success && notifyToPCPDoctor == 1) {
+                binding.loaderDoctor.visibility = View.GONE
+                binding.notifyCompleteDoctor.visibility = View.VISIBLE
+
+            }
+            if(success && notifyToPCPMedicine == 1)
+            {
+                binding.loaderMedication.visibility = View.GONE
+                binding.notifyCompleteMedicane.visibility = View.VISIBLE
+            }
+        })
+
+        sendNotificationToDoctorMakeAPlanViewModel.failureLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
+            // Handle failure
+        })
+    }
+
+    private fun showLoader(loader: View, completeImage: View) {
+        loader.visibility = View.VISIBLE
+        completeImage.visibility = View.GONE
+    }
 }

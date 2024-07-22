@@ -9,11 +9,11 @@
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote
+package com.calmscient.di.remote.request
 
-data class BasicKnowledgeItem(
-    val name: String,
-    val tickImg :Int?,
-    var isCompleted: Boolean = false,
-    val sectionId: Int,
+data class MyDrinkingHabitRequest(
+    val assessmentId: Int,
+    val clientId: Int,
+    val patientId: Int,
+    val plId: Int
 )

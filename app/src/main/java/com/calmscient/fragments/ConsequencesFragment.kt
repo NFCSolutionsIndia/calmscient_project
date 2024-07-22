@@ -14,6 +14,7 @@ package com.calmscient.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,14 +22,27 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
 import com.calmscient.adapters.ConsequencesAdapter
 import com.calmscient.databinding.FragmentConsequencesBinding
+import com.calmscient.di.remote.BasicKnowledgeItem
 import com.calmscient.di.remote.ConsequencesDataClass
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.BasicKnowledgeSharedViewModel
+import com.calmscient.viewmodels.UpdateBasicKnowledgeIndexDataViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ConsequencesFragment : Fragment() {
     private lateinit var binding: FragmentConsequencesBinding
     private lateinit var consequencesAdapter: ConsequencesAdapter
@@ -38,6 +52,14 @@ class ConsequencesFragment : Fragment() {
     private lateinit var stepIndicators: List<ImageView>
     private val maxProgress = 99
     private lateinit var progressBar: ProgressBar
+
+    private val updateBasicKnowledgeIndexDataViewModel: UpdateBasicKnowledgeIndexDataViewModel by viewModels()
+    private val sharedViewModel: BasicKnowledgeSharedViewModel by activityViewModels()
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
+    private  lateinit var accessToken : String
+    private lateinit var loginResponse: LoginResponse
+    private lateinit var itemTemp: BasicKnowledgeItem
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +74,13 @@ class ConsequencesFragment : Fragment() {
     ): View {
         binding = FragmentConsequencesBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonDialog = CommonAPICallDialog(requireContext())
+
+        val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
         val pagerSnapHelper = PagerSnapHelper()
         pagerSnapHelper.attachToRecyclerView(binding.consequencesRecyclerView)
@@ -82,6 +111,16 @@ class ConsequencesFragment : Fragment() {
             binding.step5Indicator,
             binding.step6Indicator
         )
+
+        // Observe the selected item
+        sharedViewModel.selectedItem.observe(viewLifecycleOwner, Observer { item ->
+            if (item != null) {
+                // Use item data as needed
+                Log.d("GuidelinesForDrinkingFragment", "Name: ${item.name}, SectionId: ${item.sectionId}")
+                itemTemp = item
+                updateBasicKnowledgeAPICall()
+            }
+        })
 
         return view
     }
@@ -226,5 +265,25 @@ class ConsequencesFragment : Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun updateBasicKnowledgeAPICall()
+    {
+        updateBasicKnowledgeIndexDataViewModel.updateBasicKnowledgeIndexData(1,loginResponse.loginDetails.patientID,itemTemp.sectionId,accessToken)
+        observeBasicKnowledgeViewModel()
+    }
+
+    private fun observeBasicKnowledgeViewModel()
+    {
+        updateBasicKnowledgeIndexDataViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.show(getString(R.string.loding))
+            }
+            else
+            {
+                customProgressDialog.dialogDismiss()
+            }
+        })
     }
 }

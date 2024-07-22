@@ -5,15 +5,16 @@
  *      and protected by trade secret or copyright law of USA.
  *      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
  *      there is a prior written permission or license agreement from NFC Solutions.
- *
+ *      
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote
+package com.calmscient.di.remote.request
 
-data class BasicKnowledgeItem(
-    val name: String,
-    val tickImg :Int?,
-    var isCompleted: Boolean = false,
-    val sectionId: Int,
+data class SendNotificationToDoctorMakeAPlanRequest(
+    val clientId: Int,
+    val notifyPCPDoctor: Int,
+    val notifyPCPMedicine: Int,
+    val patientId: Int,
+    val plId: Int
 )

@@ -90,7 +90,7 @@ Here are resources that can assist you in achieving your goal?"
                 android:background="@drawable/no_border">
 
                 <TextView
-                    android:id="@+id/textNotify"
+                    android:id="@+id/notifyDoctor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lexendregular"
@@ -101,13 +101,13 @@ Here are resources that can assist you in achieving your goal?"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_marginStart="@dimen/_8sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/notifyComplete"
+                    app:layout_constraintEnd_toStartOf="@id/notifyCompleteDoctor"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintVertical_bias="0.5"/>
 
                 <ImageView
-                    android:id="@+id/notifyComplete"
+                    android:id="@+id/notifyCompleteDoctor"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/basic_knowledge_complete_icon"
@@ -116,7 +116,7 @@ Here are resources that can assist you in achieving your goal?"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginEnd="@dimen/_8sdp"/>
                 <ProgressBar
-                    android:id="@+id/loaderOne"
+                    android:id="@+id/loaderDoctor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -143,7 +143,7 @@ Here are resources that can assist you in achieving your goal?"
                 android:background="@drawable/no_border">
 
                 <TextView
-                    android:id="@+id/textNotifyTwo"
+                    android:id="@+id/notifyMedicane"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lexendregular"
@@ -154,13 +154,13 @@ Here are resources that can assist you in achieving your goal?"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_marginStart="@dimen/_8sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/notifyCompleteTwo"
+                    app:layout_constraintEnd_toStartOf="@id/notifyCompleteMedicane"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintVertical_bias="0.5"/>
 
                 <ImageView
-                    android:id="@+id/notifyCompleteTwo"
+                    android:id="@+id/notifyCompleteMedicane"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/basic_knowledge_complete_icon"
@@ -169,7 +169,7 @@ Here are resources that can assist you in achieving your goal?"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginEnd="@dimen/_8sdp"/>
                 <ProgressBar
-                    android:id="@+id/loaderTwo"
+                    android:id="@+id/loaderMedication"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
