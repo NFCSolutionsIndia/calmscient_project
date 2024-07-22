@@ -14,21 +14,29 @@ package com.calmscient.repository
 import com.calmscient.ApiService
 import com.calmscient.di.remote.request.CreateDrinkTrackerRequest
 import com.calmscient.di.remote.request.DrinkTrackerRequest
+import com.calmscient.di.remote.request.GetBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.GetEventsListRequest
 import com.calmscient.di.remote.request.GetTakingControlIndexRequest
 import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
+import com.calmscient.di.remote.request.MyDrinkingHabitRequest
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionWrapper
+import com.calmscient.di.remote.request.SendNotificationToDoctorMakeAPlanRequest
+import com.calmscient.di.remote.request.UpdateBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
+import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.GetEventsListResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
+import com.calmscient.di.remote.response.MyDrinkingHabitResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
+import com.calmscient.di.remote.response.SendNotificationToDoctorMakeAPlanResponse
 import com.calmscient.di.remote.response.TakingControlIntroduction
+import com.calmscient.di.remote.response.UpdateBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.UpdateTakingControlIndexResponse
 import retrofit2.Call
 import javax.inject.Inject
@@ -61,6 +69,27 @@ class TakingControlRepository @Inject constructor(private val apiService: ApiSer
     fun updateTakingControlIndexData(updateTakingControlIndexRequest: UpdateTakingControlIndexRequest, accessToken: String): Call<UpdateTakingControlIndexResponse>
     {
         return apiService.updateTakingControlIndexData("Bearer $accessToken",updateTakingControlIndexRequest)
+    }
+
+    fun getPatientBasicKnowledgeCourse(myDrinkingHabitRequest: MyDrinkingHabitRequest,accessToken: String) : Call<MyDrinkingHabitResponse>
+    {
+        return apiService.getPatientBasicKnowledgeCourse("Bearer $accessToken",myDrinkingHabitRequest)
+    }
+
+    fun getBasicKnowledgeIndexData(getBasicKnowledgeIndexRequest: GetBasicKnowledgeIndexRequest,accessToken: String): Call<GetBasicKnowledgeIndexResponse>
+    {
+        return apiService.getBasicKnowledgeIndexData("Bearer $accessToken",getBasicKnowledgeIndexRequest)
+    }
+
+    fun updateBasicKnowledgeIndexData(updateBasicKnowledgeIndexRequest: UpdateBasicKnowledgeIndexRequest,accessToken: String): Call<UpdateBasicKnowledgeIndexResponse>
+    {
+        return apiService.updateBasicKnowledgeIndexData("Bearer $accessToken",updateBasicKnowledgeIndexRequest)
+    }
+
+
+    fun sendNotificationToDoctorMakeAPlan(sendNotificationToDoctorMakeAPlanRequest: SendNotificationToDoctorMakeAPlanRequest, accessToken: String):Call<SendNotificationToDoctorMakeAPlanResponse>
+    {
+        return apiService.sendNotificationToDoctorMakeAPlan("Bearer $accessToken",sendNotificationToDoctorMakeAPlanRequest)
     }
 
 
