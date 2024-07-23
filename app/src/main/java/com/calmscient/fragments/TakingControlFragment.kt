@@ -96,8 +96,7 @@ class TakingControlFragment : Fragment() {
 
         binding.btnBasicKnowledge.setOnClickListener{
             if(CommonClass.isNetworkAvailable(requireContext())) {
-                val basicKnowledgeFragment =
-                    BasicKnowledgeFragment.newInstanceBasicKnowledge(courseIdBasicKnowledge)
+                val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(courseIdBasicKnowledge)
                 loadFragment(basicKnowledgeFragment)
             }
             else{
@@ -116,8 +115,7 @@ class TakingControlFragment : Fragment() {
         }
         binding.btnSummary.setOnClickListener {
             if(CommonClass.isNetworkAvailable(requireContext())) {
-                val summaryTakingControlFragment =
-                    SummaryTakingControlFragment.newInstance(courseIdSummary)
+                val summaryTakingControlFragment = SummaryTakingControlFragment.newInstance(courseIdSummary)
                 loadFragment(summaryTakingControlFragment)
             }
             else{
@@ -125,10 +123,22 @@ class TakingControlFragment : Fragment() {
             }
         }
         binding.btnDrinkTracker.setOnClickListener {
-            loadFragment(DrinkTrackerFragment())
+            if(CommonClass.isNetworkAvailable(requireContext())) {
+                val drinkTrackerFragment = DrinkTrackerFragment.newInstance(courseIdDrinkTracker)
+                loadFragment(drinkTrackerFragment)
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
         binding.btnEventTracker.setOnClickListener {
-            loadFragment(EventsTrackerFragment())
+            if(CommonClass.isNetworkAvailable(requireContext())) {
+                val eventsTrackerFragment = EventsTrackerFragment.newInstance(courseIdEventTracker)
+                loadFragment(eventsTrackerFragment)
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
         binding.alcoholtext.setOnClickListener {
             binding.alcohollayout.visibility = View.VISIBLE

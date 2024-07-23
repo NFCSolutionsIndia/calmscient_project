@@ -44,6 +44,7 @@ import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.CreateDrinkTrackerViewModel
 import com.calmscient.viewmodels.GetDrinkTrackerViewModel
+import com.calmscient.viewmodels.UpdateTakingControlIndexViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -64,31 +65,36 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
     private lateinit var drinkTrackerResponse: DrinkTrackerResponse
     private var loginResponse: LoginResponse? = null
     private lateinit var accessToken: String
-    private var selectedDate = LocalDate.now()
+    private lateinit  var selectedDate : String
 
     private val createDrinkTrackerViewModel: CreateDrinkTrackerViewModel by activityViewModels()
     private lateinit var createDrinkTrackerResponse: CreateDrinkTrackerResponse
+    private val updateTakingControlIndexViewModel: UpdateTakingControlIndexViewModel by activityViewModels()
+
+    private var courseTempId = 0
+
+    companion object {
+        fun newInstance(
+            courseId: Int
+        ): DrinkTrackerFragment {
+            val fragment = DrinkTrackerFragment()
+            val args = Bundle()
+            args.putInt("courseId",courseId)
+
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onDateSelected(date: CalendarDay) {
 
-        // Convert CalendarDay to LocalDate
-        val localDate = date.toLocalDate()
+        val formattedDate = formatDate(date)
 
-        // Remove the selection indicator from the previously selected date
-        val previousSelectedDate = selectedDate
+        selectedDate = formattedDate
 
-
-        // Update the selectedDate variable
-        selectedDate = localDate
-
-        binding.tvDate.text = selectedDate.toString()
+        binding.tvDate.text = selectedDate
 
     }
-
-    fun CalendarDay.toLocalDate(): LocalDate {
-        return LocalDate.of(this.year, this.month + 1, this.day) // Note: CalendarDay month is 0-based, LocalDate is 1-based
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,6 +111,7 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
+        courseTempId = arguments?.getInt("courseId")!!
 
         commonAPICallDialog = CommonAPICallDialog(requireContext())
         customProgressDialog = CustomProgressDialog(requireContext())
@@ -114,14 +121,7 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
         calendarView = binding.calenderview
         monthText = binding.tvDate
 
-        val myCalendar = Calendar.getInstance()
 
-        val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            myCalendar.set(Calendar.YEAR, year)
-            myCalendar.set(Calendar.MONTH, month)
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateLabel(myCalendar)
-        }
 
         binding.calenderview.setOnClickListener{
             val dialog = CustomCalendarDialog()
@@ -136,12 +136,13 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
 
 
         // Initialize the monthText with the current date
-        val currentDate = SimpleDateFormat("dd MMM yyyy", Locale.UK).format(Date())
+        val currentDate = SimpleDateFormat("dd MMMM yyyy", Locale.UK).format(Date())
         monthText.text = currentDate
 
 
         if (CommonClass.isNetworkAvailable(requireContext())) {
             apiCall()
+            updateIndexApiCall()
 
         } else {
             CommonClass.showInternetDialogue(requireContext())
@@ -211,7 +212,7 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
                             drinkTrackerResponse = successData
                             binding.tvTotalCount.text = drinkTrackerResponse.totalCount.toString()
                             bindDataToRecyclerView(drinkTrackerResponse)
-                            bindUIData(drinkTrackerResponse)
+                            //bindUIData(drinkTrackerResponse)
                         }
                     })
             }
@@ -219,6 +220,7 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
     }
 
     private fun bindUIData(drinkTracker: DrinkTrackerResponse) {
+
         binding.tvDate.text = drinkTracker.date
         //binding.tvTotalCount.text = drinkTracker.totalCount.toString()
     }
@@ -268,6 +270,7 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
         createDrinkTrackerViewModel.createDrinkTrackerList(request, accessToken)
 
         observeCreateDrinkTrackerAPIData()
+
 
     }
 
@@ -368,5 +371,24 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
 
         dialog.show()
     }
+    private fun formatDate(date: CalendarDay): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(date.year, date.month , date.day)
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+        return dateFormat.format(calendar.time)
+    }
 
+    private fun updateIndexApiCall() {
+        val isCompleted = 1
+        loginResponse?.loginDetails?.let {
+            updateTakingControlIndexViewModel.updateTakingControlIndexData(
+                it.clientID,
+                courseTempId,
+                isCompleted,
+                it.patientID,
+                it.patientLocationID,
+                accessToken
+            )
+        }
+    }
 }

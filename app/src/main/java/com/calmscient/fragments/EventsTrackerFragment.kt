@@ -38,7 +38,9 @@ import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.GetEventTrackerViewModel
 import com.calmscient.viewmodels.GetSummaryOfAUDITViewModel
+import com.calmscient.viewmodels.UpdateTakingControlIndexViewModel
 import com.github.mikephil.charting.charts.LineChart
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -57,6 +59,23 @@ class EventsTrackerFragment : Fragment() {
     private  lateinit var accessToken : String
 
     private lateinit var eventTrackerAdapter: EventTrackerAdapter
+
+    private val updateTakingControlIndexViewModel: UpdateTakingControlIndexViewModel by activityViewModels()
+
+    private var courseTempId = 0
+
+    companion object {
+        fun newInstance(
+            courseId: Int
+        ): EventsTrackerFragment {
+            val fragment = EventsTrackerFragment()
+            val args = Bundle()
+            args.putInt("courseId",courseId)
+
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +98,8 @@ class EventsTrackerFragment : Fragment() {
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
+        courseTempId = arguments?.getInt("courseId")!!
+
         commonAPICallDialog = CommonAPICallDialog(requireContext())
         customProgressDialog = CustomProgressDialog(requireContext())
 
@@ -88,18 +109,11 @@ class EventsTrackerFragment : Fragment() {
         }
         monthText = binding.monthtext
 
-        val myCalendar = Calendar.getInstance()
-
-        val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            myCalendar.set(Calendar.YEAR, year)
-            myCalendar.set(Calendar.MONTH, month)
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateLabel(myCalendar)
-        }
 
         if (CommonClass.isNetworkAvailable(requireContext()))
         {
            getEventTrackerApiCall()
+           updateIndexApiCall()
         }
         else
         {
@@ -112,17 +126,12 @@ class EventsTrackerFragment : Fragment() {
 
         binding.eventTrackerRecycleView.adapter = eventTrackerAdapter
 
-        val currentDate = SimpleDateFormat("dd MMM yyyy", Locale.UK).format(Date())
-        //monthText.text = currentDate
+        val currentDate = SimpleDateFormat("dd MMMM yyyy", Locale.UK).format(Date())
+        binding.monthtext.text = currentDate
 
         return binding.root
     }
 
-    private fun updateLabel(myCalendar: Calendar) {
-        val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.UK)
-        val formattedDate = sdf.format(myCalendar.time)
-        monthText.text = formattedDate
-    }
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
@@ -182,8 +191,22 @@ class EventsTrackerFragment : Fragment() {
 
     private fun convertDateFormat(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("dd MMM yyyy", Locale.UK)
+        val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.UK)
         val date = inputFormat.parse(inputDate)
         return outputFormat.format(date)
+    }
+
+    private fun updateIndexApiCall() {
+        val isCompleted = 1
+        loginResponse?.loginDetails?.let {
+            updateTakingControlIndexViewModel.updateTakingControlIndexData(
+                it.clientID,
+                courseTempId,
+                isCompleted,
+                it.patientID,
+                it.patientLocationID,
+                accessToken
+            )
+        }
     }
 }

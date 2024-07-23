@@ -32,6 +32,11 @@ class EventTrackerAdapter(private val events: List<EventTrackerDataClass>) :
                 eventTrackerName.text = event.name
                 Glide.with(itemView.context).load(event.image).into(eventTrackerImage)
                 eventTrackerToggleButton.isOn = event.toggleButton
+
+                eventTrackerToggleButton.labelOn = "Yes"
+                eventTrackerToggleButton.labelOff = "No"
+
+
             }
         }
     }
@@ -45,6 +50,7 @@ class EventTrackerAdapter(private val events: List<EventTrackerDataClass>) :
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
         holder.bind(event)
+
     }
 
     override fun getItemCount(): Int {
