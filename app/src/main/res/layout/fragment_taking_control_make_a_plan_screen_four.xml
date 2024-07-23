@@ -99,16 +99,17 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="@dimen/_4sdp"
-                        android:layout_weight="2"
+                        android:layout_weight="1.5"
                         android:fontFamily="@font/lexendlight"
-                        android:text="Your total alcohol free days are"
+                        android:text="@string/your_total_alcohol_free_days_are"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
+                        android:id="@+id/tv_freeDaysCount"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:background="@color/grey_light"
                         android:fontFamily="@font/lexendlight"
                         android:gravity="bottom|center"
@@ -124,7 +125,7 @@
                         android:background="@color/grey_light"
                         android:fontFamily="@font/lexendlight"
                         android:gravity="bottom"
-                        android:text="days"
+                        android:text="@string/days"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_12sdp" />
 
@@ -197,7 +198,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Jan"
+                                android:text="@string/jan"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -217,7 +218,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Feb"
+                                android:text="@string/feb"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -237,7 +238,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Mar"
+                                android:text="@string/mar"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -257,7 +258,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Apr"
+                                android:text="@string/apr"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -277,7 +278,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="May"
+                                android:text="@string/may"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -297,7 +298,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Jun"
+                                android:text="@string/jun"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -317,7 +318,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Jul"
+                                android:text="@string/jul"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -337,7 +338,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Aug"
+                                android:text="@string/aug"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -357,7 +358,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Sep"
+                                android:text="@string/sep"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -378,7 +379,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Oct"
+                                android:text="@string/oct"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -398,7 +399,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Nov"
+                                android:text="@string/nov"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -418,7 +419,7 @@
                                 android:buttonTint="@color/purple_100"
                                 android:fontFamily="@font/lexendlight"
                                 android:padding="@dimen/_10sdp"
-                                android:text="Dec"
+                                android:text="@string/dec"
                                 android:textAlignment="center"
                                 android:textColor="@color/black_head"
                                 android:textSize="@dimen/_12sdp" />
@@ -444,7 +445,7 @@
                             android:buttonTint="@color/purple_100"
                             android:fontFamily="@font/lexendlight"
                             android:padding="@dimen/_10sdp"
-                            android:text="All"
+                            android:text="@string/all"
                             android:textAlignment="center"
                             android:textColor="@color/black_head"
                             android:textSize="@dimen/_12sdp" />
@@ -466,7 +467,7 @@
                 android:background="@drawable/button_border"
                 android:fontFamily="@font/lexendmedium"
                 android:gravity="center"
-                android:text="Set"
+                android:text="@string/set"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp">

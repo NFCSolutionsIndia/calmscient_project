@@ -42,8 +42,7 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/_12sdp"
@@ -52,14 +51,14 @@
             tools:ignore="ExtraText">
 
             <ImageView
-                android:id="@+id/calenderview"
+                android:id="@+id/calenderView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_calendar"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/monthtext"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"

@@ -2199,6 +2199,22 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="see_the_introduction">See the introduction</string>
     <string name="how_to_use">How to use</string>
     <string name="lets_begin_description">So be determined to dedicate time to following along and completing the exercises. Each section has interesting and informative content that is designed to keep you actively thinking about your specific challenges. But, like taking a road trip to an unknown destination, you’ll need to be committed to following the map! It may be a little more work than you’re used to, but it will absolutely pay off in the end.</string>
-    <string name="loding">Loading...</string>
+    <string name="loading">Loading...</string>
+    <string name="your_total_alcohol_free_days_are">Your total alcohol free days are</string>
+    <string name="days">days</string>
+    <string name="jan">Jan</string>
+    <string name="feb">Feb</string>
+    <string name="mar">Mar</string>
+    <string name="apr">Apr</string>
+    <string name="may">May</string>
+    <string name="jun">Jun</string>
+    <string name="jul">Jul</string>
+    <string name="aug">Aug</string>
+    <string name="sep">Sep</string>
+    <string name="oct">Oct</string>
+    <string name="nov">Nov</string>
+    <string name="dec">Dec</string>
+    <string name="all">All</string>
+    <string name="set">Set</string>
 
 </resources>

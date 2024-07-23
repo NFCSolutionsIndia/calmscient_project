@@ -24,17 +24,56 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.calmscient.R
 import com.calmscient.databinding.FragmentTakingControlMakeAPlanScreenFiveBinding
+import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomCalendarView
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.GetAlcoholFreeDaysViewModel
+import com.calmscient.viewmodels.UpdateTakingControlIndexViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
 
     private lateinit var binding: FragmentTakingControlMakeAPlanScreenFiveBinding
     private var selectedNumber = 1
     private lateinit var customCalendarView: CustomCalendarView
+
+    private val getAlcoholFreeDaysViewModel : GetAlcoholFreeDaysViewModel by activityViewModels()
+    private val updateTakingControlIndexViewModel: UpdateTakingControlIndexViewModel by activityViewModels()
+    private var courseTempId = ""
+
+    private lateinit var getAlcoholFreeDayResponse: GetAlcoholFreeDayResponse
+
+    private var loginResponse : LoginResponse? = null
+    private  lateinit var accessToken : String
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
+
+
+
+    companion object {
+        fun newInstance(
+            courseId: Int
+        ): TakingControlMakeAPlanScreenFiveFragment {
+            val fragment = TakingControlMakeAPlanScreenFiveFragment()
+            val args = Bundle()
+            args.putInt("courseId",courseId)
+
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +87,17 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
     ): View? {
 
         binding = FragmentTakingControlMakeAPlanScreenFiveBinding.inflate(inflater, container, false)
+
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonDialog = CommonAPICallDialog(requireContext())
+
+        val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
+
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
+        courseTempId = SharedPreferencesUtil.getData(requireContext(), "courseIdMakeAPlan", "")
+
+
 
         customCalendarView = binding.customCalendarView
         customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE)
@@ -73,7 +123,66 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         binding.makeAPlanBulbIcon.setOnClickListener{
             showBulbDialog()
         }
+
+        if(CommonClass.isNetworkAvailable(requireContext()))
+        {
+            getAlcoholFreeDaysApiCall()
+        }
+        else{
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
+
         return binding.root
+    }
+
+    private fun getAlcoholFreeDaysApiCall()
+    {
+
+        getAlcoholFreeDaysViewModel.clear()
+        loginResponse?.loginDetails?.let { getAlcoholFreeDaysViewModel.getAlcoholFreeDays(it.patientID,accessToken) }
+        observeGetAlcoholFreeDays()
+    }
+
+    private fun observeGetAlcoholFreeDays()
+    {
+
+        getAlcoholFreeDaysViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.show(getString(R.string.loading))
+            }
+            else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getAlcoholFreeDaysViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess){
+                getAlcoholFreeDaysViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+                    if(successData != null)
+                    {
+                        getAlcoholFreeDayResponse = successData
+                        //bind the data to the UI like selected months and dates
+                        bindDataToUI()
+
+                        updateIndexApiCall()
+                    }
+                }
+                )
+            }
+        })
+    }
+
+    private fun bindDataToUI() {
+        // Pre-select the dates in the CustomCalendarView
+        val dateFormatter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val dates = getAlcoholFreeDayResponse.dates.map { dateStr ->
+            dateFormatter.parse(dateStr)
+        }
+        customCalendarView.setSelectedDates(dates)
+
+        binding.tvMonthlyDrinkCount.text = getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount.toString()
     }
 
     private fun showBulbDialog() {
@@ -91,6 +200,7 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
             dialog.dismiss()
         }
     }
+
 
     private fun showSetDialog() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.make_a_plan_congrats_dilalog, null)
@@ -174,5 +284,19 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun updateIndexApiCall() {
+        val isCompleted = 1
+        loginResponse?.loginDetails?.let {
+            updateTakingControlIndexViewModel.updateTakingControlIndexData(
+                it.clientID,
+                courseTempId.toInt(),
+                isCompleted,
+                it.patientID,
+                it.patientLocationID,
+                accessToken
+            )
+        }
     }
 }

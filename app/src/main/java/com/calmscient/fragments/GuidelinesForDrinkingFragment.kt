@@ -111,7 +111,7 @@ class GuidelinesForDrinkingFragment : Fragment() {
         updateBasicKnowledgeIndexDataViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
             if(isLoading)
             {
-                customProgressDialog.show(getString(R.string.loding))
+                customProgressDialog.show(getString(R.string.loading))
             }
             else
             {

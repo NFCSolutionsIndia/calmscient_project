@@ -17,10 +17,12 @@ import com.calmscient.di.remote.request.AlarmWrapper
 import com.calmscient.di.remote.request.AppointmentDetailsRequestData
 import com.calmscient.di.remote.request.CreateDrinkTrackerRequest
 import com.calmscient.di.remote.request.DrinkTrackerRequest
+import com.calmscient.di.remote.request.GetAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.GetBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.GetEventsListRequest
 import com.calmscient.di.remote.request.GetTakingControlIndexRequest
 import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
+import com.calmscient.di.remote.request.GetTakingControlSummaryRequest
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.request.LoginRequest
 import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
@@ -29,6 +31,7 @@ import com.calmscient.di.remote.request.MyDrinkingHabitRequest
 import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.request.PatientMoodRequest
+import com.calmscient.di.remote.request.SaveAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SavePatientMoodWrapper
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
@@ -53,10 +56,12 @@ import com.calmscient.di.remote.response.AlarmUpdateResponse
 import com.calmscient.di.remote.response.AppointmentDetailsResponseData
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
+import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.GetEventsListResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
+import com.calmscient.di.remote.response.GetTakingControlSummaryResponse
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
@@ -64,6 +69,7 @@ import com.calmscient.di.remote.response.MedicationDetailsResponse
 import com.calmscient.di.remote.response.MyDrinkingHabitResponse
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
+import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.SavePatientMoodResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ScreeningAssignmentResponse
@@ -204,6 +210,7 @@ interface ApiService {
     @POST("patients/api/v1/takingControl/saveTakingControlIntroduction")
     fun saveTakingControlIntroductionData(@Header("Authorization")accessToken: String,@Body request: SaveTakingControlIntroductionRequest) : Call<SaveTakingControlIntroductionResponse>
 
+    //Basic Knowledge
 
     @POST("patients/api/v1/takingControl/getPatientBasicKnowledgeCourse")
     fun getPatientBasicKnowledgeCourse(@Header("Authorization")accessToken: String,@Body request : MyDrinkingHabitRequest) : Call<MyDrinkingHabitResponse>
@@ -215,7 +222,19 @@ interface ApiService {
     fun updateBasicKnowledgeIndexData(@Header("Authorization")accessToken: String,@Body request : UpdateBasicKnowledgeIndexRequest): Call<UpdateBasicKnowledgeIndexResponse>
 
 
+    //Make a Plan
+
     @POST("patients/api/v1/takingControl/sendNotificationToDoctorMakeAPlan")
     fun sendNotificationToDoctorMakeAPlan(@Header("Authorization")accessToken: String,@Body request:SendNotificationToDoctorMakeAPlanRequest) : Call<SendNotificationToDoctorMakeAPlanResponse>
+
+    @POST("patients/api/v1/takingControl/saveAlcoholFreeDay")
+    fun saveAlcoholFreeDay(@Header("Authorization")accessToken: String,@Body request:SaveAlcoholFreeDayRequest) : Call<SaveAlcoholFreeDayResponse>
+
+    @POST("patients/api/v1/takingControl/getPatientAlcoholGoal")
+    fun getAlcoholFreeDay(@Header("Authorization")accessToken: String, @Body request: GetAlcoholFreeDayRequest): Call<GetAlcoholFreeDayResponse>
+
+    //Summary
+    @POST("patients/api/v1/takingControl/getTakingControlSummary")
+    fun getTakingControlSummaryData(@Header("Authorization")accessToken: String, @Body request: GetTakingControlSummaryRequest) : Call<GetTakingControlSummaryResponse>
 }
 

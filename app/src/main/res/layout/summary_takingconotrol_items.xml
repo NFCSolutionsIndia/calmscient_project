@@ -26,12 +26,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/iv_logo"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_margin="@dimen/_10sdp"/>
             <TextView
-                android:id="@+id/text1"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_18sdp"
@@ -43,7 +43,7 @@
         </LinearLayout>
 
         <ProgressBar
-            android:id="@+id/progressbar_history"
+            android:id="@+id/progressbar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,12 +57,11 @@
 
 
         <TextView
-            android:id="@+id/text3"
+            android:id="@+id/tv_goalCount"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_gravity="right"
-            android:layout_centerInParent="true"
             android:textSize="@dimen/_13sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:fontFamily="@font/lexendmedium"
@@ -71,12 +70,11 @@
 
 
         <TextView
-            android:id="@+id/text4"
+            android:id="@+id/tv_countOrTimes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_gravity="right"
-            android:layout_centerInParent="true"
             android:textSize="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:fontFamily="@font/lexendmedium"

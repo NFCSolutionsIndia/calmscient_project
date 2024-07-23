@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import com.calmscient.Interface.OnSelectionDateChangeListener
 import com.calmscient.R
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CustomCalendarView @JvmOverloads constructor(
@@ -19,6 +21,7 @@ class CustomCalendarView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private var calendarView: MaterialCalendarView
+    private var onSelectionChangeListener: OnSelectionDateChangeListener? = null
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -29,6 +32,10 @@ class CustomCalendarView @JvmOverloads constructor(
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         setupCalendar(currentYear, 1, currentYear, 12)
         setCurrentMonth()
+
+        calendarView.setOnDateChangedListener(OnDateSelectedListener { widget, date, selected ->
+            onSelectionChangeListener?.onSelectionChanged(calendarView.selectedDates.size)
+        })
     }
 
     private fun setupCalendar(minYear: Int, minMonth: Int, maxYear: Int, maxMonth: Int) {
@@ -42,13 +49,13 @@ class CustomCalendarView @JvmOverloads constructor(
 
     private fun setCurrentMonth() {
         val currentDate = CalendarDay.today()
-        calendarView.setCurrentDate(currentDate)
-        calendarView.setSelectedDate(currentDate)
+        calendarView.currentDate = currentDate
+        calendarView.selectedDate = currentDate
     }
 
     fun navigateToMonth(year: Int, month: Int) {
         val targetDate = CalendarDay.from(year, month - 1, 1)
-        calendarView.setCurrentDate(targetDate)
+        calendarView.currentDate = targetDate
     }
 
     fun setOnDateSelectedListener(listener: OnDateSelectedListener) {
@@ -78,4 +85,26 @@ class CustomCalendarView @JvmOverloads constructor(
     fun updateDateRange(minYear: Int, minMonth: Int, maxYear: Int, maxMonth: Int) {
         setupCalendar(minYear, minMonth, maxYear, maxMonth)
     }
+
+    fun setOnSelectionChangeListener(listener: OnSelectionDateChangeListener) {
+        this.onSelectionChangeListener = listener
+    }
+
+    fun getFormattedSelectedDates(): List<String> {
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        return calendarView.selectedDates.map { date ->
+            dateFormat.format(date.date)
+        }
+    }
+
+    // set selected dates
+    fun setSelectedDates(dates: List<Date?>) {
+        val calendarDays = dates.map { date -> CalendarDay.from(date) }
+        clearSelections()
+        calendarDays.forEach { day ->
+            calendarView.setDateSelected(day, true)
+        }
+    }
+
+
 }

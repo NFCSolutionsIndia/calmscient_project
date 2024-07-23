@@ -119,11 +119,12 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            android:id="@+id/tv_monthlyDrinkCount"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/lexendregular"
-                            android:text="40"
+                            android:text=""
                             android:textAlignment="center"
                             android:textColor="@color/black_head"
                             android:textSize="@dimen/_28sdp" />

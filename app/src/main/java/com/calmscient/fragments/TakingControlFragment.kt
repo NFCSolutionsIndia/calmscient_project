@@ -95,11 +95,19 @@ class TakingControlFragment : Fragment() {
 
 
         binding.btnBasicKnowledge.setOnClickListener{
-            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(courseIdBasicKnowledge)
-            loadFragment(basicKnowledgeFragment)
+            if(CommonClass.isNetworkAvailable(requireContext())) {
+                val basicKnowledgeFragment =
+                    BasicKnowledgeFragment.newInstanceBasicKnowledge(courseIdBasicKnowledge)
+                loadFragment(basicKnowledgeFragment)
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
         binding.btnMakeAPlan.setOnClickListener{
             if(CommonClass.isNetworkAvailable(requireContext())){
+
+                SharedPreferencesUtil.saveData(requireContext(),"courseIdMakeAPlan",courseIdMakeAPlan.toString())
                 loadFragment(TakingControlMakeAPlanScreenOneFragment())
             }
             else{
@@ -107,7 +115,14 @@ class TakingControlFragment : Fragment() {
             }
         }
         binding.btnSummary.setOnClickListener {
-            loadFragment(SummaryTakingControlFragment())
+            if(CommonClass.isNetworkAvailable(requireContext())) {
+                val summaryTakingControlFragment =
+                    SummaryTakingControlFragment.newInstance(courseIdSummary)
+                loadFragment(summaryTakingControlFragment)
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
         binding.btnDrinkTracker.setOnClickListener {
             loadFragment(DrinkTrackerFragment())
@@ -137,8 +152,16 @@ class TakingControlFragment : Fragment() {
         }
 
         binding.btnSeeTheInformation.setOnClickListener{
-            val introductionFragment = TakingControlIntroductionFragment.newInstance(getTakingControlIndexResponse,courseIdSeeTheIntro)
-            loadFragment(introductionFragment)
+            if(CommonClass.isNetworkAvailable(requireContext())) {
+                val introductionFragment = TakingControlIntroductionFragment.newInstance(
+                    getTakingControlIndexResponse,
+                    courseIdSeeTheIntro
+                )
+                loadFragment(introductionFragment)
+            }
+            else{
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
         return binding.root
     }

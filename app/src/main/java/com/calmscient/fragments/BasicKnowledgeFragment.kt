@@ -124,7 +124,7 @@ class BasicKnowledgeFragment : Fragment() {
         getBasicKnowledgeIndexDataViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLodaing->
             if(isLodaing)
             {
-                customProgressDialog.show(getString(R.string.loding))
+                customProgressDialog.show(getString(R.string.loading))
             }
             else
             {
