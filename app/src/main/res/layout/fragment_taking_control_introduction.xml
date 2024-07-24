@@ -131,12 +131,13 @@
     </RelativeLayout>
 
     <!--Second Screen-->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/screenTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible"
+        android:layout_marginBottom="@dimen/_40sdp"
         android:layout_marginHorizontal="@dimen/_10sdp">
 
         <TextView
@@ -156,6 +157,7 @@
             android:text="Thank you for willing to talk about the alcohol and drugs. Now let's begin with a brief assessment"
             android:fontFamily="@font/lexendlight"
             android:textSize="@dimen/_14sdp"
+            android:layout_below="@+id/headingText"
             android:textColor="@color/black_head" />
 
         <ImageView
@@ -164,19 +166,29 @@
             android:layout_height="wrap_content"
             android:contentDescription="Bulb Icon"
             android:src="@drawable/ic_bulb_recognize"
+            android:layout_below="@+id/tv_description"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_gravity="end" />
-
-
 
         <com.calmscient.utils.NonSwipeRecyclerView
             android:id="@+id/takingControlScreeningRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/taking_control_screening_bulb_icon"
             android:layout_marginBottom="@dimen/_20sdp"/>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/secondScreenNextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_next_question"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 
     <!--Third Screen -->
     <RelativeLayout

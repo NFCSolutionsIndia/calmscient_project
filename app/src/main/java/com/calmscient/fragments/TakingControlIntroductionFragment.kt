@@ -153,6 +153,14 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         recyclerView = binding.takingControlScreeningRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        binding.secondScreenNextButton.setOnClickListener{
+            currentScreenIndex = 3
+            binding.screenOne.visibility = View.GONE
+            binding.screenTwo.visibility = View.GONE
+            binding.screenThree.visibility = View.VISIBLE
+            binding.screenFour.visibility = View.GONE
+        }
+
         binding.thirdScreenNextButton.setOnClickListener {
             currentScreenIndex = 4
             binding.screenOne.visibility = View.GONE
@@ -160,6 +168,7 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
             binding.screenThree.visibility = View.GONE
             binding.screenFour.visibility = View.VISIBLE
         }
+
 
         binding.takingControlScreeningBulbIcon.setOnClickListener {
             showCustomDialog(requireContext())
@@ -200,6 +209,15 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         }
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+       if(currentScreenIndex == 4)
+       {
+           updateIndexApiCall()
+       }
     }
 
     private fun getScreeningItems(): List<TakingControlScreeningItem> {

@@ -412,10 +412,11 @@
                             android:layout_marginBottom="8dp"
                             android:text="@string/how_to_use"
                             android:fontFamily="@font/lexendregular"
-                            android:background="@drawable/skip_border"
                             android:gravity="center"
                             android:textAllCaps="false"
-                            android:textColor="@color/btn_gradient_color"
+                            android:enabled="false"
+                            android:background="@drawable/button_background_disabled"
+                            android:textColor="@drawable/button_text_color_taking_control"
                             android:textSize="@dimen/_14sdp" />
 
                     </LinearLayout>

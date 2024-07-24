@@ -142,7 +142,8 @@ class BasicKnowledgeFragment : Fragment() {
                             bindDataToRecyclerView(successData.index)
                             checkAllLessonsCompletedOrNot(successData.index)
                         }
-                    })
+                    }
+                )
             }
         })
 
