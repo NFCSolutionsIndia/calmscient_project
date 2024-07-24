@@ -52,40 +52,161 @@
             android:id="@+id/layout_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:orientation="vertical">
 
-            <com.calmscient.utils.NonSwipeRecyclerView
-                android:id="@+id/myDrinkingHabitRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_440sdp"
-                android:orientation="vertical"
-                android:scrollbars="none" />
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lexendlight"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/black_head"/>
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/tv_questionOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_6sdp">
+                android:textSize="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:fontFamily="@font/lexendmedium"
+                android:textColor="@color/black_head"/>
 
-                <ImageView
-                    android:id="@+id/previousQuestion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="16dp"
-                    android:clickable="true"
-                    android:src="@drawable/ic_question_back" />
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:columnCount="2"
+                android:rowCount="3">
 
-                <ImageView
-                    android:id="@+id/nextQuestion"
-                    android:layout_width="wrap_content"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:src="@drawable/ic_next_question" />
-            </RelativeLayout>
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="4dp">
+
+                    <TextView
+                        android:id="@+id/none"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:buttonTint="@color/purple_100"
+                        android:textAlignment="center"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="4dp">
+
+                    <TextView
+                        android:id="@+id/lessThanTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:buttonTint="@color/purple_100"
+                        android:textAlignment="center"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="4dp">
+
+                    <TextView
+                        android:id="@+id/threeToFive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:buttonTint="@color/purple_100"
+                        android:textAlignment="center"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="4dp">
+
+                    <TextView
+                        android:id="@+id/almostEveryday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:buttonTint="@color/purple_100"
+                        android:textAlignment="center"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="4dp">
+
+                    <TextView
+                        android:id="@+id/everyday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendlight"
+                        android:buttonTint="@color/purple_100"
+                        android:textAlignment="center"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_12sdp" />
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
+
+
         </LinearLayout>
 
+
+        <RelativeLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_6sdp">
+
+            <ImageView
+                android:id="@+id/previousQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:clickable="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_question_back" />
+
+            <ImageView
+                android:id="@+id/nextQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_next_question" />
+        </RelativeLayout>
 
     </LinearLayout>
 </LinearLayout>

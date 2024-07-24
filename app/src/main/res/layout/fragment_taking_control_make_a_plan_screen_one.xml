@@ -73,7 +73,7 @@ Have you thought about the pros and cons of doing so?"/>
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp" />
 
-            <com.calmscient.utils.NonSwipeRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/prosRecyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -84,9 +84,11 @@ Have you thought about the pros and cons of doing so?"/>
                 app:cardCornerRadius="4dp">
 
                 <LinearLayout
+                    android:id="@+id/pros_others"
                     android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -108,6 +110,7 @@ Have you thought about the pros and cons of doing so?"/>
                         android:gravity="top"
                         android:inputType="textMultiLine"
                         android:lines="5"
+                        android:clickable="true"
                         android:overScrollMode="always"
                         android:textCursorDrawable="@null" />
                 </LinearLayout>
@@ -125,7 +128,7 @@ Have you thought about the pros and cons of doing so?"/>
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_14sdp" />
 
-            <com.calmscient.utils.NonSwipeRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/consRecyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -136,9 +139,11 @@ Have you thought about the pros and cons of doing so?"/>
                 app:cardCornerRadius="4dp">
 
                 <LinearLayout
+                    android:id="@+id/cons_others"
                     android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -160,6 +165,7 @@ Have you thought about the pros and cons of doing so?"/>
                         android:gravity="top"
                         android:inputType="textMultiLine"
                         android:lines="5"
+                        android:clickable="true"
                         android:overScrollMode="always"
                         android:textCursorDrawable="@null" />
                 </LinearLayout>

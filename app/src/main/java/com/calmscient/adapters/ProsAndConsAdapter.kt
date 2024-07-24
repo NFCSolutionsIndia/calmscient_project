@@ -24,6 +24,7 @@ import com.calmscient.di.remote.ProsItem
 class ProsAndConsAdapter(private val items: List<ProdAndConsItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
+
     override fun getItemViewType(position: Int): Int {
         return items[position].type
     }
@@ -46,6 +47,15 @@ class ProsAndConsAdapter(private val items: List<ProdAndConsItem>) : RecyclerVie
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun getSelectedPosition(): Int = selectedPosition
+    fun getItem(position: Int): ProdAndConsItem? {
+        return items.getOrNull(position)
+    }
+    fun clearSelection() {
+        selectedPosition = RecyclerView.NO_POSITION
+        notifyDataSetChanged()
+    }
 
     inner class ProsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView: TextView = itemView.findViewById(R.id.tv_name)

@@ -36,7 +36,7 @@ class MyDrinkingHabitAdapter(val context: Context,private val items: MutableList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_TYPE_A -> {
+            /*VIEW_TYPE_TYPE_A -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.fragment_my_drinking_habit_screen_one, parent, false)
                 TypeViewHolderOne(view)
@@ -60,7 +60,7 @@ class MyDrinkingHabitAdapter(val context: Context,private val items: MutableList
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.fragment_my_drinking_habit_screen_five, parent, false)
                 TypeViewHolderFive(view)
-            }
+            }*/
 
             else -> throw IllegalArgumentException("Invalid view type")
         }

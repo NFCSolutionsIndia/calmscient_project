@@ -23,6 +23,8 @@ import com.calmscient.di.remote.request.GetTakingControlSummaryRequest
 import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
 import com.calmscient.di.remote.request.MyDrinkingHabitRequest
 import com.calmscient.di.remote.request.SaveAlcoholFreeDayRequest
+import com.calmscient.di.remote.request.SaveCourseJournalEntryMakeAPlanRequest
+import com.calmscient.di.remote.request.SaveMyDrinkingHabitAnswerRequest
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionWrapper
@@ -40,6 +42,8 @@ import com.calmscient.di.remote.response.GetTakingControlSummaryResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.MyDrinkingHabitResponse
 import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
+import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
+import com.calmscient.di.remote.response.SaveMyDrinkingHabitAnswerResponse
 import com.calmscient.di.remote.response.SavePatientMoodResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.SendNotificationToDoctorMakeAPlanResponse
@@ -113,6 +117,16 @@ class TakingControlRepository @Inject constructor(private val apiService: ApiSer
     fun getTakingControlSummaryData(getTakingControlSummaryRequest: GetTakingControlSummaryRequest,accessToken: String): Call<GetTakingControlSummaryResponse>
     {
         return apiService.getTakingControlSummaryData("Bearer $accessToken", getTakingControlSummaryRequest)
+    }
+
+    fun saveCourseJournalEntryMakeAPlan(saveCourseJournalEntryMakeAPlanRequest: SaveCourseJournalEntryMakeAPlanRequest, accessToken: String): Call<SaveCourseJournalEntryMakeAPlanResponse>
+    {
+        return apiService.saveCourseJournalEntry("Bearer $accessToken",saveCourseJournalEntryMakeAPlanRequest)
+    }
+
+    fun saveMyDrinkHabitAnswer(saveMyDrinkingHabitAnswerRequest: SaveMyDrinkingHabitAnswerRequest, accessToken: String): Call<SaveMyDrinkingHabitAnswerResponse>
+    {
+        return apiService.saveMyDrinkHabitAnswer("Bearer $accessToken",saveMyDrinkingHabitAnswerRequest)
     }
 
 }

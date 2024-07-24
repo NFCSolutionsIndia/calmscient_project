@@ -32,6 +32,8 @@ import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.request.PatientMoodRequest
 import com.calmscient.di.remote.request.SaveAlcoholFreeDayRequest
+import com.calmscient.di.remote.request.SaveCourseJournalEntryMakeAPlanRequest
+import com.calmscient.di.remote.request.SaveMyDrinkingHabitAnswerRequest
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SavePatientMoodWrapper
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
@@ -70,6 +72,8 @@ import com.calmscient.di.remote.response.MyDrinkingHabitResponse
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
 import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
+import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
+import com.calmscient.di.remote.response.SaveMyDrinkingHabitAnswerResponse
 import com.calmscient.di.remote.response.SavePatientMoodResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.ScreeningAssignmentResponse
@@ -236,5 +240,11 @@ interface ApiService {
     //Summary
     @POST("patients/api/v1/takingControl/getTakingControlSummary")
     fun getTakingControlSummaryData(@Header("Authorization")accessToken: String, @Body request: GetTakingControlSummaryRequest) : Call<GetTakingControlSummaryResponse>
+
+    @POST("patients/api/v1/patientDetails/saveCourseJournalEntry")
+    fun saveCourseJournalEntry(@Header("Authorization")accessToken: String, @Body request: SaveCourseJournalEntryMakeAPlanRequest): Call<SaveCourseJournalEntryMakeAPlanResponse>
+
+    @POST("patients/api/v1/takingControl/saveBasicKnowledgeCourse")
+    fun saveMyDrinkHabitAnswer(@Header("Authorization")accessToken: String, @Body request:SaveMyDrinkingHabitAnswerRequest): Call<SaveMyDrinkingHabitAnswerResponse>
 }
 

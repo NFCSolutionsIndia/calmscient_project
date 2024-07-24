@@ -11,29 +11,53 @@
 
 package com.calmscient.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
 import com.calmscient.adapters.ProsAndConsAdapter
 import com.calmscient.databinding.FragmentTakingControlMakeAPlanScreenOneBinding
 import com.calmscient.di.remote.ConsItem
 import com.calmscient.di.remote.ProsItem
+import com.calmscient.di.remote.request.JournalEntry
+import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.NonSwipeRecyclerView
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.SaveCourseJournalEntryMakeAPlanViewModel
 
 
 class TakingControlMakeAPlanScreenOneFragment : Fragment() {
 
     private lateinit var binding :FragmentTakingControlMakeAPlanScreenOneBinding
-    private lateinit var prosRecyclerView: NonSwipeRecyclerView
-    private lateinit var consRecyclerView: NonSwipeRecyclerView
+    private lateinit var prosRecyclerView: RecyclerView
+    private lateinit var consRecyclerView: RecyclerView
 
     private lateinit var prosAdapter: ProsAndConsAdapter
     private lateinit var consAdapter: ProsAndConsAdapter
+
+    private val saveCourseJournalEntryMakeAPlanViewModel : SaveCourseJournalEntryMakeAPlanViewModel by activityViewModels()
+    private lateinit var saveCourseJournalEntryMakeAPlanResponse : SaveCourseJournalEntryMakeAPlanResponse
+
+    private var journalEntryList: List<JournalEntry> = emptyList()
+
+    private var loginResponse : LoginResponse? = null
+    private  lateinit var accessToken : String
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,11 +66,19 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentTakingControlMakeAPlanScreenOneBinding.inflate(inflater,container,false)
+
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonDialog = CommonAPICallDialog(requireContext())
+
+        val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
+        accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
 
         prosRecyclerView = binding.prosRecyclerview
         consRecyclerView = binding.consRecyclerview
@@ -77,6 +109,22 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
 
         binding.btnQuitCut.setOnClickListener{
             loadFragment(TakingControlMakeAPlanScreenTwoFragment())
+        }
+
+        binding.yesButton.setOnClickListener{
+            saveJournalEntryAPICall()
+            saveJournalEntryObserveViewModel()
+        }
+
+
+        binding.etPros.setOnClickListener {
+            prosAdapter.clearSelection()
+            binding.prosRecyclerview.adapter?.notifyDataSetChanged()
+        }
+
+        binding.etCons.setOnClickListener {
+            consAdapter.clearSelection()
+            binding.consRecyclerview.adapter?.notifyDataSetChanged()
         }
 
         return binding.root
@@ -110,6 +158,65 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    private fun saveJournalEntryAPICall() {
+        saveCourseJournalEntryMakeAPlanViewModel.clear()
+
+        val selectedProsPosition = prosAdapter.getSelectedPosition()
+        val selectedConsPosition = consAdapter.getSelectedPosition()
+
+        val enteredProsText = binding.etPros.text.toString().trim()
+        val enteredConsText = binding.etCons.text.toString().trim()
+
+        if (selectedProsPosition != RecyclerView.NO_POSITION || selectedConsPosition != RecyclerView.NO_POSITION || enteredProsText.isNotEmpty() || enteredConsText.isNotEmpty()) {
+            val selectedProsItem = (prosAdapter.getItem(selectedProsPosition) as? ProsItem)?.name
+            val selectedConsItem = (consAdapter.getItem(selectedConsPosition) as? ConsItem)?.name
+
+            journalEntryList = listOf(
+                JournalEntry(selectedProsItem ?: enteredProsText),
+                JournalEntry(selectedConsItem ?: enteredConsText)
+            )
+
+            Log.d("journalEntryList","$journalEntryList")
+
+            if(journalEntryList.isNotEmpty())
+            {
+                loginResponse?.loginDetails?.let {
+                    saveCourseJournalEntryMakeAPlanViewModel.saveCourseJournalEntryMakeAPlan(
+                        it.clientID, it.patientLocationID, journalEntryList, accessToken
+                    )
+                }
+            }
+        } else {
+            Toast.makeText(requireContext(), "Please answer the questions", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun saveJournalEntryObserveViewModel() {
+        saveCourseJournalEntryMakeAPlanViewModel.loadingLiveData.observe(viewLifecycleOwner,
+            Observer { isLoading ->
+                if (isLoading) {
+                    customProgressDialog.show(getString(R.string.loading))
+                } else {
+                    customProgressDialog.dialogDismiss()
+                }
+            }
+        )
+
+        saveCourseJournalEntryMakeAPlanViewModel.successLiveData.observe(viewLifecycleOwner,
+            Observer { isSuccess ->
+                if (isSuccess) {
+                    saveCourseJournalEntryMakeAPlanViewModel.saveResponseLiveData.observe(viewLifecycleOwner,
+                        Observer { successData ->
+                            if (successData != null) {
+                                commonDialog.showDialog(successData.response.responseMessage)
+                            }
+                        }
+                    )
+                }
+            }
+        )
     }
 
 

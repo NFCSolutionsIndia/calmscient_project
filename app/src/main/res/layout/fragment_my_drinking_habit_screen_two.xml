@@ -4,13 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/_10sdp"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/takingControl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/back_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/lexendmedium"
+            android:text="Basic knowledge"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_16sdp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/viewbackgroundcolor" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp">
 
         <!-- Main Text -->
         <TextView
@@ -85,18 +118,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:fontFamily="@font/lexendmedium"
         android:text="@string/what_kind_of_alcohol_do_you_drink_each_time_and_how_much"
         android:textColor="@color/black_head"
         android:textSize="@dimen/_14sdp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/drinkTrackerRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2" />
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/drinkTrackerRecyclerView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/_10sdp"
+              android:layout_marginBottom="@dimen/_30sdp"
+              android:layout_marginHorizontal="@dimen/_10sdp"
+              app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+              app:spanCount="2"/>
+
+          <RelativeLayout
+              android:id="@+id/buttonLayout"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/_50sdp"
+              android:layout_marginBottom="@dimen/_50sdp"
+              android:layout_marginTop="@dimen/_6sdp">
+
+              <ImageView
+                  android:id="@+id/previousQuestion"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentStart="true"
+                  android:layout_marginStart="16dp"
+                  android:clickable="true"
+                  android:layout_alignParentBottom="true"
+                  android:src="@drawable/ic_question_back" />
+
+              <ImageView
+                  android:id="@+id/nextQuestion"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentEnd="true"
+                  android:layout_marginEnd="16dp"
+                  android:clickable="true"
+                  android:layout_alignParentBottom="true"
+                  android:src="@drawable/ic_next_question" />
+          </RelativeLayout>
+
+      </LinearLayout>
+
+  </ScrollView>
+
 
 </LinearLayout>
