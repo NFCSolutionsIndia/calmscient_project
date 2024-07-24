@@ -110,11 +110,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1.5"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:background="@color/grey_light"
                         android:fontFamily="@font/lexendlight"
-                        android:gravity="bottom|center"
+                        android:gravity="center"
                         android:text="9"
-                        android:textAlignment="gravity"
+                        android:textAlignment="center"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_23sdp" />
 
@@ -124,7 +125,7 @@
                         android:layout_weight="1"
                         android:background="@color/grey_light"
                         android:fontFamily="@font/lexendlight"
-                        android:gravity="bottom"
+                        android:gravity="center_vertical"
                         android:text="@string/days"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_12sdp" />

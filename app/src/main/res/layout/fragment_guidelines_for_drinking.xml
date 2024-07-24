@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~
-  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
-  ~      All source code contained herein remains the property of NFC Solutions Incorporated
-  ~      and protected by trade secret or copyright law of USA.
-  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
-  ~      there is a prior written permission or license agreement from NFC Solutions.
-  ~
-  ~      Author : @Pardha Saradhi
-  -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.GuidelinesForDrinkingFragment"
     android:orientation="vertical">
-
-
 
     <RelativeLayout
         android:id="@+id/basicKnowledge"
@@ -62,7 +50,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="@color/purple_100"
             android:text="@string/what_are_the_u_s_guidelines_for_drinking"
             android:layout_marginTop="@dimen/_5sdp"
@@ -83,23 +71,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black_head"
-            android:text="There are some adults who should not drink alcohol, such as women who are pregnant.  Adults who choose to drink, and are not among the individuals listed below who should not drink, are encouraged to limit daily consumption of alcohol to align with the Dietary Guidelines."
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/lexendlight"
-            android:textSize="@dimen/_12sdp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black_head"
-            android:text="People who do not drink should not start drinking for any reason."
+            android:text="There are some adults who should not drink alcohol, such as women who are pregnant.  Adults who choose to drink, and are not among the individuals listed below who should not drink, are encouraged to limit daily consumption of alcohol to align with the Dietary Guidelines.People who do not drink should not start drinking for any reason."
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/lexendlight"
             android:textSize="@dimen/_12sdp"/>
 
     </LinearLayout>
-
-
-
 
 </LinearLayout>

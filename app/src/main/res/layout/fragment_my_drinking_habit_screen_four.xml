@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/main_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/now_let_s_see_what_drinking_habits_do_you_have"
         android:fontFamily="@font/lexendlight"

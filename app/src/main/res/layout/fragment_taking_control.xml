@@ -443,6 +443,17 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/tv_resource"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:fontFamily="@font/lexendregular"
+                        android:text="@string/resources"
+                        android:textColor="@color/black_head"
+                        android:textSize="@dimen/_14sdp" />
+
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_140sdp"

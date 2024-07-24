@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~
-  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
-  ~      All source code contained herein remains the property of NFC Solutions Incorporated
-  ~      and protected by trade secret or copyright law of USA.
-  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
-  ~      there is a prior written permission or license agreement from NFC Solutions.
-  ~
-  ~      Author : @Pardha Saradhi
-  -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -63,7 +53,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:textColor="@color/purple_100"
                 android:text="@string/what_s_a_standard_drink"
                 android:layout_marginTop="@dimen/_5sdp"

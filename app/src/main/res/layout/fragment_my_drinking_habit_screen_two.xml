@@ -1,14 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~
-  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
-  ~      All source code contained herein remains the property of NFC Solutions Incorporated
-  ~      and protected by trade secret or copyright law of USA.
-  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
-  ~      there is a prior written permission or license agreement from NFC Solutions.
-  ~
-  ~      Author : @Pardha Saradhi
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -27,23 +17,23 @@
             android:id="@+id/main_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/now_let_s_see_what_drinking_habits_do_you_have"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_80sdp"
             android:fontFamily="@font/lexendlight"
-            android:textSize="@dimen/_12sdp"
-            android:textColor="@color/black_head"/>
+            android:text="@string/now_let_s_see_what_drinking_habits_do_you_have"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_12sdp" />
 
         <!-- Right Container -->
         <LinearLayout
             android:id="@+id/right_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/_40sdp">
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:orientation="vertical">
 
             <!-- Total Label -->
             <TextView
@@ -61,11 +51,11 @@
                 android:id="@+id/count_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/count"
                 android:layout_gravity="right"
                 android:fontFamily="@font/lexendlight"
-                android:textSize="@dimen/_8sdp"
-                android:textColor="#8F8C8C"/>
+                android:text="@string/count"
+                android:textColor="#8F8C8C"
+                android:textSize="@dimen/_8sdp" />
         </LinearLayout>
 
         <!-- Number Label -->
@@ -73,34 +63,40 @@
             android:id="@+id/tv_totalCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/right_container"
             android:layout_alignParentEnd="true"
-            android:gravity="center"
-
-            android:textSize="@dimen/_10sdp"
-            android:textColor="@color/black_head"
-            android:fontFamily="@font/lexendsemibold"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/right_container"
             android:background="@drawable/count_bg"
-            android:layout_marginEnd="8dp"/>
+            android:fontFamily="@font/lexendsemibold"
+            android:gravity="center"
+            android:textColor="@color/black_head"
+            android:textSize="@dimen/_10sdp" />
     </RelativeLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:background="@color/viewbackgroundcolor" />
 
     <TextView
         android:id="@+id/tv_questionTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/what_kind_of_alcohol_do_you_drink_each_time_and_how_much"
-        android:textSize="@dimen/_14sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:fontFamily="@font/lexendmedium"
-        android:textColor="@color/black_head"/>
+        android:text="@string/what_kind_of_alcohol_do_you_drink_each_time_and_how_much"
+        android:textColor="@color/black_head"
+        android:textSize="@dimen/_14sdp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/drinkTrackerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"/>
+        app:spanCount="2" />
 
 </LinearLayout>
