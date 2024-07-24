@@ -28,6 +28,7 @@ import com.calmscient.databinding.FragmentTakingControlBinding
 import com.calmscient.di.remote.response.CourseLists
 import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
+import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
@@ -36,6 +37,7 @@ import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.GetDrinkTrackerViewModel
 import com.calmscient.viewmodels.GetTakingControlIndexViewModel
+import com.calmscient.viewmodels.GetTakingControlIntroductionViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -57,10 +59,15 @@ class TakingControlFragment : Fragment() {
     private  var courseIdEventTracker : Int = 0
     private  var courseIdSeeTheIntro : Int = 0
     private  var courseIdHowToUse : Int = 0
+    private var flag : Int = -1
 
 
     private val getDrinkTrackerViewModel: GetDrinkTrackerViewModel by activityViewModels()
     private lateinit var drinkTrackerResponse: DrinkTrackerResponse
+
+    private val getTakingControlIntroductionViewModel: GetTakingControlIntroductionViewModel by activityViewModels()
+    private lateinit var getTakingControlIntroductionResponse: GetTakingControlIntroductionResponse
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -179,7 +186,6 @@ class TakingControlFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //loadFragmentWithDelay(TakingControlIntroductionFragment())
     }
 
 
@@ -282,6 +288,7 @@ class TakingControlFragment : Fragment() {
 
                             Log.d("TCI","$getTakingControlIndexResponse")
                             bindUIData(getTakingControlIndexResponse)
+                            introductionApiCall()
                         }
                     })
             }
@@ -375,6 +382,7 @@ class TakingControlFragment : Fragment() {
                     binding.btnSeeTheInformation.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)
                     courseIdSeeTheIntro = course.courseId
+
                 }
                 getString(R.string.how_to_use) -> {
                     binding.btnHowToUse.isEnabled = course.isEnable == 1
@@ -393,6 +401,52 @@ class TakingControlFragment : Fragment() {
             null
         }
         button.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+    }
+
+    private fun introductionApiCall() {
+        loginResponse?.loginDetails?.let {
+            getTakingControlIntroductionViewModel.getTakingControlIntroductionData(
+                it.clientID, it.patientID, it.patientLocationID, accessToken
+            )
+        }
+        observeIntroductionData()
+    }
+
+    private fun observeIntroductionData() {
+        getTakingControlIntroductionViewModel.loadingLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isLoading ->
+                if (isLoading) {
+                    customProgressDialog.show("Loading")
+                } else {
+                    customProgressDialog.dialogDismiss()
+                }
+            })
+
+        getTakingControlIntroductionViewModel.successLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isSuccess ->
+                if (isSuccess) {
+                    getTakingControlIntroductionViewModel.saveResponseLiveData.observe(
+                        viewLifecycleOwner,
+                        Observer { successData ->
+                            if (successData != null) {
+                                getTakingControlIntroductionResponse = successData
+
+                                if(getTakingControlIntroductionResponse.takingControlIntroduction.tutorialFlag == 0)
+                                {
+                                    val introductionFragment = TakingControlIntroductionFragment.newInstance(
+                                        getTakingControlIndexResponse,
+                                        courseIdSeeTheIntro
+                                    )
+                                    loadFragmentWithDelay(introductionFragment)
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+        )
     }
 
 
