@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_marginBottom="@dimen/_20sdp"
+    android:orientation="vertical"
     tools:context=".fragments.TakingControlFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/takingControl"
             android:layout_width="match_parent"
@@ -39,6 +40,7 @@
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_16sdp" />
         </RelativeLayout>
+
         <View
             android:layout_width="wrap_content"
             android:layout_height="1dp"
@@ -47,9 +49,10 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:weightSum="2"
             android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
+
             <RelativeLayout
                 android:id="@+id/alcoholtextlayout"
                 android:layout_width="wrap_content"
@@ -64,18 +67,20 @@
                     android:layout_centerInParent="true"
                     android:clickable="true"
                     android:fontFamily="@font/lexendregular"
-                    android:text="Drinking"
+                    android:text="@string/drinking_control"
                     android:textColor="@color/example_7_button"
                     android:textSize="@dimen/_13sdp" />
+
                 <View
                     android:id="@+id/viewalcohol"
                     android:layout_width="200dp"
                     android:layout_height="4dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_below="@+id/alcoholtext"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:background="@color/example_7_button" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/substancelayout"
                 android:layout_width="wrap_content"
@@ -89,16 +94,17 @@
                     android:layout_centerInParent="true"
                     android:clickable="true"
                     android:fontFamily="@font/lexendregular"
-                    android:text="Smoking"
+                    android:text="@string/smoking_control"
                     android:textColor="@color/grey_view"
                     android:textSize="16dp" />
+
                 <View
                     android:id="@+id/viewsubstance"
                     android:layout_width="200dp"
                     android:layout_height="4dp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_below="@+id/substancetext"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:background="@color/viewbackgroundcolor" />
             </RelativeLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -106,36 +112,145 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:id="@+id/alcohollayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="visible">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_drinkCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lexendregular"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_14sdp">
+
+                        </TextView>
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:layout_marginBottom="10dp"
+                        android:weightSum="2">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_2sdp"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="#F5F5F5"
+                            app:cardCornerRadius="10dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="15dp"
+                                android:src="@drawable/ic_now" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_50sdp"
+                                android:layout_marginTop="@dimen/_17sdp"
+                                android:fontFamily="@font/lexendregular"
+                                android:text="@string/taking_control_now"
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_drinkCountNowDays"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_30sdp"
+                                android:layout_marginTop="60dp"
+                                android:fontFamily="@font/lexendmedium"
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_14sdp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_2sdp"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="#F5F5F5"
+                            app:cardCornerRadius="10dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="15dp"
+                                android:src="@drawable/ic_goal" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_45sdp"
+                                android:layout_marginTop="@dimen/_17sdp"
+                                android:fontFamily="@font/lexendregular"
+                                android:text="@string/taking_control_goal"
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_drinkCountGoalDays"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_25sdp"
+                                android:layout_marginTop="60dp"
+                                android:fontFamily="@font/lexendmedium"
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_14sdp" />
+                        </androidx.cardview.widget.CardView>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/_10sdp">
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/tv_alcoholFreeDays"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_gravity="center"
                             android:layout_marginHorizontal="@dimen/_20sdp"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:layout_weight="1"
                             android:fontFamily="@font/lexendregular"
-                            android:textSize="@dimen/_14sdp"
-                            android:textColor="@color/black_head">
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_14sdp">
 
                         </TextView>
                     </RelativeLayout>
+
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -166,10 +281,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_50sdp"
                                 android:layout_marginTop="@dimen/_17sdp"
-                                android:text="@string/taking_control_now"
                                 android:fontFamily="@font/lexendregular"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head"/>
+                                android:text="@string/taking_control_now"
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_12sdp" />
 
                             <TextView
                                 android:id="@+id/tv_alcoholNowDays"
@@ -178,8 +293,8 @@
                                 android:layout_marginStart="@dimen/_35sdp"
                                 android:layout_marginTop="60dp"
                                 android:fontFamily="@font/lexendmedium"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head" />
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_14sdp" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
@@ -205,10 +320,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_45sdp"
                                 android:layout_marginTop="@dimen/_17sdp"
-                                android:text="@string/taking_control_goal"
                                 android:fontFamily="@font/lexendregular"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head" />
+                                android:text="@string/taking_control_goal"
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_12sdp" />
 
                             <TextView
                                 android:id="@+id/tv_alcoholGoalDays"
@@ -217,232 +332,142 @@
                                 android:layout_marginStart="@dimen/_30sdp"
                                 android:layout_marginTop="60dp"
                                 android:fontFamily="@font/lexendmedium"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head" />
+                                android:textColor="@color/black_head"
+                                android:textSize="@dimen/_14sdp" />
                         </androidx.cardview.widget.CardView>
                     </androidx.appcompat.widget.LinearLayoutCompat>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_drinkCount"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/lexendregular"
-                            android:textSize="@dimen/_14sdp"
-                            android:textColor="@color/black_head">
 
-                        </TextView>
-                    </RelativeLayout>
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_marginBottom="10dp"
-                        android:weightSum="2">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="140dp"
-                            android:layout_height="100dp"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_marginBottom="@dimen/_2sdp"
-                            android:layout_weight="1"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="10dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="15dp"
-                                android:src="@drawable/ic_now" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_17sdp"
-                                android:layout_marginStart="@dimen/_50sdp"
-                                android:text="@string/taking_control_now"
-                                android:fontFamily="@font/lexendregular"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head"/>
-
-                            <TextView
-                                android:id="@+id/tv_drinkCountNowDays"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="60dp"
-                                android:layout_marginStart="@dimen/_30sdp"
-                                android:fontFamily="@font/lexendmedium"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="140dp"
-                            android:layout_height="100dp"
-                            android:layout_marginHorizontal="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_2sdp"
-                            android:layout_weight="1"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="10dp">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginTop="15dp"
-                                android:src="@drawable/ic_goal" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_17sdp"
-                                android:layout_marginStart="@dimen/_45sdp"
-                                android:text="@string/taking_control_goal"
-                                android:fontFamily="@font/lexendregular"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head"/>
-
-                            <TextView
-                                android:id="@+id/tv_drinkCountGoalDays"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="60dp"
-                                android:layout_marginStart="@dimen/_25sdp"
-                                android:fontFamily="@font/lexendmedium"
-                                android:textSize="@dimen/_14sdp"
-                                android:textColor="@color/black_head" />
-                        </androidx.cardview.widget.CardView>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:orientation="vertical">
+
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_basicKnowledge"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="@string/basic_knowledge"
                             android:background="@drawable/button_background_disabled"
-                            android:textColor="@drawable/button_text_color_taking_control"
-                            android:gravity="center"
+                            android:enabled="false"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/basic_knowledge"
                             android:textAllCaps="false"
-                            android:textSize="@dimen/_14sdp"
-                            android:enabled="false" />
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:textSize="@dimen/_14sdp" />
+
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_makeAPlan"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/make_a_plan"
-                            android:fontFamily="@font/lexendregular"
                             android:background="@drawable/button_background_disabled"
-                            android:textColor="@drawable/button_text_color_taking_control"
-                            android:gravity="center"
+                            android:enabled="false"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/make_a_plan"
                             android:textAllCaps="false"
-                            android:textSize="@dimen/_14sdp"
-                            android:enabled="false"/>
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:textSize="@dimen/_14sdp" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_summary"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/lexendregular"
-                            android:text="@string/summary"
-                            android:gravity="center"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/_14sdp"
                             android:background="@drawable/button_background_disabled"
+                            android:enabled="false"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/summary"
+                            android:textAllCaps="false"
                             android:textColor="@drawable/button_text_color_taking_control"
-                            android:enabled="false"/>
+                            android:textSize="@dimen/_14sdp" />
+
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_drinkTracker"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:text="@string/drink_tracker"
                             android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/lexendregular"
-                            android:gravity="center"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/_14sdp"
                             android:background="@drawable/button_background_disabled"
+                            android:enabled="false"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/drink_tracker"
+                            android:textAllCaps="false"
                             android:textColor="@drawable/button_text_color_taking_control"
-                            android:enabled="false"/>
+                            android:textSize="@dimen/_14sdp" />
+
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_eventTracker"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/event_tracker"
-                            android:fontFamily="@font/lexendregular"
-                            android:gravity="center"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/_14sdp"
                             android:background="@drawable/button_background_disabled"
+                            android:enabled="false"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/event_tracker"
+                            android:textAllCaps="false"
                             android:textColor="@drawable/button_text_color_taking_control"
-                            android:enabled="false"/>
+                            android:textSize="@dimen/_14sdp" />
+
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_seeTheInformation"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
-                            android:fontFamily="@font/lexendregular"
-                            android:gravity="center"
-                            android:textAllCaps="false"
-                            android:text="@string/see_the_introduction"
                             android:background="@drawable/button_background_disabled"
-                            android:textColor="@drawable/button_text_color_taking_control"
                             android:enabled="false"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/see_the_introduction"
+                            android:textAllCaps="false"
+                            android:textColor="@drawable/button_text_color_taking_control"
                             android:textSize="@dimen/_14sdp" />
+
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_howToUse"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/how_to_use"
+                            android:background="@drawable/skip_border"
                             android:fontFamily="@font/lexendregular"
-                            android:gravity="center"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/how_to_use"
                             android:textAllCaps="false"
-                            android:enabled="false"
-                            android:background="@drawable/button_background_disabled"
-                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:textColor="@color/btn_gradient_color"
                             android:textSize="@dimen/_14sdp" />
 
                     </LinearLayout>
+
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_140sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginHorizontal="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         app:cardCornerRadius="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp">
+                        app:cardElevation="@dimen/_5sdp">
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/white"
-                            android:weightSum="2"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
                             <androidx.cardview.widget.CardView
                                 android:id="@+id/medicationsCard"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:clickable="true"
+                                android:layout_margin="15dp"
                                 android:layout_weight="1"
+                                android:clickable="true"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardCornerRadius="10dp"
-                                android:layout_margin="15dp"
                                 app:cardElevation="@dimen/_15sdp">
 
                                 <ImageView
@@ -452,34 +477,38 @@
                                     android:scaleType="centerCrop"
                                     android:src="@drawable/ic_takingcontrol" />
                             </androidx.cardview.widget.CardView>
+
                             <RelativeLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:layout_weight="1">
+
                                 <TextView
                                     android:id="@+id/text1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/taking_control_texttile"
                                     android:layout_toRightOf="@+id/medicationsCard"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:textSize="@dimen/_13sdp"
+                                    android:text="@string/taking_control_texttile"
                                     android:textColor="@color/black_head"
-                                    tools:ignore="NotSibling"/>
+                                    android:textSize="@dimen/_13sdp"
+                                    tools:ignore="NotSibling" />
+
                                 <TextView
                                     android:id="@+id/text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/text1"
-                                    android:text="@string/taking_control_text"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/montserratmedium"
+                                    android:text="@string/taking_control_text"
                                     android:textColor="#575757"
                                     android:textSize="14dp" />
                             </RelativeLayout>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/needToTalkWithSomeOne"
                         android:layout_width="match_parent"
@@ -488,15 +517,16 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:layout_marginBottom="@dimen/_40sdp"
                         android:background="@drawable/button_border"
+                        android:fontFamily="@font/lexendregular"
                         android:text="@string/need_to_talk"
                         android:textAlignment="center"
                         android:textAllCaps="false"
-                        android:fontFamily="@font/lexendregular"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14sdp"/>
+                        android:textSize="@dimen/_14sdp" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+
         <LinearLayout
             android:id="@+id/substancelayouttext"
             android:layout_width="wrap_content"
@@ -504,23 +534,24 @@
             android:layout_gravity="center"
             android:orientation="horizontal"
             android:visibility="gone">
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_100sdp">
+                android:layout_marginTop="@dimen/_100sdp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_100sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:text="No Data"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="30sp">
-                </TextView>
+                    android:textSize="30sp"
+                    android:textStyle="bold"></TextView>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

@@ -1609,7 +1609,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="taking_control_alcohol">Alcohol</string>
     <string name="taking_control_alcoholfeedays">Alcohol free days</string>
     <string name="taking_control_now">Now</string>
-    <string name="taking_control_goal">Goal</string>
+    <string name="taking_control_goal">Monthly Goal</string>
     <string name="taking_control_7_days">7 days</string>
     <string name="taking_control_10_days">10 days</string>
     <string name="taking_control_drink_count">Drink counts</string>
@@ -2216,5 +2216,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="dec">Dec</string>
     <string name="all">All</string>
     <string name="set">Set</string>
+    <string name="drinking_control">Drinking Control</string>
+    <string name="smoking_control">Smoking Control</string>
 
 </resources>
