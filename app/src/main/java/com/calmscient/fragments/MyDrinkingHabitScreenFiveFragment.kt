@@ -66,11 +66,9 @@ class MyDrinkingHabitScreenFiveFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
         }
     }
 
@@ -110,11 +108,9 @@ class MyDrinkingHabitScreenFiveFragment : Fragment() {
         }
 
         binding.backIcon.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
         }
         binding.previousQuestion.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()

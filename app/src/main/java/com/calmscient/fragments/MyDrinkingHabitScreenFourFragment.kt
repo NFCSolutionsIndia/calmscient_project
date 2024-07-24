@@ -56,10 +56,9 @@ class MyDrinkingHabitScreenFourFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
         }
     }
 
@@ -78,10 +77,9 @@ class MyDrinkingHabitScreenFourFragment : Fragment() {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
         binding.backIcon.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
         }
 
         if (CommonClass.isNetworkAvailable(requireContext())) {

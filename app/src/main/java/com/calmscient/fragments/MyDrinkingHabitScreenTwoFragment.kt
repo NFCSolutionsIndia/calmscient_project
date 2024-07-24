@@ -68,8 +68,9 @@ class MyDrinkingHabitScreenTwoFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
         }
     }
 
@@ -101,8 +102,9 @@ class MyDrinkingHabitScreenTwoFragment : Fragment() {
         }
 
         binding.backIcon.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-            requireActivity().supportFragmentManager.popBackStack()
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
         }
 
         binding.previousQuestion.setOnClickListener{

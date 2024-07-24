@@ -69,7 +69,9 @@ class MyDrinkingHabitFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-               loadFragment(BasicKnowledgeFragment())
+                val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+                val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+                loadFragment(basicKnowledgeFragment)
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -124,8 +126,9 @@ class MyDrinkingHabitFragment : Fragment() {
 
 
         binding.backIcon.setOnClickListener {
-            //loadFragment(ManageAnxietyFragment())
-            requireActivity().supportFragmentManager.popBackStack()
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
         }
 
         binding.nextQuestion.setOnClickListener {

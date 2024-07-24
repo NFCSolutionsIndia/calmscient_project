@@ -103,7 +103,9 @@ class TakingControlFragment : Fragment() {
 
         binding.btnBasicKnowledge.setOnClickListener{
             if(CommonClass.isNetworkAvailable(requireContext())) {
-                val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(courseIdBasicKnowledge)
+
+                val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+                val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
                 loadFragment(basicKnowledgeFragment)
             }
             else{
@@ -351,6 +353,8 @@ class TakingControlFragment : Fragment() {
                     binding.btnBasicKnowledge.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnBasicKnowledge, course.isCompleted == 1)
                     courseIdBasicKnowledge = course.courseId
+                    SharedPreferencesUtil.clearData(requireContext(),"courseIdBasicKnowledge")
+                    SharedPreferencesUtil.saveData(requireContext(),"courseIdBasicKnowledge",courseIdBasicKnowledge.toString())
 
                 }
                 getString(R.string.make_a_plan)-> {
