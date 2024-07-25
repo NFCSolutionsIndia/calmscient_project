@@ -156,7 +156,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:text="Thank you for willing to talk about the alcohol and drugs. Now let's begin with a brief assessment"
             android:fontFamily="@font/lexendlight"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_12sdp"
             android:layout_below="@+id/headingText"
             android:textColor="@color/black_head" />
 
@@ -214,7 +214,7 @@ But , you have full control over the decision
 regarding your habit.
 Ready?"
             android:fontFamily="@font/lexendlight"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_12sdp"
             android:textColor="@color/black_head" />
 
         <ImageView
@@ -314,7 +314,7 @@ Ready?"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="Remember, you can always take the AUDIT, DUST-10 and CAGE test, in the My medical records section"
             android:fontFamily="@font/lexendlight"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_12sdp"
             android:textColor="@color/black_head" />
 
 
