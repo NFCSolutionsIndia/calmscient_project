@@ -214,6 +214,14 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
 
         }
 
+        binding.drinkCoachCardView.setOnClickListener{
+            loadFragment(TakingControlFragment())
+        }
+
+        binding.substanceCoach.setOnClickListener{
+            loadFragment(TakingControlFragment())
+        }
+
         return binding.root
     }
 
