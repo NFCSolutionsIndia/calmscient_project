@@ -60,7 +60,7 @@
         android:fontFamily="@font/lexendlight"
         android:textColor="@color/black_head"
         android:layout_marginLeft="@dimen/_8sdp"
-        android:text="30% of suicides. \n
+        android:text="\n30% of suicides. \n
 40% of fatal burn injuries.\n
 50% of fatal drownings and of homicides, and about 65 percent of fatal falls.\n
 31% of all fatal crashes in 2021.\n
