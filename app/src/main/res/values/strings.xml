@@ -1625,7 +1625,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="runningexercise_titletext">Movement: Running</string>
     <string name="runningexercises_text">It’s not easy to move when you have a shutdown or are feeling numb. Running can quickly shift you out of the shutdown state and re-energize you.</string>
 
-    <string name="version">Version 2.11</string>
+    <string name="version">Version 2.12</string>
     <!--bodymovemet Exercise-->
     <string name="bodymovementexercise_titletext">Mindful Body Movement</string>
     <!--summary of sleep-->
