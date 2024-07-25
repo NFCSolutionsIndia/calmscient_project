@@ -16,6 +16,7 @@ import com.calmscient.di.remote.request.AlarmUpdateRequest
 import com.calmscient.di.remote.request.AlarmWrapper
 import com.calmscient.di.remote.request.AppointmentDetailsRequestData
 import com.calmscient.di.remote.request.CreateDrinkTrackerRequest
+import com.calmscient.di.remote.request.CreateEventTrackerRequest
 import com.calmscient.di.remote.request.DrinkTrackerRequest
 import com.calmscient.di.remote.request.GetAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.GetBasicKnowledgeIndexRequest
@@ -57,6 +58,7 @@ import com.calmscient.di.remote.response.AddMedicationResponse
 import com.calmscient.di.remote.response.AlarmUpdateResponse
 import com.calmscient.di.remote.response.AppointmentDetailsResponseData
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
+import com.calmscient.di.remote.response.CreateEventTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
@@ -200,6 +202,8 @@ interface ApiService {
     @POST("patients/api/v1/alcohol/getEventsList")
     fun getEventTackerData(@Header("Authorization") accessToken: String,@Body request: GetEventsListRequest) :Call<GetEventsListResponse>
 
+    @POST("patients/api/v1/alcohol/createEventTracking")
+    fun createEventTracking(@Header("Authorization")accessToken: String,@Body request: CreateEventTrackerRequest): Call<CreateEventTrackerResponse>
 
     @POST("patients/api/v1/takingControl/getTakingControlIndex")
     fun getTakingControlIndex(@Header("Authorization")accessToken: String,@Body request: GetTakingControlIndexRequest) : Call<GetTakingControlIndexResponse>

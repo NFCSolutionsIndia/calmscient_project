@@ -13,6 +13,7 @@ package com.calmscient.repository
 
 import com.calmscient.ApiService
 import com.calmscient.di.remote.request.CreateDrinkTrackerRequest
+import com.calmscient.di.remote.request.CreateEventTrackerRequest
 import com.calmscient.di.remote.request.DrinkTrackerRequest
 import com.calmscient.di.remote.request.GetAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.GetBasicKnowledgeIndexRequest
@@ -32,6 +33,7 @@ import com.calmscient.di.remote.request.SendNotificationToDoctorMakeAPlanRequest
 import com.calmscient.di.remote.request.UpdateBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
+import com.calmscient.di.remote.response.CreateEventTrackerResponse
 import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
@@ -63,6 +65,9 @@ class TakingControlRepository @Inject constructor(private val apiService: ApiSer
         return apiService.createDrinkTrackerList("Bearer $accessToken",createDrinkTrackerRequest)
     }
 
+    fun createEventTrackingList(createEventTrackerRequest: CreateEventTrackerRequest, accessToken: String) : Call<CreateEventTrackerResponse>{
+        return apiService.createEventTracking("Bearer $accessToken",createEventTrackerRequest)
+    }
 
     fun getEventTackerData(getEventsListRequest: GetEventsListRequest, accessToken: String): Call<GetEventsListResponse> {
         return apiService.getEventTackerData("Bearer $accessToken",getEventsListRequest)

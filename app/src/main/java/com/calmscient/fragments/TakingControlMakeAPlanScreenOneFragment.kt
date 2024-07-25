@@ -13,6 +13,7 @@ package com.calmscient.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -83,6 +84,11 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
         prosRecyclerView = binding.prosRecyclerview
         consRecyclerView = binding.consRecyclerview
 
+        // Load the string from resources
+        val descriptionHtml = getString(R.string.make_a_paln_screen1_description)
+
+        // Set the spanned text to the TextView
+        binding.tvDescription.text = Html.fromHtml(descriptionHtml, Html.FROM_HTML_MODE_LEGACY)
 
         val prosItems = getProsItems()
         val consItems = getConsItems()

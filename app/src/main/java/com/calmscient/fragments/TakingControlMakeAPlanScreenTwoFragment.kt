@@ -12,6 +12,7 @@
 package com.calmscient.fragments
 
 import android.os.Bundle
+import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +54,11 @@ class TakingControlMakeAPlanScreenTwoFragment : Fragment() {
             loadFragment(TakingControlMakeAPlanScreenOneFragment())
         }
 
+        // Load the string from resources
+        val descriptionHtml = getString(R.string.make_a_plan_screen_two_description)
+
+        // Set the spanned text to the TextView
+        binding.tvDescription.text = Html.fromHtml(descriptionHtml, Html.FROM_HTML_MODE_LEGACY)
 
 
         return binding.root

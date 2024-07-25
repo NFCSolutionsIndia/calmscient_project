@@ -370,6 +370,7 @@ class MyDrinkingHabitScreenFiveFragment : Fragment() {
     }
 
     private fun saveAnswerAPICall(request: SaveMyDrinkingHabitAnswerRequest) {
+
         saveMyDrinkHabitAnswerViewModel.saveMyDrinkHabitAnswer(request, accessToken)
         observeViewModel()
     }
@@ -393,6 +394,12 @@ class MyDrinkingHabitScreenFiveFragment : Fragment() {
                         Observer { successData ->
                             if (successData != null) {
                                 commonDialog.showDialog(successData.statusResponse.responseMessage)
+
+                                commonDialog.setOnDismissListener {
+                                    val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+                                    val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+                                    loadFragment(basicKnowledgeFragment)
+                                }
                             }
                         })
                 }

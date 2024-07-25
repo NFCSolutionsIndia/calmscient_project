@@ -5,17 +5,13 @@
  *      and protected by trade secret or copyright law of USA.
  *      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
  *      there is a prior written permission or license agreement from NFC Solutions.
- *
+ *      
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote
+package com.calmscient.di.remote.response
 
-data class EventTrackerDataClass(
-    var image : String,
-    var name : String,
-    var toggleButton : Boolean,
-    var eventId: Int,
-    var eventFlag: Int,
-    var toggleButtonState : Boolean?
+data class CreateEventTrackerResponse(
+    val rowCount: Int,
+    val statusResponse: StatusResponse
 )

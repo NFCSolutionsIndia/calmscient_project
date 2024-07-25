@@ -11,6 +11,7 @@
 
 package com.calmscient.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ import com.calmscient.R
 import com.calmscient.databinding.EventTrackerItemBinding
 import com.calmscient.di.remote.EventTrackerDataClass
 
-class EventTrackerAdapter(private val events: List<EventTrackerDataClass>) :
+class EventTrackerAdapter(private var events: MutableList<EventTrackerDataClass>) :
     RecyclerView.Adapter<EventTrackerAdapter.EventViewHolder>() {
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,7 +37,9 @@ class EventTrackerAdapter(private val events: List<EventTrackerDataClass>) :
                 eventTrackerToggleButton.labelOn = "Yes"
                 eventTrackerToggleButton.labelOff = "No"
 
-
+                eventTrackerToggleButton.setOnToggledListener { _, isOn ->
+                    event.toggleButtonState = isOn
+                }
             }
         }
     }
@@ -50,12 +53,21 @@ class EventTrackerAdapter(private val events: List<EventTrackerDataClass>) :
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
         holder.bind(event)
-
     }
 
     override fun getItemCount(): Int {
         return events.size
     }
 
+    fun getEvents(): List<EventTrackerDataClass> {
+        return events
+    }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateEvents(newEvents: List<EventTrackerDataClass>) {
+        events.clear()
+        events.addAll(newEvents)
+        notifyDataSetChanged()
+    }
 }
+

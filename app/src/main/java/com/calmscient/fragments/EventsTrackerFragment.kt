@@ -27,6 +27,9 @@ import com.calmscient.R
 import com.calmscient.adapters.EventTrackerAdapter
 import com.calmscient.databinding.FragmentEventsTrackerBinding
 import com.calmscient.di.remote.EventTrackerDataClass
+import com.calmscient.di.remote.request.CreateAlcohol
+import com.calmscient.di.remote.request.CreateEventTrackerRequest
+import com.calmscient.di.remote.response.CreateEventTrackerResponse
 import com.calmscient.di.remote.response.Evevnts
 import com.calmscient.di.remote.response.GetEventsListResponse
 import com.calmscient.di.remote.response.LoginResponse
@@ -36,6 +39,7 @@ import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.CreateEventTrackingViewModel
 import com.calmscient.viewmodels.GetEventTrackerViewModel
 import com.calmscient.viewmodels.GetSummaryOfAUDITViewModel
 import com.calmscient.viewmodels.UpdateTakingControlIndexViewModel
@@ -61,6 +65,9 @@ class EventsTrackerFragment : Fragment() {
     private lateinit var eventTrackerAdapter: EventTrackerAdapter
 
     private val updateTakingControlIndexViewModel: UpdateTakingControlIndexViewModel by activityViewModels()
+
+    private val createEventTrackingViewModel: CreateEventTrackingViewModel by activityViewModels()
+    private lateinit var createEventTrackerResponse: CreateEventTrackerResponse
 
     private var courseTempId = 0
 
@@ -122,16 +129,25 @@ class EventsTrackerFragment : Fragment() {
 
         binding.eventTrackerRecycleView.layoutManager = LinearLayoutManager(requireContext())
 
-        eventTrackerAdapter = EventTrackerAdapter(emptyList())
+        eventTrackerAdapter = EventTrackerAdapter(mutableListOf())
 
         binding.eventTrackerRecycleView.adapter = eventTrackerAdapter
 
         val currentDate = SimpleDateFormat("dd MMMM yyyy", Locale.UK).format(Date())
         binding.monthtext.text = currentDate
 
+
+
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.saveButton.setOnClickListener{
+            createEventTrackAPICall()
+        }
+    }
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
@@ -180,13 +196,13 @@ class EventsTrackerFragment : Fragment() {
     }
     @SuppressLint("NotifyDataSetChanged")
     private fun setRecyclerViewData(eventsList: List<Evevnts>) {
-        val adapter = EventTrackerAdapter(eventsList.map { event ->
-            EventTrackerDataClass(event.imageUrl, event.eventName, event.eventFlag==1)
-        }.toMutableList())
-        binding.eventTrackerRecycleView.adapter = adapter
+        val eventTrackerDataList = eventsList.map { event ->
+            EventTrackerDataClass(event.imageUrl, event.eventName, event.eventFlag == 1, event.eventId, event.eventFlag, null)
+        }.toMutableList()
 
-        eventTrackerAdapter.notifyDataSetChanged()
+        eventTrackerAdapter.updateEvents(eventTrackerDataList)
     }
+
 
 
     private fun convertDateFormat(inputDate: String): String {
@@ -209,4 +225,75 @@ class EventsTrackerFragment : Fragment() {
             )
         }
     }
+
+    private fun createEventTrackAPICall() {
+
+        val request = createEventTrackRequest()
+        Log.d("Event Create Request:","$request")
+        createEventTrackingViewModel.createEventTrackerList(request, accessToken)
+        observeCreateEventTracker()
+    }
+
+    private fun observeCreateEventTracker()
+    {
+        createEventTrackingViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading){
+                customProgressDialog.show(getString(R.string.loading))
+            }
+            else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        createEventTrackingViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess)
+            {
+                createEventTrackingViewModel.saveResponseLiveData.observe(viewLifecycleOwner,
+                    Observer { successData->
+                        if(successData != null)
+                        {
+                            commonAPICallDialog.showDialog(successData.statusResponse.responseMessage)
+
+                            commonAPICallDialog.setOnDismissListener {
+                                loadFragment(TakingControlFragment())
+                            }
+
+                        }
+                    }
+                )
+            }
+        })
+    }
+
+    private fun createEventTrackRequest(): CreateEventTrackerRequest {
+        val alcoholList = mutableListOf<CreateAlcohol>()
+
+        // Assuming you have a list of items to loop through and collect data
+        val items = eventTrackerAdapter.getEvents() // Implement getItems() in your adapter to return the list of items
+
+        val logInDetails = loginResponse?.loginDetails
+        for (item in items) {
+            val createAlcohol = logInDetails?.let {
+                CreateAlcohol(
+                    activityDate = getCurrentFormattedDate(),
+                    clientId = it.clientID,
+                    eventFlag = if (item.toggleButtonState == true) 1 else 0,
+                    eventId =  item.eventId,
+                    flag = "U",
+                    patientId = it.patientID,
+                    plId = it.patientLocationID
+                )
+            }
+            if (createAlcohol != null) {
+                alcoholList.add(createAlcohol)
+            }
+        }
+
+        return CreateEventTrackerRequest(alcohol = alcoholList)
+    }
+    private fun getCurrentFormattedDate(): String {
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        return dateFormat.format(Date())
+    }
+
 }

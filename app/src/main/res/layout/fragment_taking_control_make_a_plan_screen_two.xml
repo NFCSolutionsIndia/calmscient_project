@@ -64,16 +64,10 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
-                android:text="First of all, let's define what is the best for you.\n\n
-
-If you're considering changing your drinking, you'll need to decide whether to cut down or quit. It's a good idea to discuss different options with a healthcare professional, a friend, or someone else you trust. \n\n
-
-Please note, when someone who has been drinking heavily for a prolonged period of time suddenly stops drinking, the body can go into a painful or even potentially life-threatening process of withdrawal. \n\n
-
-Symptoms can include nausea, rapid heart rate, seizures, or other problems. Seek medical help to plan a safe recovery. Doctors can prescribe medications to address these symptoms and make the process safer and less distressing."
                 android:textSize="@dimen/_12sdp"/>
 
             <TextView

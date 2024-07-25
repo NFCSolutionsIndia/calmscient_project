@@ -53,13 +53,11 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
-                android:text="Thinking about a change?\n\nWe want you to know that the decision to reduce alcohol/drug consumption is entirely yours! \n\n
-But If you find yourself consistently exceeding recommended guidelines for alcohol consumption, it would be wise to consider stopping, cutting down, or reducing your drinking. \n\n
-Mixed feelings are normal. \n
-Have you thought about the pros and cons of doing so?"/>
+                android:textSize="@dimen/_12sdp"/>
 
 
             <TextView
