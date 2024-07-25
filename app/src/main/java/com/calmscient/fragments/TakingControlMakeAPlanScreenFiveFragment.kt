@@ -100,7 +100,10 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
 
 
         customCalendarView = binding.customCalendarView
-        customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE)
+        customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE)
+        // Disable interactions for the CustomCalendarView
+        customCalendarView.setInteractionsEnabled(false)
+
 
         binding.goalsTextView.setOnClickListener {
             showBottomSheet()

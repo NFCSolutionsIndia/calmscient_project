@@ -98,7 +98,6 @@ class MyDrinkingHabitScreenFourFragment : Fragment() {
             {
                 saveAnswerAPICall(request)
             }
-            loadFragment(MyDrinkingHabitScreenFiveFragment())
         }
 
         binding.yesButton.setOnClickListener{
@@ -107,7 +106,7 @@ class MyDrinkingHabitScreenFourFragment : Fragment() {
             {
                 saveAnswerAPICall(request)
             }
-            loadFragment(MyDrinkingHabitScreenFiveFragment())
+
         }
 
         return binding.root
@@ -210,6 +209,25 @@ class MyDrinkingHabitScreenFourFragment : Fragment() {
     private fun saveAnswerAPICall(request: SaveMyDrinkingHabitAnswerRequest)
     {
         saveMyDrinkHabitAnswerViewModel.saveMyDrinkHabitAnswer(request,accessToken)
+        observeSaveAnswerViewModel()
 
+    }
+
+    private fun observeSaveAnswerViewModel()
+    {
+        saveMyDrinkHabitAnswerViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess)
+            {
+                saveMyDrinkHabitAnswerViewModel.saveResponseLiveData.observe(viewLifecycleOwner,
+                    Observer { successData->
+                        if(successData != null)
+                        {
+                            binding.yesButton.text = getString(R.string.saved)
+                            binding.yesButton.isEnabled = false
+                            loadFragment(MyDrinkingHabitScreenFiveFragment())
+                        }
+                    })
+            }
+        })
     }
 }

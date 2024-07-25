@@ -393,13 +393,15 @@ class MyDrinkingHabitScreenFiveFragment : Fragment() {
                     saveMyDrinkHabitAnswerViewModel.saveResponseLiveData.observe(viewLifecycleOwner,
                         Observer { successData ->
                             if (successData != null) {
-                                commonDialog.showDialog(successData.statusResponse.responseMessage)
 
-                                commonDialog.setOnDismissListener {
+                                binding.yesButton.text = getString(R.string.saved)
+                                binding.yesButton.isEnabled = false
+
+                              /*  commonDialog.setOnDismissListener {
                                     val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
                                     val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
                                     loadFragment(basicKnowledgeFragment)
-                                }
+                                }*/
                             }
                         })
                 }

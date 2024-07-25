@@ -213,8 +213,6 @@ class MyDrinkingHabitScreenTwoFragment : Fragment() {
         if (request.alcohol.isNotEmpty()) {
             createDrinkTrackerViewModel.createDrinkTrackerList(request, accessToken)
             observeCreateDrinkTrackerAPIData()
-        } else {
-            loadFragment(MyDrinkingHabitScreenThreeFragment())
         }
     }
 
@@ -239,12 +237,7 @@ class MyDrinkingHabitScreenTwoFragment : Fragment() {
                         Observer { successData ->
                             if (successData != null) {
 
-                                commonAPICallDialog.showDialog(successData.statusResponse.responseMessage)
-                                commonAPICallDialog.setOnDismissListener {
-
-                                    commonAPICallDialog.dismiss()
-                                    loadFragment(MyDrinkingHabitScreenThreeFragment())
-                                }
+                                loadFragment(MyDrinkingHabitScreenThreeFragment())
                             }
                         }
                     )

@@ -11,12 +11,17 @@
 
 package com.calmscient.fragments
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,9 +34,15 @@ import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.BasicKnowledgeSharedViewModel
 import com.calmscient.viewmodels.UpdateBasicKnowledgeIndexDataViewModel
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,6 +57,10 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
     private  lateinit var accessToken : String
     private lateinit var loginResponse: LoginResponse
     private lateinit var itemTemp: BasicKnowledgeItem
+    private lateinit var playerView: PlayerView
+    private lateinit var player: ExoPlayer
+    private var isVideoPlaying = true
+    private var isFavorite = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +85,31 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
+        player = SimpleExoPlayer.Builder(requireContext()).build()
 
+        playerView = binding.playerViewLayout
+
+        playerView.player = player
+        player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/course/What%20happens%20with%20subtitle.mp4")))
+        player.playWhenReady = true
+
+        binding.favoritesIcon.setOnClickListener {
+            isFavorite = !isFavorite
+            if (isFavorite) {
+                binding.favoritesIcon.setImageResource(R.drawable.ic_favorites_icon)
+            } else {
+                binding.favoritesIcon.setImageResource(R.drawable.ic_favorites_red)
+            }
+        }
+
+        player.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(state: Int) {
+                if (state == Player.STATE_ENDED) {
+                    //  playPauseIcon.setImageResource(R.drawable.ic_play_icon)
+                    isVideoPlaying = false
+                }
+            }
+        })
 
         binding.backIcon.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()
@@ -85,6 +124,8 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
                 updateBasicKnowledgeAPICall()
             }
         })
+
+        initializeBinding(binding.root)
 
        return binding.root
     }
@@ -114,6 +155,45 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
                 customProgressDialog.dialogDismiss()
             }
         })
+    }
+    private fun initializeBinding(rootView: View) {
+        binding.orientationBtn.setOnClickListener {
+            toggleOrientation()
+        }
+
+       binding.backBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
+
+    private fun toggleOrientation() {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            requireActivity().setContentView(R.layout.activity_player_landscape) // Load landscape layout
+        } else {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            requireActivity().setContentView(R.layout.activity_player) // Load portrait layout
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        playerView.player!!.playWhenReady = false
+    }
+
+    override fun onStop() {
+        super.onStop()
+        playerView.player!!.release()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playerView.player!!.playWhenReady = true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        playerView.player!!.playbackState
     }
 
 }

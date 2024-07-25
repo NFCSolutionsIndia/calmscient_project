@@ -106,5 +106,10 @@ class CustomCalendarView @JvmOverloads constructor(
         }
     }
 
+    // New method to enable/disable interactions
+    fun setInteractionsEnabled(enabled: Boolean) {
+        calendarView.isEnabled = enabled
+    }
+
 
 }

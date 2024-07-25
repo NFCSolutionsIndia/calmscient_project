@@ -216,7 +216,8 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
                     saveCourseJournalEntryMakeAPlanViewModel.saveResponseLiveData.observe(viewLifecycleOwner,
                         Observer { successData ->
                             if (successData != null) {
-                                commonDialog.showDialog(successData.response.responseMessage)
+                                binding.yesButton.text = getString(R.string.saved)
+                                binding.yesButton.isEnabled = false
                             }
                         }
                     )

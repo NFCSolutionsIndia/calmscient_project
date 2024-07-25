@@ -16,6 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/_50sdp"
+    android:id="@+id/root_layout"
     tools:context=".fragments.ModerationDrinkingFragment"
     android:orientation="vertical">
 
@@ -140,7 +141,7 @@
                     android:background="@android:color/transparent"
                     android:padding="@dimen/_10sdp"
                     android:src="@drawable/ic_orientation_icon"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:contentDescription="Orientation" />
 
             </RelativeLayout>

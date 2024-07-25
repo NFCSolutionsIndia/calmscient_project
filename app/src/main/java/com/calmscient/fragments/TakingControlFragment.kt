@@ -94,14 +94,9 @@ class TakingControlFragment : Fragment() {
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
 
-        if(CommonClass.isNetworkAvailable(requireContext()))
-        {
-            apiCall()
-            observeViewModel()
-            drinkTrackerApiCall()
-        }
-        else
-        {
+        if (CommonClass.isNetworkAvailable(requireContext())) {
+            performApiCalls()
+        } else {
             CommonClass.showInternetDialogue(requireContext())
         }
 
@@ -190,6 +185,25 @@ class TakingControlFragment : Fragment() {
         return binding.root
     }
 
+    private fun performApiCalls() {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                // Launch all API calls in parallel
+                val deferreds = listOf(
+                    async { apiCall() },
+                    async { drinkTrackerApiCall() }
+                )
+
+                // Wait for all API calls to complete
+                deferreds.awaitAll()
+
+            } catch (e: Exception) {
+                // Handle exceptions
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -207,16 +221,19 @@ class TakingControlFragment : Fragment() {
     }
 
     private fun loadFragmentWithDelay(fragment: Fragment) {
+        customProgressDialog.dialogDismiss()
         Handler(Looper.getMainLooper()).postDelayed({
             loadFragment(fragment)
-        }, 500)
+        }, 2000)
     }
 
-    private fun apiCall()
+    private suspend fun apiCall()
     {
         loginResponse?.loginDetails?.let { getTakingControlIndexViewModel.getTakingControlIndex(it.clientID,it.patientID,it.patientLocationID,accessToken) }
 
        // getTakingControlIndexViewModel.getTakingControlIndex(1,1,1,accessToken)
+        observeViewModel()
+
     }
 
     private fun getCurrentDate(): String {
@@ -225,7 +242,7 @@ class TakingControlFragment : Fragment() {
         return currentDate.format(formatter)
     }
 
-    private fun drinkTrackerApiCall() {
+    private suspend fun drinkTrackerApiCall() {
 
         getDrinkTrackerViewModel.clear()
 
@@ -243,6 +260,16 @@ class TakingControlFragment : Fragment() {
         drinkTrackerObserveViewModel()
     }
     private fun drinkTrackerObserveViewModel() {
+
+        getDrinkTrackerViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading)
+            {
+                customProgressDialog.show(getString(R.string.loading))
+            }
+            else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
 
         getDrinkTrackerViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess ->
             if (isSuccess) {
@@ -385,6 +412,8 @@ class TakingControlFragment : Fragment() {
                     setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)
                     courseIdSeeTheIntro = course.courseId
                     flag = course.skipTutorialFlag
+
+                    Log.d("Flag","$flag")
                     if(flag == 0)
                     {
                         val introductionFragment = TakingControlIntroductionFragment.newInstance(

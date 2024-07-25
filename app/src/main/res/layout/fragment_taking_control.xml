@@ -433,7 +433,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:layout_marginBottom="8dp"
-                            android:background="@drawable/skip_border"
+                            android:background="@drawable/button_background_enabled"
                             android:fontFamily="@font/lexendregular"
                             android:gravity="start|center_vertical"
                             android:text="@string/how_to_use"

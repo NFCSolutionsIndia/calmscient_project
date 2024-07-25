@@ -172,7 +172,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
                 <com.calmscient.utils.NonSwipeRecyclerView
                     android:id="@+id/consequencesRecyclerView"
                     android:layout_width="match_parent"
