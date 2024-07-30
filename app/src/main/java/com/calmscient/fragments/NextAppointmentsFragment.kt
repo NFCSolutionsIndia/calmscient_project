@@ -201,6 +201,7 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
                         binding.exSevenCalendar.notifyDateChanged(day.date)
                         oldDate?.let { binding.exSevenCalendar.notifyDateChanged(it) }
                         onDayClicked(selectedDate) // Trigger callback when day is clicked
+                        apiCall(selectedDate.toString())
                     }
                 }
             }
