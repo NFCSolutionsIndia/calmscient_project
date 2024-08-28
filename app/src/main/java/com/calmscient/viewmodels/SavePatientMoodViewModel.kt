@@ -52,11 +52,11 @@ class SavePatientMoodViewModel @Inject constructor(private val repository: Login
 
 
 
-    private var lastRequestBody: SavePatientMoodWrapper? = null
+    private var lastRequestBody: SavePatientMoodRequest? = null
     private var lastAccessToken: String = ""
 
     // Function to save patient answers
-    fun savePatientMoodData( requestBody: SavePatientMoodWrapper, accessToken:String) {
+    fun savePatientMoodData( requestBody: SavePatientMoodRequest, accessToken:String) {
         loadingLiveData.value = true // Show loader
 
         lastRequestBody = requestBody

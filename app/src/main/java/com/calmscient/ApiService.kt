@@ -118,7 +118,7 @@ interface ApiService {
 
 
     @POST("patients/api/v1/patientDetails/savePatientStartupScreen")
-    fun savePatientMoodData(@Header("Authorization") accessToken: String,@Body requestBody: SavePatientMoodWrapper): Call<SavePatientMoodResponse>
+    fun savePatientMoodData(@Header("Authorization") accessToken: String,@Body requestBody: SavePatientMoodRequest): Call<SavePatientMoodResponse>
 
 
 

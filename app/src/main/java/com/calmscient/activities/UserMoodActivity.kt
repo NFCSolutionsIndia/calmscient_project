@@ -27,20 +27,16 @@ import java.util.Calendar
 import java.util.Date
 import androidx.lifecycle.Observer
 import com.calmscient.ApiService
-import com.calmscient.AppController
-import com.calmscient.databinding.FragmentQuestionBinding
-import com.calmscient.di.remote.request.PatientAnswerSaveRequest
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SavePatientMoodWrapper
 import com.calmscient.di.remote.response.PatientMoodResponse
-import com.calmscient.retrofit.ApplicationModule
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.GetPatientMoodViewModel
+import com.calmscient.viewmodels.SavePatientMoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.OkHttpClient
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -54,6 +50,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
     lateinit var apiService: ApiService
      private val loginViewModel: LoginViewModel by viewModels()
      private val getPatientMoodViewModel: GetPatientMoodViewModel by viewModels()
+     private val savePatientMoodViewModel: SavePatientMoodViewModel by viewModels()
      private lateinit var loginResponse: LoginResponse
      private lateinit var patientMoodResponse: PatientMoodResponse
 
@@ -643,9 +640,20 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             R.id.btn_save -> {
                 //loadFragment(HomeFragment())
 
-                journalText = binding.tvDailyJournal.text.toString()
-                moodRequest()
-                startActivity(Intent(this, DashboardActivity::class.java))
+                journalText = binding.etDailyJournel.text.toString()
+
+                val request = moodRequest()
+
+                if(request.moodId>0 || request.journal.isNotEmpty() || request.sleepHours>0 || request.spendTime.isNotEmpty()){
+                    savePatientMoodViewModel.savePatientMoodData(moodRequest(),loginResponse.token.access_token)
+                    /*moodRequest()
+                    startActivity(Intent(this, DashboardActivity::class.java))*/
+                    observeSavePatientMood()
+                }else{
+                    commonDialog.showDialog("You must answer at least one question before saving.")
+                }
+
+
             }
             R.id.btn_skip -> {
                 //loadFragment(HomeFragment())
@@ -798,9 +806,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
     }
 
-    private fun moodRequest()
+    private fun moodRequest(): SavePatientMoodRequest
     {
-
 
         val patientAnswer = SavePatientMoodRequest(
             clientId = loginResponse.loginDetails.clientID,
@@ -820,5 +827,43 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
         )
         Log.d("Save Patinet","$patientAnswer")
+        return patientAnswer
+    }
+
+    private fun observeSavePatientMood(){
+        savePatientMoodViewModel.loadingLiveData.observe(this, Observer { isLoading->
+            if(isLoading){
+                customProgressDialog.show(getString(R.string.loading))
+            }else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        savePatientMoodViewModel.successLiveData.observe(this, Observer { isSuccess->
+            if(isSuccess){
+                savePatientMoodViewModel.saveResponseLiveData.observe(this, Observer { successData->
+                    if(successData!= null && successData.responseCode == 200){
+
+                            startActivity(Intent(this, DashboardActivity::class.java))
+
+                    }else{
+                        if (successData != null) {
+                            commonDialog.showDialog(successData.responseMessage)
+                        }
+                    }
+                })
+            }else{
+                savePatientMoodViewModel.failureLiveData.observe(this, Observer { failureData->
+                    if(failureData != null){
+                        commonDialog.showDialog(failureData)
+                    }
+                })
+                savePatientMoodViewModel.failureResponseData.observe(this, Observer { failureData->
+                    if(failureData != null){
+                        commonDialog.showDialog(failureData.responseMessage)
+                    }
+                })
+            }
+        })
     }
 }
