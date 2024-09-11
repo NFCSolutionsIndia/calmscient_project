@@ -31,11 +31,15 @@ import com.calmscient.activities.SettingsActivity
 import com.calmscient.activities.WeeklySummary
 import com.calmscient.adapters.AnxietyIntroductionAdapter
 import com.calmscient.adapters.CardItemDiffCallback
+import com.calmscient.adapters.ManageAnxietyChapterAdapter
 import com.calmscient.databinding.FragmentHomeBinding
 import com.calmscient.di.remote.CardItemDataClass
+import com.calmscient.di.remote.ChapterDataClass
 import com.calmscient.di.remote.ItemType
 import com.calmscient.di.remote.request.MenuItemRequest
+import com.calmscient.di.remote.response.FavoriteItem
 import com.calmscient.di.remote.response.LoginResponse
+import com.calmscient.di.remote.response.ManagingAnxiety
 import com.calmscient.di.remote.response.MenuItem
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
@@ -69,7 +73,7 @@ class HomeFragment : Fragment() {
     lateinit var myMedicalMenuViewModel: MenuItemViewModel
     private lateinit var myMedicalMenuResponseDate: List<MenuItem>
     private lateinit var menuResponseDate: List<MenuItem>
-    private lateinit var menuItemRequest: MenuItemRequest
+    private lateinit var favoriteItem: List<FavoriteItem>
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
     private lateinit var name :TextView
@@ -88,7 +92,9 @@ class HomeFragment : Fragment() {
     ): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater,container,false)
 
+        recyclerView = rootView.findViewById(R.id.recyclerViewVideos)
         mediaclRecords=rootView.findViewById<TextView>(R.id.my_medical_records)
         favorites=rootView.findViewById<TextView>(R.id.favorites)
         weeklySummary=rootView.findViewById<TextView>(R.id.weekly_summary)
@@ -128,6 +134,7 @@ class HomeFragment : Fragment() {
                 ServerTimeoutHandler.clearRetryListener()
                 ServerTimeoutHandler.dismissDialog()
                 menuResponseDate = menuViewModel.menuItemsLiveData.value!!
+                favoriteItem = menuViewModel.favoritesLiveData.value!!
 
                 val jsonString = JsonUtil.toJsonString(menuResponseDate)
                 SharedPreferencesUtil.saveData(requireContext(), "menuResponse", jsonString)
@@ -145,6 +152,9 @@ class HomeFragment : Fragment() {
                     mediaclRecords.text = menuResponseDate[0].menuName
                     weeklySummary.text = menuResponseDate[1].menuName
                     favorites.text = menuResponseDate[2].menuName
+                }
+                if(favoriteItem.isNotEmpty()){
+                    bindDataToRecyclerView(favoriteItem)
                 }
             }
             else{
@@ -222,7 +232,7 @@ class HomeFragment : Fragment() {
         // Data for Additional Resource
 
         savePrefData = SavePreferences(requireContext())
-        if(savePrefData.getAslLanguageState() == true) {
+        /*if(savePrefData.getAslLanguageState() == true) {
             val additionalResourceItems = cardItemsFavoritesASL()
             val additionalResourceRecyclerView: RecyclerView =
                 rootView.findViewById(R.id.recyclerViewVideos)
@@ -247,7 +257,7 @@ class HomeFragment : Fragment() {
             setupRecyclerView(
                 additionalResourceRecyclerView, additionalResourceItems, additionalResourceAdapter
             )
-        }
+        }*/
 
         // Find the myMedicalRecordsLayout
         val myMedicalRecordsLayout = rootView.findViewById<View>(R.id.myMedicalRecordsLayout)
@@ -325,7 +335,7 @@ class HomeFragment : Fragment() {
         val intent = Intent(activity, WeeklySummary::class.java)
         startActivity(intent)
     }
-    private fun cardItemsFavoritesSpanish(): List<CardItemDataClass> {
+   /* private fun cardItemsFavoritesSpanish(): List<CardItemDataClass> {
         val card1 = CardItemDataClass(
             availableContentTypes = listOf(ItemType.VIDEO),
             audioResourceId = null,
@@ -388,8 +398,8 @@ class HomeFragment : Fragment() {
 
         // Add more CardItemDataClass instances as needed for lesson3
         return listOf(card1, card2, card3, card4, card5)
-    }
-    private fun cardItemsFavorites(): List<CardItemDataClass> {
+    }*/
+    /*private fun cardItemsFavorites(): List<CardItemDataClass> {
         val card1 = CardItemDataClass(
             availableContentTypes = listOf(ItemType.VIDEO),
             audioResourceId = null,
@@ -452,9 +462,9 @@ class HomeFragment : Fragment() {
 
         // Add more CardItemDataClass instances as needed for lesson3
         return listOf(card1, card2, card3, card4, card5)
-    }
+    }*/
 
-    private fun cardItemsFavoritesASL(): List<CardItemDataClass> {
+    /*private fun cardItemsFavoritesASL(): List<CardItemDataClass> {
         val card1 = CardItemDataClass(
             availableContentTypes = listOf(ItemType.VIDEO),
             audioResourceId = null,
@@ -517,20 +527,45 @@ class HomeFragment : Fragment() {
 
         // Add more CardItemDataClass instances as needed for lesson3
         return listOf(card1, card2, card3, card4, card5)
+    }*/
+
+    private fun bindDataToRecyclerView(favoriteItem: List<FavoriteItem>) {
+        val chapterItems = favoriteItem.map { lesson ->
+            ChapterDataClass(
+                chapterId = lesson.chapterId,
+                chapterName = "",
+                chapterUrl = lesson.url,
+                isCourseCompleted = 0,
+                pageCount = lesson.pageNo,
+                imageUrl = lesson.thumbnailUrl,
+                chapterOnlyReading = true
+            )
+        }
+
+        val itemClickListener: (ChapterDataClass) -> Unit = { chapter ->
+            val url = chapter.chapterUrl
+            Log.d("URL:", "$url")
+            if (url != null) {
+                chapter.chapterName?.let { WebViewFragment.newInstance(url, it) }
+                    ?.let { loadFragment(it) }
+            }
+        }
+
+        setupRecyclerView(recyclerView, chapterItems, itemClickListener)
     }
+
     companion object {
         fun newInstance() = HomeFragment()
     }
 
     private fun setupRecyclerView(
         recyclerView: RecyclerView,
-        cardItems: List<CardItemDataClass>,
-        adapter: AnxietyIntroductionAdapter
+        chapterItems: List<ChapterDataClass>,
+        itemClickListener: (ChapterDataClass) -> Unit
     ) {
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val adapter = ManageAnxietyChapterAdapter(chapterItems, itemClickListener)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
-        adapter.submitList(cardItems)
     }
 
     fun onBackPressed() {

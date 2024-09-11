@@ -14,6 +14,7 @@ package com.calmscient.fragments
 import android.app.Dialog
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.calmscient.R
 import com.calmscient.databinding.FragmentTakingControlMakeAPlanScreenFiveBinding
+import com.calmscient.di.remote.request.SaveGoalSetupRequest
 import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
@@ -37,6 +39,7 @@ import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.GetAlcoholFreeDaysViewModel
+import com.calmscient.viewmodels.SaveDrinkCountGoalSetupViewModel
 import com.calmscient.viewmodels.UpdateTakingControlIndexViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -49,17 +52,18 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
     private var selectedNumber = 1
     private lateinit var customCalendarView: CustomCalendarView
 
-    private val getAlcoholFreeDaysViewModel : GetAlcoholFreeDaysViewModel by activityViewModels()
+    private val getAlcoholFreeDaysViewModel: GetAlcoholFreeDaysViewModel by activityViewModels()
     private val updateTakingControlIndexViewModel: UpdateTakingControlIndexViewModel by activityViewModels()
     private var courseTempId = ""
 
     private lateinit var getAlcoholFreeDayResponse: GetAlcoholFreeDayResponse
 
-    private var loginResponse : LoginResponse? = null
-    private  lateinit var accessToken : String
+    private var loginResponse: LoginResponse? = null
+    private lateinit var accessToken: String
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
 
+    private val saveDrinkCountGoalSetupViewModel: SaveDrinkCountGoalSetupViewModel by activityViewModels()
 
 
     companion object {
@@ -68,7 +72,7 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         ): TakingControlMakeAPlanScreenFiveFragment {
             val fragment = TakingControlMakeAPlanScreenFiveFragment()
             val args = Bundle()
-            args.putInt("courseId",courseId)
+            args.putInt("courseId", courseId)
 
             fragment.arguments = args
             return fragment
@@ -86,7 +90,8 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentTakingControlMakeAPlanScreenFiveBinding.inflate(inflater, container, false)
+        binding =
+            FragmentTakingControlMakeAPlanScreenFiveBinding.inflate(inflater, container, false)
 
         customProgressDialog = CustomProgressDialog(requireContext())
         commonDialog = CommonAPICallDialog(requireContext())
@@ -117,21 +122,22 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
             loadFragment(TakingControlMakeAPlanScreenFourFragment())
         }
 
-        binding.btnSet.setOnClickListener{
-
-            showSetDialog()
+        binding.btnSet.setOnClickListener {
+            if (CommonClass.isNetworkAvailable(requireContext())) {
+                saveGoalSetUpAPICall()
+            } else {
+                CommonClass.showInternetDialogue(requireContext())
+            }
         }
 
 
-        binding.makeAPlanBulbIcon.setOnClickListener{
+        binding.makeAPlanBulbIcon.setOnClickListener {
             showBulbDialog()
         }
 
-        if(CommonClass.isNetworkAvailable(requireContext()))
-        {
+        if (CommonClass.isNetworkAvailable(requireContext())) {
             getAlcoholFreeDaysApiCall()
-        }
-        else{
+        } else {
             CommonClass.showInternetDialogue(requireContext())
         }
 
@@ -139,42 +145,48 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         return binding.root
     }
 
-    private fun getAlcoholFreeDaysApiCall()
-    {
+    private fun getAlcoholFreeDaysApiCall() {
 
         getAlcoholFreeDaysViewModel.clear()
-        loginResponse?.loginDetails?.let { getAlcoholFreeDaysViewModel.getAlcoholFreeDays(it.patientID,accessToken) }
+        loginResponse?.loginDetails?.let {
+            getAlcoholFreeDaysViewModel.getAlcoholFreeDays(
+                it.patientID,
+                accessToken
+            )
+        }
         observeGetAlcoholFreeDays()
     }
 
-    private fun observeGetAlcoholFreeDays()
-    {
+    private fun observeGetAlcoholFreeDays() {
 
-        getAlcoholFreeDaysViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
-            if(isLoading)
-            {
-                customProgressDialog.show(getString(R.string.loading))
-            }
-            else{
-                customProgressDialog.dialogDismiss()
-            }
-        })
-
-        getAlcoholFreeDaysViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
-            if(isSuccess){
-                getAlcoholFreeDaysViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
-                    if(successData != null)
-                    {
-                        getAlcoholFreeDayResponse = successData
-                        //bind the data to the UI like selected months and dates
-                        bindDataToUI()
-
-                        updateIndexApiCall()
-                    }
+        getAlcoholFreeDaysViewModel.loadingLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isLoading ->
+                if (isLoading) {
+                    customProgressDialog.show(getString(R.string.loading))
+                } else {
+                    customProgressDialog.dialogDismiss()
                 }
-                )
-            }
-        })
+            })
+
+        getAlcoholFreeDaysViewModel.successLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isSuccess ->
+                if (isSuccess) {
+                    getAlcoholFreeDaysViewModel.saveResponseLiveData.observe(
+                        viewLifecycleOwner,
+                        Observer { successData ->
+                            if (successData != null) {
+                                getAlcoholFreeDayResponse = successData
+                                //bind the data to the UI like selected months and dates
+                                bindDataToUI()
+
+                                updateIndexApiCall()
+                            }
+                        }
+                    )
+                }
+            })
     }
 
     private fun bindDataToUI() {
@@ -185,11 +197,13 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         }
         customCalendarView.setSelectedDates(dates)
 
-        binding.tvMonthlyDrinkCount.text = getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount.toString()
+        binding.tvMonthlyDrinkCount.text =
+            getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount.toString()
     }
 
     private fun showBulbDialog() {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.make_a_plan_screen_five_dialog, null)
+        val dialogView =
+            LayoutInflater.from(context).inflate(R.layout.make_a_plan_screen_five_dialog, null)
 
         val closeButton = dialogView.findViewById<ImageView>(R.id.closeButton)
 
@@ -206,7 +220,8 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
 
 
     private fun showSetDialog() {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.make_a_plan_congrats_dilalog, null)
+        val dialogView =
+            LayoutInflater.from(context).inflate(R.layout.make_a_plan_congrats_dilalog, null)
 
         val closeButton = dialogView.findViewById<ImageView>(R.id.closeButton)
         val introButton = dialogView.findViewById<AppCompatButton>(R.id.btn_seeTheIntro)
@@ -221,7 +236,7 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
             dialog.dismiss()
         }
 
-        introButton.setOnClickListener{
+        introButton.setOnClickListener {
             dialog.dismiss()
             loadFragment(TakingControlFragment())
         }
@@ -237,14 +252,27 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         numberPicker.maxValue = 10
         numberPicker.value = selectedNumber
 
+        val goalsTextView = binding.goalsTextView
+
+        val unSelectedDaysCount = customCalendarView.getUnselectedDaysInMonth()
+        Log.d("unSelectedDaysCount", "$unSelectedDaysCount")
+
+        // Set the initial value of goalsTextView
+        goalsTextView.text = (unSelectedDaysCount * selectedNumber).toString()
+
+        // Add a listener to update the goalsTextView whenever the NumberPicker value changes
+        numberPicker.setOnValueChangedListener { _, _, newValue ->
+            selectedNumber = newValue
+            goalsTextView.text = (unSelectedDaysCount * selectedNumber).toString()
+        }
+
         val saveButton = bottomSheetView.findViewById<ImageView>(R.id.saveButton)
         saveButton.setOnClickListener {
             selectedNumber = numberPicker.value
-            binding.goalsTextView.text = selectedNumber.toString()
 
-            // Assuming you have a way to get selected days count
-            val selectedDaysCount = customCalendarView.getSelectedDatesSize()
-            if (selectedDaysCount * 2 < selectedNumber) {
+
+            binding.goalsTextView.text = (unSelectedDaysCount * selectedNumber).toString()
+            if (unSelectedDaysCount * selectedNumber > getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount) {
                 showCustomDialog()
             }
 
@@ -256,7 +284,8 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
 
     private fun showCustomDialog() {
         val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.make_a_play_dialog_layout)  // Make sure the name matches your dialog layout file
+        dialog.setContentView(R.layout.make_a_play_dialog_layout)
+
         dialog.setCancelable(true)
 
         val btnDismiss = dialog.findViewById<AppCompatButton>(R.id.btn_dismiss)
@@ -270,6 +299,8 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         btnChangeGoal.setOnClickListener {
             // Handle the change goal action
             dialog.dismiss()
+            showBottomSheet()
+
         }
 
         btnClose.setOnClickListener {
@@ -302,4 +333,56 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
             )
         }
     }
+
+    private fun saveGoalSetUpAPICall() {
+
+        saveDrinkCountGoalSetupViewModel.clear()
+
+        val goalCount = binding.goalsTextView.text.toString()
+
+        val request = loginResponse?.loginDetails?.let {
+            SaveGoalSetupRequest(
+                clientId = it.clientID,
+                goalTarget = goalCount.toInt(),
+                patientId = it.patientID,
+                plId = it.patientLocationID,
+                pvcFlag = ""
+            )
+        }
+
+        if (request != null) {
+            saveDrinkCountGoalSetupViewModel.saveDrinkCountGoalSetup(request, accessToken)
+        }
+        observeGoalSetUpAPICall()
+    }
+
+    private fun observeGoalSetUpAPICall() {
+        saveDrinkCountGoalSetupViewModel.loadingLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isLoading ->
+                if (isLoading) {
+                    customProgressDialog.show(getString(R.string.loading))
+                } else {
+                    customProgressDialog.dialogDismiss()
+                }
+            })
+
+        saveDrinkCountGoalSetupViewModel.successLiveData.observe(
+            viewLifecycleOwner,
+            Observer { isSuccess ->
+                if (isSuccess) {
+                    saveDrinkCountGoalSetupViewModel.saveResponseLiveData.observe(viewLifecycleOwner,
+                        Observer { successData ->
+                            if (successData != null && successData.statusResponse.responseCode == 200) {
+
+                                // commonDialog.showDialog(successData.statusResponse.responseMessage)
+                                showSetDialog()
+
+                            }
+                        }
+                    )
+                }
+            })
+    }
+
 }

@@ -22,6 +22,7 @@ class CustomCalendarView @JvmOverloads constructor(
 
     private var calendarView: MaterialCalendarView
     private var onSelectionChangeListener: OnSelectionDateChangeListener? = null
+    private var maxDay: Int = 31
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -39,10 +40,16 @@ class CustomCalendarView @JvmOverloads constructor(
     }
 
     private fun setupCalendar(minYear: Int, minMonth: Int, maxYear: Int, maxMonth: Int) {
+        val calendar = Calendar.getInstance()
+
+        calendar.set(Calendar.YEAR, maxYear)
+        calendar.set(Calendar.MONTH, maxMonth - 1)
+        maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
         calendarView.state().edit()
             .setFirstDayOfWeek(Calendar.SUNDAY)
             .setMinimumDate(CalendarDay.from(minYear, minMonth - 1, 1))
-            .setMaximumDate(CalendarDay.from(maxYear, maxMonth - 1, 31))
+            .setMaximumDate(CalendarDay.from(maxYear, maxMonth - 1, maxDay)) // Use maxDay here
             .setCalendarDisplayMode(CalendarMode.MONTHS)
             .commit()
     }
@@ -99,7 +106,7 @@ class CustomCalendarView @JvmOverloads constructor(
 
     // set selected dates
     fun setSelectedDates(dates: List<Date?>) {
-        val calendarDays = dates.map { date -> CalendarDay.from(date) }
+        val calendarDays = dates.filterNotNull().map { date -> CalendarDay.from(date) }
         clearSelections()
         calendarDays.forEach { day ->
             calendarView.setDateSelected(day, true)
@@ -111,5 +118,22 @@ class CustomCalendarView @JvmOverloads constructor(
         calendarView.isEnabled = enabled
     }
 
+    public fun getUnselectedDaysInMonth(): Int {
+        val totalDaysInMonth = getTotalDaysInCurrentMonth()
+        val selectedDaysCount = getSelectedDatesSize()
+        return totalDaysInMonth - selectedDaysCount
+    }
 
+    private fun getTotalDaysInCurrentMonth(): Int {
+        val currentDate = calendarView.currentDate
+
+        val year = currentDate.year
+        val month = currentDate.month + 1
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month - 1)
+
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+    }
 }

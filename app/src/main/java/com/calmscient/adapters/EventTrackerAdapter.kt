@@ -12,6 +12,7 @@
 package com.calmscient.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ class EventTrackerAdapter(private var events: MutableList<EventTrackerDataClass>
 
                 eventTrackerToggleButton.setOnToggledListener { _, isOn ->
                     event.toggleButtonState = isOn
+                    Log.d("EventTrackerAdapter", "Toggle state for ${event.eventId}: $isOn")
                 }
             }
         }

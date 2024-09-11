@@ -25,8 +25,23 @@ data class MenuItem(
     val seqOrder: String
 )
 
+data class FavoriteItem(
+    val patientId: Int,
+    val favoritesId: Int,
+    val lessonId: Int,
+    val chapterId: Int,
+    val pageNo: Int,
+    val url: String,
+    val isFavorite: Int,
+    val thumbnailUrl: String,
+    val navigateURL: String,
+    val language: Int,
+    val darkTheme: Int
+)
+
 data class MenuItemsResponse(
     val statusResponse: MenuStatusResponse,
-    val menuItems: List<MenuItem>
+    val menuItems: List<MenuItem>,
+    val favorites: List<FavoriteItem>
 )
 

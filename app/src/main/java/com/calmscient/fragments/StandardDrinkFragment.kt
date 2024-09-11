@@ -102,6 +102,16 @@ class StandardDrinkFragment() : Fragment() {
         imagePagerAdapter = StandardDrinkImagePagerAdapter(imageItems)
         viewPager.adapter = imagePagerAdapter
 
+        // Set the initial state of the buttons
+        updateButtonVisibility(0)
+
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                updateButtonVisibility(position)
+            }
+        })
+
         buttonPrevious.setOnClickListener {
             val currentItem = viewPager.currentItem
             if (currentItem > 0) {
@@ -130,6 +140,22 @@ class StandardDrinkFragment() : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun updateButtonVisibility(position: Int) {
+        // Hide "Previous" button if on the first page, else show it
+        if (position == 0) {
+            buttonPrevious.visibility = View.GONE
+        } else {
+            buttonPrevious.visibility = View.VISIBLE
+        }
+
+        // Hide "Next" button if on the last page, else show it
+        if (position == imageItems.size - 1) {
+            buttonNext.visibility = View.GONE
+        } else {
+            buttonNext.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroyView() {

@@ -197,7 +197,7 @@ class EventsTrackerFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setRecyclerViewData(eventsList: List<Evevnts>) {
         val eventTrackerDataList = eventsList.map { event ->
-            EventTrackerDataClass(event.imageUrl, event.eventName, event.eventFlag == 1, event.eventId, event.eventFlag, null)
+            EventTrackerDataClass(event.imageUrl, event.eventName, event.eventFlag == 1, event.eventId, event.eventFlag, toggleButtonState = event.eventFlag == 1 )
         }.toMutableList()
 
         eventTrackerAdapter.updateEvents(eventTrackerDataList)
@@ -227,7 +227,7 @@ class EventsTrackerFragment : Fragment() {
     }
 
     private fun createEventTrackAPICall() {
-
+        createEventTrackingViewModel.clear()
         val request = createEventTrackRequest()
         Log.d("Event Create Request:","$request")
         createEventTrackingViewModel.createEventTrackerList(request, accessToken)
@@ -256,6 +256,7 @@ class EventsTrackerFragment : Fragment() {
 
                             commonAPICallDialog.setOnDismissListener {
                                 loadFragment(TakingControlFragment())
+                                createEventTrackingViewModel.clear()
                             }
 
                         }
@@ -269,10 +270,13 @@ class EventsTrackerFragment : Fragment() {
         val alcoholList = mutableListOf<CreateAlcohol>()
 
         // Assuming you have a list of items to loop through and collect data
-        val items = eventTrackerAdapter.getEvents() // Implement getItems() in your adapter to return the list of items
+        val items = eventTrackerAdapter.getEvents()
 
         val logInDetails = loginResponse?.loginDetails
         for (item in items) {
+
+            Log.d("CreateEventTrackRequest", "EventId: ${item.eventId}, ToggleButtonState: ${item.toggleButtonState}")
+
             val createAlcohol = logInDetails?.let {
                 CreateAlcohol(
                     activityDate = getCurrentFormattedDate(),

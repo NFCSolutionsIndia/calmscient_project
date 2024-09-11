@@ -37,6 +37,7 @@ import com.calmscient.viewmodels.GetAlcoholFreeDaysViewModel
 import com.calmscient.viewmodels.SaveAlcoholFreeDaysViewModel
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateChangeListener
@@ -280,13 +281,73 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
         } else {
             "U"
         }
-
+       // val updatedSelectedDates = addMissingDatesForMonths(selectedDates, selectedMonthsList)
         if (loginDetails != null) {
             saveAlcoholFreeDaysViewModel.saveAlcoholFreeDays(loginDetails.clientID,selectedDates,0,selectedMonthsList,loginDetails.patientID,loginDetails.patientLocationID,pvcFlag,accessToken)
         }
         observeViewModel()
 
     }
+
+   /* private fun addMissingDatesForMonths(
+        selectedDates: List<String>,
+        selectedMonthsList: List<String>
+    ): List<String> {
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val updatedDates = selectedDates.toMutableList()
+        val calendar = Calendar.getInstance()
+
+        val existingMonths = selectedDates.mapNotNull {
+            val date = dateFormat.parse(it)
+            if (date != null) {
+                calendar.time = date
+            }
+            calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US)
+        }.toSet()
+
+        for (month in selectedMonthsList) {
+            if (!existingMonths.contains(month)) {
+                val monthIndex = getMonthIndex(month)
+                calendar.set(Calendar.MONTH, monthIndex)
+                val year = calendar.get(Calendar.YEAR)
+                for (date in selectedDates) {
+                    val originalDate = dateFormat.parse(date)
+                    if (originalDate != null) {
+                        calendar.set(Calendar.YEAR, originalDate.year + 1900)
+                    }
+                    if (originalDate != null) {
+                        calendar.set(Calendar.DAY_OF_MONTH, originalDate.date)
+                    }
+                    val formattedDate = dateFormat.format(calendar.time)
+                    if (!updatedDates.contains(formattedDate)) {
+                        updatedDates.add(formattedDate)
+                    }
+                }
+            }
+        }
+
+        return updatedDates
+    }*/
+
+    private fun getMonthIndex(month: String): Int {
+        val monthMap = mapOf(
+            getString(R.string.jan) to Calendar.JANUARY,
+            getString(R.string.feb) to Calendar.FEBRUARY,
+            getString(R.string.mar) to Calendar.MARCH,
+            getString(R.string.apr) to Calendar.APRIL,
+            getString(R.string.may)to Calendar.MAY,
+            getString(R.string.jun) to Calendar.JUNE,
+            getString(R.string.jul) to Calendar.JULY,
+            getString(R.string.aug) to Calendar.AUGUST,
+            getString(R.string.sep) to Calendar.SEPTEMBER,
+            getString(R.string.oct) to Calendar.OCTOBER,
+            getString(R.string.nov) to Calendar.NOVEMBER,
+            getString(R.string.dec) to Calendar.DECEMBER
+        )
+        return monthMap[month] ?: Calendar.JANUARY
+    }
+
+
 
     private fun observeViewModel()
     {

@@ -25,6 +25,7 @@ import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
 import com.calmscient.di.remote.request.MyDrinkingHabitRequest
 import com.calmscient.di.remote.request.SaveAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.SaveCourseJournalEntryMakeAPlanRequest
+import com.calmscient.di.remote.request.SaveGoalSetupRequest
 import com.calmscient.di.remote.request.SaveMyDrinkingHabitAnswerRequest
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
@@ -45,6 +46,7 @@ import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.MyDrinkingHabitResponse
 import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
+import com.calmscient.di.remote.response.SaveGoalSetupResponse
 import com.calmscient.di.remote.response.SaveMyDrinkingHabitAnswerResponse
 import com.calmscient.di.remote.response.SavePatientMoodResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
@@ -132,6 +134,10 @@ class TakingControlRepository @Inject constructor(private val apiService: ApiSer
     fun saveMyDrinkHabitAnswer(saveMyDrinkingHabitAnswerRequest: SaveMyDrinkingHabitAnswerRequest, accessToken: String): Call<SaveMyDrinkingHabitAnswerResponse>
     {
         return apiService.saveMyDrinkHabitAnswer("Bearer $accessToken",saveMyDrinkingHabitAnswerRequest)
+    }
+
+    fun saveDrinkCountGoalSetup(saveGoalSetupRequest: SaveGoalSetupRequest, accessToken: String): Call<SaveGoalSetupResponse>{
+        return apiService.saveGoalSetupMakeAPlan("Bearer $accessToken",saveGoalSetupRequest)
     }
 
 }

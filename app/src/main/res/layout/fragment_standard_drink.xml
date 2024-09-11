@@ -103,6 +103,7 @@
                     android:layout_width="@dimen/_26sdp"
                     android:layout_height="@dimen/_26sdp"
                     android:background="@drawable/previous_icon"
+                    android:visibility="gone"
                     android:layout_gravity="center_vertical|start"/>
 
                 <androidx.appcompat.widget.AppCompatButton

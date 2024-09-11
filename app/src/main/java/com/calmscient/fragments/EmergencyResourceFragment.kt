@@ -36,8 +36,8 @@ class EmergencyResourceFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this){
-            loadFragment(HomeFragment())
-                //goBackToPreviousFragment()
+            //loadFragment(HomeFragment())
+                goBackToPreviousFragment()
         }
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

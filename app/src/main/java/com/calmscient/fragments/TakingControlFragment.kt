@@ -372,7 +372,7 @@ class TakingControlFragment : Fragment() {
 
     private fun updateButtons(courseLists: List<CourseLists>) {
         for (course in courseLists) {
-            when (course.courseName) {
+            when (course.courseName.trim()) {
                 getString(R.string.basic_knowledge) -> {
                     binding.btnBasicKnowledge.isEnabled = course.isEnable == 1
                     binding.btnBasicKnowledge.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
@@ -406,7 +406,7 @@ class TakingControlFragment : Fragment() {
                     setButtonDrawable(binding.btnEventTracker, course.isCompleted == 1)
                     courseIdEventTracker = course.courseId
                 }
-                getString(R.string.see_the_introduction) -> {
+                getString(R.string.see_the_introduction) ,getString(R.string.introduction)-> {
                     binding.btnSeeTheInformation.isEnabled = course.isEnable == 1
                     binding.btnSeeTheInformation.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)

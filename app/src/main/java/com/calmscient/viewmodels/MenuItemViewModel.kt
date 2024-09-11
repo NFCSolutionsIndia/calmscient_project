@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.calmscient.di.remote.request.MenuItemRequest
+import com.calmscient.di.remote.response.FavoriteItem
 import com.calmscient.di.remote.response.MenuItem
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.repository.MenuItemRepository
@@ -20,6 +21,7 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val resultLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val menuItemsLiveData: MutableLiveData<List<MenuItem>> = MutableLiveData()
+    val favoritesLiveData: MutableLiveData<List<FavoriteItem>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val failureLiveData: MutableLiveData<String> = MutableLiveData()
 
@@ -76,6 +78,7 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
                     if (menuItemsResponse != null && isSuccess) {
                         Log.d("MenuItemViewModel", "Response: $menuItemsResponse")
                         menuItemsLiveData.postValue(menuItemsResponse.menuItems)
+                        favoritesLiveData.postValue(menuItemsResponse.favorites)
                         resultLiveData.postValue(isSuccess)
                     } else {
                         errorLiveData.postValue("Empty response")

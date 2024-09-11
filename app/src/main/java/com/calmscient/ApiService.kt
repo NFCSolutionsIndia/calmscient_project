@@ -34,6 +34,7 @@ import com.calmscient.di.remote.request.PatientAnswersWrapper
 import com.calmscient.di.remote.request.PatientMoodRequest
 import com.calmscient.di.remote.request.SaveAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.SaveCourseJournalEntryMakeAPlanRequest
+import com.calmscient.di.remote.request.SaveGoalSetupRequest
 import com.calmscient.di.remote.request.SaveMyDrinkingHabitAnswerRequest
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SavePatientMoodWrapper
@@ -75,6 +76,7 @@ import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
 import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
+import com.calmscient.di.remote.response.SaveGoalSetupResponse
 import com.calmscient.di.remote.response.SaveMyDrinkingHabitAnswerResponse
 import com.calmscient.di.remote.response.SavePatientMoodResponse
 import com.calmscient.di.remote.response.SaveTakingControlIntroductionResponse
@@ -237,6 +239,9 @@ interface ApiService {
 
     @POST("patients/api/v1/takingControl/saveAlcoholFreeDay")
     fun saveAlcoholFreeDay(@Header("Authorization")accessToken: String,@Body request:SaveAlcoholFreeDayRequest) : Call<SaveAlcoholFreeDayResponse>
+
+    @POST("patients/api/v1/takingControl/saveGoalSetupMakeAPlan")
+    fun saveGoalSetupMakeAPlan(@Header("Authorization")accessToken: String, @Body requestBody: SaveGoalSetupRequest): Call<SaveGoalSetupResponse>
 
     @POST("patients/api/v1/takingControl/getPatientAlcoholGoal")
     fun getAlcoholFreeDay(@Header("Authorization")accessToken: String, @Body request: GetAlcoholFreeDayRequest): Call<GetAlcoholFreeDayResponse>
