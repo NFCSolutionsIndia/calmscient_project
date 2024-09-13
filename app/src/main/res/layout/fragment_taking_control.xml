@@ -345,6 +345,20 @@
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_seeTheInformation"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/button_background_disabled"
+                            android:enabled="false"
+                            android:fontFamily="@font/lexendregular"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/introduction"
+                            android:textAllCaps="false"
+                            android:textColor="@drawable/button_text_color_taking_control"
+                            android:textSize="@dimen/_14sdp" />
+
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_basicKnowledge"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -410,20 +424,6 @@
                             android:fontFamily="@font/lexendregular"
                             android:gravity="start|center_vertical"
                             android:text="@string/event_tracker"
-                            android:textAllCaps="false"
-                            android:textColor="@drawable/button_text_color_taking_control"
-                            android:textSize="@dimen/_14sdp" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_seeTheInformation"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="@drawable/button_background_disabled"
-                            android:enabled="false"
-                            android:fontFamily="@font/lexendregular"
-                            android:gravity="start|center_vertical"
-                            android:text="@string/see_the_introduction"
                             android:textAllCaps="false"
                             android:textColor="@drawable/button_text_color_taking_control"
                             android:textSize="@dimen/_14sdp" />

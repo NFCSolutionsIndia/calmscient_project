@@ -260,7 +260,7 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         }
 
         binding.substanceCoach.setOnClickListener{
-            loadFragment(TakingControlFragment())
+            //loadFragment(TakingControlFragment())
         }
 
         return binding.root

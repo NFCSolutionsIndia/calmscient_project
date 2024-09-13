@@ -23,6 +23,7 @@ import android.widget.Button
 import android.widget.CalendarView
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -94,6 +95,14 @@ class DrinkTrackerFragment : Fragment() , CustomCalendarDialog.OnDateSelectedLis
 
         binding.tvDate.text = selectedDate
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            loadFragment(TakingControlFragment())
+        }
     }
 
     override fun onCreateView(

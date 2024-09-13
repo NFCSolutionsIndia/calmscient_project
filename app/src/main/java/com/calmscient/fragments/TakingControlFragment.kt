@@ -400,6 +400,9 @@ class TakingControlFragment : Fragment() {
                     binding.btnDrinkTracker.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnDrinkTracker, course.isCompleted == 1)
                     courseIdDrinkTracker = course.courseId
+                    SharedPreferencesUtil.clearData(requireContext(),"courseIdDrinkTracker")
+                    SharedPreferencesUtil.saveData(requireContext(), "courseIdDrinkTracker", courseIdDrinkTracker.toString())
+
                 }
                 getString(R.string.event_tracker) -> {
                     binding.btnEventTracker.isEnabled = course.isEnable == 1
@@ -407,7 +410,7 @@ class TakingControlFragment : Fragment() {
                     setButtonDrawable(binding.btnEventTracker, course.isCompleted == 1)
                     courseIdEventTracker = course.courseId
                 }
-                getString(R.string.see_the_introduction) ,getString(R.string.introduction)-> {
+                getString(R.string.introduction) ,getString(R.string.introduction)-> {
                     binding.btnSeeTheInformation.isEnabled = course.isEnable == 1
                     binding.btnSeeTheInformation.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
                     setButtonDrawable(binding.btnSeeTheInformation, course.isCompleted == 1)

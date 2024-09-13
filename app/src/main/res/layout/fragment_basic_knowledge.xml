@@ -60,8 +60,10 @@
         android:layout_alignParentEnd="true"
         android:gravity="center"
         android:layout_marginHorizontal="@dimen/_10sdp"
-        android:background="@drawable/button_border"
+        android:background="@drawable/complete_button_background"
         android:fontFamily="@font/lexendregular"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:textAllCaps="false"
         android:layout_marginBottom="@dimen/_55sdp"/>
