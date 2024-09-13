@@ -229,6 +229,7 @@ class TakingControlFragment : Fragment() {
 
     private suspend fun apiCall()
     {
+        getTakingControlIndexViewModel.clear()
         loginResponse?.loginDetails?.let { getTakingControlIndexViewModel.getTakingControlIndex(it.clientID,it.patientID,it.patientLocationID,accessToken) }
 
        // getTakingControlIndexViewModel.getTakingControlIndex(1,1,1,accessToken)

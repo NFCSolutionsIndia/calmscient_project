@@ -86,6 +86,9 @@ class TakingControlMakeAPlanScreenThreeFragment : Fragment() {
             loadFragment(TakingControlMakeAPlanScreenTwoFragment())
         }
 
+        binding.completeButton.setOnClickListener{
+            loadFragment(TakingControlFragment())
+        }
 
 
 

@@ -122,6 +122,10 @@ class ConsequencesFragment : Fragment() {
             }
         })
 
+        binding.completeButton.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         return view
     }
 
@@ -236,8 +240,10 @@ class ConsequencesFragment : Fragment() {
 
         if (currentQuestionIndex == stepIndicators.size - 1) {
             binding.nextQuestion.visibility = View.GONE
+            binding.completeButton.visibility = View.VISIBLE
         } else {
             binding.nextQuestion.visibility = View.VISIBLE
+            binding.completeButton.visibility = View.GONE
         }
     }
 

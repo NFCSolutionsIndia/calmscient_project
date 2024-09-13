@@ -127,6 +127,7 @@
             android:src="@drawable/ic_next_question"
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
@@ -137,7 +138,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginBottom="@dimen/_40sdp"
+        android:layout_marginBottom="@dimen/_44sdp"
         android:layout_marginHorizontal="@dimen/_10sdp">
 
         <TextView
@@ -187,6 +188,13 @@
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_10sdp"
             android:layout_alignParentBottom="true"/>
+        <ImageView
+            android:id="@+id/secondScreenPreviousButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_question_back"
+            android:padding="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 
@@ -225,17 +233,25 @@ Ready?"
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_10sdp"
             android:layout_alignParentBottom="true"/>
+        <ImageView
+            android:id="@+id/thirdScreenPreviousButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_question_back"
+            android:padding="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 
     <!--Fourth Screen-->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/screenFour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginHorizontal="@dimen/_10sdp">
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_44sdp">
 
 
         <CheckBox
@@ -263,6 +279,7 @@ Ready?"
             app:cardCornerRadius="@dimen/_3sdp"
             app:cardElevation="10dp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_below="@+id/dontShowCheckBox"
             app:cardPreventCornerOverlap="false">
 
 
@@ -291,6 +308,7 @@ Ready?"
             app:cardCornerRadius="@dimen/_3sdp"
             app:cardElevation="10dp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_below="@+id/drinkCoachCardView"
             app:cardPreventCornerOverlap="false">
 
 
@@ -315,9 +333,18 @@ Ready?"
             android:text="Remember, you can always take the AUDIT, DUST-10 and CAGE test, in the My medical records section"
             android:fontFamily="@font/lexendlight"
             android:textSize="@dimen/_12sdp"
+            android:layout_below="@+id/substanceCoachCardView"
             android:textColor="@color/black_head" />
 
+        <ImageView
+            android:id="@+id/fourthScreenPreviousButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_question_back"
+            android:padding="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"/>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

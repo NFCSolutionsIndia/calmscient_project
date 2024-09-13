@@ -13,6 +13,7 @@ package com.calmscient.adapters
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,7 @@ interface PayloadCallback {
     fun onPayloadConstructed(item: TakingControlScreeningItem)
 }
 
-class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager, private val items: List<TakingControlScreeningItem>, private val context: Context,private var screeningResponse: List<ScreeningItem>, private val callback: PayloadCallback) :
+class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager, private val items: List<TakingControlScreeningItem>, private val context: Context,private var screeningResponse: List<ScreeningItem>, private val callback: PayloadCallback, private val takingControlIndexJson:String) :
     RecyclerView.Adapter<TakingControlScreeningAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,15 +59,23 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
         }
         holder.screeningName.setOnClickListener{
             if (CommonClass.isNetworkAvailable(holder.itemView.context)) {
-                // Load corresponding fragment based on screeningType
-                val fragment = when (item.name) {
-                    "PHQ-9" -> QuestionFragment(screeningResponse[position])
-                    "GAD-7" -> GADQuestionFragment(screeningResponse[position])
-                    "AUDIT" -> AUDITQuestionFragment(screeningResponse[1])
-                    "DAST-10" -> DASTQuestionFragment(screeningResponse[2])
-                    // Add more cases for other screening types if needed
-                    else -> null
+
+                val bundle = Bundle().apply {
+                    putString("source", "TakingControlIntroductionFragment")  // Pass fragment source name
+                    putString("takingControlIndexResponse", takingControlIndexJson)
                 }
+                // Load corresponding fragment based on screeningType
+                val fragment = screeningResponse.indexOfFirst { it.screeningType == item.name }.takeIf { it >= 0 }?.let { index ->
+                    when (item.name) {
+                        "PHQ-9" -> if (!item.isApplied) QuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+                        "GAD-7" -> if (!item.isApplied) GADQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+                        "AUDIT" -> if (!item.isApplied) AUDITQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+                        "DAST-10" -> if (!item.isApplied) DASTQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+                        // Add more cases for other screening types if needed
+                        else -> null
+                    }
+                }
+
 
                 fragment?.let {
                     fragmentManager.beginTransaction()

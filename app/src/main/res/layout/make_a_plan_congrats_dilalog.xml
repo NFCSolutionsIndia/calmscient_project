@@ -59,6 +59,18 @@
                 android:layout_marginTop="@dimen/_13sdp"
                 android:layout_margin="@dimen/_10sdp"/>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_goToMainPage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/skip_border"
+                android:text="@string/go_to_main_page"
+                android:gravity="center"
+                android:fontFamily="@font/lexendregular"
+                android:textColor="@color/purple_100"
+                android:layout_margin="@dimen/_10sdp"
+                android:textAllCaps="false"/>
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_seeTheIntro"
@@ -69,11 +81,8 @@
                 android:gravity="center"
                 android:fontFamily="@font/lexendregular"
                 android:textColor="@color/purple_100"
-                android:layout_margin="@dimen/_10sdp"
-                android:textAllCaps="false">
-
-            </androidx.appcompat.widget.AppCompatButton>
-
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:textAllCaps="false"/>
 
         </LinearLayout>
     </ScrollView>

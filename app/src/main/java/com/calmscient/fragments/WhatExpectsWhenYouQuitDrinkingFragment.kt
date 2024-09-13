@@ -114,6 +114,9 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
         binding.backIcon.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()
         }
+        binding.completeButton.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
         // Observe the selected item
         sharedViewModel.selectedItem.observe(viewLifecycleOwner, Observer { item ->

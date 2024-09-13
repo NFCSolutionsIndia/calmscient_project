@@ -22,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
@@ -124,12 +125,17 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
 
         binding.btnSet.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                saveGoalSetUpAPICall()
+                val goalCount = binding.goalsTextView.text.toString()
+                if(goalCount.isNotEmpty() && goalCount != "XX"){
+                    saveGoalSetUpAPICall()
+                }else{
+                    Toast.makeText(requireContext(),
+                        getString(R.string.please_add_count_before_setting), Toast.LENGTH_SHORT).show()
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
-
 
         binding.makeAPlanBulbIcon.setOnClickListener {
             showBulbDialog()
@@ -140,7 +146,6 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         } else {
             CommonClass.showInternetDialogue(requireContext())
         }
-
 
         return binding.root
     }
@@ -225,6 +230,7 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
 
         val closeButton = dialogView.findViewById<ImageView>(R.id.closeButton)
         val introButton = dialogView.findViewById<AppCompatButton>(R.id.btn_seeTheIntro)
+        val goToHomeButton = dialogView.findViewById<AppCompatButton>(R.id.btn_goToMainPage)
 
         val dialogBuilder = AlertDialog.Builder(requireContext(), R.style.CustomDialog)
             .setView(dialogView)
@@ -237,6 +243,11 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         }
 
         introButton.setOnClickListener {
+            dialog.dismiss()
+            loadFragment(TakingControlFragment())
+        }
+
+        goToHomeButton.setOnClickListener {
             dialog.dismiss()
             loadFragment(TakingControlFragment())
         }

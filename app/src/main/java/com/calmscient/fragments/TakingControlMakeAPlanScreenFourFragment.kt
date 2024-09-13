@@ -61,10 +61,8 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            requireActivity().supportFragmentManager.popBackStack()
+            loadFragment(TakingControlMakeAPlanScreenTwoFragment())
         }
-
-
     }
 
     override fun onCreateView(
@@ -93,7 +91,7 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
         binding.tvFreeDaysCount.text = customCalendarView.getSelectedDatesSize().toString()
 
         binding.backIcon.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            loadFragment(TakingControlMakeAPlanScreenTwoFragment())
         }
 
         binding.previousQuestion.setOnClickListener{

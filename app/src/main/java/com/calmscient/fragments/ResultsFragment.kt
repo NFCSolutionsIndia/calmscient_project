@@ -54,6 +54,9 @@ class ResultsFragment() : Fragment() {
     private  lateinit var accessToken : String
     private val screeningResultsViewModel: ScreeningResultsViewModel by activityViewModels()
 
+    private lateinit var source : String
+    private  var takingControlIndexJson : String? = null
+
     companion object {
         const val SOURCE_SCREEN_KEY = "source_screen"
         const val SCREENINGS_FRAGMENT = 0
@@ -71,13 +74,17 @@ class ResultsFragment() : Fragment() {
                 YOUR_STRESS_FRAGMENT -> loadFragment(YourStressTriggersQuizFragment())
                 // Handle other fragments if needed
             }*/
-
-
-
+            source = arguments?.getString("source").toString()
+            takingControlIndexJson = arguments?.getString("takingControlIndexResponse").toString()
 
 
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                loadFragment(ScreeningsFragment())
+                if(source ==  "TakingControlIntroductionFragment"){
+                    loadFragment(TakingControlIntroductionFragment())
+
+                }else{
+                    loadFragment(ScreeningsFragment())
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -123,6 +130,8 @@ class ResultsFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = LayoutResultsBinding.inflate(inflater, container, false)
+        source = arguments?.getString("source").toString()
+        takingControlIndexJson = arguments?.getString("takingControlIndexResponse").toString()
         binding.resultsBackIcon.setOnClickListener {
             /*val sourceFragment = arguments?.getInt(SOURCE_SCREEN_KEY)
             when (sourceFragment) {
@@ -131,9 +140,13 @@ class ResultsFragment() : Fragment() {
                 // Handle other fragments if needed
             }*/
 
-
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                loadFragment(ScreeningsFragment())
+                if(source ==  "TakingControlIntroductionFragment"){
+                    loadFragment(TakingControlIntroductionFragment())
+
+                }else{
+                    loadFragment(ScreeningsFragment())
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -204,6 +217,8 @@ class ResultsFragment() : Fragment() {
 
         val bundle = Bundle()
         bundle.putString("description", getString(R.string.work_related_stress_quiz))
+        bundle.putInt("currentScreenIndex",2)
+        bundle.putString("takingControlIndexResponse", takingControlIndexJson)
         fragment.arguments = bundle
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()

@@ -493,6 +493,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
             android:clickable="true"
+            android:visibility="gone"
             android:src="@drawable/ic_question_back" />
 
         <!-- Next question ImageView -->

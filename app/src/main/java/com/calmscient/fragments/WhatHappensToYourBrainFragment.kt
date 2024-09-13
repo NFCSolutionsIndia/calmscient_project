@@ -117,6 +117,10 @@ class WhatHappensToYourBrainFragment : Fragment() {
 
         initializeBinding(binding.root)
 
+        binding.completeButton.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         return binding.root
     }
 

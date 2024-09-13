@@ -138,6 +138,9 @@ class StandardDrinkFragment() : Fragment() {
         })
 
 
+        binding.completeButton.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
 
         return binding.root
     }
@@ -160,7 +163,6 @@ class StandardDrinkFragment() : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
     }
 
     private fun loadFragment(fragment: Fragment) {

@@ -122,6 +122,20 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/lexendlight"
                 android:textSize="@dimen/_12sdp"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/completeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/complete"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:background="@drawable/button_border"
+                android:fontFamily="@font/lexendregular"
+                android:textColor="@color/white"
+                android:textAllCaps="false"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

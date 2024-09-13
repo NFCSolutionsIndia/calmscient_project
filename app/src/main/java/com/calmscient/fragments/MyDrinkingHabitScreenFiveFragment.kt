@@ -127,6 +127,12 @@ class MyDrinkingHabitScreenFiveFragment : Fragment() {
         binding.nextQuestion.visibility = View.GONE
         initializeOptions()
 
+        binding.completeButton.setOnClickListener{
+            val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")
+            val basicKnowledgeFragment = BasicKnowledgeFragment.newInstanceBasicKnowledge(res.toInt())
+            loadFragment(basicKnowledgeFragment)
+        }
+
         return binding.root
     }
 

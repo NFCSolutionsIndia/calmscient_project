@@ -69,6 +69,7 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
     private lateinit var getTakingControlIndexResponse: GetTakingControlIndexResponse
 
     private var courseTempId = 0
+    private lateinit var takingControlIndexJson : String
 
     companion object {
         fun newInstance(
@@ -99,15 +100,16 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         parentFragmentManager.setFragmentResultListener("currentScreenIndex", this) { _, bundle ->
             val result = bundle.getInt("currentScreenIndex")
 
+
             // Handle the result data here
-            if (result == 3) {
-                currentScreenIndex = 3
+            if (result == 2) {
+                currentScreenIndex = 2
                 Log.d("Result : ", "$result")
                 //Toast.makeText(requireContext(), "Received result: $result", Toast.LENGTH_LONG).show()
                 // Handle the logic to show the appropriate screen or perform any other action
                 binding.screenOne.visibility = View.GONE
-                binding.screenTwo.visibility = View.GONE
-                binding.screenThree.visibility = View.VISIBLE
+                binding.screenTwo.visibility = View.VISIBLE
+                binding.screenThree.visibility = View.GONE
             }
         }
 
@@ -130,14 +132,27 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         accessToken = SharedPreferencesUtil.getData(requireContext(), "accessToken", "")
 
 
-        val takingControlIndexJson = arguments?.getString("takingControlIndexResponse")
+        takingControlIndexJson = arguments?.getString("takingControlIndexResponse").toString()
         courseTempId = arguments?.getInt("courseId")!!
+
+        currentScreenIndex = arguments?.getInt("currentScreenIndex")!!
+
+        if (currentScreenIndex == 2) {
+            currentScreenIndex = 2
+            Log.d("Result : ", "$currentScreenIndex")
+            //Toast.makeText(requireContext(), "Received result: $result", Toast.LENGTH_LONG).show()
+            // Handle the logic to show the appropriate screen or perform any other action
+            binding.screenOne.visibility = View.GONE
+            binding.screenTwo.visibility = View.VISIBLE
+            binding.screenThree.visibility = View.GONE
+        }
+
+
 
         Log.d("CourseTempId : ","$courseTempId")
 
         val gson = Gson()
-        getTakingControlIndexResponse =
-            gson.fromJson(takingControlIndexJson, GetTakingControlIndexResponse::class.java)
+        getTakingControlIndexResponse = gson.fromJson(takingControlIndexJson, GetTakingControlIndexResponse::class.java)
 
         Log.d("getTakingControlIndexResponse", "$getTakingControlIndexResponse")
 
@@ -147,6 +162,7 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
         } else {
             CommonClass.showInternetDialogue(requireContext())
         }
+
 
         binding.firstScreenNextButton.setOnClickListener {
             currentScreenIndex = 2
@@ -173,6 +189,31 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
             binding.screenTwo.visibility = View.GONE
             binding.screenThree.visibility = View.GONE
             binding.screenFour.visibility = View.VISIBLE
+        }
+
+        binding.secondScreenPreviousButton.setOnClickListener{
+            currentScreenIndex = 1
+            binding.screenOne.visibility = View.VISIBLE
+            binding.screenTwo.visibility = View.GONE
+            binding.screenThree.visibility = View.GONE
+            binding.screenFour.visibility = View.GONE
+        }
+
+        binding.thirdScreenPreviousButton.setOnClickListener{
+            currentScreenIndex = 2
+            binding.screenTwo.visibility = View.VISIBLE
+
+            binding.screenOne.visibility = View.GONE
+            binding.screenThree.visibility = View.GONE
+            binding.screenFour.visibility = View.GONE
+        }
+        binding.fourthScreenPreviousButton.setOnClickListener{
+            currentScreenIndex = 3
+            binding.screenThree.visibility = View.VISIBLE
+
+            binding.screenOne.visibility = View.GONE
+            binding.screenTwo.visibility = View.GONE
+            binding.screenFour.visibility = View.GONE
         }
 
 
@@ -288,7 +329,8 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
                 getScreeningItems(),
                 requireContext(),
                 screeningResponse,
-                this
+                this,
+                takingControlIndexJson
             )
             binding.takingControlScreeningRecyclerView.adapter = recyclerView.adapter
         }

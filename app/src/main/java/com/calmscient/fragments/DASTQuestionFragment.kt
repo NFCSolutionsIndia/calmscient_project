@@ -62,7 +62,8 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
     private  lateinit var accessToken : String
-
+    private lateinit var source : String
+    private lateinit var takingControlIndexJson : String
 
     private val selectedOptionsMap = mutableMapOf<Int, String?>()
     // Define a variable to store the last saved state of selected options
@@ -83,12 +84,21 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                navigateBackToPreviousScreen()
+
+                if(source == "TakingControlIntroductionFragment"){
+                    navigateBackToPreviousScreen()
+                }else{
+                    navigateBackToPreviousScreen()
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
         commonDialog = CommonAPICallDialog(requireContext())
+
+        source = arguments?.getString("source").toString()
+        takingControlIndexJson = arguments?.getString("takingControlIndexResponse").toString()
+        Log.d("Source:","$source")
 
     }
 
@@ -114,7 +124,11 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
         binding.backIcon.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                navigateBackToPreviousScreen()
+                if(source == "TakingControlIntroductionFragment"){
+                    navigateBackToPreviousScreen()
+                }else{
+                    navigateBackToPreviousScreen()
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -286,6 +300,8 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
         Log.d("LoadFragment in DF","$screeningResponseList")
         val args = Bundle().apply {
             putString("screeningResponse", JsonUtil.toJsonString(screeningResponseList))
+            putString("source", source)
+            putString("takingControlIndexResponse", takingControlIndexJson)
         }
         fragment.arguments = args
 
@@ -354,7 +370,11 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                                 commonDialog.showDialog(message)
                             }
                             commonDialog.setOnDismissListener {
-                                navigateToScreeningsFragment()
+                                if(source == "TakingControlIntroductionFragment"){
+                                    navigateBackToPreviousScreen()
+                                }else {
+                                    navigateToScreeningsFragment()
+                                }
                             }
                         }
 
@@ -484,7 +504,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
         // Check if there's a fragment in the back stack
         if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
             // Prepare the result data
-            val result = 3
+            val result = 2
             val resultBundle = Bundle()
             resultBundle.putInt("currentScreenIndex", result)
 

@@ -79,6 +79,10 @@ class ModerationDrinkingFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
+        binding.completeButton.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         val textView: TextView =  binding.tvThree
         textView.text = Html.fromHtml(getString(R.string.drinking_in_moderation_still_desc_3))
 

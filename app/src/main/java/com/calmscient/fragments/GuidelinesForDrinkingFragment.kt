@@ -85,7 +85,9 @@ class GuidelinesForDrinkingFragment : Fragment() {
                 updateBasicKnowledgeAPICall()
             }
         })
-
+        binding.completeButton.setOnClickListener{
+            loadFragment(BasicKnowledgeFragment())
+        }
 
         return binding.root
     }

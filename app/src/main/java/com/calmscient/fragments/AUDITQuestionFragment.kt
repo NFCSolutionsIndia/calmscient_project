@@ -60,6 +60,9 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
     private lateinit var commonDialog: CommonAPICallDialog
     private  lateinit var accessToken : String
 
+    private lateinit var source : String
+    private lateinit var takingControlIndexJson : String
+
 
     private val selectedOptionsMap = mutableMapOf<Int, String?>()
     // Define a variable to store the last saved state of selected options
@@ -80,11 +83,19 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-               navigateBackToPreviousScreen()
+                if(source == "TakingControlIntroductionFragment"){
+                    navigateBackToPreviousScreen()
+                }else{
+                    navigateBackToPreviousScreen()
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
+
+        source = arguments?.getString("source").toString()
+        takingControlIndexJson = arguments?.getString("takingControlIndexResponse").toString()
+        Log.d("Source:","$source")
 
     }
 
@@ -109,7 +120,11 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
 
         binding.backIcon.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                navigateBackToPreviousScreen()
+                if(source == "TakingControlIntroductionFragment"){
+                    navigateBackToPreviousScreen()
+                }else{
+                    navigateBackToPreviousScreen()
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -281,6 +296,8 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
         Log.d("LoadFragment in AUDIT","$screeningResponseList")
         val args = Bundle().apply {
             putString("screeningResponse", JsonUtil.toJsonString(screeningResponseList))
+            putString("source", source)
+            putString("takingControlIndexResponse", takingControlIndexJson)
         }
         fragment.arguments = args
 
@@ -349,7 +366,11 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
                                 commonDialog.showDialog(message)
                             }
                             commonDialog.setOnDismissListener {
-                                navigateToScreeningsFragment()
+                                if(source == "TakingControlIntroductionFragment"){
+                                    navigateBackToPreviousScreen()
+                                }else {
+                                    navigateToScreeningsFragment()
+                                }
                             }
                         }
 
@@ -474,6 +495,12 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
         // Check if there's a fragment in the back stack
         if (requireActivity().supportFragmentManager.backStackEntryCount > 0) {
             // Pop the back stack to go back to the previous fragment
+            val result = 2
+            val resultBundle = Bundle()
+            resultBundle.putInt("currentScreenIndex", result)
+
+            // Set the result and pop the back stack
+            parentFragmentManager.setFragmentResult("currentScreenIndex", resultBundle)
             requireActivity().supportFragmentManager.popBackStack()
         } else {
             // If there's no fragment in the back stack, you can handle it accordingly

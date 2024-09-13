@@ -70,6 +70,7 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
     private val selectedOptionsMap = mutableMapOf<Int, String?>()
     // Define a variable to store the last saved state of selected options
     private var lastSavedSelectedOptions: Map<Int, String?> = emptyMap()
+    private lateinit var source : String
 
     // Function to check if there are any changes in selected options
     private fun areSelectedOptionsChanged(): Boolean {
@@ -92,6 +93,10 @@ class QuestionFragment(private val screeningItem: ScreeningItem) : Fragment() {
             }
         }
         commonDialog = CommonAPICallDialog(requireContext())
+
+        source = arguments?.getString("source").toString()
+
+        Log.d("Source:","$source")
 
     }
 

@@ -106,6 +106,9 @@ class BasicKnowledgeFragment : Fragment() {
         binding.backIcon.setOnClickListener{
             loadFragment(TakingControlFragment())
         }
+        binding.completeButton.setOnClickListener{
+            loadFragment(TakingControlFragment())
+        }
         getIndexDataAPICall()
 
         return binding.root

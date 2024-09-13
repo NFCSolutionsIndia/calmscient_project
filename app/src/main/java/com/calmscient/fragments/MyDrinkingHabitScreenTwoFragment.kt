@@ -213,6 +213,8 @@ class MyDrinkingHabitScreenTwoFragment : Fragment() {
         if (request.alcohol.isNotEmpty()) {
             createDrinkTrackerViewModel.createDrinkTrackerList(request, accessToken)
             observeCreateDrinkTrackerAPIData()
+        }else{
+            loadFragment(MyDrinkingHabitScreenThreeFragment())
         }
     }
 
