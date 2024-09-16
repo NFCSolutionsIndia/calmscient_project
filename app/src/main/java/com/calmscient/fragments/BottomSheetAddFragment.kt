@@ -30,6 +30,13 @@ class BottomSheetAddFragment:BottomSheetDialogFragment() {
     lateinit var etAdd: EditText
     lateinit var addButton: AppCompatButton
     lateinit var closeButton: ImageView
+    var bottomSheetListener: BottomSheetListener? = null
+
+    interface BottomSheetListener {
+        fun onTextEntered(text: String)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,7 +54,10 @@ class BottomSheetAddFragment:BottomSheetDialogFragment() {
         closeButton.setOnClickListener {
             dismiss()
         }
+        // Add button to send the text back to the fragment
         addButton.setOnClickListener {
+            val enteredText = etAdd.text.toString()
+            bottomSheetListener?.onTextEntered(enteredText)
             dismiss()
         }
     }

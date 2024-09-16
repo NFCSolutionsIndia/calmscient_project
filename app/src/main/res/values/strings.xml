@@ -2224,5 +2224,6 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="complete">Complete</string>
     <string name="go_to_main_page">Go to main page</string>
     <string name="please_add_count_before_setting">Please add count before setting</string>
+    <string name="search">Search</string>
 
 </resources>

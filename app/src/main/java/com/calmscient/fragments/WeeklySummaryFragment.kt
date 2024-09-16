@@ -173,7 +173,7 @@ class WeeklySummaryFragment : Fragment() {
         binding.journalEntryCard.setOnClickListener{
             if(CommonClass.isNetworkAvailable(requireContext()))
             {
-                loadFragment(JournalEntryFragment())
+                loadFragment(JournalEntryFragmentNew())
             }
             else
             {
