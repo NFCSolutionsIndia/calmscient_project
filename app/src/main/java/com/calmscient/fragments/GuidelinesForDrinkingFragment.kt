@@ -86,7 +86,7 @@ class GuidelinesForDrinkingFragment : Fragment() {
             }
         })
         binding.completeButton.setOnClickListener{
-            loadFragment(BasicKnowledgeFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         return binding.root

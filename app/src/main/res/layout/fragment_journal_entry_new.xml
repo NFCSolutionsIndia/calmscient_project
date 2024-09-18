@@ -45,6 +45,7 @@
 
 
     <LinearLayout
+        android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/viewJournalEntry"
@@ -56,17 +57,16 @@
             android:id="@+id/searchEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@drawable/search_border"
             android:drawableEnd="@drawable/ic_search"
+            android:elevation="@dimen/_8sdp"
             android:hint="@string/search"
-            android:layout_gravity="center"
             android:inputType="text"
             android:padding="10dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/example_7_calendar"
-            android:elevation="@dimen/_8sdp"
-            />
+            android:textColorHint="@color/example_7_calendar" />
 
         <!-- Calendar icon -->
         <androidx.appcompat.widget.AppCompatButton
@@ -74,10 +74,69 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/ic_calendar_new"
-            android:elevation="@dimen/_8sdp"
-            />
+            android:background="@drawable/ic_calendar_journal_entry"
+            android:elevation="@dimen/_8sdp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/quiz_journal_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/searchLayout"
+        android:weightSum="5">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_quiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/_6sdp"
+            android:background="@drawable/journal_entry_buttons_border"
+            android:fontFamily="@font/lexendmedium"
+            android:gravity="center"
+            android:text="@string/quiz"
+            android:layout_weight="0.6"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_dailyJournals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/journal_entry_buttons_border"
+            android:fontFamily="@font/lexendmedium"
+            android:gravity="center"
+            android:text="@string/daily_journals"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_weight="2.2"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_discoverExercise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/journal_entry_buttons_border"
+            android:fontFamily="@font/lexendmedium"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:gravity="center"
+            android:text="@string/discovery_exercise"
+            android:layout_weight="2.2"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/journal_entry_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quiz_journal_button_layout"/>
+
 
 
     <androidx.appcompat.widget.AppCompatButton

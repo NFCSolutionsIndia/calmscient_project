@@ -11,6 +11,7 @@
 
 package com.calmscient.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,12 +24,18 @@ import com.calmscient.Interface.BottomSheetListener
 import com.calmscient.R
 import com.calmscient.databinding.FragmentJournalEntryBinding
 import com.calmscient.databinding.FragmentJournalEntryNewBinding
+import com.calmscient.utils.CustomCalendarDialog
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.time.LocalDate
 
-class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetListener  {
+class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetListener,CustomCalendarDialog.OnDateSelectedListener  {
 
 
 
     private lateinit var binding: FragmentJournalEntryNewBinding
+    private var selectedDate = LocalDate.now()
+    private var currentlySelectedButton: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -62,6 +69,29 @@ class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetLi
             bottomSheet.show(parentFragmentManager, bottomSheet.tag)
         }
 
+        binding.calendarIcon.setOnClickListener {
+            val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")
+
+            dialog.setOnOkClickListener {
+                Toast.makeText(requireContext(),"Selected Date: $selectedDate",Toast.LENGTH_LONG).show()
+            }
+        }
+
+        binding.btnQuiz.setOnClickListener {
+            selectOption(0)
+        }
+
+        binding.btnDailyJournals.setOnClickListener {
+            selectOption(1)
+        }
+
+        binding.btnDiscoverExercise.setOnClickListener {
+            selectOption(2)
+        }
+
+
         return binding.root
     }
 
@@ -69,6 +99,43 @@ class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetLi
        Toast.makeText(requireContext(),text,Toast.LENGTH_LONG).show()
 
         Log.e("BottomText","$text")
+    }
+
+    override fun onDateSelected(date: CalendarDay) {
+        selectedDate = date.toLocalDate()
+    }
+
+    private fun CalendarDay.toLocalDate(): LocalDate {
+        return LocalDate.of(this.year, this.month + 1, this.day)
+    }
+
+    private fun clearSelection() {
+        currentlySelectedButton?.let { selectedIndex ->
+            val button = when (selectedIndex) {
+                0 -> binding.btnQuiz
+                1 -> binding.btnDailyJournals
+                2 -> binding.btnDiscoverExercise
+                else -> null
+            }
+            button?.setBackgroundResource(R.drawable.journal_entry_buttons_border)
+            button?.setTextColor(Color.parseColor("#424242"))
+        }
+    }
+
+    private fun selectOption(selectedIndex: Int) {
+        clearSelection()
+
+        currentlySelectedButton = selectedIndex
+
+        val button = when (selectedIndex) {
+            0 -> binding.btnQuiz
+            1 -> binding.btnDailyJournals
+            2 -> binding.btnDiscoverExercise
+            else -> null
+        }
+
+        button?.setBackgroundResource(R.drawable.journal_entry_buttons_selected_background)
+        button?.setTextColor(Color.parseColor("#FFFFFF"))
     }
 
 
