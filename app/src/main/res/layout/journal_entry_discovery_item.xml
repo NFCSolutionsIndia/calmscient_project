@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/taskLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_5sdp"
+    app:cardElevation="@dimen/_5sdp"
+    app:cardUseCompatPadding="true">
+
+    <!-- The constraint layout for the whole card -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+        <!-- This is like the top "bar" of the card that is visible at all times. -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/taskTitleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:id="@+id/date_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:fontFamily="@font/lexendregular"
+                    android:maxLines="1"
+                    android:text="06/08/2023"
+                    android:textColor="@color/black_head"
+                    android:textSize="@dimen/_10sdp" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:background="@color/grey_light"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/tv_date"/>
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:fontFamily="@font/lexendregular"
+                    android:text="Make a Plan"
+                    android:textColor="@color/black_head"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_toEndOf="@+id/view"/>
+                <ImageButton
+                    android:id="@+id/dropdownButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="#00000000"
+                    android:src="@drawable/ic_expand"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_singleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/date_title_layout"
+                android:text="dkjvbsdljhvsbljhsbljvbslvjmwsv vgv vjd vwhdsvwshb fw JFS BC "
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:textColor="@color/purple_100"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- The task description is only visible when the card is expanded. -->
+        <TextView
+            android:id="@+id/tv_Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Task Description"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/taskTitleLayout"
+            app:layout_constraintVertical_bias="0.0"
+            android:textColor="@color/purple_100"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

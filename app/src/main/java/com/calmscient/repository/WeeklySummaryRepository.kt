@@ -12,6 +12,7 @@
 package com.calmscient.repository
 
 import com.calmscient.ApiService
+import com.calmscient.di.remote.request.GetPatientJournalByPatientIdRequest
 import com.calmscient.di.remote.request.SummaryOfAUDITRequest
 import com.calmscient.di.remote.request.SummaryOfCourseWorkRequest
 import com.calmscient.di.remote.request.SummaryOfDASTRequest
@@ -19,6 +20,7 @@ import com.calmscient.di.remote.request.SummaryOfGADRequest
 import com.calmscient.di.remote.request.SummaryOfMoodRequest
 import com.calmscient.di.remote.request.SummaryOfPHQ9Request
 import com.calmscient.di.remote.request.SummaryOfSleepRequest
+import com.calmscient.di.remote.response.GetPatientJournalByPatientIdResponse
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
 import com.calmscient.di.remote.response.SummaryOfCourseWorkResponse
 import com.calmscient.di.remote.response.SummaryOfDASTResponse
@@ -65,6 +67,11 @@ class WeeklySummaryRepository @Inject constructor(private val apiService: ApiSer
     fun getSummaryOfCourseWork(summaryOfCourseWorkRequest: SummaryOfCourseWorkRequest,accessToken: String): Call<SummaryOfCourseWorkResponse>
     {
         return  apiService.getSummaryOfCourseWork("Bearer $accessToken",summaryOfCourseWorkRequest)
+    }
+
+    fun getPatientJournalByPatientId(getPatientJournalByPatientIdRequest: GetPatientJournalByPatientIdRequest, accessToken: String): Call<GetPatientJournalByPatientIdResponse>
+    {
+        return  apiService.getPatientJournalByPatientId("Bearer $accessToken",getPatientJournalByPatientIdRequest)
     }
 
 }

@@ -21,6 +21,7 @@ import com.calmscient.di.remote.request.DrinkTrackerRequest
 import com.calmscient.di.remote.request.GetAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.GetBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.GetEventsListRequest
+import com.calmscient.di.remote.request.GetPatientJournalByPatientIdRequest
 import com.calmscient.di.remote.request.GetTakingControlIndexRequest
 import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.GetTakingControlSummaryRequest
@@ -64,6 +65,7 @@ import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.GetEventsListResponse
+import com.calmscient.di.remote.response.GetPatientJournalByPatientIdResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.GetTakingControlSummaryResponse
@@ -255,5 +257,10 @@ interface ApiService {
 
     @POST("patients/api/v1/takingControl/saveBasicKnowledgeCourse")
     fun saveMyDrinkHabitAnswer(@Header("Authorization")accessToken: String, @Body request:SaveMyDrinkingHabitAnswerRequest): Call<SaveMyDrinkingHabitAnswerResponse>
+
+    //Journal Entry
+
+    @POST("patients/api/v1/patientDetails/getPatientJournalByPatientIdForMobile")
+    fun getPatientJournalByPatientId(@Header("Authorization")accessToken: String, @Body requestBody: GetPatientJournalByPatientIdRequest): Call<GetPatientJournalByPatientIdResponse>
 }
 

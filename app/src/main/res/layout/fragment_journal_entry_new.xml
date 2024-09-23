@@ -50,7 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/viewJournalEntry"
         android:orientation="horizontal"
-        android:paddingHorizontal="8dp">
+        android:paddingHorizontal="8dp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_20sdp">
 
         <!-- Search EditText -->
         <EditText
@@ -71,14 +73,16 @@
         <!-- Calendar icon -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/calendarIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_calendar_journal_entry"
+            android:background="@drawable/ic_calendar"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_4sdp"
             android:elevation="@dimen/_8sdp" />
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/quiz_journal_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,13 +133,38 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"/>
-    </LinearLayout>
+    </LinearLayout>-->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/journal_entry_recyclerView"
+    <!-- TabLayout and ViewPager2 for TabFragment -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/tabFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/quiz_journal_button_layout"/>
+        android:layout_below="@id/searchLayout"
+        android:layout_marginHorizontal="@dimen/_10sdp">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/black"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabIndicatorHeight="0dp"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tabLayout"
+            android:layout_marginTop="@dimen/_40sdp"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/journal_entry_recyclerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/tabFragment"/>-->
 
 
 

@@ -104,6 +104,14 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
 
         setupMonthSelection(months)
 
+        if(CommonClass.isNetworkAvailable(requireContext()))
+        {
+            getAlcoholFreeDaysApiCall()
+        }
+        else{
+            CommonClass.showInternetDialogue(requireContext())
+        }
+
         binding.btnSet.setOnClickListener {
             val selectedDates = customCalendarView.getFormattedSelectedDates()
             val selectedMonthsList = getSelectedMonths()
@@ -117,14 +125,6 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
             else{
                 CommonClass.showInternetDialogue(requireContext())
             }
-        }
-
-        if(CommonClass.isNetworkAvailable(requireContext()))
-        {
-           getAlcoholFreeDaysApiCall()
-        }
-        else{
-            CommonClass.showInternetDialogue(requireContext())
         }
 
 
