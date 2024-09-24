@@ -28,15 +28,19 @@ import com.calmscient.di.remote.response.DailyJournal
 import com.calmscient.di.remote.response.GetPatientJournalByPatientIdResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.GetPatientJournalByPatientIdViewModel
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class DailyJournalTabFragment : Fragment() {
+class DailyJournalTabFragment : Fragment(){
 
     private lateinit var binding: TabDailyJournalsFragmentBinding
 
@@ -48,6 +52,26 @@ class DailyJournalTabFragment : Fragment() {
     private lateinit var loginResponse: LoginResponse
     private lateinit var journalEntryDailyJournalAdapter: JournalEntryDailyJournalAdapter
     private val dailyJournalItems = mutableListOf<DailyJournal>()
+    private var selectedDate: LocalDate? = null
+
+    companion object {
+        private const val ARG_SELECTED_DATE = "selected_date"
+    }
+
+    fun newInstance(date: LocalDate): DailyJournalTabFragment {
+        val fragment = DailyJournalTabFragment()
+        val bundle = Bundle()
+        bundle.putSerializable(ARG_SELECTED_DATE, date)
+        fragment.arguments = bundle
+        return fragment
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            selectedDate = it.getSerializable(ARG_SELECTED_DATE) as? LocalDate
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,21 +92,25 @@ class DailyJournalTabFragment : Fragment() {
         binding.tabDailyJournalRecyclerView.adapter = journalEntryDailyJournalAdapter
 
         if (CommonClass.isNetworkAvailable(requireContext())) {
-            getPatientJournalDataAPICall()
+            getPatientJournalDataAPICall(null)
         } else {
             CommonClass.showInternetDialogue(requireContext())
         }
         return binding.root
     }
 
-    private fun getPatientJournalDataAPICall() {
+    fun getPatientJournalDataAPICall(selectedDate: LocalDate?) {
         getPatientJournalByPatientIdViewModel.clear()
 
+        var formattedDate = selectedDate?.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
 
-        var request = GetPatientJournalByPatientIdRequest(
+        if(formattedDate == null){
+            formattedDate = ""
+        }
+        val request = GetPatientJournalByPatientIdRequest(
             loginResponse.loginDetails.clientID,
             "",
-            "",
+            "$formattedDate",
             loginResponse.loginDetails.patientID,
             loginResponse.loginDetails.patientLocationID
         )
@@ -115,6 +143,12 @@ class DailyJournalTabFragment : Fragment() {
                             if (successData != null) {
                                 // getPatientJournalByPatientIdResponse = successData
                                 updateUI(successData.dailyJournal)
+
+                                if(successData.dailyJournal.isEmpty()){
+                                    binding.tvNoRecords.visibility = View.VISIBLE
+                                }else{
+                                    binding.tvNoRecords.visibility = View.GONE
+                                }
                             }
                         }
                     )
@@ -132,5 +166,9 @@ class DailyJournalTabFragment : Fragment() {
         journalEntryDailyJournalAdapter.notifyDataSetChanged()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getPatientJournalDataAPICall(null)
+    }
 
 }

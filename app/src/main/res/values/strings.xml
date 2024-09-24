@@ -2228,5 +2228,6 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="quiz">Quiz</string>
     <string name="daily_journals">Daily journals</string>
     <string name="discovery_exercise">Discovery Exercise</string>
+    <string name="no_records">No Records</string>
 
 </resources>

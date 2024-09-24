@@ -12,6 +12,7 @@
 package com.calmscient
 
 import com.calmscient.di.remote.request.AddMedicationDetailsRequest
+import com.calmscient.di.remote.request.AddPatientJournalEntryRequest
 import com.calmscient.di.remote.request.AlarmUpdateRequest
 import com.calmscient.di.remote.request.AlarmWrapper
 import com.calmscient.di.remote.request.AppointmentDetailsRequestData
@@ -57,6 +58,7 @@ import com.calmscient.di.remote.request.SummaryOfSleepRequest
 import com.calmscient.di.remote.request.UpdateBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
 import com.calmscient.di.remote.response.AddMedicationResponse
+import com.calmscient.di.remote.response.AddPatientJournalEntryResponse
 import com.calmscient.di.remote.response.AlarmUpdateResponse
 import com.calmscient.di.remote.response.AppointmentDetailsResponseData
 import com.calmscient.di.remote.response.CreateDrinkTrackerResponse
@@ -76,6 +78,7 @@ import com.calmscient.di.remote.response.MedicationDetailsResponse
 import com.calmscient.di.remote.response.MyDrinkingHabitResponse
 import com.calmscient.di.remote.response.PatientAnswerSaveResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
+import com.calmscient.di.remote.response.Response
 import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
 import com.calmscient.di.remote.response.SaveGoalSetupResponse
@@ -262,5 +265,8 @@ interface ApiService {
 
     @POST("patients/api/v1/patientDetails/getPatientJournalByPatientIdForMobile")
     fun getPatientJournalByPatientId(@Header("Authorization")accessToken: String, @Body requestBody: GetPatientJournalByPatientIdRequest): Call<GetPatientJournalByPatientIdResponse>
+
+    @POST("patients/api/v1/patientDetails/addPatientJournalEntry")
+    fun addPatientJournalEntry(@Header("Authorization")accessToken: String,@Body requestBody: AddPatientJournalEntryRequest): Call<AddPatientJournalEntryResponse>
 }
 

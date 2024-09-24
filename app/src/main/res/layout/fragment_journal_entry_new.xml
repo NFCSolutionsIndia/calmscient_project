@@ -52,7 +52,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="8dp"
         android:layout_marginHorizontal="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_20sdp">
+        android:layout_marginBottom="@dimen/_10sdp">
 
         <!-- Search EditText -->
         <EditText
@@ -175,6 +175,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/_50sdp"
+        android:visibility="gone"
         android:background="@drawable/ic_floatingicon" />
 
 </RelativeLayout>

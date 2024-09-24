@@ -13,7 +13,7 @@ package com.calmscient.di.remote.response
 
 data class GetPatientJournalByPatientIdResponse(
     val dailyJournal: List<DailyJournal>,
-    val discoveryExercises: List<Any>,
+    val discoveryExercises: List<DailyJournal>,
     val quiz: List<Quiz>,
     val response: Response
 )

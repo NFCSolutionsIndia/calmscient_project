@@ -39,6 +39,8 @@ import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.GetPatientJournalByPatientIdViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class QuizTabFragment : Fragment() {
@@ -52,6 +54,28 @@ class QuizTabFragment : Fragment() {
     private lateinit var loginResponse : LoginResponse
     private lateinit var journalEntryQuizAdapter: JournalEntryQuizAdapter
     private val quizItems = mutableListOf<QuizDataForAdapter>()
+
+    private var selectedDate: LocalDate? = null
+
+    companion object {
+        private const val ARG_SELECTED_DATE = "selected_date"
+    }
+
+    fun newInstance(date: LocalDate): QuizTabFragment {
+        val fragment = QuizTabFragment()
+        val bundle = Bundle()
+        bundle.putSerializable(ARG_SELECTED_DATE, date)
+        fragment.arguments = bundle
+        return fragment
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            selectedDate = it.getSerializable(QuizTabFragment.ARG_SELECTED_DATE) as? LocalDate
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,21 +96,31 @@ class QuizTabFragment : Fragment() {
 
 
         if(CommonClass.isNetworkAvailable(requireContext())){
-            getPatientJournalDataAPICall()
+            getPatientJournalDataAPICall(null)
         }else{
             CommonClass.showInternetDialogue(requireContext())
         }
         return  binding.root
     }
 
-    private fun getPatientJournalDataAPICall(){
+    fun getPatientJournalDataAPICall(selectedDate: LocalDate?) {
         getPatientJournalByPatientIdViewModel.clear()
 
+        var formattedDate = selectedDate?.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
 
-        var request = GetPatientJournalByPatientIdRequest(loginResponse.loginDetails.clientID,"","",loginResponse.loginDetails.patientID,loginResponse.loginDetails.patientLocationID)
+        if(formattedDate == null){
+            formattedDate = ""
+        }
+        val request = GetPatientJournalByPatientIdRequest(
+            loginResponse.loginDetails.clientID,
+            "",
+            "$formattedDate",
+            loginResponse.loginDetails.patientID,
+            loginResponse.loginDetails.patientLocationID
+        )
 
 
-        getPatientJournalByPatientIdViewModel.getPatientJournalByPatientId(request,accessToken)
+        getPatientJournalByPatientIdViewModel.getPatientJournalByPatientId(request, accessToken)
         observeViewModel()
 
     }
@@ -108,6 +142,11 @@ class QuizTabFragment : Fragment() {
                         if(successData != null){
                            // getPatientJournalByPatientIdResponse = successData
                             updateUI(successData.quiz)
+                            if(successData.quiz.isEmpty()){
+                                binding.tvNoRecords.visibility = View.VISIBLE
+                            }else{
+                                binding.tvNoRecords.visibility = View.GONE
+                            }
                         }
                     }
                 )
@@ -152,16 +191,8 @@ class QuizTabFragment : Fragment() {
         }
         return percentage.toInt()
     }
-
-    private fun separateDateAndTime(completionDateTime: String): Pair<String, String> {
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val dateTime = formatter.parse(completionDateTime)
-        val dateFormatter = SimpleDateFormat("MM/dd/yyyy")
-        val timeFormatter = SimpleDateFormat("HH:mm:ss")
-
-        val date = dateFormatter.format(dateTime)
-        val time = timeFormatter.format(dateTime)
-
-        return Pair(date, time)
+    override fun onResume() {
+        super.onResume()
+        getPatientJournalDataAPICall(null)
     }
 }

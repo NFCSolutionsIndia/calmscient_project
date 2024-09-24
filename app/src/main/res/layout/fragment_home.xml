@@ -175,7 +175,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/button_border"
         android:fontFamily="@font/lexendregular"
         android:text="@string/need_to_talk"
