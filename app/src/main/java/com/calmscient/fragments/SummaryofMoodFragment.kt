@@ -54,6 +54,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Calendar
@@ -133,7 +134,7 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
 
         if (CommonClass.isNetworkAvailable(requireContext()))
         {
-            apiCall()
+            apiCall(null)
             observeViewModel()
         }
         else
@@ -172,9 +173,9 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             dialog.show(parentFragmentManager, "CustomCalendarDialog")
             //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
 
-           /* dialog.setOnOkClickListener {
-                apiCall(selectedDate.toString())
-            }*/
+            dialog.setOnOkClickListener {
+                apiCall(selectedDate)
+            }
         }
         return binding.root
     }
@@ -194,7 +195,9 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         val currentDateString: String = dateFormat.format(currentDate)
 
         // Calculate the date for next month
-        calendar.add(Calendar.MONTH, -1)
+        //calendar.add(Calendar.MONTH, -1)
+        // Subtract one week (7 days) from today's date
+        calendar.add(Calendar.DATE, -7)
         val previousMonthDate: Date = calendar.time
         val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
@@ -331,25 +334,46 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         transaction.commit()
     }
 
-    private fun apiCall()
+    private fun apiCall(selectedDate: LocalDate?)
     {
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val calendar = Calendar.getInstance()
 
-        // Get today's date
-        val toDate = dateFormat.format(calendar.time)
+        // Check if selectedDate is provided
+        val toDate: String
+        val fromDate: String
 
-        // Subtract one month from today's date
-        calendar.add(Calendar.MONTH, -1)
-        val fromDate = dateFormat.format(calendar.time)
+        if (selectedDate != null) {
+            // If selectedDate is not null, set toDate as selectedDate
+            toDate = dateFormat.format(Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
 
+            // Set fromDate as 7 days back from selectedDate
+            val startDateCalendar = Calendar.getInstance().apply {
+                time = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                add(Calendar.DATE, -7)
+            }
+            fromDate = dateFormat.format(startDateCalendar.time)
+        } else {
+            // If selectedDate is null, set toDate as today's date
+            toDate = dateFormat.format(calendar.time)
+
+            // Set fromDate as 7 days back from today's date
+            calendar.add(Calendar.DATE, -7)
+            fromDate = dateFormat.format(calendar.time)
+        }
+        // Create the final date string
+        val finalDateString = "$fromDate - $toDate"
+
+        // Set the date in the TextView
+        binding.dateView.text = finalDateString
+        getSummaryOfMoodViewModel.clear()
         loginResponse?.loginDetails?.let { getSummaryOfMoodViewModel.getSummaryOfMood(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate,it.userID, accessToken) }
+
 
     }
 
     private fun observeViewModel()
     {
-
         getSummaryOfMoodViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
                 customProgressDialog.dialogDismiss()
@@ -377,7 +401,7 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         if (response.response.responseCode == 200) {
             val moodMonitorList = response.moodMonitorList
 
-            if (moodMonitorList.isEmpty()) {
+            if (moodMonitorList.isEmpty() || response.response.responseMessage.trim() == getString(R.string.no_records)) {
                 showNoDataMessage()
                 return
             }
@@ -387,14 +411,18 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             val entries = ArrayList<Entry>()
             val dateLabels = ArrayList<String>()
 
+            val sortedMoodDateRange = moodMonitorList.sortedBy {
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.createdAt)
+            }
+
             // Assuming moodMonitorList has a date and moodScore
             for (i in moodMonitorList.indices) {
-                val phqData = moodMonitorList[i]
-                val entry = Entry(i.toFloat(), phqData.moodScore.toFloat())
-                entry.data = phqData.moodScore // Set scoreTitle as data for each entry
+                val moodData = sortedMoodDateRange[i]
+                val entry = Entry(i.toFloat(), moodData.moodScore.toFloat())
+                entry.data = moodData.moodScore // Set scoreTitle as data for each entry
                 entries.add(entry)
 
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.createdAt)
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(moodData.createdAt)
                 val formattedDate = date?.let {
                     SimpleDateFormat("dd", Locale.getDefault()).format(
                         it
@@ -412,13 +440,22 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
             dataSet.setDrawValues(true)
 
+            dataSet.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return value.toInt().toString()
+                }
+            }
+
             val lineData = LineData(dataSet)
             lineChart.data = lineData
+
+
 
             // Customize the chart
             val xAxis = lineChart.xAxis
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.granularity = 1f
+            xAxis.labelCount = dateLabels.size
             xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return if (value.toInt() >= 0 && value.toInt() < dateLabels.size) {
@@ -433,7 +470,10 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             val yAxisLeft = lineChart.axisLeft
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
-            yAxisLeft.axisMinimum = 0f
+            yAxisLeft.axisMinimum = 0f // Ensure Y-axis starts from 0
+            yAxisLeft.axisMaximum = 5f
+            yAxisLeft.granularity = 1f // Set the interval to 1
+            yAxisLeft.labelCount = 5 // Ensure 5 intervals from 0 to 5
 
             lineChart.axisRight.isEnabled = false
 
@@ -468,8 +508,12 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         val barEntries = ArrayList<BarEntry>()
         val moodLabels = ArrayList<String>()
 
+        val sortedMoodDateRange = moodMonitorList.sortedBy {
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.createdAt)
+        }
+
         for (i in moodMonitorList.indices) {
-            val moodData = moodMonitorList[i]
+            val moodData = sortedMoodDateRange[i]
             val barEntry = BarEntry(i.toFloat(), moodData.moodScore.toFloat())
             barEntries.add(barEntry)
             moodLabels.add(moodData.mood)
@@ -478,6 +522,13 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         val barDataSet = BarDataSet(barEntries, "Mood Scores")
         barDataSet.color = Color.parseColor("#6E6BB3")
         barDataSet.valueTextColor = Color.BLACK
+
+        // Setting the custom ValueFormatter to remove .00 from data points
+        barDataSet.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return value.toInt().toString()
+            }
+        }
 
         val barData = BarData(barDataSet)
         barData.barWidth = 0.3f
@@ -500,7 +551,10 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         val yAxisLeft = barChart.axisLeft
         yAxisLeft.setDrawGridLines(true)
         yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
-        yAxisLeft.axisMinimum = 0f
+        yAxisLeft.axisMinimum = 0f // Ensure Y-axis starts from 0
+        yAxisLeft.axisMaximum = 5f
+        yAxisLeft.granularity = 1f // Set the interval to 1
+        yAxisLeft.labelCount = 5 // Ensure 5 intervals from 0 to 5
 
         barChart.axisRight.isEnabled = false
         xAxis.setDrawAxisLine(false)
@@ -520,10 +574,13 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
 
 
     private fun showNoDataMessage() {
+        lineChart.invalidate()
+        lineChart.clear()
         lineChart.setNoDataText("No data available")
         lineChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
-        lineChart.invalidate()
 
+        barChart.invalidate()
+        barChart.clear()
         barChart.setNoDataText("No data available")
         barChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
         barChart.invalidate()

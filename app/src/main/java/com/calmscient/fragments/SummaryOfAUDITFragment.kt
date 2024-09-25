@@ -60,6 +60,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Calendar
@@ -142,7 +143,7 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
 
         if (CommonClass.isNetworkAvailable(requireContext()))
         {
-            apiCall()
+            apiCall(null)
             observeViewModel()
         }
         else
@@ -181,9 +182,9 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
             dialog.show(parentFragmentManager, "CustomCalendarDialog")
             //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
 
-            /* dialog.setOnOkClickListener {
-                 apiCall(selectedDate.toString())
-             }*/
+             dialog.setOnOkClickListener {
+                 apiCall(selectedDate)
+             }
         }
 
         return binding.root
@@ -204,7 +205,9 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
         val currentDateString: String = dateFormat.format(currentDate)
 
         // Calculate the date for next month
-        calendar.add(Calendar.MONTH, -1)
+        //calendar.add(Calendar.MONTH, -1)
+        // Subtract one week (7 days) from today's date
+        calendar.add(Calendar.DATE, -7)
         val previousMonthDate: Date = calendar.time
         val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
@@ -345,7 +348,7 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
         transaction.commit()
     }
 
-    private fun apiCall()
+    /*private fun apiCall()
     {
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val calendar = Calendar.getInstance()
@@ -354,15 +357,56 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
         val toDate = dateFormat.format(calendar.time)
 
         // Subtract one month from today's date
-        calendar.add(Calendar.MONTH, -1)
+        *//*calendar.add(Calendar.MONTH, -1)
+        val fromDate = dateFormat.format(calendar.time)*//*
+
+        // Subtract one week (7 days) from today's date
+        calendar.add(Calendar.DATE, -7)
         val fromDate = dateFormat.format(calendar.time)
         loginResponse?.loginDetails?.let { getSummaryOfAUDITViewModel.getSummaryOfAUDIT(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate, accessToken) }
+
+    }*/
+
+    private fun apiCall(selectedDate: LocalDate?)
+    {
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        // Check if selectedDate is provided
+        val toDate: String
+        val fromDate: String
+
+        if (selectedDate != null) {
+            // If selectedDate is not null, set toDate as selectedDate
+            toDate = dateFormat.format(Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+
+            // Set fromDate as 7 days back from selectedDate
+            val startDateCalendar = Calendar.getInstance().apply {
+                time = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                add(Calendar.DATE, -7)
+            }
+            fromDate = dateFormat.format(startDateCalendar.time)
+        } else {
+            // If selectedDate is null, set toDate as today's date
+            toDate = dateFormat.format(calendar.time)
+
+            // Set fromDate as 7 days back from today's date
+            calendar.add(Calendar.DATE, -7)
+            fromDate = dateFormat.format(calendar.time)
+        }
+        // Create the final date string
+        val finalDateString = "$fromDate - $toDate"
+
+        // Set the date in the TextView
+        binding.dateView.text = finalDateString
+        getSummaryOfAUDITViewModel.clear()
+        loginResponse?.loginDetails?.let { getSummaryOfAUDITViewModel.getSummaryOfAUDIT(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate, accessToken) }
+
 
     }
 
     private fun observeViewModel()
     {
-
         getSummaryOfAUDITViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
                 customProgressDialog.dialogDismiss()
@@ -399,14 +443,18 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
             val entries = ArrayList<Entry>()
             val dateLabels = ArrayList<String>()
 
+            val sortedAuditDateRange = auditWeeklyScores.sortedBy {
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.completionDate)
+            }
+
             // Assuming PHQ9ByDateRange has a date and score
             for (i in auditWeeklyScores.indices) {
-                val phqData = auditWeeklyScores[i]
-                val entry = Entry(i.toFloat(), phqData.score.toFloat())
-                entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
+                val auditData = sortedAuditDateRange[i]
+                val entry = Entry(i.toFloat(), auditData.score.toFloat())
+                entry.data = auditData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
 
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.completionDate)
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(auditData.completionDate)
                 val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
                 dateLabels.add(formattedDate)
             }
@@ -417,6 +465,13 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
             dataSet.setDrawCircles(true)
             dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
             dataSet.setDrawValues(true)
+
+            // Setting the custom ValueFormatter to remove .00 from data points
+            dataSet.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return value.toInt().toString()
+                }
+            }
 
             val lineData = LineData(dataSet)
             lineChart.data = lineData
@@ -440,9 +495,9 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
             yAxisLeft.axisMinimum = 0f // Ensure Y-axis starts from 0
-            yAxisLeft.axisMaximum = 30f
+            yAxisLeft.axisMaximum = 36f
             yAxisLeft.granularity = 2f // Set the interval to 2
-            yAxisLeft.labelCount = 16 // Ensure 15 intervals from 0 to 30
+            yAxisLeft.labelCount = 19 // Ensure 18 intervals from 0 to 36
 
             lineChart.axisRight.isEnabled = false
 
@@ -475,8 +530,9 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
     }
 
     private fun showNoDataMessage() {
+        lineChart.invalidate()
+        lineChart.clear()
         lineChart.setNoDataText("No data available")
         lineChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
-        lineChart.invalidate()
     }
 }

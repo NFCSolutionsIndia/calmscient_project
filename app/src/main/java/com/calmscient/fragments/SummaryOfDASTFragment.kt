@@ -63,6 +63,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Calendar
@@ -145,7 +146,7 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
 
         if (CommonClass.isNetworkAvailable(requireContext()))
         {
-            apiCall()
+            apiCall(null)
             observeViewModel()
         }
         else
@@ -181,9 +182,9 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
             dialog.show(parentFragmentManager, "CustomCalendarDialog")
             //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
 
-            /* dialog.setOnOkClickListener {
-                 apiCall(selectedDate.toString())
-             }*/
+             dialog.setOnOkClickListener {
+                 apiCall(selectedDate)
+             }
         }
 
         return binding.root
@@ -201,8 +202,10 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         val currentDateString: String = dateFormat.format(currentDate)
 
-        // Calculate the date for next month
-        calendar.add(Calendar.MONTH, -1)
+        /*// Calculate the date for next month
+        calendar.add(Calendar.MONTH, -1)*/
+        // Subtract one week (7 days) from today's date
+        calendar.add(Calendar.DATE, -7)
         val previousMonthDate: Date = calendar.time
         val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
@@ -341,7 +344,7 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
         transaction.commit()
     }
 
-    private fun apiCall()
+    /*private fun apiCall()
     {
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val calendar = Calendar.getInstance()
@@ -349,17 +352,58 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
         // Get today's date
         val toDate = dateFormat.format(calendar.time)
 
-        // Subtract one month from today's date
-        calendar.add(Calendar.MONTH, -1)
+       *//* // Subtract one month from today's date
+        calendar.add(Calendar.MONTH, -1)*//*
+        // Subtract one week (7 days) from today's date
+        calendar.add(Calendar.DATE, -7)
         val fromDate = dateFormat.format(calendar.time)
 
         loginResponse?.loginDetails?.let { getSummaryOfDASTViewModel.getSummaryOfDAST(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate, accessToken) }
+
+    }*/
+
+    private fun apiCall(selectedDate: LocalDate?)
+    {
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        // Check if selectedDate is provided
+        val toDate: String
+        val fromDate: String
+
+        if (selectedDate != null) {
+            // If selectedDate is not null, set toDate as selectedDate
+            toDate = dateFormat.format(Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+
+            // Set fromDate as 7 days back from selectedDate
+            val startDateCalendar = Calendar.getInstance().apply {
+                time = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                add(Calendar.DATE, -7)
+            }
+            fromDate = dateFormat.format(startDateCalendar.time)
+        } else {
+            // If selectedDate is null, set toDate as today's date
+            toDate = dateFormat.format(calendar.time)
+
+            // Set fromDate as 7 days back from today's date
+            calendar.add(Calendar.DATE, -7)
+            fromDate = dateFormat.format(calendar.time)
+        }
+        // Create the final date string
+        val finalDateString = "$fromDate - $toDate"
+
+        // Set the date in the TextView
+        binding.dateView.text = finalDateString
+
+
+        getSummaryOfDASTViewModel.clear()
+        loginResponse?.loginDetails?.let { getSummaryOfDASTViewModel.getSummaryOfDAST(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate, accessToken) }
+
 
     }
 
     private fun observeViewModel()
     {
-
         getSummaryOfDASTViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
                 customProgressDialog.dialogDismiss()
@@ -396,9 +440,13 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
             val entries = ArrayList<Entry>()
             val dateLabels = ArrayList<String>()
 
+            val sortedDastDateRange = dastByDateRange.sortedBy {
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.completionDate)
+            }
+
             // Assuming PHQ9ByDateRange has a date and score
             for (i in dastByDateRange.indices) {
-                val phqData = dastByDateRange[i]
+                val phqData = sortedDastDateRange[i]
                 val entry = Entry(i.toFloat(), phqData.score.toFloat())
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
@@ -414,6 +462,13 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
             dataSet.setDrawCircles(true)
             dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
             dataSet.setDrawValues(true)
+
+            // Setting the custom ValueFormatter to remove .00 from data points
+            dataSet.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return value.toInt().toString()
+                }
+            }
 
             val lineData = LineData(dataSet)
             lineChart.data = lineData
@@ -438,6 +493,9 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
             yAxisLeft.axisMinimum = 0f // Ensure Y-axis starts from 0
+            yAxisLeft.axisMaximum = 10f
+            yAxisLeft.granularity = 1f // Set the interval to 1
+            yAxisLeft.labelCount = 10 // Ensure 10 intervals from 0 to 10
 
             lineChart.axisRight.isEnabled = false
 
@@ -464,9 +522,10 @@ class SummaryOfDASTFragment:Fragment() , CustomCalendarDialog.OnDateSelectedList
     }
 
     private fun showNoDataMessage() {
+        lineChart.invalidate()
+        lineChart.clear()
         lineChart.setNoDataText("No data available")
         lineChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
-        lineChart.invalidate()
     }
 
 

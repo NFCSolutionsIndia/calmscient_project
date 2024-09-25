@@ -68,6 +68,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Calendar
@@ -161,7 +162,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
         lineChart = binding.lineChartViewSleep
 
         if (CommonClass.isNetworkAvailable(requireContext())) {
-            apiCall()
+            apiCall(null)
             observeViewModel()
         }
         else{
@@ -186,9 +187,9 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             dialog.show(parentFragmentManager, "CustomCalendarDialog")
             //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
 
-            /* dialog.setOnOkClickListener {
-                 apiCall(selectedDate.toString())
-             }*/
+             dialog.setOnOkClickListener {
+                 apiCall(selectedDate)
+             }
         }
 
         return binding.root
@@ -209,7 +210,9 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
         val currentDateString: String = dateFormat.format(currentDate)
 
         // Calculate the date for next month
-        calendar.add(Calendar.MONTH, -1)
+        //calendar.add(Calendar.MONTH, -1)
+        // Subtract one week (7 days) from today's date
+        calendar.add(Calendar.DATE, -7)
         val previousMonthDate: Date = calendar.time
         val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
@@ -360,7 +363,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
         }
     }
 
-    private fun apiCall()
+    /*private fun apiCall()
     {
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         val calendar = Calendar.getInstance()
@@ -369,11 +372,50 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
         val toDate = dateFormat.format(calendar.time)
 
         // Subtract one month from today's date
-        calendar.add(Calendar.MONTH, -1)
+        *//*calendar.add(Calendar.MONTH, -1)
+        val fromDate = dateFormat.format(calendar.time)*//*
+
+        // Subtract one week (7 days) from today's date
+        calendar.add(Calendar.DATE, -7)
         val fromDate = dateFormat.format(calendar.time)
 
         loginResponse?.loginDetails?.let { getSummaryOfSleepViewModel.getSummaryOfSleep(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate,it.userID, accessToken) }
 
+    }*/
+    private fun apiCall(selectedDate: LocalDate?)
+    {
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val calendar = Calendar.getInstance()
+
+        // Check if selectedDate is provided
+        val toDate: String
+        val fromDate: String
+
+        if (selectedDate != null) {
+            // If selectedDate is not null, set toDate as selectedDate
+            toDate = dateFormat.format(Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+
+            // Set fromDate as 7 days back from selectedDate
+            val startDateCalendar = Calendar.getInstance().apply {
+                time = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+                add(Calendar.DATE, -7)
+            }
+            fromDate = dateFormat.format(startDateCalendar.time)
+        } else {
+            // If selectedDate is null, set toDate as today's date
+            toDate = dateFormat.format(calendar.time)
+
+            // Set fromDate as 7 days back from today's date
+            calendar.add(Calendar.DATE, -7)
+            fromDate = dateFormat.format(calendar.time)
+        }
+        // Create the final date string
+        val finalDateString = "$fromDate - $toDate"
+
+        // Set the date in the TextView
+        binding.dateView.text = finalDateString
+        getSummaryOfSleepViewModel.clear()
+        loginResponse?.loginDetails?.let { getSummaryOfSleepViewModel.getSummaryOfSleep(it.patientLocationID,it.patientID,it.clientID,fromDate,toDate,it.userID, accessToken) }
     }
 
     private fun observeViewModel()
@@ -396,7 +438,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             {
                 summaryOfSleepResponse = successDate
 
-                Log.d("PHQ Response","$successDate")
+                Log.d("Sleep Response","$successDate")
 
                 handleApiResponse(summaryOfSleepResponse)
             }
@@ -407,7 +449,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
         if (response.statusResponse.responseCode == 200) {
             val sleepByDateRange = response.sleepMonitorList
 
-            if (sleepByDateRange.isEmpty()) {
+            if (sleepByDateRange.isEmpty() || response.statusResponse.responseMessage.trim() == getString(R.string.no_records)) {
                 showNoDataMessage()
                 return
             }
@@ -415,12 +457,18 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             val dateLabels = ArrayList<String>()
             val sleepHoursList = sleepByDateRange.map { it.sleepHours.toFloat() }
 
-            // Assuming PHQ9ByDateRange has a date and score
+            val sortedSleepByDateRange = sleepByDateRange.sortedBy {
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.createdAt)
+            }
+
+            // Assuming SleepByDateRange has a date and score
             for (i in sleepByDateRange.indices) {
-                val phqData = sleepByDateRange[i]
-                val entry = Entry(i.toFloat(), phqData.sleepHours.toFloat())
-                entry.data = phqData.sleepHours // Set scoreTitle as data for each entry
+                val phqData = sortedSleepByDateRange[i]
+                val sleepHours = phqData.sleepHours.toInt()
+                val entry = Entry(i.toFloat(), sleepHours.toFloat())
+                entry.data = sleepHours
                 entries.add(entry)
+
 
                 val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.createdAt)
                 val formattedDate = SimpleDateFormat("dd", Locale.getDefault()).format(date)
@@ -434,6 +482,13 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             dataSet.setCircleColor(Color.parseColor("#6E6BB3"))
             dataSet.setDrawValues(true)
 
+            // Setting the custom ValueFormatter to remove .00 from data points
+            dataSet.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return value.toInt().toString()
+                }
+            }
+
             val lineData = LineData(dataSet)
             lineChart.data = lineData
 
@@ -441,6 +496,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             val xAxis = lineChart.xAxis
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.granularity = 1f
+            xAxis.labelCount = dateLabels.size
             xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return if (value.toInt() >= 0 && value.toInt() < dateLabels.size) {
@@ -455,6 +511,10 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             val yAxisLeft = lineChart.axisLeft
             yAxisLeft.setDrawGridLines(true)
             yAxisLeft.enableGridDashedLine(10f, 10f, 0f)
+            yAxisLeft.axisMinimum = 0f // Ensure Y-axis starts from 0
+            yAxisLeft.axisMaximum = 12f
+            yAxisLeft.granularity = 1f // Set the interval to 2
+            yAxisLeft.labelCount = 12 // Ensure 15 intervals from 0 to 30
 
             lineChart.axisRight.isEnabled = false
 
@@ -504,9 +564,10 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
     }
 
     private fun showNoDataMessage() {
+        lineChart.invalidate()
+        lineChart.clear()
         lineChart.setNoDataText("No data available")
         lineChart.setNoDataTextColor(Color.parseColor("#6E6BB3"))
-        lineChart.invalidate()
 
         averageSleepTextView.text = 0.00 .toString()+" /"
         averageSleepTextViewWithHours.text = 0.0.toString()+ getString(R.string.hrs)

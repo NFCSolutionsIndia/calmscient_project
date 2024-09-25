@@ -176,7 +176,14 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
         binding.alarmToggleButtonAfternoon.labelOn = getString(R.string.yes)
         binding.alarmToggleButtonAfternoon.labelOff = getString(R.string.no)
 
-        binding.provider.text = Editable.Factory.getInstance().newEditable(loginResponse!!.loginDetails.providerName)
+        val providerName = loginResponse?.loginDetails?.providerName
+
+        if (!providerName.isNullOrEmpty()) {
+            binding.provider.text = Editable.Factory.getInstance().newEditable(providerName)
+        } else {
+            binding.provider.setText("")
+        }
+
 
 
         /*binding.morningCalendar.setOnClickListener {
