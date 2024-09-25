@@ -74,12 +74,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/prosRecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="@dimen/_380sdp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp">
+                app:cardCornerRadius="4dp"
+                android:layout_marginHorizontal="@dimen/_4sdp">
 
                 <LinearLayout
                     android:id="@+id/pros_others"
@@ -104,6 +105,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
                         android:background="@drawable/edittext_grey_background"
                         android:gravity="top"
                         android:inputType="textMultiLine"
@@ -134,7 +136,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp">
+                app:cardCornerRadius="4dp"
+                android:layout_marginHorizontal="@dimen/_4sdp">
 
                 <LinearLayout
                     android:id="@+id/cons_others"
@@ -159,6 +162,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
                         android:background="@drawable/edittext_grey_background"
                         android:gravity="top"
                         android:inputType="textMultiLine"

@@ -217,7 +217,7 @@ class SummaryofGAD7Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
 
         // Set the date in the TextView
         dateView.text = finalDateString
-        calenderDateView.text = finalDateString
+        /*calenderDateView.text = finalDateString
         class DayViewContainer(view: View) : ViewContainer(view) {
             val bind = CalendarDayLayoutBinding.bind(view)
             lateinit var day: WeekDay
@@ -278,10 +278,10 @@ class SummaryofGAD7Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
         binding.recyclerViewSummaryMood.adapter = summaryOfMoodAdapter
         summaryOfMoodAdapter.updateTasks(summaryCardViewItems)
 
-        displayCardViewsForSelectedDate()
+        displayCardViewsForSelectedDate()*/
     }
 
-    private fun displayCardViewsForSelectedDate() {
+    /*private fun displayCardViewsForSelectedDate() {
         // Format the selected date as "MM/dd/yyyy" and set it as the first dateview1
         val dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
         summaryCardViewItems.clear()
@@ -345,7 +345,7 @@ class SummaryofGAD7Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
         return getDisplayName(TextStyle.SHORT, Locale.ENGLISH).let { value ->
             if (uppercase) value.uppercase(Locale.ENGLISH) else value
         }
-    }
+    }*/
 
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()

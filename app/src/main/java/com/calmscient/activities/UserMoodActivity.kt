@@ -386,7 +386,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             }
             //morning sleep
             R.id.sleep_less -> {
-                sleepHours = -1
+                sleepHours = 3
                 binding.sleepLess.setImageResource(R.drawable.less_icon)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)
@@ -501,7 +501,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
             R.id.sleep_more -> {
                 sleepHours = 11
-                    binding.sleepMore.setImageResource(R.drawable.more_selected)
+                binding.sleepMore.setImageResource(R.drawable.more_selected)
                 binding.sleepLess.setImageResource(R.drawable.less)
                 binding.sleep4.setImageResource(R.drawable.sleep_4)
                 binding.sleep5.setImageResource(R.drawable.sleep_5)

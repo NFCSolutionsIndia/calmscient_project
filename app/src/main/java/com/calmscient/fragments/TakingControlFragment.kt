@@ -10,6 +10,7 @@
  */
 
 package com.calmscient.fragments
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -323,25 +324,25 @@ class TakingControlFragment : Fragment() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindUIData(getTakingControlIndexResponse: GetTakingControlIndexResponse) {
         // Check if index list is not null and has at least 2 elements
 
 
-            getTakingControlIndexResponse.index[0]?.let {
-                binding.tvDrinkCount.text = it.goalType ?: "N/A"
-                binding.tvDrinkCountGoalDays.text = it.goal?.toString() ?: "0"
-                binding.tvDrinkCountNowDays.text = it.now?.toString() ?: "0"
-            }
+        getTakingControlIndexResponse.index[0]?.let {
+            binding.tvDrinkCount.text = it.goalType ?: "N/A"
+            binding.tvDrinkCountGoalDays.text = (it.goal?.toString() ?: "0") + " days"
+            binding.tvDrinkCountNowDays.text = (it.now?.toString() ?: "0") + " days"
+        }
 
         if (getTakingControlIndexResponse.index.size > 1) {
-
-
             getTakingControlIndexResponse.index[1]?.let {
                 binding.tvAlcoholFreeDays.text = it.goalType ?: "N/A"
-                binding.tvAlcoholGoalDays.text = it.goal?.toString() ?: "0"
-                binding.tvAlcoholNowDays.text = it.now?.toString() ?: "0"
+                binding.tvAlcoholGoalDays.text = (it.goal?.toString() ?: "0") + " count"
+                binding.tvAlcoholNowDays.text = (it.now?.toString() ?: "0") + " count"
             }
         }
+
 
         // Check if courseLists is not null and has at least 7 elements
        /* if (getTakingControlIndexResponse.courseLists.size > 6) {

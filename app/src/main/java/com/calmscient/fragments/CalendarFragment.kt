@@ -366,7 +366,7 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
             loginResponse!!.loginDetails.patientLocationID,
             loginResponse!!.loginDetails.patientID,
             loginResponse!!.loginDetails.clientID,
-            formattedSevenDaysBefore,
+            formattedSelectedDate,
             formattedSelectedDate,
             loginResponse!!.token.access_token
         )
@@ -392,7 +392,7 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
             loginResponse!!.loginDetails.patientLocationID,
             loginResponse!!.loginDetails.patientID,
             loginResponse!!.loginDetails.clientID,
-            formattedSevenDaysBefore,
+            todayDate,
             todayDate,
             loginResponse!!.token.access_token
         )

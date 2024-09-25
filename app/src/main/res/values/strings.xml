@@ -2229,5 +2229,12 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="daily_journals">Daily journals</string>
     <string name="discovery_exercise">Discovery Exercise</string>
     <string name="no_records">No Records</string>
+    <string name="welcome_to_taking_control">Welcome to taking control!</string>
+    <string name="thank_you_for_willing_to_talk_about_the_alcohol_and_drugs_now_let_s_begin_with_a_brief_assessment">Thank you for willing to talk about the alcohol and drugs. Now let\'s begin with a brief assessment</string>
+    <string name="make_a_plan_intro_screen_three_description">Let’s talk about alcohol and drug. It won’t take much of your time. promise!\n\nWhy dive into this topic?\n\nWell, being able to openly discuss your alcohol or drug use is crucial for your health, mental well-being, and relationships with family and the community. But, you have full control over the decision regarding your habit. Ready?</string>
+    <string name="do_not_show_this_tutorial_from_the_next_time">Do not show this tutorial from the next time</string>
+    <string name="drink_coach">Drink coach</string>
+    <string name="substance_coach">Substance coach</string>
+    <string name="make_a_plan_intro_screen_four_description">Remember, you can always take the AUDIT, DUST-10 and CAGE test, in the My medical records section.</string>
 
 </resources>
