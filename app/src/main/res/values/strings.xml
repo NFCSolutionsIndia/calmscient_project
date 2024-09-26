@@ -921,14 +921,14 @@ The most important thing is to do it! Do you have some time today to get started
     <!--Exrercises-->
 
     <string name="mindfulness_exercises">Mindfulness – What is it?</string>
-    <string name="butterflyhug_exercises">Touch and the Butterfly Hug</string>
-    <string name="handover_esxercises">Hand Over Your Heart</string>
-    <string name="mindfulwalking_exercises">Mindful Walking</string>
+    <string name="butterflyhug_exercises">Touch and the butterfly hug</string>
+    <string name="handover_esxercises">Hand over your heart</string>
+    <string name="mindfulwalking_exercises">Mindful walking</string>
     <string name="dance_exercises">Movement: Dance</string>
     <string name="running_exercises">Movement: Running</string>
-    <string name="body_moment_exercies">Mindful Body Movement</string>
-    <string name="deepbreathing_exercises">Deep Breathing</string>
-    <string name="musclerelaxation_exercises">Progressive Muscle Relaxation</string>
+    <string name="body_moment_exercies">Mindful body movement</string>
+    <string name="deepbreathing_exercises">Deep breathing</string>
+    <string name="musclerelaxation_exercises">Progressive muscle relaxation</string>
     <!--    Exercise_items-->
     <string name="screen1"><![CDATA[<font color="#6E6BB3">Have you ever caught your mind wandering or daydreaming </font>while you are in the middle of a familiar or repetitive task? You could be walking, working or even driving your car, and your mind is miles away, perhaps fantasizing about going on vacation, thinking about your to-do list, or worrying about some upcoming event.<br/><br/>In either case, you are not focusing on the current situation and not in touch with the ‘here and now’.  This mode of operation is often referred to as<font color="#6E6BB3"> automatic pilot</font>.]]></string>
     <string name="screen2"><![CDATA[<font color="#6E6BB3">Mindfulness</font> is the opposite of automatic pilot. It is about experiencing the world that is firmly in the ‘here and now’. This is referred to as the <font color="#6E6BB3">being</font> mode. It liberates you from automatic and unhelpful thoughts and responses.]]></string>
@@ -947,7 +947,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="butterflyScreen2_text3">Breathe slowly and deeply (abdominal breathing) while you mentally observe what is going through your mind and body—thoughts, images, sounds, odors, feelings, and physical sensation.</string>
 
     <!--    Hand over your heart Exercise-->
-    <string name="handoveryourHeart_titletext">Hand Over Your Heart</string>
+    <string name="handoveryourHeart_titletext">Hand over your heart</string>
     <string name="handoveryourHeart_text">How to do it</string>
     <string name="bullet">&#8226;</string>
     <string name="handoveryourHeart_point1">Rest the heel of your hand on your sternum around your heart area.</string>
@@ -1609,7 +1609,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="taking_control_alcohol">Alcohol</string>
     <string name="taking_control_alcoholfeedays">Alcohol free days</string>
     <string name="taking_control_now">Now</string>
-    <string name="taking_control_goal">Monthly Goal</string>
+    <string name="taking_control_goal">Monthly goal</string>
     <string name="taking_control_7_days">7 days</string>
     <string name="taking_control_10_days">10 days</string>
     <string name="taking_control_drink_count">Drink counts</string>
@@ -1627,7 +1627,7 @@ The most important thing is to do it! Do you have some time today to get started
 
     <string name="version">Version 2.13</string>
     <!--bodymovemet Exercise-->
-    <string name="bodymovementexercise_titletext">Mindful Body Movement</string>
+    <string name="bodymovementexercise_titletext">Mindful body movement</string>
     <!--summary of sleep-->
     <string name="chart_sleep_avg_sleep_score">Average hours of sleep</string>
     <string name="chart_sleep_moresleepneeded">More sleep needed</string>
@@ -2216,8 +2216,8 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="dec">Dec</string>
     <string name="all">All</string>
     <string name="set">Set</string>
-    <string name="drinking_control">Drinking Control</string>
-    <string name="smoking_control">Smoking Control</string>
+    <string name="drinking_control">Drinking control</string>
+    <string name="smoking_control">Smoking control</string>
     <string name="make_a_paln_screen1_description"> <![CDATA[Thinking about a change?<br/><br/>We want you to know that <font color="#6E6BB3">the decision to reduce alcohol/drug consumption is entirely yours!</font> <br /><br /> But If you find yourself consistently exceeding recommended guidelines for alcohol consumption, it would be wise to consider<font color="#6E6BB3"><br /><br /> stopping, cutting down, or reducing your drinking.</font> \n\n Mixed feelings are normal. \n Have you thought about the pros and cons of doing so?]]></string>
     <string name="make_a_plan_screen_two_description"><![CDATA[First of all, let\'s define what is the best for you.<br/><br/> If you\'re considering changing your drinking, you\'ll need to decide whether to cut down or quit. It\'s a good idea to discuss different options with a healthcare professional, a friend, or someone else you trust. <br/><br/> Please note, when someone who has been drinking heavily for a prolonged period of time suddenly stops drinking, the body can go into <font color="#6E6BB3"> a painful or even potentially life-threatening process of withdrawal.</font><br/><br/> Symptoms can include <font color="#6E6BB3">nausea, rapid heart rate, seizures, or other problems.</font> Seek medical help to plan a safe recovery. Doctors can prescribe medications to address these symptoms and make the process safer and less distressing.]]></string>
     <string name="something_went_wrong_try_again_later">Something went wrong try again later</string>
@@ -2236,5 +2236,6 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="drink_coach">Drink coach</string>
     <string name="substance_coach">Substance coach</string>
     <string name="make_a_plan_intro_screen_four_description">Remember, you can always take the AUDIT, DUST-10 and CAGE test, in the My medical records section.</string>
+    <string name="are_you_sure">Are you sure?</string>
 
 </resources>

@@ -25,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
+                android:id="@+id/glossaryMainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -77,6 +78,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:text="Task Description"
             android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/lexendlight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

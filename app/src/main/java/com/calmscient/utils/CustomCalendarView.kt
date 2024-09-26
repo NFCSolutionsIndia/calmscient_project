@@ -136,4 +136,24 @@ class CustomCalendarView @JvmOverloads constructor(
 
         return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
     }
+
+    fun lockToCurrentMonth() {
+        val currentDate = calendarView.currentDate
+        val currentYear = currentDate.year
+        val currentMonth = currentDate.month
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, currentYear)
+        calendar.set(Calendar.MONTH, currentMonth)
+
+        val firstDayOfMonth = CalendarDay.from(currentYear, currentMonth, 1)
+        val lastDayOfMonth = CalendarDay.from(currentYear, currentMonth, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+
+        calendarView.state().edit()
+            .setMinimumDate(firstDayOfMonth)   // Lock to the start of the current month
+            .setMaximumDate(lastDayOfMonth)    // Lock to the end of the current month
+            .commit()
+    }
+
+
 }

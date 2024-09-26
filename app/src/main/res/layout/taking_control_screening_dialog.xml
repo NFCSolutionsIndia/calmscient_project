@@ -10,6 +10,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -28,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Are you sure?"
+        android:text="@string/are_you_sure"
         android:textSize="@dimen/_16sdp"
         android:textColor="@color/black_head"
         android:fontFamily="@font/lexendmedium"
@@ -38,14 +39,13 @@
         android:id="@+id/tv_dialog_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="AUDIT doesn’t apply to you"
         android:textSize="@dimen/_14sdp"
         android:textColor="@color/black_head"
         android:fontFamily="@font/lexendregular"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_8sdp" />
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
@@ -56,7 +56,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_no"
-            android:layout_width="@dimen/_20sdp"
+            android:layout_width="@dimen/_30sdp"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:layout_weight="1"
@@ -71,7 +71,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonYes"
-            android:layout_width="@dimen/_20sdp"
+            android:layout_width="@dimen/_30sdp"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:layout_weight="1"
@@ -84,5 +84,45 @@
             android:textSize="18sp">
 
         </androidx.appcompat.widget.AppCompatButton>
-    </LinearLayout>
+    </LinearLayout>-->
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:weightSum="2"
+        android:layout_marginBottom="@dimen/_20sdp">
+
+        <!-- NO Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:background="@drawable/no_border"
+            android:text="@string/no"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/purple_100"
+            android:textSize="@dimen/_12sdp" />
+
+        <!-- YES Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonYes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:background="@drawable/yes_border"
+            android:text="@string/yes"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

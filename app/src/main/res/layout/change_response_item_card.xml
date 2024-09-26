@@ -12,14 +12,14 @@
         android:id="@+id/anxietyCard"
         android:layout_width="@dimen/_125sdp"
         android:layout_height="@dimen/_90sdp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="@dimen/_10sdp">
+        app:cardCornerRadius="@dimen/_10sdp">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop" />
+            android:src="@drawable/placeholder"
+            android:scaleType="center" />
 
         <RelativeLayout
             android:id="@+id/anxiety_layout"

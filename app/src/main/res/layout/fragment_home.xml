@@ -162,8 +162,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewVideos"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
+        android:layout_height="@dimen/_150sdp"
         android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
         app:layout_constraintTop_toBottomOf="@id/favorites"
         app:layout_constraintBottom_toTopOf="@id/needToTalkWithSomeOne"
         app:layout_constraintStart_toStartOf="parent"
@@ -175,6 +176,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewVideos"
         android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/button_border"
         android:fontFamily="@font/lexendregular"
@@ -183,7 +186,6 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/_14sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

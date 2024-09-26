@@ -89,6 +89,8 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
         customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE)
         customCalendarView.setOnSelectionChangeListener(this)
         binding.tvFreeDaysCount.text = customCalendarView.getSelectedDatesSize().toString()
+        // Lock the calendar to the current month
+        customCalendarView.lockToCurrentMonth()
 
         binding.backIcon.setOnClickListener {
             loadFragment(TakingControlMakeAPlanScreenTwoFragment())

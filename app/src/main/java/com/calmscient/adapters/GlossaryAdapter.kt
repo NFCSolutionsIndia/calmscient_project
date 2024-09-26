@@ -15,6 +15,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -64,6 +65,23 @@ class GlossaryAdapter(private val allTasks: MutableList<Task>) :
             }
         }
 
+        holder.dropDownImage.setOnClickListener {
+            if (expandedCardPosition == position) {
+                // Clicked on an already expanded card, so collapse it
+                holder.collapse()
+                expandedCardPosition = -1
+            } else {
+                // Clicked on a different card, collapse the previously expanded card (if any)
+                val previouslyExpandedCardPosition = expandedCardPosition
+                if (previouslyExpandedCardPosition != -1) {
+                    notifyItemChanged(previouslyExpandedCardPosition)
+                }
+                // Expand the clicked card
+                holder.expand()
+                expandedCardPosition = position
+            }
+        }
+
         // Check if the current card should be expanded or collapsed based on its position
         if (expandedCardPosition == position) {
             holder.expand()
@@ -89,6 +107,9 @@ class GlossaryAdapter(private val allTasks: MutableList<Task>) :
             titleTextView.text = task.taskName
             descriptionTextView.text = task.taskDescription
             titleCardView.setOnClickListener {
+                if (isExpanded) collapse() else expand()
+            }
+            dropDownImage.setOnClickListener {
                 if (isExpanded) collapse() else expand()
             }
             //All tasks should be collapsed by default

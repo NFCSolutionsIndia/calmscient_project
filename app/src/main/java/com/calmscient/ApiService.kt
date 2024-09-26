@@ -185,10 +185,10 @@ interface ApiService {
     @POST("patients/api/v1/patientDetails/getSummaryOfDASTByDateRange")
     fun getSummaryOfDAST(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfDASTRequest): Call<SummaryOfDASTResponse>
 
-    @POST("patients/api/v1/patientDetails/getPatientMoodByPatientId")
+    @POST("patients/api/v1/patientDetails/getPatientMoodByPatientIdForMobile")
     fun getSummaryOfMood(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfMoodRequest): Call<SummaryOfMoodResponse>
 
-    @POST("patients/api/v1/patientDetails/getPatientSleepMonitoringById")
+    @POST("patients/api/v1/patientDetails/getPatientSleepMonitoringByIdForMobile")
     fun getSummaryOfSleep(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfSleepRequest): Call<SummaryOfSleepResponse>
 
     @POST("patients/api/v1/course/getPatientCourseWorkPercentageDetails")
