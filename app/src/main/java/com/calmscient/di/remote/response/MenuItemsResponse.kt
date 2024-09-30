@@ -36,7 +36,8 @@ data class FavoriteItem(
     val thumbnailUrl: String,
     val navigateURL: String,
     val language: Int,
-    val darkTheme: Int
+    val darkTheme: Int,
+    val title: String
 )
 
 data class MenuItemsResponse(

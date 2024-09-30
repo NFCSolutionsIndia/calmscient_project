@@ -67,14 +67,25 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
             // Check internet connection
             if (CommonClass.isNetworkAvailable(holder.itemView.context)) {
                 // Load corresponding fragment based on screeningType
-                val fragment = when (screeningResponse[position].screeningType) {
-                    "PHQ-9" -> HistoryFragment(screeningResponse[position])
-                    "GAD-7" -> HistoryFragment(screeningResponse[position])
-                    "AUDIT" -> HistoryFragment(screeningResponse[position])
-                    "DAST-10" -> HistoryFragment(screeningResponse[position])
+                val fragment = when {
+                    screeningResponse[position].screeningType.equals("PHQ-9", ignoreCase = true) ->
+                        HistoryFragment(screeningResponse[position])
+
+                    screeningResponse[position].screeningType.equals("GAD-7", ignoreCase = true) ||
+                            screeningResponse[position].screeningType.equals("TAG-7", ignoreCase = true) ->
+                        HistoryFragment(screeningResponse[position])
+
+                    screeningResponse[position].screeningType.trim().equals("AUDIT", ignoreCase = true) ||
+                            screeningResponse[position].screeningType.trim().equals("AUDITORÍA", ignoreCase = true) ->
+                        HistoryFragment(screeningResponse[position])
+
+                    screeningResponse[position].screeningType.equals("DAST-10", ignoreCase = true) ->
+                        HistoryFragment(screeningResponse[position])
+
                     // Add more cases for other screening types if needed
                     else -> null
                 }
+
 
                 fragment?.let {
                     fragmentManager.beginTransaction()
@@ -93,14 +104,25 @@ class ScreeningsCardAdapter(private val fragmentManager: FragmentManager, privat
             // Check internet connection
             if (CommonClass.isNetworkAvailable(holder.itemView.context)) {
                 // Load corresponding fragment based on screeningType
-                val fragment = when (screeningResponse[position].screeningType) {
-                    "PHQ-9" -> QuestionFragment(screeningResponse[position])
-                    "GAD-7" -> GADQuestionFragment(screeningResponse[position])
-                    "AUDIT" -> AUDITQuestionFragment(screeningResponse[position])
-                    "DAST-10" -> DASTQuestionFragment(screeningResponse[position])
+                val fragment = when {
+                    screeningResponse[position].screeningType.equals("PHQ-9", ignoreCase = true) ->
+                        QuestionFragment(screeningResponse[position])
+
+                    screeningResponse[position].screeningType.equals("GAD-7", ignoreCase = true) ||
+                            screeningResponse[position].screeningType.equals("TAG-7", ignoreCase = true) ->
+                        GADQuestionFragment(screeningResponse[position])
+
+                    screeningResponse[position].screeningType.trim().equals("AUDIT", ignoreCase = true) ||
+                            screeningResponse[position].screeningType.trim().equals("AUDITORÍA", ignoreCase = true) ->
+                        AUDITQuestionFragment(screeningResponse[position])
+
+                    screeningResponse[position].screeningType.equals("DAST-10", ignoreCase = true) ->
+                        DASTQuestionFragment(screeningResponse[position])
+
                     // Add more cases for other screening types if needed
                     else -> null
                 }
+
 
                 fragment?.let {
                     fragmentManager.beginTransaction()

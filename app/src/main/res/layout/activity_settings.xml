@@ -9,11 +9,13 @@
     tools:context=".activities.SettingsActivity">
 
     <LinearLayout
+        android:id="@+id/settingsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        tools:context=".Settings">
+        tools:context=".Settings"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/Settings"
@@ -56,12 +58,13 @@
             android:layout_marginBottom="20dp">
 
             <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/profile_image"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
-                android:src="@drawable/profile_pic" />
+                android:src="@drawable/profile_pic"/>
 
             <ImageView
-                android:id="@+id/imageView11"
+                android:id="@+id/uploadImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="94dp"
@@ -107,23 +110,22 @@
                     android:minHeight="40dp">
 
                     <ImageView
-                        android:id="@+id/imageView2"
+                        android:id="@+id/iv_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="8dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_profile_settings" />
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/tv_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_vertical"
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/profile"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
                 </RelativeLayout>
@@ -143,28 +145,27 @@
                     android:clickable="true">
 
                     <ImageView
-                        android:id="@+id/imageView3"
+                        android:id="@+id/iv_theme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="8dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_theme_mode" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_vertical"
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/theme"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
 
                     <TextView
-                        android:id="@+id/textView11"
+                        android:id="@+id/tv_darkTheme"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="45dp"
@@ -175,7 +176,7 @@
                         android:textSize="12sp" />
 
                     <com.github.angads25.toggle.widget.LabeledSwitch
-                        android:id="@+id/id_switch"
+                        android:id="@+id/darkThemeToggleButton"
                         android:layout_width="60dp"
                         android:layout_height="25dp"
                         android:layout_marginStart="120dp"
@@ -200,117 +201,26 @@
                     android:clickable="true">
 
                     <ImageView
-                        android:id="@+id/imageView4"
+                        android:id="@+id/iv_language"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="7dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_language" />
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/tv_language"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_vertical"
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/language"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
                 </RelativeLayout>
 
-                <!--<RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginBottom="10dp"
-                    android:weightSum="2">
-
-                    <RelativeLayout
-                        android:id="@+id/English"
-                        android:layout_width="130dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/rectangle_layout"
-                        android:clickable="true"
-                        android:weightSum="1">
-
-                        <ImageView
-                            android:id="@+id/imageView8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="25dp"
-                            android:layout_marginStart="7dp"
-                            android:layout_marginTop="4dp"
-                            android:src="@drawable/ic_flag_english" />
-
-                        <TextView
-                            android:id="@+id/tv_english"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="9dp"
-                            android:text="English"
-                            android:textColor="#000000"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/Spanish"
-                        android:layout_width="130dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="150dp"
-                        android:background="@drawable/rectangle_layout"
-                        android:clickable="true"
-                        android:weightSum="1">
-
-                        <ImageView
-                            android:id="@+id/imageView9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="7dp"
-                            android:layout_marginTop="1dp"
-                            android:src="@drawable/ic_flag_spanish" />
-
-                        <TextView
-                            android:id="@+id/tv_spanish"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="50dp"
-                            android:layout_marginTop="7dp"
-                            android:text="Spanish"
-                            android:textColor="#000000"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ASL"
-                    android:layout_width="130dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/rectangle_layout"
-                    android:clickable="true">
-
-                    <ImageView
-                        android:id="@+id/imageView10"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginTop="1dp"
-                        android:src="@drawable/asl_icon" />
-
-                    <TextView
-                        android:id="@+id/tv_asl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="10dp"
-                        android:text="ASL"
-                        android:textColor="#000000"
-                        android:textSize="14dp" />
-                </RelativeLayout>-->
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -327,12 +237,13 @@
                         android:weightSum="1">
 
                         <ImageView
-                            android:id="@+id/imageView8"
+                            android:id="@+id/iv_english"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:scaleType="center"
                             android:src="@drawable/ic_flag_english" />
 
                         <TextView
@@ -378,12 +289,13 @@
                         android:weightSum="1">
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/iv_spanish"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:scaleType="center"
                             android:src="@drawable/ic_flag_spanish" />
 
                         <TextView
@@ -410,12 +322,13 @@
                         android:weightSum="1">
 
                         <ImageView
-                            android:id="@+id/imageView10"
+                            android:id="@+id/iv_asl"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:scaleType="center"
                             android:src="@drawable/asl_icon" />
 
                         <TextView
@@ -448,12 +361,12 @@
                     android:minHeight="40dp">
 
                     <ImageView
-                        android:id="@+id/imageViewPrivacy"
+                        android:id="@+id/iv_privacy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_privacy" />
 
                     <TextView
@@ -464,7 +377,6 @@
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/privacy"
                         android:textAllCaps="false"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
@@ -486,23 +398,22 @@
                     android:minHeight="40dp">
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/iv_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_notifications" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/tv_notification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_vertical"
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/notifications"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
 
@@ -523,23 +434,22 @@
                     android:minHeight="40dp">
 
                     <ImageView
-                        android:id="@+id/Lincenseimage"
+                        android:id="@+id/iv_license"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="9dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_license" />
 
                     <TextView
-                        android:id="@+id/lincensetext"
+                        android:id="@+id/tv_lincense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_vertical"
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="@dimen/_6sdp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/license_key"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
                 </RelativeLayout>
@@ -559,23 +469,22 @@
                     android:minHeight="40dp">
 
                     <ImageView
-                        android:id="@+id/imageView6"
+                        android:id="@+id/iv_help_and_support"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_helpsupport" />
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/tv_help_and_support"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_vertical"
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/help_support"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
 
@@ -596,23 +505,22 @@
                     android:minHeight="40dp">
 
                     <ImageView
-                        android:id="@+id/imageView7"
+                        android:id="@+id/iv_logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:scaleType="centerCrop"
+                        android:scaleType="center"
                         android:src="@drawable/ic_logout" />
 
                     <TextView
-                        android:id="@+id/textView7"
+                        android:id="@+id/tv_logout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|center_vertical"
                         android:layout_marginStart="45dp"
                         android:layout_marginTop="@dimen/_7sdp"
                         android:fontFamily="@font/lexendmedium"
-                        android:text="@string/logout"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_13sdp" />
 

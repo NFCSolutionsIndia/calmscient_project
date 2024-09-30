@@ -22,7 +22,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
@@ -34,21 +33,18 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.calmscient.R
 import com.calmscient.utils.CustomProgressDialog
-import org.json.JSONException
-import org.json.JSONObject
 
-class WebViewFragment : Fragment() {
+class FavouritesWebViewFragment : Fragment() {
 
     companion object {
         private const val ARG_URL = "url"
         private const val ARG_CHAPTER_NAME = "chapterName"
 
-        fun newInstance(url: String, name: String) = WebViewFragment().apply {
+        fun newInstance(url: String, name: String) = FavouritesWebViewFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_URL, url)
                 putString(ARG_CHAPTER_NAME, name)
@@ -64,20 +60,24 @@ class WebViewFragment : Fragment() {
     private lateinit var headingText: TextView
     private var url: String? = null
     private lateinit var customProgressDialog: CustomProgressDialog
-    var index : Int = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_webview, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_favourites_web_view, container, false)
         toolbar = rootView.findViewById(R.id.toolbar_learn_more)
         webViewLearn = rootView.findViewById(R.id.webview_learn_more)
         progressBar = rootView.findViewById(R.id.progressBar_webview)
         headingText = rootView.findViewById(R.id.webViewTitle)
         icBack = rootView.findViewById(R.id.backIcon)
-        icGlossary = rootView.findViewById(R.id.ic_glossary)
+        //icGlossary = rootView.findViewById(R.id.ic_glossary)
         customProgressDialog = CustomProgressDialog(requireContext())
-        headingText.text = arguments?.getString(ARG_CHAPTER_NAME)
+        val chapterName = arguments?.getString(ARG_CHAPTER_NAME)
+        //Toast.makeText(requireContext(),"${chapterName}", Toast.LENGTH_LONG).show()
+        headingText.text = chapterName
+
+
         url = arguments?.getString(ARG_URL)
 
         if (savedInstanceState != null) {
@@ -85,7 +85,7 @@ class WebViewFragment : Fragment() {
         } else if (url != null) {
             initializeWebView(url!!)
         } else {
-            Log.e("WebViewFragment", "No URL provided")
+            Log.e("FavouritesWebViewFragment", "No URL provided")
         }
 
         return rootView
@@ -95,18 +95,9 @@ class WebViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*icBack!!.setOnClickListener {
-            activity?.onBackPressed()
-        }*/
-
         icBack!!.setOnClickListener {
-            webViewLearn?.evaluateJavascript("onAbortCourseGotoIndex();") { result ->
-                Log.d("WebViewFragment", "JS Result: $result")
-
-            }
-            activity?.onBackPressed()
+            loadFragment(HomeFragment())
         }
-
         icGlossary?.setOnClickListener{
             loadFragment(GlossaryFragment())
         }
@@ -121,21 +112,17 @@ class WebViewFragment : Fragment() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initializeWebView(url: String) {
-        webViewLearn?.settings?.javaScriptEnabled = true
-        webViewLearn?.settings?.domStorageEnabled = true
-        webViewLearn?.settings?.userAgentString =
+        webViewLearn!!.settings.javaScriptEnabled = true
+        webViewLearn!!.settings.domStorageEnabled = true
+        webViewLearn!!.settings.userAgentString =
             "Mozilla/5.0 (Linux; Android 4.1.2; C1905 Build/15.1.C.2.8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36"
-        webViewLearn?.settings?.loadWithOverviewMode = true
-        webViewLearn?.settings?.useWideViewPort = true
-        webViewLearn?.settings?.cacheMode = WebSettings.LOAD_NO_CACHE
-        webViewLearn?.webViewClient = CustomWebViewClient()
-        webViewLearn?.webChromeClient = CustomWebChromeClient(requireContext())
+        webViewLearn!!.settings.loadWithOverviewMode = true
+        webViewLearn!!.settings.useWideViewPort = true
+        webViewLearn!!.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        webViewLearn!!.webViewClient = CustomWebViewClient()
+        webViewLearn!!.webChromeClient = CustomWebChromeClient(requireContext())
 
-        // Add the JavaScript Interface
-        webViewLearn?.addJavascriptInterface(JavaScriptInterface(requireContext()), "nativeDispatch")
-
-        // Load the URL
-        webViewLearn?.loadUrl(url)
+        webViewLearn!!.loadUrl(url)
     }
 
     override fun onPause() {
@@ -183,7 +170,7 @@ class WebViewFragment : Fragment() {
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             super.onReceivedError(view, request, error)
             progressBar.visibility = View.GONE
-            Log.e("WebViewFragment", "Error loading page: ${error.description}")
+            Log.e("FavouritesWebViewFragment", "Error loading page: ${error.description}")
         }
     }
 
@@ -196,62 +183,4 @@ class WebViewFragment : Fragment() {
             return super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
         }
     }
-
-    private inner class JavaScriptInterface(private val context: Context) {
-
-        @JavascriptInterface
-        fun postMessage(data: String) {
-            // Parse the incoming JSON string
-            try {
-                val jsonData = JSONObject(data)
-                Log.d("WebViewFragment", "Success Data: $data")
-                handleJavaScriptMessage(jsonData)
-            } catch (e: JSONException) {
-                Log.e("WebViewFragment", "Failed to parse JSON: $data", e)
-            }
-        }
-
-        private fun handleJavaScriptMessage(jsonData: JSONObject) {
-            val keys: Iterator<String> = jsonData.keys()
-            while (keys.hasNext()) {
-                val key = keys.next()
-                val value = jsonData.get(key)  // Get the value associated with the key
-
-                when (key) {
-                    "1001" -> {
-                        // Show the navigation bar if needed
-                        requireActivity().actionBar?.show()
-                    }
-                    "1100" -> {
-                        // Hide any loading indicators
-                        customProgressDialog.dialogDismiss()
-                        // Set the page title if it is available
-                        requireActivity().actionBar?.show()
-                        // Log the value to ensure correct handling
-                        Log.d("WebViewFragment", "Success Data: $value")
-                    }
-                    "1003" -> {
-                        // Hide the navigation bar
-                        requireActivity().actionBar?.hide()
-                    }
-                    "401" -> {
-                        // Show an error message
-                        requireActivity().actionBar?.show()
-                        val alertDialog = AlertDialog.Builder(context)
-                            .setTitle("Error Occurred")
-                            .setMessage("Error occurred. Please try again!!")
-                            .setPositiveButton("OK", null)
-                            .create()
-                        alertDialog.show()
-                    }
-                    else -> {
-                        // Handle other cases if necessary
-                        Toast.makeText(context, "Unhandled key: $key", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-
-    }
-
 }

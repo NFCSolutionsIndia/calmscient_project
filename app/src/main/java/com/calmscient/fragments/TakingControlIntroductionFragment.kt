@@ -280,16 +280,16 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
             getTakingControlIntroductionResponse?.takingControlIntroduction ?: return emptyList()
         return listOf(
             TakingControlScreeningItem(
-                "AUDIT",
-                "Doesn't apply for me",
+                getString(R.string.audit_heading),
+                getString(R.string.doesn_t_apply_for_me),
                 introduction.auditFlag != 1
             ),
             TakingControlScreeningItem(
-                "DAST-10",
-                "Doesn't apply for me",
+                getString(R.string.dast_heading),
+                getString(R.string.doesn_t_apply_for_me),
                 introduction.dastFlag != 1
             ),
-            TakingControlScreeningItem("CAGE", "Doesn't apply for me", introduction.cageFlag != 1)
+            TakingControlScreeningItem("CAGE", getString(R.string.doesn_t_apply_for_me), introduction.cageFlag != 1)
         )
     }
 

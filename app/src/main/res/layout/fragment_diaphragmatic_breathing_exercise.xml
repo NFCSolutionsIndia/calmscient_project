@@ -64,7 +64,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Doctors usually recommend diaphragmatic breathing to people with a lung condition called chronic obstructive pulmonary disease. A 2017 study found that it could also help reduce anxiety."
+                    android:text="@string/disphragmatic_heading_desc"
                     android:textSize="@dimen/_12sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginEnd="@dimen/_4sdp"
@@ -84,7 +84,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Preparation"
+                        android:text="@string/preparation"
                         android:textSize="@dimen/_12sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
@@ -94,7 +94,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="First find a comfortable to either sit down or lay down."
+                        android:text="@string/first_find_a_comfortable_to_either_sit_down_or_lay_down"
                         android:textSize="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_30sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
@@ -107,7 +107,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Let’s learn how to do the diaphragmatic breathing exercise."
+                    android:text="@string/let_s_learn_how_to_do_the_diaphragmatic_breathing_exercise"
                     android:textSize="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textColor="@color/black_head"
@@ -270,7 +270,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 1: Place your hands"
+                                android:text="@string/step_1_place_your_hands"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -280,7 +280,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Place your hand on the tummy and other on the upper chest."
+                                android:text="@string/disphragmatic_step_one_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_4sdp"
@@ -310,7 +310,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 2: Inhale"
+                                android:text="@string/step_2_inhale"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -320,7 +320,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Inhale through your nose about 4 seconds, Focusing on the tummy rising."
+                                android:text="@string/disphragmatic_step_two_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -349,7 +349,7 @@
                             <TextView
                                 android:layout_width="@dimen/_250sdp"
                                 android:layout_height="wrap_content"
-                                android:text="Step 3: Hold"
+                                android:text="@string/step_3_hold"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -359,7 +359,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Hold your breath for 2 seconds."
+                                android:text="@string/hold_your_breath_for_2_seconds"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -388,7 +388,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 4: Exhale"
+                                android:text="@string/step_4_exhale"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -398,7 +398,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Exhale slowly and steadily through you mouth for about 6 seconds."
+                                android:text="@string/disphragmatic_step_four_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -428,7 +428,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 5: Repeat the process"
+                                android:text="@string/step_5_repeat_the_process"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -438,7 +438,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Repeat the cycle for 5 to 10 minutes about 3 to 5 times a day"
+                                android:text="@string/disphragmatic_step_five_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -458,7 +458,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Now, let’s dive into it. \nPay careful attention to the following video."
+                android:text="@string/now_let_s_dive_into_it_npay_careful_attention_to_the_following_video"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -478,9 +478,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_200sdp"
                     android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     app:buffered_color="@color/example_7_button"
                     app:resize_mode="fit"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
                     app:show_buffering="always"
                     app:use_controller="true" />
                 <!--<ImageView
@@ -534,7 +534,7 @@
                     android:background="@android:color/transparent"
                     android:padding="@dimen/_10sdp"
                     android:src="@drawable/ic_orientation_icon"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:contentDescription="Orientation" />
 
             </RelativeLayout>
@@ -542,7 +542,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Engage in this practice regularly, allowing the diaphragmatic breathing technique to guide you towards a state of tranquility and mindful breathing."
+                android:text="@string/disphragmatic_step_final_desc"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"

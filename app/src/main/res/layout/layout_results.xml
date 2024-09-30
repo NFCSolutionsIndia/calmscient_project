@@ -96,36 +96,42 @@
             android:layout_marginStart="@dimen/_14sdp"
             android:layout_weight="1">
 
+            <!-- First TextView - Remind Me -->
             <TextView
                 android:id="@+id/tv_remind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_40sdp"                android:layout_marginTop="@dimen/_29sdp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/_29sdp"
                 android:fontFamily="@font/lexendregular"
                 android:text="@string/remind_me"
                 android:textColor="@color/grey_light"
                 android:textSize="@dimen/_12sdp" />
 
+            <!-- Second TextView - Weekly, positioned below the first TextView -->
             <TextView
                 android:id="@+id/tv_weekly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:layout_marginLeft="@dimen/_52sdp"
+                android:layout_below="@id/tv_remind"
+                android:layout_centerInParent="true"
                 android:fontFamily="@font/lexendregular"
                 android:text="@string/weekly"
                 android:textColor="@color/example_7_button"
                 android:textSize="@dimen/_14sdp" />
 
+            <!-- ImageView aligned to the end (right side) of the layout -->
             <ImageView
                 android:id="@+id/ic_notify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="13dp"
                 android:src="@drawable/ic_notify_results" />
         </RelativeLayout>
+
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

@@ -245,7 +245,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
                                     android:textColor="@color/purple_100"
-                                    android:text="00:00"
+                                    android:text="06:00 AM"
                                     android:textSize="@dimen/_20sdp" />
 
                                 <TextView
@@ -286,18 +286,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
+                                <!-- TextView for the alarm label -->
                                 <TextView
                                     android:id="@+id/alarmTextView"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentStart="true"
+                                    android:layout_toStartOf="@+id/alarmToggleButtonMorning"
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="@dimen/_3sdp"
+                                    android:layout_marginEnd="8dp"
                                     android:fontFamily="@font/lexendregular"
                                     android:text="@string/alarm"
                                     android:textColor="@color/black_head"
-                                    android:textSize="@dimen/_12sdp" />
+                                    android:textSize="@dimen/_12sdp"/>
 
+                                <!-- LabeledSwitch for the toggle button -->
                                 <com.github.angads25.toggle.widget.LabeledSwitch
                                     android:id="@+id/alarmToggleButtonMorning"
                                     android:layout_width="@dimen/_40sdp"
@@ -305,10 +309,9 @@
                                     android:layout_alignParentEnd="true"
                                     android:layout_centerVertical="true"
                                     android:layout_marginEnd="8dp"
-                                    android:textSize="14sp"
                                     app:on="false" />
-
                             </RelativeLayout>
+
 
 
                             <LinearLayout
@@ -321,7 +324,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="00:00"
+                                    android:text="05:50 AM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 
@@ -403,7 +406,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="00:00"
+                                    android:text="01:00 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 
@@ -445,18 +448,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
+                                <!-- TextView for the alarm label -->
                                 <TextView
                                     android:id="@+id/afternoonAlarmTextView"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentStart="true"
+                                    android:layout_toStartOf="@+id/alarmToggleButtonAfternoon"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginLeft="@dimen/_3sdp"
+                                    android:layout_marginStart="@dimen/_3sdp"
+                                    android:layout_marginEnd="8dp"
                                     android:fontFamily="@font/lexendregular"
                                     android:text="@string/alarm"
                                     android:textColor="@color/black_head"
                                     android:textSize="@dimen/_12sdp" />
 
+                                <!-- LabeledSwitch for the toggle button -->
                                 <com.github.angads25.toggle.widget.LabeledSwitch
                                     android:id="@+id/alarmToggleButtonAfternoon"
                                     android:layout_width="@dimen/_40sdp"
@@ -466,8 +473,8 @@
                                     android:layout_marginEnd="8dp"
                                     android:textSize="14sp"
                                     app:on="false" />
-
                             </RelativeLayout>
+
 
 
                             <LinearLayout
@@ -480,7 +487,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="00:00"
+                                    android:text="12:50 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 
@@ -563,7 +570,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="00:00"
+                                    android:text="07:00 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 
@@ -603,18 +610,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
+                                <!-- TextView for evening alarm -->
                                 <TextView
                                     android:id="@+id/eveningAlarmTextView"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentStart="true"
+                                    android:layout_toStartOf="@+id/alarmToggleButtonEvening"
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="@dimen/_3sdp"
+                                    android:layout_marginEnd="8dp"
                                     android:fontFamily="@font/lexendregular"
                                     android:text="@string/alarm"
                                     android:textColor="@color/black_head"
                                     android:textSize="@dimen/_12sdp" />
 
+                                <!-- LabeledSwitch for the toggle button -->
                                 <com.github.angads25.toggle.widget.LabeledSwitch
                                     android:id="@+id/alarmToggleButtonEvening"
                                     android:layout_width="@dimen/_40sdp"
@@ -624,8 +635,8 @@
                                     android:layout_marginEnd="8dp"
                                     android:textSize="14sp"
                                     app:on="false" />
-
                             </RelativeLayout>
+
 
 
                             <LinearLayout
@@ -638,7 +649,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="00:00"
+                                    android:text="06:50 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 

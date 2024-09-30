@@ -340,6 +340,7 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
     override fun onCellClickListener(position: Int, item: CardViewItem) {
         // Handle item click event here
         // Create an instance of MedicationDetailFragment and pass the data to it
+        Log.d("Medical Details : ","${item.medicalDetails}")
         val medicationDetailFragment = MedicationDetailFragment.newInstance(item.medicalDetails,selectedDate)
         // Load the MedicationDetailFragment
         loadFragment(medicationDetailFragment)

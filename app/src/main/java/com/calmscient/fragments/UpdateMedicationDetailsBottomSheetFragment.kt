@@ -184,7 +184,7 @@ class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: S
                     alarmId = alarmId,
                     alarmDate = todayDate,
                     repeat = selectedDays,
-                    alarmInterval = getSelectedIntervals().lastOrNull() ?: 10,
+                    alarmInterval = getSelectedIntervals().firstOrNull() ?: 10,
                     flag = flag,
                     isEnabled = null,
                     medicineTime = selectedTime,
@@ -257,17 +257,36 @@ class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: S
 
     private fun getSelectedIntervals(): List<Int> {
         val selectedIntervals = mutableListOf<Int>()
-        // Add selected intervals to the list
-        if (textFive.isSelected) selectedIntervals.add(5)
-        if (textTen.isSelected) selectedIntervals.add(10)
-        if (textFifteen.isSelected) selectedIntervals.add(15)
-        if (textTwenty.isSelected) selectedIntervals.add(20)
-        if (textTwentyFive.isSelected) selectedIntervals.add(25)
-        if (textThirty.isSelected) selectedIntervals.add(30)
-        // Add more intervals as needed
+
+        // Update selected intervals based on current selections
+        if (textFive.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(5)
+        }
+        if (textTen.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(10)
+        }
+        if (textFifteen.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(15)
+        }
+        if (textTwenty.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(20)
+        }
+        if (textTwentyFive.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(25)
+        }
+        if (textThirty.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(30)
+        }
 
         return selectedIntervals
     }
+
 
     private fun getSelectedDays(): List<String> {
         val selectedDays = mutableListOf<String>()
@@ -335,7 +354,7 @@ class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: S
 
         // Check if the selected time falls within the time range associated with the selected schedule
         return timeRange?.let { (startTime, endTime) ->
-            val formatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val formatter = SimpleDateFormat("hh:mm a", Locale.US)
             val selectedTimeFormatted = formatter.parse(selectedTime)
             val startFormatted = formatter.parse(startTime)
             val endFormatted = formatter.parse(endTime)

@@ -67,7 +67,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Preparation"
+                        android:text="@string/preparation"
                         android:textSize="@dimen/_12sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
@@ -77,7 +77,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="First find a comfortable seated position. Ensure that you are at ease before beginning the rhythmic breathing pattern.\n\nPlace the tip of your tongue gently against the tissue just behind your top front teeth"
+                        android:text="@string/four_seven_eight_desc_one"
                         android:textSize="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_30sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
@@ -90,7 +90,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Let’s learn how to do the 4-7-8 breathing exercise."
+                    android:text="@string/let_s_learn_how_to_do_the_4_7_8_breathing_exercise"
                     android:textSize="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textColor="@color/black_head"
@@ -253,7 +253,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 1: Emptying the lungs"
+                                android:text="@string/step_1_emptying_the_lungs"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -263,7 +263,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Begin by completely emptying your lungs of air. Allow yourself a moment to release any tension."
+                                android:text="@string/four_seven_eight_step_one_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_4sdp"
@@ -293,7 +293,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 2: Inhaling quietly"
+                                android:text="@string/step_2_inhaling_quietly"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -303,7 +303,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Inhale quietly through your nose, counting to 4 seconds. Fell the breath entering your body, bringing calmness."
+                                android:text="@string/four_seven_eight_step_two_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -332,7 +332,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 3: Hold the breath"
+                                android:text="@string/step_3_hold_the_breath"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -342,7 +342,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Hold your breath for  a steady count of 7 seconds. Embrace the stillness within, allowing the breath to settle."
+                                android:text="@string/four_seven_eight_step_three_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -371,7 +371,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 4: Force exhalation"
+                                android:text="@string/step_4_force_exhalation"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -381,7 +381,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Exhale forcefully through your mouth, pursing your lips, and create a distinct “whoosh” sound for 8 seconds. Feel the release of tension as you expel the breath."
+                                android:text="@string/four_seven_eight_step_four_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -411,7 +411,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Step 5: Repeat the process"
+                                android:text="@string/step_5_repeat_the_process"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -421,7 +421,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Repeat this entire cycle up to 4 times. Each repetition contributes to a deepening sense of relaxation."
+                                android:text="@string/four_seven_eight_step_five_desc"
                                 android:textSize="@dimen/_12sdp"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_4sdp"
@@ -441,7 +441,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Now, let’s dive into it.\nPay careful attention to the following video."
+                android:text="@string/now_let_s_dive_into_it_npay_careful_attention_to_the_following_video"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -517,7 +517,7 @@
                     android:background="@android:color/transparent"
                     android:padding="@dimen/_10sdp"
                     android:src="@drawable/ic_orientation_icon"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:contentDescription="Orientation" />
 
             </RelativeLayout>
@@ -525,7 +525,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Engage in this practice regularly, allowing the 4-7-8 technique to guide you towards a state of tranquility and mindful breathing."
+                android:text="@string/four_seven_eight_final_desc"
                 android:textSize="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"

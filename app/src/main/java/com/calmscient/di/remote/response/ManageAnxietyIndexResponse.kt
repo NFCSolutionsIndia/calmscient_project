@@ -35,7 +35,9 @@ data class Chapter(
 
 
 data class PatientSessionDetails(
-    val userSessionID: String,
+    val darkTheme: Int,
     val languageId: Int,
-    val languageName: String
+    val languageName: String,
+    val lightTheme: Int,
+    val userSessionID: String
 )

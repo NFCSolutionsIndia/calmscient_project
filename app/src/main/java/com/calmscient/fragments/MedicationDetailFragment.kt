@@ -198,52 +198,57 @@
             val alarmInputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             val medicationInputFormat = SimpleDateFormat("HH:mm:ss")
             val outputFormat12Hour = SimpleDateFormat("hh:mm a")
-    
+
             for (scheduledTime in medicalDetails.scheduledTimeList) {
-                val alarmTime = scheduledTime.scheduledTimes[0].alarmTime
-                val medicationTime = scheduledTime.scheduledTimes[0].medicineTime
-                val isEnabled = scheduledTime.scheduledTimes[0].alarmEnabled == "1"
-    
-                // Parsing alarm time
-                val alarmDate = alarmInputFormat.parse(alarmTime)
-                val alarmCalendar = Calendar.getInstance().apply {
-                    time = alarmDate ?: Date()
-                }
-    
-                // Parsing medication time
-                val medicationDate = medicationInputFormat.parse(medicationTime)
-                val medicationCalendar = Calendar.getInstance().apply {
-                    time = medicationDate ?: Date()
-                }
-    
-                // Formatting times in 12-hour format with AM/PM indicator
-                val alarmFormattedTime12Hour = outputFormat12Hour.format(alarmCalendar.time)
-                val medicationFormattedTime12Hour = outputFormat12Hour.format(medicationCalendar.time)
-    
-                val hourOfDay = alarmCalendar.get(Calendar.HOUR_OF_DAY)
-    
-                when {
-                    hourOfDay in 6..11 -> { // Morning (6:00 AM to 11:59 AM)
-                        binding.morningTimeView.text = medicationFormattedTime12Hour
-                        binding.morningAlarmTimeView.text = alarmFormattedTime12Hour
-                        binding.alarmToggleButtonMorning.isOn = isEnabled
+                for (timeDetail in scheduledTime.scheduledTimes) {
+                    val alarmTime = timeDetail.alarmTime
+                    val medicationTime = timeDetail.medicineTime
+                    val isEnabled = timeDetail.alarmEnabled.toInt() == 1
+
+                    // Parsing the alarm time
+                    val alarmCalendar = Calendar.getInstance().apply {
+                        time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(alarmTime) ?: Date()
                     }
-                    hourOfDay in 12..17 -> { // Afternoon (12:00 PM to 5:59 PM)
-                        binding.afternoonTimeView.text = medicationFormattedTime12Hour
-                        binding.afternoonAlarmTimeView.text = alarmFormattedTime12Hour
-                        binding.alarmToggleButtonAfternoon.isOn = isEnabled
+
+                    // Formatting medication time for display
+                    val medicationCalendar = Calendar.getInstance().apply {
+                        time = SimpleDateFormat("HH:mm:ss").parse(medicationTime) ?: Date()
                     }
-                    else -> { // Evening (6:00 PM to 5:59 AM)
-                        binding.eveningTimeView.text = medicationFormattedTime12Hour
-                        binding.eveningAlarmTimeView.text = alarmFormattedTime12Hour
-                        binding.alarmToggleButtonEvening.isOn = isEnabled
+                    val hourOfDay = medicationCalendar.get(Calendar.HOUR_OF_DAY)
+
+                    // Custom formatting for 12-hour format with AM/PM
+                    val medicationFormattedTime12Hour = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(medicationCalendar.time).replace("a. m.", "AM").replace("p. m.", "PM")
+                    val alarmFormattedTime12Hour = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(alarmCalendar.time).replace("a. m.", "AM").replace("p. m.", "PM")
+
+                    Log.d("medicationFormattedTime12Hour", medicationFormattedTime12Hour)
+                    Log.d("alarmFormattedTime12Hour", alarmFormattedTime12Hour)
+                    Log.d("medicationCalendar.time","${medicationCalendar.time}")
+                    Log.d("alarmCalendar.time","${alarmCalendar.time}")
+                    // Determine the time range and update UI accordingly
+                    when (hourOfDay) {
+                        in 6..11 -> { // Morning (6:00 AM to 11:59 AM)
+                            binding.morningTimeView.text = medicationFormattedTime12Hour
+                            binding.morningAlarmTimeView.text = alarmFormattedTime12Hour
+                            binding.alarmToggleButtonMorning.isOn = isEnabled
+                        }
+                        in 12..18 -> { // Afternoon (12:00 PM to 6:59 PM)
+                            binding.afternoonTimeView.text = medicationFormattedTime12Hour
+                            binding.afternoonAlarmTimeView.text = alarmFormattedTime12Hour
+                            binding.alarmToggleButtonAfternoon.isOn = isEnabled
+                        }
+                        in 19..23 -> { // Evening (7:00 PM to 11:59 PM)
+                            binding.eveningTimeView.text = medicationFormattedTime12Hour
+                            binding.eveningAlarmTimeView.text = alarmFormattedTime12Hour
+                            binding.alarmToggleButtonEvening.isOn = isEnabled
+                        }
                     }
                 }
             }
-    
-    
-    
-    
+
+
+
+
+
             if (binding.morningTimeView.text.isBlank()) {
                 binding.morningAlarmCard.visibility = View.VISIBLE
             }
@@ -264,11 +269,12 @@
     
     
             binding.buttonUpdateMedicationSave.setOnClickListener{
-                saveData()
     
                 if(CommonClass.isNetworkAvailable(requireContext()))
                 {
-                    observeViewModel()
+                    updateMedicationViewModel.clear()
+                    saveData()
+
                 }
                 else
                 {
@@ -281,14 +287,14 @@
     
         }
         private fun showMorningTimeAndAlarmDialog() {
-            selectedSchedule = "Morning"
-            val morningDialog = ScheduleTimeAndAlarmDialogFragment.newInstance("Morning", this)
+            selectedSchedule = getString(R.string.morning)
+            val morningDialog = ScheduleTimeAndAlarmDialogFragment.newInstance(getString(R.string.morning), this)
             morningDialog.show(childFragmentManager, ScheduleTimeAndAlarmDialogFragment.TAG)
         }
     
         private fun showEveningTimeAndAlarmDialog() {
-            selectedSchedule = "Evening"
-            val eveningDialog = ScheduleTimeAndAlarmDialogFragment.newInstance("Evening", this)
+            selectedSchedule = getString(R.string.evening)
+            val eveningDialog = ScheduleTimeAndAlarmDialogFragment.newInstance(getString(R.string.evening), this)
             eveningDialog.show(childFragmentManager, ScheduleTimeAndAlarmDialogFragment.TAG)
         }
     
@@ -306,27 +312,27 @@
             if (currentTime.before(selectedTime)) {
                 // The selected time is in the future, schedule the alarm for today
                 when (selectedSchedule) {
-                    "Morning" -> {
+                    getString(R.string.morning) -> {
                         morningTime = time
                         morningAlarm = alarm
                         binding.morningTimeView.text = morningTime
                         binding.morningAlarmTimeView.text = morningAlarm
                         if (isMorningAlarmOn) {
-                            scheduleAlarm(morningAlarm, "Morning")
+                            scheduleAlarm(morningAlarm, getString(R.string.morning))
                         } else {
-                            cancelAlarm("Morning")
+                            cancelAlarm(getString(R.string.morning))
                         }
                     }
-    
-                    "Evening" -> {
+
+                    getString(R.string.evening) -> {
                         eveningTime = time
                         eveningAlarm = alarm
                         binding.eveningTimeView.text = eveningTime
                         binding.eveningAlarmTimeView.text = eveningAlarm
                         if (isEveningAlarmOn) {
-                            scheduleAlarm(eveningAlarm, "Evening")
+                            scheduleAlarm(eveningAlarm, getString(R.string.evening))
                         } else {
-                            cancelAlarm("Evening")
+                            cancelAlarm(getString(R.string.evening))
                         }
                     }
                     // ... Add other schedule types if needed
@@ -338,27 +344,27 @@
                 calendar.add(Calendar.DAY_OF_YEAR, 1)
     
                 when (selectedSchedule) {
-                    "Morning" -> {
+                    getString(R.string.morning) -> {
                         morningTime = time
                         morningAlarm = SimpleDateFormat("HH:mm").format(calendar.time)
                         binding.morningTimeView.text = morningTime
                         binding.morningAlarmTimeView.text = morningAlarm
                         if (isMorningAlarmOn) {
-                            scheduleAlarm(morningAlarm, "Morning")
+                            scheduleAlarm(morningAlarm, getString(R.string.morning))
                         } else {
-                            cancelAlarm("Morning")
+                            cancelAlarm(getString(R.string.morning))
                         }
                     }
-    
-                    "Evening" -> {
+
+                    getString(R.string.evening) -> {
                         eveningTime = time
                         eveningAlarm = SimpleDateFormat("HH:mm").format(calendar.time)
                         binding.eveningTimeView.text = eveningTime
                         binding.eveningAlarmTimeView.text = eveningAlarm
                         if (isEveningAlarmOn) {
-                            scheduleAlarm(eveningAlarm, "Evening")
+                            scheduleAlarm(eveningAlarm, getString(R.string.evening))
                         } else {
-                            cancelAlarm("Evening")
+                            cancelAlarm(getString(R.string.evening))
                         }
                     }
                 }
@@ -375,7 +381,7 @@
             intent.putExtra("SCHEDULE_TYPE", scheduleType)
     
             val requestCode =
-                if (scheduleType == "Morning") 0 else 1 // Use different request codes for Morning and Evening
+                if (scheduleType == getString(R.string.morning)) 0 else 1 // Use different request codes for Morning and Evening
     
             val pendingIntent = PendingIntent.getBroadcast(
                 context,
@@ -411,7 +417,7 @@
             intent.putExtra("SCHEDULE_TYPE", scheduleType)
     
             val requestCode =
-                if (scheduleType == "Morning") 0 else 1 // Use the same request codes as used in scheduling
+                if (scheduleType == getString(R.string.morning)) 0 else 1 // Use the same request codes as used in scheduling
     
             val pendingIntent = PendingIntent.getBroadcast(
                 context,
@@ -423,20 +429,21 @@
             // Cancel the scheduled alarm
             alarmManager.cancel(pendingIntent)
         }
-    
+
         private fun updateAlarmTimings() {
             val timeFormat12Hours = SimpleDateFormat("hh:mm a", Locale.getDefault())
             val timeFormat24Hours = SimpleDateFormat("HH:mm", Locale.getDefault())
-    
+
             if (alarmUpdateInternal.isNotEmpty()) {
                 // Check the selected card and update the UI accordingly
                 when (selectedCard) {
                     getString(R.string.morning) -> {
-                        val morningAlarmIndex = alarmUpdateInternal.indexOfFirst { it.scheduleType == "Morning" }
+                        val morningAlarmIndex = alarmUpdateInternal.indexOfFirst { it.scheduleType == getString(R.string.morning) }
                         if (morningAlarmIndex != -1) {
                             val morningAlarm = alarmUpdateInternal[morningAlarmIndex]
                             val morningAlarmTime = morningAlarm.medicineTime ?: "00:00"
                             val morningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(morningAlarmTime)!!)
+                                .replace("a. m.", "AM").replace("p. m.", "PM")
                             binding.morningTimeView.text = morningTime12Hours
                             binding.morningAlarmTimeView.text = calculateAlarmTime(morningAlarmTime, morningAlarm.alarmInterval ?: 10)
                             alarmUpdateInternal[morningAlarmIndex].isEnabled = if (binding.alarmToggleButtonMorning.isOn) 1 else 0
@@ -444,11 +451,12 @@
                         }
                     }
                     getString(R.string.afternoon) -> {
-                        val afternoonAlarmIndex = alarmUpdateInternal.indexOfFirst { it.scheduleType == "Afternoon" }
+                        val afternoonAlarmIndex = alarmUpdateInternal.indexOfFirst { it.scheduleType == getString(R.string.afternoon) }
                         if (afternoonAlarmIndex != -1) {
                             val afternoonAlarm = alarmUpdateInternal[afternoonAlarmIndex]
                             val afternoonAlarmTime = afternoonAlarm.medicineTime ?: "00:00"
                             val afternoonTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(afternoonAlarmTime)!!)
+                                .replace("a. m.", "AM").replace("p. m.", "PM")
                             binding.afternoonTimeView.text = afternoonTime12Hours
                             binding.afternoonAlarmTimeView.text = calculateAlarmTime(afternoonAlarmTime, afternoonAlarm.alarmInterval ?: 10)
                             alarmUpdateInternal[afternoonAlarmIndex].isEnabled = if (binding.alarmToggleButtonAfternoon.isOn) 1 else 0
@@ -456,11 +464,12 @@
                         }
                     }
                     getString(R.string.evening) -> {
-                        val eveningAlarmIndex = alarmUpdateInternal.indexOfFirst { it.scheduleType == "Evening" }
+                        val eveningAlarmIndex = alarmUpdateInternal.indexOfFirst { it.scheduleType == getString(R.string.evening) }
                         if (eveningAlarmIndex != -1) {
                             val eveningAlarm = alarmUpdateInternal[eveningAlarmIndex]
                             val eveningAlarmTime = eveningAlarm.medicineTime ?: "00:00"
                             val eveningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(eveningAlarmTime)!!)
+                                .replace("a. m.", "AM").replace("p. m.", "PM")
                             binding.eveningTimeView.text = eveningTime12Hours
                             binding.eveningAlarmTimeView.text = calculateAlarmTime(eveningAlarmTime, eveningAlarm.alarmInterval ?: 10)
                             alarmUpdateInternal[eveningAlarmIndex].isEnabled = if (binding.alarmToggleButtonEvening.isOn) 1 else 0
@@ -472,8 +481,8 @@
                 // Handle the case where no alarms are added
             }
         }
-    
-    
+
+
         private fun calculateAlarmTime(alarm: String, interval: Int): String {
             val formatter24Hours = SimpleDateFormat("HH:mm", Locale.getDefault())
             val formatter12Hours = SimpleDateFormat("hh:mm a", Locale.getDefault())
@@ -481,8 +490,9 @@
             val calendar = Calendar.getInstance()
             calendar.time = formatter24Hours.parse(alarm)!!
             calendar.add(Calendar.MINUTE, -interval)
-    
+
             return formatter12Hours.format(calendar.time)
+                .replace("a. m.", "AM").replace("p. m.", "PM")
         }
         // Function to handle card click
         private fun handleCardClick(selectedSchedule: Int, timeRange: Pair<String, String>) {
@@ -508,7 +518,7 @@
                 if(isLoading)
                 {
                     commonDialog.dismiss()
-                    customProgressDialog.dialogDismiss()
+                    //customProgressDialog.dialogDismiss()
                     customProgressDialog.show("Loading...")
     
                 }
@@ -592,11 +602,12 @@
                 if (request.alarms.isNotEmpty()) {
                     loginResponse?.token?.let {
                         updateMedicationViewModel.updatePatientMedicationDetails(request, it.access_token)
+                        observeViewModel()
                     }
                 }
                 else{
     
-                    commonDialog.showDialog("You did not change any timings")
+                    commonDialog.showDialog(getString(R.string.you_did_not_change_any_timings))
                 }
             }
             else

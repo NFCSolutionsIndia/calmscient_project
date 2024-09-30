@@ -29,12 +29,16 @@ import androidx.lifecycle.Observer
 import com.calmscient.ApiService
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SavePatientMoodWrapper
+import com.calmscient.di.remote.response.GetUserLanguagesResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
+import com.calmscient.utils.LocaleHelper
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.GetPatientMoodViewModel
+import com.calmscient.viewmodels.GetUserLanguagesViewModel
 import com.calmscient.viewmodels.SavePatientMoodViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
@@ -57,6 +61,9 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
 
+    private val getUserLanguagesViewModel: GetUserLanguagesViewModel by viewModels()
+    private lateinit var localeLang: LocaleHelper
+    lateinit var savePrefData: SavePreferences
 
 
     var moodId: Int = 0 // Update based on selected mood
@@ -86,9 +93,15 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
+        binding.idSwitch.labelOn = getString(R.string.yes)
+        binding.idSwitch.labelOff = getString(R.string.no)
+
         customProgressDialog = CustomProgressDialog(this)
         commonDialog = CommonAPICallDialog(this)
 
+
+        localeLang = LocaleHelper(this)
+        savePrefData = SavePreferences(this)
 
        val res =  loginViewModel.responseData.value
         Log.d("UserMoodActivity","$res")
@@ -100,6 +113,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
         if(CommonClass.isNetworkAvailable(this)){
             observeViewModel()
+            languageAPICall()
         }
         else
         {
@@ -865,5 +879,71 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                 })
             }
         })
+    }
+
+
+    private fun languageAPICall(){
+        getUserLanguagesViewModel.getUserLanguages(loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,loginResponse.token.access_token)
+        observeLanguageAPIData()
+    }
+    private fun observeLanguageAPIData(){
+        getUserLanguagesViewModel.loadingLiveData.observe(this, Observer { isLoading->
+            if(isLoading){
+                customProgressDialog.show(getString(R.string.loading))
+            }else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getUserLanguagesViewModel.successLiveData.observe(this, Observer { isSuccess->
+            if(isSuccess){
+                getUserLanguagesViewModel.saveResponseLiveData.observe(this, Observer { successData->
+                    if(successData != null){
+                        //getUserLanguagesResponse = successData
+                        if(successData.patientLanguages.isNotEmpty()){
+                            bindLanguageSettings(successData)
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    private fun bindLanguageSettings(response: GetUserLanguagesResponse) {
+
+        response.patientLanguages.let { languages ->
+            languages.forEach { language ->
+                when (language.languageName) {
+                    "English" -> {
+                        if (language.preferred == 1) {
+                            savePrefData.setLanguageMode("en")
+                            localeLang.setLocale(this, "en")
+                            savePrefData.setEngLanguageState(true)
+                            savePrefData.setSpanLanguageState(false)
+                            savePrefData.setAslLanguageState(false)
+                        }
+                    }
+                    "Spanish" -> {
+                        if (language.preferred == 1) {
+                            savePrefData.setLanguageMode("es")
+                            localeLang.setLocale(this, "es")
+                            savePrefData.setSpanLanguageState(true)
+                            savePrefData.setEngLanguageState(false)
+                            savePrefData.setAslLanguageState(false)
+                        }
+                    }
+                    "ASL" -> {
+                        if (language.preferred == 1) {
+                            savePrefData.setLanguageMode("en")
+                            localeLang.setLocale(this, "en")
+                            savePrefData.setAslLanguageState(true)
+                            savePrefData.setSpanLanguageState(false)
+                            savePrefData.setEngLanguageState(false)
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }

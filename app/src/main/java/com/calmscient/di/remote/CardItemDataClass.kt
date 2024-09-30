@@ -31,7 +31,7 @@ data class ChapterDataClass(
     val isCourseCompleted: Int,
     val pageCount: Int,
     val imageUrl: String,
-    val chapterOnlyReading: Boolean
+    val chapterOnlyReading: Boolean,
 )
 
 enum class ItemType {

@@ -51,7 +51,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -255,11 +257,11 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
             if (isOn) {
                 // Toggle is on, schedule the morning alarm if time is selected
                 if (!morningTime.isNullOrEmpty()) {
-                    scheduleAlarm(morningTime, "Morning")
+                    scheduleAlarm(morningTime, getString(R.string.morning))
                 }
             } else {
                 // Toggle is off, cancel the morning alarm
-                cancelAlarm("Morning")
+                cancelAlarm(getString(R.string.morning))
             }
         }
 
@@ -349,7 +351,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
         intent.putExtra("SCHEDULE_TYPE", scheduleType)
 
         val requestCode =
-            if (scheduleType == "Morning") 0 else 1 // Use different request codes for Morning and Evening
+            if (scheduleType == getString(R.string.morning)) 0 else 1 // Use different request codes for Morning and Evening
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -385,7 +387,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
         intent.putExtra("SCHEDULE_TYPE", scheduleType)
 
         val requestCode =
-            if (scheduleType == "Morning") 0 else 1 // Use the same request codes as used in scheduling
+            if (scheduleType == getString(R.string.morning)) 0 else 1 // Use the same request codes as used in scheduling
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -410,6 +412,12 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
             return
         }
 
+        if(binding.provider.text.isNullOrBlank()){
+
+            commonDialog.showDialog(getString(R.string.provider_not_assign_please_contact_support))
+            return
+        }
+
         // Get today's date
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
@@ -422,20 +430,15 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
 
         val formattedDateTime = "$formattedDate $currentTime"
 
+        Log.d("Alarm Interval","$alarmInternal")
+
         // Create Alarm objects from AlarmInternal objects
-        val alarmsList = alarmInternal.map { alarm ->
-            Alarm(
-                alarm.alarmId,
-                formattedDate,
-                alarm.repeat,
-                alarm.alarmInterval,
-                alarm.flag,
-                alarm.isEnabled,
-                alarm.medicineTime,
-                loginResponse!!.loginDetails.patientLocationID,
-                0
-            )
-        }
+        val alarmsList = prepareAlarms(
+            alarmInternal,
+            formattedDate,
+            loginResponse!!
+        )
+
 
 
         // Get all entered data
@@ -480,6 +483,90 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
            CommonClass.showInternetDialogue(requireContext())
        }
     }
+
+    fun prepareAlarms(alarmInternal: List<AlarmInternal>, formattedDate: String, loginResponse: LoginResponse?): List<Alarm> {
+        // Define default times
+        val defaultTimes = mapOf(
+            "morning" to "06:00:00",
+            "afternoon" to "13:00:00",
+            "evening" to "19:00:00"
+        )
+
+        // Define time ranges
+        val timeRanges = mapOf(
+            "morning" to (LocalTime.of(6, 0)..LocalTime.of(11, 59)),
+            "afternoon" to (LocalTime.of(12, 0)..LocalTime.of(18, 59)),
+            "evening" to (LocalTime.of(19, 0)..LocalTime.of(23, 59))
+        )
+
+        // Initialize a set to keep track of existing medicine times
+        val existingTimes = mutableSetOf<LocalTime>()
+
+        // Collect existing medicine times and corresponding alarms
+        val alarmMap = alarmInternal.associateBy { LocalTime.parse(it.medicineTime, DateTimeFormatter.ISO_TIME) }
+
+        // Collect existing times
+        existingTimes.addAll(alarmMap.keys)
+
+        // Prepare a list to hold the alarm objects for each time period
+        val morningAlarms = mutableListOf<Alarm>()
+        val afternoonAlarms = mutableListOf<Alarm>()
+        val eveningAlarms = mutableListOf<Alarm>()
+
+        // Check each period and create an alarm if necessary
+        timeRanges.forEach { (period, range) ->
+            val defaultTime = LocalTime.parse(defaultTimes[period], DateTimeFormatter.ISO_TIME)
+
+            // If there's no existing time in this range, add a default alarm
+            if (existingTimes.none { it in range }) {
+                val alarm = Alarm(
+                    alarmId = 0,
+                    alarmDate = formattedDate,
+                    repeat = emptyList(),
+                    alarmInterval = 10,
+                    flag = "I",
+                    isEnabled = 0,
+                    medicineTime = defaultTime.format(DateTimeFormatter.ISO_TIME),
+                    plId = loginResponse!!.loginDetails.patientLocationID,
+                    medicationId = 0
+                )
+                when (period) {
+                    "morning" -> morningAlarms.add(alarm)
+                    "afternoon" -> afternoonAlarms.add(alarm)
+                    "evening" -> eveningAlarms.add(alarm)
+                }
+            }
+        }
+
+        // Add existing medicine times as separate alarms
+        existingTimes.forEach { time ->
+            val alarm = alarmMap[time]
+            if (alarm != null) {
+                val existingAlarm = Alarm(
+                    alarmId = 0,
+                    alarmDate = formattedDate,
+                    repeat = alarm.repeat,
+                    alarmInterval = alarm.alarmInterval,
+                    flag = alarm.flag,
+                    isEnabled = alarm.isEnabled,
+                    medicineTime = time.format(DateTimeFormatter.ISO_TIME),
+                    plId = loginResponse!!.loginDetails.patientLocationID,
+                    medicationId = 0 // Adjust as necessary
+                )
+                when (time) {
+                    in timeRanges["morning"]!! -> morningAlarms.add(existingAlarm)
+                    in timeRanges["afternoon"]!! -> afternoonAlarms.add(existingAlarm)
+                    in timeRanges["evening"]!! -> eveningAlarms.add(existingAlarm)
+                }
+            }
+        }
+
+        // Combine alarms in the order of morning, afternoon, and evening
+        return morningAlarms + afternoonAlarms + eveningAlarms
+    }
+
+
+
 
     private fun observeVieModel()
     {
@@ -532,11 +619,12 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
             // Check the selected card and update the UI accordingly
             when (selectedCard) {
                 getString(R.string.morning) -> {
-                    val morningAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == "Morning" }
+                    val morningAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == getString(R.string.morning) }
                     if (morningAlarmIndex != -1) {
                         val morningAlarm = alarmInternal[morningAlarmIndex]
                         val morningAlarmTime = morningAlarm.medicineTime ?: "00:00"
                         val morningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(morningAlarmTime)!!)
+                            .replace("a. m.", "AM").replace("p. m.", "PM")
                         binding.morningTimeView.text = morningTime12Hours
                         binding.morningAlarmTimeView.text = calculateAlarmTime(morningAlarmTime, morningAlarm.alarmInterval ?: 10)
                         alarmInternal[morningAlarmIndex].isEnabled = if (binding.alarmToggleButtonMorning.isOn) 1 else 0
@@ -544,11 +632,12 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
                     }
                 }
                 getString(R.string.afternoon) -> {
-                    val afternoonAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == "Afternoon" }
+                    val afternoonAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == getString(R.string.afternoon) }
                     if (afternoonAlarmIndex != -1) {
                         val afternoonAlarm = alarmInternal[afternoonAlarmIndex]
                         val afternoonAlarmTime = afternoonAlarm.medicineTime ?: "00:00"
                         val afternoonTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(afternoonAlarmTime)!!)
+                            .replace("a. m.", "AM").replace("p. m.", "PM")
                         binding.afternoonTimeView.text = afternoonTime12Hours
                         binding.afternoonAlarmTimeView.text = calculateAlarmTime(afternoonAlarmTime, afternoonAlarm.alarmInterval ?: 10)
                         alarmInternal[afternoonAlarmIndex].isEnabled = if (binding.alarmToggleButtonAfternoon.isOn) 1 else 0
@@ -556,11 +645,12 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
                     }
                 }
                 getString(R.string.evening) -> {
-                    val eveningAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == "Evening" }
+                    val eveningAlarmIndex = alarmInternal.indexOfFirst { it.scheduleType == getString(R.string.evening) }
                     if (eveningAlarmIndex != -1) {
                         val eveningAlarm = alarmInternal[eveningAlarmIndex]
                         val eveningAlarmTime = eveningAlarm.medicineTime ?: "00:00"
                         val eveningTime12Hours = timeFormat12Hours.format(timeFormat24Hours.parse(eveningAlarmTime)!!)
+                            .replace("a. m.", "AM").replace("p. m.", "PM")
                         binding.eveningTimeView.text = eveningTime12Hours
                         binding.eveningAlarmTimeView.text = calculateAlarmTime(eveningAlarmTime, eveningAlarm.alarmInterval ?: 10)
                         alarmInternal[eveningAlarmIndex].isEnabled = if (binding.alarmToggleButtonEvening.isOn) 1 else 0
@@ -582,6 +672,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
         calendar.add(Calendar.MINUTE, -interval)
 
         return formatter12Hours.format(calendar.time)
+            .replace("a. m.", "AM").replace("p. m.", "PM")
     }
 
     private fun formatDate(selectedDate: LocalDate): String {

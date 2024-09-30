@@ -222,14 +222,32 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
 
     private fun getSelectedIntervals(): List<Int> {
         val selectedIntervals = mutableListOf<Int>()
-        // Add selected intervals to the list
-        if (textFive.isSelected) selectedIntervals.add(5)
-        if (textTen.isSelected) selectedIntervals.add(10)
-        if (textFifteen.isSelected) selectedIntervals.add(15)
-        if (textTwenty.isSelected) selectedIntervals.add(20)
-        if (textTwentyFive.isSelected) selectedIntervals.add(25)
-        if (textThirty.isSelected) selectedIntervals.add(30)
-        // Add more intervals as needed
+
+        // Update selected intervals based on current selections
+        if (textFive.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(5)
+        }
+        if (textTen.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(10)
+        }
+        if (textFifteen.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(15)
+        }
+        if (textTwenty.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(20)
+        }
+        if (textTwentyFive.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(25)
+        }
+        if (textThirty.isSelected) {
+            selectedIntervals.clear()
+            selectedIntervals.add(30)
+        }
 
         return selectedIntervals
     }
@@ -300,7 +318,7 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
 
         // Check if the selected time falls within the time range associated with the selected schedule
         return timeRange?.let { (startTime, endTime) ->
-            val formatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+            val formatter = SimpleDateFormat("hh:mm a", Locale.US)
             val selectedTimeFormatted = formatter.parse(selectedTime)
             val startFormatted = formatter.parse(startTime)
             val endFormatted = formatter.parse(endTime)

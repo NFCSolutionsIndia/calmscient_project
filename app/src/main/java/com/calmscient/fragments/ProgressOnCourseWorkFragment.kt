@@ -11,23 +11,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.R
-import com.calmscient.adapters.ProgressWorksAdapter
 import com.calmscient.adapters.SummaryOfProgressWorksAdapter
-import com.calmscient.di.remote.ProgressWorksTask
 import com.calmscient.databinding.ProgressoncourseworkFragmentBinding
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.PatientcourseWork
 import com.calmscient.di.remote.response.SummaryOfCourseWorkResponse
-import com.calmscient.di.remote.response.SummaryOfDASTResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.GetSummaryOfCourseWorkViewModel
-import com.calmscient.viewmodels.GetSummaryOfDASTViewModel
-import com.github.mikephil.charting.charts.LineChart
-
 class ProgressOnCourseWorkFragment : Fragment() {
     private lateinit var binding: ProgressoncourseworkFragmentBinding
 

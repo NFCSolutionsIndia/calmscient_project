@@ -198,16 +198,23 @@ class BasicKnowledgeFragment : Fragment() {
     private fun handleItemClicked(item: BasicKnowledgeItem) {
         Log.d("BasicKnowledgeFragment", "Name: ${item.name}, SectionId: ${item.sectionId}")
         sharedViewModel.selectItem(item)
-        val fragment = when (item.name) {
-            "What’s a “standard drink”?" -> StandardDrinkFragment()
-            "What are the U.S. guidelines for drink?" -> GuidelinesForDrinkingFragment()
-            "When is drink in moderation too much?" -> ModerationDrinkingFragment()
-            "What happens to your brain when you drink?" -> WhatHappensToYourBrainFragment()
-            "What to expect when you quit drinking?" -> WhatExpectsWhenYouQuitDrinkingFragment()
-            "What are the consequences?" -> ConsequencesFragment()
-            "My drinking habit" -> MyDrinkingHabitFragment()
+        //val currentName = item.name.trim()
+
+        val currentName = item.name.trim().replace("\"", "")
+        val standardDrinkText = getString(R.string.what_s_a_standard_drink).trim().replace("\"", "")
+
+
+        val fragment = when {
+            currentName.equals(standardDrinkText, ignoreCase = true) -> StandardDrinkFragment()
+            currentName.equals(getString(R.string.what_are_the_u_s_guidelines_for_drink), ignoreCase = true) -> GuidelinesForDrinkingFragment()
+            currentName.equals(getString(R.string.when_is_drink_in_moderation_too_much), ignoreCase = true) -> ModerationDrinkingFragment()
+            currentName.equals(getString(R.string.what_happens_to_your_brain_when_you_drink), ignoreCase = true) -> WhatHappensToYourBrainFragment()
+            currentName.equals(getString(R.string.what_to_expect_when_you_quit_drinking), ignoreCase = true) -> WhatExpectsWhenYouQuitDrinkingFragment()
+            currentName.equals(getString(R.string.what_are_the_consequences), ignoreCase = true) -> ConsequencesFragment()
+            currentName.equals(getString(R.string.my_drinking_habit), ignoreCase = true) -> MyDrinkingHabitFragment()
             else -> null
         }
+
 
         fragment?.let {
             requireActivity().supportFragmentManager.beginTransaction()

@@ -36,6 +36,7 @@ import com.calmscient.di.remote.response.ManagingAnxiety
 import com.calmscient.di.remote.response.SessionIdResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.LocaleHelper
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SavePreferences
@@ -58,6 +59,8 @@ class ChangingYourResponseFragment : Fragment() {
     private val getSessionIdViewModel: GetSessionIdViewModel by activityViewModels()
     private lateinit var sessionIdResponse: SessionIdResponse
     private  lateinit var sessionId : String
+    private var languageCode = -1
+    private lateinit var localeLang: LocaleHelper
 
 
 
@@ -67,7 +70,7 @@ class ChangingYourResponseFragment : Fragment() {
     ): View {
         binding = FragmentChangingYourResponseBinding.inflate(inflater, container, false)
         savePrefData = SavePreferences(requireContext())
-
+        localeLang = LocaleHelper(requireContext())
 
         commonAPICallDialog = CommonAPICallDialog(requireContext())
         customProgressDialog = CustomProgressDialog(requireContext())
@@ -151,6 +154,7 @@ class ChangingYourResponseFragment : Fragment() {
 
                         bindDataToRecyclerView(manageAnxietyIndexResponse.managingAnxiety)
                         bindUIData(manageAnxietyIndexResponse.managingAnxiety)
+                        languageCode = successData.patientSessionDetails.languageId
                     }
                 })
             }
@@ -183,20 +187,32 @@ class ChangingYourResponseFragment : Fragment() {
                     chapterOnlyReading = chapter.chapterOnlyReading
                 )
             }
-
+            val language = if(languageCode == 1) "en" else "sp"
             val itemClickListener: (ChapterDataClass) -> Unit = { chapter ->
-                val url = "http://20.197.5.97:5000/?courseName=changingYourResponseToStress&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId"
+                val url = "http://20.197.5.97:5000/?courseName=changingYourResponseToStress&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId&language=$language"
                 Log.d("URL:","$url")
                 chapter.chapterName?.let { WebViewFragment.newInstance(url, it) }
                     ?.let { loadFragment(it) }
             }
 
-            when (lesson.lessonName) {
-                "Understanding the stress signs" -> setupRecyclerView(binding.recyclerViewUnderstandingStressSigns, chapterItems, itemClickListener)
-                "Understanding the cause of your stress" -> setupRecyclerView(binding.recyclerViewUnderstandingCauseOfYourStress, chapterItems, itemClickListener)
-                "Understanding your stress response" -> setupRecyclerView(binding.recyclerViewUnderstandingStressResponse, chapterItems, itemClickListener)
-                "Resources" -> setupRecyclerView(binding.recyclerViewResources, chapterItems, itemClickListener)
+            when {
+                lesson.lessonName.equals("Understanding the stress signs", ignoreCase = true) ||
+                        lesson.lessonName.equals("Comprender los signos de estrés", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewUnderstandingStressSigns, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Understanding the cause of your stress", ignoreCase = true) ||
+                        lesson.lessonName.equals("Comprender la causa de su estrés", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewUnderstandingCauseOfYourStress, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Understanding your stress response", ignoreCase = true) ||
+                        lesson.lessonName.equals("Comprender su respuesta al estrés", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewUnderstandingStressResponse, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Resources", ignoreCase = true) ||
+                        lesson.lessonName.equals("Recursos", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewResources, chapterItems, itemClickListener)
             }
+
         }
     }
 
@@ -257,6 +273,28 @@ class ChangingYourResponseFragment : Fragment() {
         binding.recyclerViewUnderstandingCauseOfYourStress.adapter = null
         binding.recyclerViewUnderstandingStressResponse.adapter = null
         binding.recyclerViewResources.adapter = null
+    }
+
+    private fun updateLanguageSettings() {
+        /* if (savePrefData.getEngLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "en")
+         } else if (savePrefData.getAslLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "en")
+         } else if (savePrefData.getSpanLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "es")
+         }*/
+
+        val res = savePrefData.getLanguageMode()
+        if (res != null) {
+            localeLang.setLocale(requireContext(), res)
+            savePrefData.setLanguageMode(res)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateLanguageSettings()
     }
 
 }

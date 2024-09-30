@@ -1,5 +1,6 @@
 package com.calmscient.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,8 +23,10 @@ import com.calmscient.di.remote.response.ScreeningItem
 import com.calmscient.di.remote.response.ScreeningResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.LocaleHelper
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.MenuItemViewModel
@@ -49,6 +52,8 @@ class MedicalRecordsFragment : Fragment() {
     private lateinit var commonDialog: CommonAPICallDialog
 
     private var loginResponse : LoginResponse? = null
+    private lateinit var localeLang: LocaleHelper
+    lateinit var savePrefData: SavePreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +80,8 @@ class MedicalRecordsFragment : Fragment() {
         customProgressDialog = CustomProgressDialog(requireContext())
 
         commonDialog = CommonAPICallDialog(requireContext())
+        localeLang = LocaleHelper(requireContext())
+        savePrefData = SavePreferences(requireContext())
 
         // Retrieve JSON string from SharedPreferences and convert back to object
         val medicalMenuJsonString =
@@ -160,7 +167,7 @@ class MedicalRecordsFragment : Fragment() {
 
     private fun openSettingsActivity() {
         val intent = Intent(activity, SettingsActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, MedicalRecordsFragment.REQUEST_CODE_SETTINGS)
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -168,5 +175,48 @@ class MedicalRecordsFragment : Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == MedicalRecordsFragment.REQUEST_CODE_SETTINGS && resultCode == Activity.RESULT_OK) {
+            // Reload the fragment or update the UI
+            updateLanguageAndReloadFragment()
+        }
+    }
+
+    private fun updateLanguageAndReloadFragment() {
+        // Call the method to update the language settings
+        updateLanguageSettings()
+        // Reload the fragment
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.flFragment, HomeFragment.newInstance())
+        transaction.commit()
+    }
+
+    private fun updateLanguageSettings() {
+        /* if (savePrefData.getEngLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "en")
+         } else if (savePrefData.getAslLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "en")
+         } else if (savePrefData.getSpanLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "es")
+         }*/
+
+        val res = savePrefData.getLanguageMode()
+        if (res != null) {
+            localeLang.setLocale(requireContext(), res)
+            savePrefData.setLanguageMode(res)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateLanguageSettings()
+    }
+
+    companion object {
+        const val REQUEST_CODE_SETTINGS = 1001
     }
 }

@@ -11,6 +11,7 @@
 
 package com.calmscient.fragments
 
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.fragment.app.Fragment
@@ -29,6 +30,8 @@ import com.calmscient.activities.BeginManageAnxietyActivity
 import com.calmscient.activities.GlossaryActivity
 import com.calmscient.activities.SettingsActivity
 import com.calmscient.databinding.FragmentDiscoveryBinding
+import com.calmscient.utils.LocaleHelper
+import com.calmscient.utils.common.SavePreferences
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -38,6 +41,8 @@ class DiscoveryFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentDiscoveryBinding
+    lateinit var savePrefData: SavePreferences
+    private lateinit var localeLang: LocaleHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,9 +57,11 @@ class DiscoveryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDiscoveryBinding.inflate(inflater, container, false)
+        localeLang = LocaleHelper(requireContext())
+        savePrefData = SavePreferences(requireContext())
         binding.icProfile.setOnClickListener {
-            val intent = Intent(requireContext(), SettingsActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivityForResult(intent, DiscoveryFragment.REQUEST_CODE_SETTINGS)
         }
         binding.manageAnxietyCard.setOnClickListener {
             //Toast.makeText(requireActivity(), "Coming Soon", Toast.LENGTH_SHORT).show()
@@ -110,14 +117,7 @@ class DiscoveryFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DiscoveryFragment.
-         */
+        private const val REQUEST_CODE_SETTINGS = 1001
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             DiscoveryFragment().apply {
@@ -126,5 +126,32 @@ class DiscoveryFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+        fun newInstance() = DiscoveryFragment()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == DiscoveryFragment.REQUEST_CODE_SETTINGS && resultCode == Activity.RESULT_OK) {
+            // Reload the fragment or update the UI
+            updateLanguageAndReloadFragment()
+        }
+    }
+
+    private fun updateLanguageAndReloadFragment() {
+        // Call the method to update the language settings
+        updateLanguageSettings()
+        // Reload the fragment
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.flFragment, DiscoveryFragment.newInstance())
+        transaction.commit()
+    }
+    private fun updateLanguageSettings() {
+        if (savePrefData.getEngLanguageState() == true) {
+            localeLang.setLocale(requireContext(), "en")
+        } else if (savePrefData.getAslLanguageState() == true) {
+            localeLang.setLocale(requireContext(), "en")
+        } else if (savePrefData.getSpanLanguageState() == true) {
+            localeLang.setLocale(requireContext(), "es")
+        }
     }
 }

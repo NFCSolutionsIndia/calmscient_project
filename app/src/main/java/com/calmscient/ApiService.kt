@@ -23,9 +23,11 @@ import com.calmscient.di.remote.request.GetAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.GetBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.GetEventsListRequest
 import com.calmscient.di.remote.request.GetPatientJournalByPatientIdRequest
+import com.calmscient.di.remote.request.GetPatientPrivacyRequest
 import com.calmscient.di.remote.request.GetTakingControlIndexRequest
 import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.GetTakingControlSummaryRequest
+import com.calmscient.di.remote.request.GetUserProfileRequest
 import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.request.LoginRequest
 import com.calmscient.di.remote.request.ManageAnxietyIndexRequest
@@ -57,6 +59,7 @@ import com.calmscient.di.remote.request.SummaryOfPHQ9Request
 import com.calmscient.di.remote.request.SummaryOfSleepRequest
 import com.calmscient.di.remote.request.UpdateBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
+import com.calmscient.di.remote.request.UpdateUserLanguageRequest
 import com.calmscient.di.remote.response.AddMedicationResponse
 import com.calmscient.di.remote.response.AddPatientJournalEntryResponse
 import com.calmscient.di.remote.response.AlarmUpdateResponse
@@ -68,9 +71,12 @@ import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.GetEventsListResponse
 import com.calmscient.di.remote.response.GetPatientJournalByPatientIdResponse
+import com.calmscient.di.remote.response.GetPatientPrivacyResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.GetTakingControlSummaryResponse
+import com.calmscient.di.remote.response.GetUserLanguagesResponse
+import com.calmscient.di.remote.response.GetUserProfileResponse
 import com.calmscient.di.remote.response.MenuItemsResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
@@ -101,6 +107,7 @@ import com.calmscient.di.remote.response.SummaryOfPHQ9Response
 import com.calmscient.di.remote.response.SummaryOfSleepResponse
 import com.calmscient.di.remote.response.UpdateBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.UpdateTakingControlIndexResponse
+import com.calmscient.di.remote.response.UpdateUserLanguageResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -268,5 +275,21 @@ interface ApiService {
 
     @POST("patients/api/v1/patientDetails/addPatientJournalEntry")
     fun addPatientJournalEntry(@Header("Authorization")accessToken: String,@Body requestBody: AddPatientJournalEntryRequest): Call<AddPatientJournalEntryResponse>
+
+    //User Profile Settings
+    @POST("identity/api/v1/settings/getUserProfile")
+    fun getUserProfile(@Header("Authorization")accessToken: String,@Body requestBody: GetUserProfileRequest): Call<GetUserProfileResponse>
+
+    @POST("identity/api/v1/settings/getPatientLanguages")
+    fun getUserLanguages(@Header("Authorization")accessToken: String,@Body requestBody: GetUserProfileRequest): Call<GetUserLanguagesResponse>
+
+    @POST("identity/api/v1/settings/updateUserLanguage")
+    fun updateUserLanguage(@Header("Authorization")accessToken: String,@Body requestBody: UpdateUserLanguageRequest): Call<UpdateUserLanguageResponse>
+
+    @POST("identity/api/v1/settings/getPatientPrivacy")
+    fun getPatientPrivacyDetails(@Header("Authorization")accessToken: String, @Body requestBody: GetPatientPrivacyRequest): Call<GetPatientPrivacyResponse>
+
+    @GET("identity/api/v1/user/logoutUser")
+    fun logoutUser(@Header("Authorization")accessToken: String): Call<Response>
 }
 

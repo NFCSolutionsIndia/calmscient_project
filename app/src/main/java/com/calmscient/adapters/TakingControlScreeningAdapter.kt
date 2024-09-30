@@ -65,15 +65,26 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
                     putString("takingControlIndexResponse", takingControlIndexJson)
                 }
                 // Load corresponding fragment based on screeningType
-                val fragment = screeningResponse.indexOfFirst { it.screeningType == item.name }.takeIf { it >= 0 }?.let { index ->
-                    when (item.name) {
-                        "PHQ-9" -> if (!item.isApplied) QuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
-                        "GAD-7" -> if (!item.isApplied) GADQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
-                        "AUDIT" -> if (!item.isApplied) AUDITQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
-                        "DAST-10" -> if (!item.isApplied) DASTQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+                val fragment = screeningResponse.indexOfFirst { it.screeningType.trim() == item.name }.takeIf { it >= 0 }?.let { index ->
+                    when {
+                        item.name.equals("PHQ-9", ignoreCase = true) ->
+                            if (!item.isApplied) QuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+
+                        item.name.equals("GAD-7", ignoreCase = true) ||
+                                item.name.equals("TAG-7", ignoreCase = true) ->
+                            if (!item.isApplied) GADQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+
+                        item.name.equals(context.getString(R.string.audit_heading), ignoreCase = true) ||
+                                item.name.equals(context.getString(R.string.audit_heading), ignoreCase = true) ->
+                            if (!item.isApplied) AUDITQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+
+                        item.name.equals("DAST-10", ignoreCase = true) ->
+                            if (!item.isApplied) DASTQuestionFragment(screeningResponse[index]).apply { arguments = bundle } else null
+
                         // Add more cases for other screening types if needed
                         else -> null
                     }
+
                 }
 
 
@@ -108,11 +119,11 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
         val btnYes: AppCompatButton = dialogView.findViewById(R.id.buttonYes)
         val btnNo: AppCompatButton = dialogView.findViewById(R.id.btn_no)
 
-        descText.text = if (item.isApplied) "${item.name} apply to you"  else  "${item.name} doesn’t apply to you"
+        descText.text = if (item.isApplied) "${item.name} ${context.getString(R.string.apply_to_me)}"  else  "${item.name} ${context.getString(R.string.doesn_t_apply_for_me)}"
 
         btnYes.setOnClickListener {
             item.isApplied = !item.isApplied // Toggle the state
-            item.buttonText = if (item.isApplied) "Apply to me" else "Doesn't apply for me"
+            item.buttonText = if (item.isApplied) context.getString(R.string.apply_to_me) else context.getString(R.string.doesn_t_apply_for_me)
             updateCardAppearance(holder, item.isApplied)
             dialogBuilder.dismiss()
 
@@ -136,7 +147,7 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
         } else {
             holder.cardLinearLayout.setBackgroundResource(R.drawable.dialog_border)
         }
-        holder.buttonDoesnotApply.text = if (isApplied) "Apply to me" else "Doesn't apply for me"
+        holder.buttonDoesnotApply.text = if (isApplied) context.getString(R.string.apply_to_me) else context.getString(R.string.doesn_t_apply_for_me)
     }
 
     private fun constructPayload(item: TakingControlScreeningItem): String {
@@ -144,8 +155,8 @@ class TakingControlScreeningAdapter(private val fragmentManager: FragmentManager
         val clientId = 1
         val plId = 4
         val introductionFlag = 0
-        val auditFlag = if (item.name == "AUDIT" && item.isApplied) 1 else null
-        val dastFlag = if (item.name == "DAST-10" && item.isApplied) 1 else null
+        val auditFlag = if (item.name == context.getString(R.string.audit_heading) && item.isApplied) 1 else null
+        val dastFlag = if (item.name == context.getString(R.string.dast_heading) && item.isApplied) 1 else null
         val cageFlag = if (item.name == "CAGE" && item.isApplied) 1 else null
         val tutorialFlag = null
 

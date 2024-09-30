@@ -11,6 +11,7 @@
 
 package com.calmscient.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,11 +20,19 @@ import android.view.ViewGroup
 import com.calmscient.R
 import com.calmscient.databinding.FragmentDiaphragmaticBreathingExerciseBinding
 import com.calmscient.databinding.FragmentMindfulBreathingExerciseBinding
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ui.PlayerView
 
 class DiaphragmaticBreathingExerciseFragment : Fragment() {
 
     private lateinit var binding: FragmentDiaphragmaticBreathingExerciseBinding
     private var isFavorite = true
+    private lateinit var playerView: PlayerView
+    private lateinit var player: ExoPlayer
+    private var isVideoPlaying = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +46,30 @@ class DiaphragmaticBreathingExerciseFragment : Fragment() {
 
         binding = FragmentDiaphragmaticBreathingExerciseBinding.inflate(inflater,container,false)
 
-        val favoritesIcon = binding.favoritesIcon
-        favoritesIcon.setOnClickListener {
+        player = SimpleExoPlayer.Builder(requireContext()).build()
+        playerView = binding.playerViewLayout
+
+        playerView.player = player
+        player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/exercises-videos/Diaphragmaticbreathing.mp4")))
+        player.playWhenReady = true
+
+        binding.favoritesIcon.setOnClickListener {
             isFavorite = !isFavorite
             if (isFavorite) {
-                favoritesIcon.setImageResource(R.drawable.ic_favorites_icon)
+                binding.favoritesIcon.setImageResource(R.drawable.ic_favorites_icon)
             } else {
-                favoritesIcon.setImageResource(R.drawable.ic_favorites_red)
+                binding.favoritesIcon.setImageResource(R.drawable.ic_favorites_red)
             }
         }
+
+        player.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(state: Int) {
+                if (state == Player.STATE_ENDED) {
+                    //  playPauseIcon.setImageResource(R.drawable.ic_play_icon)
+                    isVideoPlaying = false
+                }
+            }
+        })
 
         binding.backIcon.setOnClickListener{
             loadFragment(DeepBreathingExerciseFragment())
@@ -59,6 +83,26 @@ class DiaphragmaticBreathingExerciseFragment : Fragment() {
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        playerView.player!!.playWhenReady = false
+    }
+
+    override fun onStop() {
+        super.onStop()
+        playerView.player!!.release()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playerView.player!!.playWhenReady = true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        playerView.player!!.playbackState
     }
 
 }

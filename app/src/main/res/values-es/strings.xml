@@ -791,7 +791,8 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
 </string>
     <string name="lets_begin_btn">Empezamos</string>
     <string name="lets_begin_are_ready">¿Estás Listo?</string>
-    <string name="lets_begin">El descubrimiento de Calmscient será tan efectivo como usted lo haga. \nAsí que esté decidido a dedicar tiempo a seguir y completar los ejercicios. Cada sección tiene contenido interesante e informativo diseñado para mantenerlo pensando activamente en sus desafíos específicos. Pero, al igual que hacer un viaje por carretera a un destino desconocido, ¡deberás comprometerte a seguir el mapa! Puede que suponga un poco más de trabajo del que estás acostumbrado, pero al final dará sus frutos.</string>
+    <string name="lets_begin">El descubrimiento de Calmscient será tan efectivo como usted lo haga.</string>
+    <string name="lets_begin_description">Así que esté decidido a dedicar tiempo a seguir y completar los ejercicios. Cada sección tiene contenido interesante e informativo diseñado para mantenerlo pensando activamente en sus desafíos específicos. Pero, al igual que hacer un viaje por carretera a un destino desconocido, ¡deberás comprometerte a seguir el mapa! Puede que suponga un poco más de trabajo del que estás acostumbrado, pero al final dará sus frutos.</string>
     <string name="crisis_heading">Línea de Texto de Crisis</string>
     <string name="crisis_text">Envíe un mensaje de texto con MHA al 741741 y lo conectarán con un consejero de crisis capacitado. Crisis Text Line brinda soporte gratuito basado en texto las 24 horas del día, los 7 días de la semana.</string>
     <string name="trevor_heading">El Proyecto Trevor</string>
@@ -1138,8 +1139,8 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
 
     <string name="update_time_alarm">Actualizar Hora y Alarmaa</string>
     <string name="phq_heading">PHQ-9</string>
-    <string name="gad_heading">GAD-7</string>
-    <string name="audit_heading">AUDIT</string>
+    <string name="gad_heading">TAG-7</string>
+    <string name="audit_heading">AUDITORÍA</string>
     <string name="dast_heading">DAST-10</string>
     <string name="sbirt_heading">SBIRT</string>
     <string name="remind_me">Recuerdame</string>
@@ -1326,7 +1327,6 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="drink_tracker_text8">Bebidas espirituosas destiladas (1,5 onzas líquidas) aproximadamente 40% de alcohol</string>
     <string name="total_text">Total</string>
     <string name="count_text">contar</string>
-    <string name="drink_tracker">Rastreador de debidas</string>
     <string name="how_to_do">CÓMO HACERLO</string>
     <string name="lesson_intro">Introducción</string>
     <string name="lesson">Lección 1</string>
@@ -1390,5 +1390,73 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
 
     <string name="drinking_control">Drinking control</string>
     <string name="smoking_control">Smoking control</string>
+
+    //Taking Control
+    <string name="basic_knowledge">Conocimientos básicos</string>
+    <string name="make_a_plan">Hacer un plan</string>
+    <string name="event_tracker">Seguimiento de eventos</string>
+    <string name="how_to_use">Cómo usar</string>
+    <string name="drink_tracker">Seguimiento de bebidas</string>
+
+    <string name="doesn_t_apply_for_me">No aplica a mí</string>
+    <string name="apply_to_me">Aplica a mí</string>
+    <string name="what_s_a_standard_drink">¿Qué es una "bebida estándar"?</string>
+    <string name="what_are_the_u_s_guidelines_for_drink">¿Cuáles son las pautas de EE.UU. para beber?</string>
+    <string name="when_is_drink_in_moderation_too_much">¿Cuándo es demasiado beber con moderación?</string>
+    <string name="what_happens_to_your_brain_when_you_drink">¿Qué le sucede a tu cerebro cuando bebes?</string>
+    <string name="what_to_expect_when_you_quit_drinking">¿Qué esperar cuando dejas de beber?</string>
+    <string name="what_are_the_consequences">¿Cuáles son las consecuencias?</string>
+    <string name="my_drinking_habit">Mi hábito de beber</string>
+
+    //4-7-8 breathing
+    <string name="preparation">Preparation</string>
+    <string name="four_seven_eight_desc_one">First find a comfortable seated position. Ensure that you are at ease before beginning the rhythmic breathing pattern.\n\nPlace the tip of your tongue gently against the tissue just behind your top front teeth</string>
+    <string name="let_s_learn_how_to_do_the_4_7_8_breathing_exercise">Let’s learn how to do the 4–7–8 breathing exercise.</string>
+    <string name="step_1_emptying_the_lungs">Step 1: Emptying the lungs</string>
+    <string name="four_seven_eight_step_one_desc">Begin by completely emptying your lungs of air. Allow yourself a moment to release any tension.</string>
+    <string name="step_2_inhaling_quietly">Step 2: Inhaling quietly</string>
+    <string name="four_seven_eight_step_two_desc">Inhale quietly through your nose, counting to 4 seconds. Fell the breath entering your body, bringing calmness.</string>
+    <string name="step_3_hold_the_breath">Step 3: Hold the breath</string>
+    <string name="four_seven_eight_step_three_desc">Hold your breath for a steady count of 7 seconds. Embrace the stillness within, allowing the breath to settle.</string>
+    <string name="step_4_force_exhalation">Step 4: Force exhalation</string>
+    <string name="four_seven_eight_step_four_desc">Exhale forcefully through your mouth, pursing your lips, and create a distinct “whoosh” sound for 8 seconds. Feel the release of tension as you expel the breath.</string>
+    <string name="step_5_repeat_the_process">Step 5: Repeat the process</string>
+    <string name="four_seven_eight_step_five_desc">Repeat this entire cycle up to 4 times. Each repetition contributes to a deepening sense of relaxation.</string>
+    <string name="now_let_s_dive_into_it_npay_careful_attention_to_the_following_video">Now, let’s dive into it.\nPay careful attention to the following video.</string>
+    <string name="four_seven_eight_final_desc">Engage in this practice regularly, allowing the 4–7–8 technique to guide you towards a state of tranquility and mindful breathing.</string>
+    <string name="mindful_breathing_exercise_desc">First find a comfortable to either sit down or lay down. You can close your eyes if you want to.</string>
+    <string name="let_s_learn_how_to_do_the_mindful_breathing_exercise">Let’s learn how to do the mindful breathing exercise.</string>
+    <string name="step_1_inhale">Step 1: Inhale</string>
+    <string name="mindful_breathing_step_one">Inhale through your nose until the tummy expands.</string>
+    <string name="step_2_exhale_slowly_and_repeat_it">Step 2: Exhale slowly and repeat it</string>
+    <string name="mindful_breathing_step_two">Exhale slowly through your mouse. And repeat the process.</string>
+    <string name="step_3_focus_on_the_breath">Step 3: Focus on the breath</string>
+    <string name="mindful_breathing_step_three">Once settled into the pattern, focus on the breath coming in through the nose and out through the mouth</string>
+    <string name="step_4_focus_on_the_tummy">Step 4: Focus on the tummy</string>
+    <string name="mindful_breathing_step_four">Notice the rise and fall of the tummy as the breath come in and out</string>
+    <string name="step_5_focus_on_the_mind">Step 5: Focus on the mind</string>
+    <string name="mindful_breathing_step_five">As thoughts come into the head, notice that they are there without judgment, then let them go and bring the attention back to the breathing.</string>
+    <string name="step_6_focus_on_the_connection_between_mind_and_body">Step 6: Focus on the connection between mind and body.</string>
+    <string name="mindful_breathing_step_six">Carry on until feeling calm, then start to be aware of how the body and mind feel.</string>
+    <string name="mindful_breathing_final_desc">Engage in this practice regularly, allowing the mindful breathing technique to guide you towards a state of tranquility and mindful breathing.</string>
+    <string name="disphragmatic_heading_desc">Doctors usually recommend diaphragmatic breathing to people with a lung condition called chronic obstructive pulmonary disease. A 2017 study found that it could also help reduce anxiety.</string>
+    <string name="first_find_a_comfortable_to_either_sit_down_or_lay_down">First find a comfortable to either sit down or lay down.</string>
+    <string name="let_s_learn_how_to_do_the_diaphragmatic_breathing_exercise">Let’s learn how to do the diaphragmatic breathing exercise.</string>
+    <string name="step_1_place_your_hands">Step 1: Place your hands</string>
+    <string name="disphragmatic_step_one_desc">Place your hand on the tummy and other on the upper chest.</string>
+    <string name="step_2_inhale">Step 2: Inhale</string>
+    <string name="disphragmatic_step_two_desc">Inhale through your nose about 4 seconds, Focusing on the tummy rising.</string>
+    <string name="step_3_hold">Step 3: Hold</string>
+    <string name="hold_your_breath_for_2_seconds">Hold your breath for 2 seconds.</string>
+    <string name="step_4_exhale">Step 4: Exhale</string>
+    <string name="disphragmatic_step_four_desc">Exhale slowly and steadily through you mouth for about 6 seconds.</string>
+    <string name="disphragmatic_step_five_desc">Repeat the cycle for 5 to 10 minutes about 3 to 5 times a day</string>
+    <string name="disphragmatic_step_final_desc">Engage in this practice regularly, allowing the diaphragmatic breathing technique to guide you towards a state of tranquility and mindful breathing.</string>
+    <string name="breathing_exercise_4_7_8">4–7–8 Breathing exercise</string>
+    <string name="mindful_breathing_exercise_heading">Mindful breathing exercise</string>
+    <string name="diaphragmatic_breathing_exercise_heading">Diaphragmatic breathing exercise</string>
+    <string name="breathing_technic">Breathing technic</string>
+    <string name="you_did_not_change_any_timings">You did not change any timings</string>
+
 
 </resources>

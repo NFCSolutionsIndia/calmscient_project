@@ -13,6 +13,7 @@ package com.calmscient.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -101,38 +102,12 @@ class DashboardActivity : AppCompat(), ExerciseInteractionListener {
             }
         }
     }
-
-    /* override fun attachBaseContext(newBase: Context?) {
-             val localeToSwitch = Locale("es")
-             val localeUpdatedContext = newBase?.let { ContextUtils.updateLocale(it, localeToSwitch) }
-         super.attachBaseContext(newBase)
-     }*/
     private fun loadFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
-    /*override fun onBackPressed() {
-        AlertDialog.Builder(this).apply {
-            setTitle(getString(R.string.plz_confirm))
-            setMessage(getString(R.string.exit_app))
-
-            setPositiveButton("Yes") { _, _ ->
-                // if user press yes, finishing the current activity
-                //super.onBackPressed()
-                val a = Intent(Intent.ACTION_MAIN)
-                a.addCategory(Intent.CATEGORY_HOME)
-                a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(a)
-            }
-            setNegativeButton("No") { _, _ ->
-                // if user press no, then return the activity
-            }
-            setCancelable(true)
-        }.create().show()
-    }*/
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentById(R.id.flFragment)
         if (fragment is HomeFragment) {
@@ -145,4 +120,5 @@ class DashboardActivity : AppCompat(), ExerciseInteractionListener {
             super.onBackPressed()
         }
     }
+
 }

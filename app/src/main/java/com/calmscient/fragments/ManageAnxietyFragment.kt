@@ -43,6 +43,7 @@ import com.calmscient.di.remote.response.SessionIdResponse
 import com.calmscient.di.remote.response.SummaryOfAUDITResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.LocaleHelper
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SavePreferences
@@ -67,7 +68,9 @@ class ManageAnxietyFragment : Fragment() {
     private val getSessionIdViewModel: GetSessionIdViewModel by activityViewModels()
     private lateinit var sessionIdResponse: SessionIdResponse
     private  lateinit var sessionId : String
+    private var languageCode = -1
 
+    private lateinit var localeLang: LocaleHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,8 +87,7 @@ class ManageAnxietyFragment : Fragment() {
     ): View {
         binding = ActivityManageAnxietyBinding.inflate(inflater, container, false)
         savePrefData = SavePreferences(requireContext())
-
-
+        localeLang = LocaleHelper(requireContext())
         commonAPICallDialog = CommonAPICallDialog(requireContext())
         customProgressDialog = CustomProgressDialog(requireContext())
 
@@ -170,6 +172,8 @@ class ManageAnxietyFragment : Fragment() {
 
                             bindDataToRecyclerView(manageAnxietyIndexResponse.managingAnxiety)
                             bindUIData(manageAnxietyIndexResponse.managingAnxiety)
+
+                            languageCode = successData.patientSessionDetails.languageId
                         }
                     })
             }
@@ -191,6 +195,8 @@ class ManageAnxietyFragment : Fragment() {
            binding.tvAdditionalResource.text = managingAnxiety[7].lessonName
        }
 
+
+
     }
 
     private fun bindDataToRecyclerView(managingAnxiety: List<ManagingAnxiety>) {
@@ -206,9 +212,10 @@ class ManageAnxietyFragment : Fragment() {
                     chapterOnlyReading = chapter.chapterOnlyReading
                 )
             }
+            val language = if(languageCode == 1) "en" else "sp"
 
             val itemClickListener: (ChapterDataClass) -> Unit = { chapter ->
-                val url = "http://20.197.5.97:5000/?courseName=managingAnxiety&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId"
+                val url = "http://20.197.5.97:5000/?courseName=managingAnxiety&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId&language=$language"
                 Log.d("URL:","$url")
                 chapter.chapterName?.let { WebViewFragment.newInstance(url, it) }
                     ?.let { loadFragment(it) }
@@ -226,14 +233,29 @@ class ManageAnxietyFragment : Fragment() {
             }*/
 
             when {
-                lesson.lessonName == "Introduction" || lesson.lessonName == "Introducción" -> setupRecyclerView(binding.recyclerViewIntroduction, chapterItems, itemClickListener)
-                lesson.lessonName == "Lesson 1" || lesson.lessonName == "Lección 1" -> setupRecyclerView(binding.recyclerViewLesson1, chapterItems, itemClickListener)
-                lesson.lessonName == "Lesson 2" || lesson.lessonName == "Lección 2" -> setupRecyclerView(binding.recyclerViewLesson2, chapterItems, itemClickListener)
-                lesson.lessonName == "Lesson 3" || lesson.lessonName == "Lección 3" -> setupRecyclerView(binding.recyclerViewLesson3, chapterItems, itemClickListener)
-                lesson.lessonName == "Lesson 4" || lesson.lessonName == "Lección 4" -> setupRecyclerView(binding.recyclerViewLesson4, chapterItems, itemClickListener)
-                lesson.lessonName == "Lesson 5" || lesson.lessonName == "Lección 5" -> setupRecyclerView(binding.recyclerViewLesson5, chapterItems, itemClickListener)
-                lesson.lessonName == "Lesson 6" || lesson.lessonName == "Lección 6" -> setupRecyclerView(binding.recyclerViewLesson6, chapterItems, itemClickListener)
-                lesson.lessonName == "Additional Resources" || lesson.lessonName == "Recursos Adicionales" -> setupRecyclerView(binding.recyclerViewAdditionalResource, chapterItems, itemClickListener)
+                lesson.lessonName.equals("Introduction", ignoreCase = true) || lesson.lessonName.equals("Introducción", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewIntroduction, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Lesson 1", ignoreCase = true) || lesson.lessonName.equals("Lección 1", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewLesson1, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Lesson 2", ignoreCase = true) || lesson.lessonName.equals("Lección 2", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewLesson2, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Lesson 3", ignoreCase = true) || lesson.lessonName.equals("Lección 3", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewLesson3, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Lesson 4", ignoreCase = true) || lesson.lessonName.equals("Lección 4", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewLesson4, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Lesson 5", ignoreCase = true) || lesson.lessonName.equals("Lección 5", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewLesson5, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Lesson 6", ignoreCase = true) || lesson.lessonName.equals("Lección 6", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewLesson6, chapterItems, itemClickListener)
+
+                lesson.lessonName.equals("Additional Resources", ignoreCase = true) || lesson.lessonName.equals("Recursos adicionales", ignoreCase = true) ->
+                    setupRecyclerView(binding.recyclerViewAdditionalResource, chapterItems, itemClickListener)
             }
 
         }
@@ -325,5 +347,27 @@ class ManageAnxietyFragment : Fragment() {
             }
         })
     }*/
+
+    private fun updateLanguageSettings() {
+        /* if (savePrefData.getEngLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "en")
+         } else if (savePrefData.getAslLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "en")
+         } else if (savePrefData.getSpanLanguageState() == true) {
+             localeLang.setLocale(requireContext(), "es")
+         }*/
+
+        val res = savePrefData.getLanguageMode()
+        if (res != null) {
+            localeLang.setLocale(requireContext(), res)
+            savePrefData.setLanguageMode(res)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateLanguageSettings()
+    }
 }
 
