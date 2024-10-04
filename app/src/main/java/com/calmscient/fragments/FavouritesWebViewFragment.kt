@@ -22,6 +22,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
@@ -33,10 +34,15 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.calmscient.R
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.CommonClass
+import org.json.JSONException
+import org.json.JSONObject
 
 class FavouritesWebViewFragment : Fragment() {
 
@@ -95,11 +101,32 @@ class FavouritesWebViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        icBack!!.setOnClickListener {
-            loadFragment(HomeFragment())
-        }
-        icGlossary?.setOnClickListener{
-            loadFragment(GlossaryFragment())
+        if(CommonClass.isNetworkAvailable(requireContext())){
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // Call your JS function
+                    webViewLearn?.evaluateJavascript("onAbortCourseGotoIndex();") { result ->
+
+                        customProgressDialog.show(getString(R.string.loading))
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            customProgressDialog.dialogDismiss()
+                        }, 4000)
+
+                    }
+                }
+            })
+
+            icBack!!.setOnClickListener {
+                webViewLearn?.evaluateJavascript("onAbortCourseGotoIndex();") { result ->
+                    Log.d("WebViewFragment", "JS Result: $result")
+                    customProgressDialog.show(getString(R.string.loading))
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        customProgressDialog.dialogDismiss()
+                    }, 4000)
+                }
+            }
+        }else{
+            CommonClass.showInternetDialogue(requireContext())
         }
     }
 
@@ -121,6 +148,10 @@ class FavouritesWebViewFragment : Fragment() {
         webViewLearn!!.settings.cacheMode = WebSettings.LOAD_NO_CACHE
         webViewLearn!!.webViewClient = CustomWebViewClient()
         webViewLearn!!.webChromeClient = CustomWebChromeClient(requireContext())
+
+        // Add the JavaScript Interface
+        webViewLearn?.addJavascriptInterface(JavaScriptInterface(requireContext()), "nativeDispatch")
+
 
         webViewLearn!!.loadUrl(url)
     }
@@ -171,9 +202,22 @@ class FavouritesWebViewFragment : Fragment() {
             super.onReceivedError(view, request, error)
             progressBar.visibility = View.GONE
             Log.e("FavouritesWebViewFragment", "Error loading page: ${error.description}")
+
+            if (error.description.toString().contains("net::ERR_INTERNET_DISCONNECTED")) {
+                CommonClass.showInternetDialogue(requireContext())
+            } else {
+                showErrorDialog(error.description.toString())
+            }
         }
     }
 
+    private fun showErrorDialog(errorMessage: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Error Occurred")
+            .setMessage("Error loading page: $errorMessage")
+            .setPositiveButton("OK", null)
+            .show()
+    }
     private inner class CustomWebChromeClient(var context: Context) : WebChromeClient() {
         override fun onShowFileChooser(
             webView: WebView,
@@ -182,5 +226,117 @@ class FavouritesWebViewFragment : Fragment() {
         ): Boolean {
             return super.onShowFileChooser(webView, filePathCallback, fileChooserParams)
         }
+    }
+
+    private inner class JavaScriptInterface(private val context: Context) {
+
+        @JavascriptInterface
+        fun postMessage(data: String) {
+            // Parse the incoming JSON string
+            try {
+                val jsonData = JSONObject(data)
+                Log.d("WebViewFragment", "Success Data: $data")
+                handleJavaScriptMessage(jsonData)
+            } catch (e: JSONException) {
+                Log.e("WebViewFragment", "Failed to parse JSON: $data", e)
+            }
+        }
+
+        private fun handleJavaScriptMessage(jsonData: JSONObject) {
+            val keys: Iterator<String> = jsonData.keys()
+            val toolbar = view?.findViewById<Toolbar>(R.id.toolbar_learn_more)
+            val webViewTitle = view?.findViewById<TextView>(R.id.webViewTitle)
+
+            while (keys.hasNext()) {
+                val key = keys.next()
+                val value = jsonData.getString(key)
+
+                when (key) {
+                    "1001" -> handleGotoIndex(value)
+                    "1100" -> handleInitialLoadingOff(value)
+                    "401" -> handleInvalidSession(value)
+                    "1002" -> {
+                        if (webViewTitle != null) {
+                            handleChangedHeaderTitle(value, webViewTitle)
+                        }
+                    }
+                    "1003" -> {
+                        toolbar?.visibility = View.GONE
+                        Log.d("WebViewFragment", "Action: Hiding toolbar")
+                    }
+                    "1004" -> {
+                        toolbar?.visibility = View.VISIBLE
+                        Log.d("WebViewFragment", "Action: Showing toolbar")
+                    }
+                    "1005" -> handleNeedToTalkWithSomeone(value)
+                    "1006" -> handleReturningBackFromFavMedia()
+                    else -> {
+                        // Handle other or unknown cases
+                        Toast.makeText(context, "Unhandled key: $key with message: $value", Toast.LENGTH_SHORT).show()
+                        Log.d("WebViewFragment", "Unhandled key: $key, Message: $value")
+                    }
+                }
+            }
+        }
+
+
+        private fun handleGotoIndex(value: String) {
+            if (value == "turn off loading and go to index") {
+                // Turn off loading, go to index
+                requireActivity().actionBar?.show()
+                Log.d("WebViewFragment", "Action: Turning off loading, going to index")
+                loadFragment(ManageAnxietyFragment())
+            }
+        }
+        private fun handleInitialLoadingOff(value: String) {
+            if (value == "web page loaded with valid session") {
+                // Dismiss the loading dialog
+                customProgressDialog.dialogDismiss()
+                requireActivity().actionBar?.show()
+                Log.d("WebViewFragment", "Success Data: $value")
+            }
+        }
+        private fun handleInvalidSession(value: String) {
+            if (value.contains("error")) {
+                requireActivity().actionBar?.show()
+                val alertDialog = AlertDialog.Builder(context)
+                    .setTitle("Error Occurred")
+                    .setMessage("Error occurred. Please try again!")
+                    .setPositiveButton("OK", null)
+                    .create()
+                alertDialog.show()
+                Log.d("WebViewFragment", "Error: $value")
+            }
+        }
+        private fun handleChangedHeaderTitle(newTitle: String, titleView: TextView) {
+            // Update the header title in the toolbar
+            titleView.text = newTitle
+            Log.d("WebViewFragment", "Updated header title to: $newTitle")
+        }
+
+
+        private fun handleHideHeader(toolbar: Toolbar) {
+            toolbar.visibility = View.GONE
+            Log.d("WebViewFragment", "Action: Hiding toolbar")
+        }
+
+        private fun handleShowHeader(toolbar: Toolbar) {
+            toolbar.visibility = View.VISIBLE
+            Log.d("WebViewFragment", "Action: Showing toolbar")
+        }
+
+        private fun handleNeedToTalkWithSomeone(value: String) {
+            // Implement logic for handling the "need to talk with someone" case
+            Log.d("WebViewFragment", "Action: Need to talk with someone, value: $value")
+            // Add your action, e.g., open a contact dialog, navigate to a new fragment, etc.
+        }
+
+        private fun handleReturningBackFromFavMedia() {
+            requireActivity().actionBar?.show()
+            Log.d("WebViewFragment", "Action: Returning back from favorite media")
+            loadFragment(HomeFragment())
+        }
+
+
     }
 }

@@ -93,8 +93,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
 
-        binding.idSwitch.labelOn = getString(R.string.yes)
-        binding.idSwitch.labelOff = getString(R.string.no)
+       /* binding.idSwitch.labelOn = getString(R.string.yes)
+        binding.idSwitch.labelOff = getString(R.string.no)*/
 
         customProgressDialog = CustomProgressDialog(this)
         commonDialog = CommonAPICallDialog(this)
@@ -112,8 +112,9 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
         Log.d("Login Response in USERMOOD","$loginResponse")
 
         if(CommonClass.isNetworkAvailable(this)){
-            observeViewModel()
             languageAPICall()
+            observeViewModel()
+
         }
         else
         {
@@ -921,6 +922,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                             savePrefData.setEngLanguageState(true)
                             savePrefData.setSpanLanguageState(false)
                             savePrefData.setAslLanguageState(false)
+                            binding.btnSave.text = getString(R.string.save)
+                            binding.btnSkip.text = getString(R.string.skip)
                         }
                     }
                     "Spanish" -> {
@@ -930,6 +933,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                             savePrefData.setSpanLanguageState(true)
                             savePrefData.setEngLanguageState(false)
                             savePrefData.setAslLanguageState(false)
+                            binding.btnSave.text = getString(R.string.save)
+                            binding.btnSkip.text = getString(R.string.skip)
                         }
                     }
                     "ASL" -> {
@@ -939,6 +944,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                             savePrefData.setAslLanguageState(true)
                             savePrefData.setSpanLanguageState(false)
                             savePrefData.setEngLanguageState(false)
+                            binding.btnSave.text = getString(R.string.save)
+                            binding.btnSkip.text = getString(R.string.skip)
                         }
                     }
                 }

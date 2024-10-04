@@ -191,8 +191,18 @@ class ChangingYourResponseFragment : Fragment() {
             val itemClickListener: (ChapterDataClass) -> Unit = { chapter ->
                 val url = "http://20.197.5.97:5000/?courseName=changingYourResponseToStress&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId&language=$language"
                 Log.d("URL:","$url")
-                chapter.chapterName?.let { WebViewFragment.newInstance(url, it) }
-                    ?.let { loadFragment(it) }
+                if(CommonClass.isNetworkAvailable(requireContext())) {
+                    chapter.chapterName?.let {
+                        WebViewFragment.newInstance(
+                            url,
+                            it,
+                            "ChangingResponse"
+                        )
+                    }
+                        ?.let { loadFragment(it) }
+                }else{
+                    CommonClass.showInternetDialogue(requireContext())
+                }
             }
 
             when {

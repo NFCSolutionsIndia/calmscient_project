@@ -456,7 +456,6 @@
                                     android:layout_alignParentStart="true"
                                     android:layout_toStartOf="@+id/alarmToggleButtonAfternoon"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginStart="@dimen/_3sdp"
                                     android:layout_marginEnd="8dp"
                                     android:fontFamily="@font/lexendregular"
                                     android:text="@string/alarm"

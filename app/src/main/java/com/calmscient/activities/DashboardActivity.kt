@@ -13,6 +13,7 @@ package com.calmscient.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -23,6 +24,7 @@ import com.calmscient.fragments.DiscoveryFragment
 import com.calmscient.fragments.ExerciseFragment
 import com.calmscient.fragments.ExerciseInteractionListener
 import com.calmscient.fragments.HomeFragment
+import com.calmscient.utils.LocaleHelper
 import com.calmscient.utils.common.SavePreferences
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -32,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DashboardActivity : AppCompat(), ExerciseInteractionListener {
     lateinit var bottomNav: BottomNavigationView
     lateinit var savePrefData: SavePreferences
+    lateinit var localeLang: LocaleHelper
 
     override fun onExerciseSelected() {
         bottomNav.menu.findItem(R.id.home).setIcon(R.drawable.ic_home)
@@ -49,6 +52,7 @@ class DashboardActivity : AppCompat(), ExerciseInteractionListener {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         savePrefData = SavePreferences(this)
+        localeLang = LocaleHelper(this)
         bottomNav = findViewById(R.id.bottomNavigationView) as BottomNavigationView
         bottomNav.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
         bottomNav.itemIconTintList = null
@@ -121,4 +125,24 @@ class DashboardActivity : AppCompat(), ExerciseInteractionListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        Log.d("OnResume","On Resume in the DashboardActivity")
+
+        val res = savePrefData.getLanguageMode()
+        if (res != null) {
+            localeLang.setLocale(this, res)
+            savePrefData.setLanguageMode(res)
+            updateBottomNavigationTitles()
+        }
+
+    }
+
+    private fun updateBottomNavigationTitles() {
+        bottomNav.menu.findItem(R.id.home).title = getString(R.string.home)
+        bottomNav.menu.findItem(R.id.discovery).title = getString(R.string.discovery)
+        bottomNav.menu.findItem(R.id.exercises).title = getString(R.string.exercises)
+        bottomNav.menu.findItem(R.id.rewards).title = getString(R.string.rewards)
+    }
 }

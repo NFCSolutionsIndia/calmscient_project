@@ -16,6 +16,7 @@ import com.calmscient.di.remote.request.Alarm
 import com.calmscient.di.remote.request.AlarmInternal
 import com.calmscient.di.remote.request.AlarmUpdateRequest
 import com.calmscient.di.remote.request.AlarmUpdateRequestInternal
+import com.calmscient.di.remote.response.PatientConsent
 
 interface BottomSheetListener {
     fun onShowBottomSheet()
@@ -29,5 +30,9 @@ interface OnAlarmSelectedListener {
 
 interface OnAlarmSelectedListenerUpdate {
     fun onAlarmSelected(alarm: AlarmUpdateRequestInternal)
+}
+
+interface OnToggleChangeListener {
+    fun onToggleChanged(item: PatientConsent, isChecked: Boolean)
 }
 

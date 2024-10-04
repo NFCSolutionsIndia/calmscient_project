@@ -209,6 +209,7 @@
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
+                    android:id="@+id/innerBottoom"
                     style="@style/InnerButton"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_80sdp"
@@ -231,7 +232,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_toEndOf="@id/tv_score"
+
                         android:fontFamily="@font/lexendmedium"
                         android:textColor="@color/purple_100"
                         android:textSize="@dimen/_25sdp" />

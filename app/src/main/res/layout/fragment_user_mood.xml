@@ -945,7 +945,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="12dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatButton
@@ -958,7 +958,6 @@
                 android:background="@drawable/button_border"
                 android:gravity="center"
                 android:textAllCaps="false"
-                android:text="@string/save"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sdp" />
 
@@ -971,7 +970,6 @@
                 android:background="@drawable/skip_border"
                 android:gravity="center"
                 android:textAllCaps="false"
-                android:text="@string/skip"
                 android:textColor="@color/btn_gradient_color"
                 android:textSize="@dimen/_16sdp" />
         </LinearLayout>

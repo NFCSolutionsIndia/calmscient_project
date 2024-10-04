@@ -58,6 +58,7 @@ import com.calmscient.di.remote.request.SummaryOfMoodRequest
 import com.calmscient.di.remote.request.SummaryOfPHQ9Request
 import com.calmscient.di.remote.request.SummaryOfSleepRequest
 import com.calmscient.di.remote.request.UpdateBasicKnowledgeIndexRequest
+import com.calmscient.di.remote.request.UpdatePatientConsentRequest
 import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
 import com.calmscient.di.remote.request.UpdateUserLanguageRequest
 import com.calmscient.di.remote.response.AddMedicationResponse
@@ -106,6 +107,7 @@ import com.calmscient.di.remote.response.SummaryOfMoodResponse
 import com.calmscient.di.remote.response.SummaryOfPHQ9Response
 import com.calmscient.di.remote.response.SummaryOfSleepResponse
 import com.calmscient.di.remote.response.UpdateBasicKnowledgeIndexResponse
+import com.calmscient.di.remote.response.UpdatePatientConsentResponse
 import com.calmscient.di.remote.response.UpdateTakingControlIndexResponse
 import com.calmscient.di.remote.response.UpdateUserLanguageResponse
 import retrofit2.Call
@@ -198,7 +200,7 @@ interface ApiService {
     @POST("patients/api/v1/patientDetails/getPatientSleepMonitoringByIdForMobile")
     fun getSummaryOfSleep(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfSleepRequest): Call<SummaryOfSleepResponse>
 
-    @POST("patients/api/v1/course/getPatientCourseWorkPercentageDetails")
+    @POST("patients/api/v1/course/getPatientCourseWorkPercentageDetailsForMobile")
     fun getSummaryOfCourseWork(@Header("Authorization") accessToken: String,@Body requestBody: SummaryOfCourseWorkRequest): Call<SummaryOfCourseWorkResponse>
 
     //ManageAnxiety
@@ -291,5 +293,8 @@ interface ApiService {
 
     @GET("identity/api/v1/user/logoutUser")
     fun logoutUser(@Header("Authorization")accessToken: String): Call<Response>
+
+    @POST("identity/api/v1/settings/updatePatientConsent")
+    fun updatePatientConsent(@Header("Authorization")accessToken: String, @Body request: UpdatePatientConsentRequest): Call<UpdatePatientConsentResponse>
 }
 

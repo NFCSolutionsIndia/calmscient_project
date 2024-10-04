@@ -17,10 +17,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
+import com.calmscient.Interface.OnToggleChangeListener
 import com.calmscient.R
 import com.calmscient.di.remote.PrivacyItemDataClass
+import com.calmscient.di.remote.response.PatientConsent
+import com.github.angads25.toggle.interfaces.OnToggledListener
+import com.github.angads25.toggle.model.ToggleableView
 
-class PrivacyAdapter (private val data: List<PrivacyItemDataClass>, private val context: Context) : RecyclerView.Adapter<PrivacyAdapter.ViewHolder>() {
+class PrivacyAdapter (private val data: List<PatientConsent>, private val context: Context,  private val listener: OnToggleChangeListener) : RecyclerView.Adapter<PrivacyAdapter.ViewHolder>() {
 
     // Define the ViewHolder class
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -38,13 +42,21 @@ class PrivacyAdapter (private val data: List<PrivacyItemDataClass>, private val 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // Bind data to your ViewHolder components here
         val item = data[position]
-        holder.textView.text = item.text
+        holder.textView.text = item.consentListName
 
         holder.toggleButton.labelOn = context.getString(R.string.yes)
         holder.toggleButton.labelOff = context.getString(R.string.no)
 
+        holder.toggleButton.isOn = item.consentFlag == 1
+
         // holder.switch.isChecked = item.isChecked
         // holder.toggleButton.setHasTransientState(item.isChecked)
+
+        holder.toggleButton.setOnToggledListener(object : OnToggledListener {
+           override fun onSwitched(toggleableView: ToggleableView?, isOn: Boolean) {
+                listener.onToggleChanged(item, isOn)
+            }
+        })
 
     }
 

@@ -16,7 +16,6 @@
         android:layout_marginVertical="@dimen/_5sdp"
         android:background="@drawable/dialog_border"
         app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="@dimen/_20sdp"
         app:cardPreventCornerOverlap="false">
 
         <LinearLayout

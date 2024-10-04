@@ -1625,7 +1625,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="runningexercise_titletext">Movement: Running</string>
     <string name="runningexercises_text">It’s not easy to move when you have a shutdown or are feeling numb. Running can quickly shift you out of the shutdown state and re-energize you.</string>
 
-    <string name="version">Version 2.13</string>
+    <string name="version">Version 2.14</string>
     <!--bodymovemet Exercise-->
     <string name="bodymovementexercise_titletext">Mindful body movement</string>
     <!--summary of sleep-->
@@ -2294,5 +2294,6 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="diaphragmatic_breathing_exercise_heading">Diaphragmatic breathing exercise</string>
     <string name="you_did_not_change_any_timings">You did not change any timings</string>
     <string name="provider_not_assign_please_contact_support">Provider not assign please contact support</string>
+    <string name="please_accept_terms_and_conditions">Please accept terms and conditions</string>
 
 </resources>

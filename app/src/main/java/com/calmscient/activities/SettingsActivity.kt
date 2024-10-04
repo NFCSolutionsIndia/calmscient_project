@@ -95,7 +95,6 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         if(CommonClass.isNetworkAvailable(this)){
             getUserDateApiCall()
             languageAPICall()
-            getPrivacyDataAPICall()
         }else{
             CommonClass.showInternetDialogue(this)
         }
@@ -122,8 +121,8 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             finish()
         }
         binding.privacyLayout.setOnClickListener {
-            val privacyActivity = PrivacyBottomSheet()
-            privacyActivity.show(this.supportFragmentManager, privacyActivity.tag)
+            val privacyBottomSheet = PrivacyBottomSheet()
+            privacyBottomSheet.show(supportFragmentManager, privacyBottomSheet.tag)
         }
         binding.logout.setOnClickListener {
             logoutAPICall()
@@ -388,13 +387,39 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         })
     }
 
-    private fun getPrivacyDataAPICall(){
+   /* private fun getPrivacyDataAPICall(){
+        getPatientPrivacyDetailsViewModel.clear()
         getPatientPrivacyDetailsViewModel.getPatientPrivacyDetails(loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,loginResponse.loginDetails.patientLocationID,accessToken)
+        observePrivacyAPICall()
     }
 
     private fun observePrivacyAPICall(){
 
-    }
+        getPatientPrivacyDetailsViewModel.loadingLiveData.observe(this,Observer{
+            if(it){
+                customProgressDialog.show(getString(R.string.loading))
+            }else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        getPatientPrivacyDetailsViewModel.successLiveData.observe(this, Observer { isSuccess->
+            if(isSuccess){
+                getPatientPrivacyDetailsViewModel.saveResponseLiveData.observe(this, Observer { successData->
+
+                    if (successData != null) {
+                        if(successData.patientConsent.isNotEmpty()){
+
+                            binding.privacyLayout.setOnClickListener {
+                                val privacyBottomSheet = PrivacyBottomSheet.newInstance(successData.patientConsent)
+                                privacyBottomSheet.show(this.supportFragmentManager, privacyBottomSheet.tag)
+                            }
+                        }
+                    }
+                })
+            }
+        })
+    }*/
 
     private fun logoutAPICall(){
         logoutViewModel.userLogout(accessToken)

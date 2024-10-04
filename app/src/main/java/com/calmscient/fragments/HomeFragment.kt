@@ -260,7 +260,7 @@ class HomeFragment : Fragment() {
             ChapterDataClass(
                 chapterId = lesson.chapterId,
                 chapterName = lesson.title,
-                chapterUrl = lesson.url,
+                chapterUrl = lesson.navigateURL,
                 isCourseCompleted = 0,
                 pageCount = lesson.pageNo,
                 imageUrl = lesson.thumbnailUrl,

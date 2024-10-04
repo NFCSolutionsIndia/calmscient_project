@@ -224,33 +224,34 @@ class BottomSheetFragment(private val selectedSchedule: String?): BottomSheetDia
         val selectedIntervals = mutableListOf<Int>()
 
         // Update selected intervals based on current selections
-        if (textFive.isSelected) {
+        if (binding.textFive.isSelected) {
             selectedIntervals.clear()
             selectedIntervals.add(5)
         }
-        if (textTen.isSelected) {
+        if (binding.textTen.isSelected) {
             selectedIntervals.clear()
             selectedIntervals.add(10)
         }
-        if (textFifteen.isSelected) {
+        if (binding.textFifteen.isSelected) {
             selectedIntervals.clear()
             selectedIntervals.add(15)
         }
-        if (textTwenty.isSelected) {
+        if (binding.textTwenty.isSelected) {
             selectedIntervals.clear()
             selectedIntervals.add(20)
         }
-        if (textTwentyFive.isSelected) {
+        if (binding.textTwentyfive.isSelected) {
             selectedIntervals.clear()
             selectedIntervals.add(25)
         }
-        if (textThirty.isSelected) {
+        if (binding.textThirty.isSelected) {
             selectedIntervals.clear()
             selectedIntervals.add(30)
         }
 
         return selectedIntervals
     }
+
 
     private fun getSelectedDays(): List<String> {
         val selectedDays = mutableListOf<String>()

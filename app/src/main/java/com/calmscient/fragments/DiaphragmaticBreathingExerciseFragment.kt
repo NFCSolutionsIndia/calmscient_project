@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import com.calmscient.R
 import com.calmscient.databinding.FragmentDiaphragmaticBreathingExerciseBinding
 import com.calmscient.databinding.FragmentMindfulBreathingExerciseBinding
+import com.calmscient.utils.common.SavePreferences
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -33,6 +34,7 @@ class DiaphragmaticBreathingExerciseFragment : Fragment() {
     private lateinit var playerView: PlayerView
     private lateinit var player: ExoPlayer
     private var isVideoPlaying = true
+    lateinit var savePrefData: SavePreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +50,15 @@ class DiaphragmaticBreathingExerciseFragment : Fragment() {
 
         player = SimpleExoPlayer.Builder(requireContext()).build()
         playerView = binding.playerViewLayout
-
+        savePrefData = SavePreferences(requireContext())
         playerView.player = player
-        player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/exercises-videos/Diaphragmaticbreathing.mp4")))
+        val languageMode = savePrefData.getLanguageMode()
+        if(languageMode == "en") {
+            player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/exercises-videos/Diaphragmaticbreathing.mp4")))
+        }
+        else{
+            player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/exercises-spanish-videos-audios/SpanishDiaphragmaticbreathing.mp4")))
+        }
         player.playWhenReady = true
 
         binding.favoritesIcon.setOnClickListener {

@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import com.calmscient.R
 import com.calmscient.databinding.FragmentFourSevenEightBreathingExerciseBinding
+import com.calmscient.utils.common.SavePreferences
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -35,6 +36,7 @@ class FourSevenEightBreathingExerciseFragment : Fragment() {
     private lateinit var player: ExoPlayer
     private var isVideoPlaying = true
 
+    lateinit var savePrefData: SavePreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +56,20 @@ class FourSevenEightBreathingExerciseFragment : Fragment() {
             loadFragment(DeepBreathingExerciseFragment())
         }
 
+        savePrefData = SavePreferences(requireContext())
+
         player = SimpleExoPlayer.Builder(requireContext()).build()
 
         playerView = binding.playerViewLayout
 
         playerView.player = player
-        player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/exercises-videos/4-7-8Breathing.mp4")))
+        val languageMode = savePrefData.getLanguageMode()
+        if(languageMode == "en") {
+            player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/exercises-videos/4-7-8Breathing.mp4")))
+        }
+        else{
+            player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/exercises-spanish-videos-audios/Spanish4-7-8Breathing.mp4")))
+        }
         player.playWhenReady = true
 
         binding.favoritesIcon.setOnClickListener {

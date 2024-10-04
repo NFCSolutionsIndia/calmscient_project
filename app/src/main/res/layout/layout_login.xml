@@ -161,7 +161,7 @@
                     android:layout_below="@id/termsCheckBox"
                     android:clickable="true"
                     android:layout_marginHorizontal="@dimen/_7sdp"
-                    android:text="Please accept terms and conditions"
+                    android:text="@string/please_accept_terms_and_conditions"
                     android:textColor="@android:color/holo_red_light"
                     android:visibility="gone" />
 

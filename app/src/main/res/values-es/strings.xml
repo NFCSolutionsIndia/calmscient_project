@@ -1369,7 +1369,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="title_response_to_stress">RESPUESTA AL ESTRÉS</string>
     <string name="nora">NORA</string>
     <string name="austin">AUSTIN</string>
-    <string name="version">Versión 2.1</string>
+    <string name="version">Versión 2.14</string>
 
     <!--summary of sleep-->
     <string name="chart_sleep_avg_sleep_score">Puntuación de sueño promedio</string>
@@ -1457,6 +1457,13 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="diaphragmatic_breathing_exercise_heading">Diaphragmatic breathing exercise</string>
     <string name="breathing_technic">Breathing technic</string>
     <string name="you_did_not_change_any_timings">You did not change any timings</string>
+
+    <string name="quiz">Cuestionario</string>
+    <string name="daily_journals">Diarios diarios</string>
+    <string name="discovery_exercise">Ejercicio de descubrimiento</string>
+    <string name="search">Buscar</string>
+    <string name="no_records">Sin Registros</string>
+    <string name="please_accept_terms_and_conditions">Please accept terms and conditions</string>
 
 
 </resources>
