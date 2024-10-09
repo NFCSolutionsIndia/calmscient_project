@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
-            android:text="Make a plan"
+            android:text="@string/make_a_plan"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
@@ -229,7 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
-                android:text="Tell us what you would like to do."
+                android:text="@string/tell_us_what_you_would_like_to_do"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_12sdp" />
 
@@ -242,7 +242,7 @@
                 android:background="@drawable/no_border"
                 android:gravity="center"
                 android:fontFamily="@font/lexendmedium"
-                android:text="Just track the alcohol consumption"
+                android:text="@string/just_track_the_alcohol_consumption"
                 android:textAllCaps="false"
                 android:textColor="@color/purple_100"
                 android:textSize="18sp">
@@ -257,7 +257,7 @@
                 android:fontFamily="@font/lexendmedium"
                 android:background="@drawable/no_border"
                 android:gravity="center"
-                android:text="Quit or cut down drinking"
+                android:text="@string/quit_or_cut_down_drinking"
                 android:textAllCaps="false"
                 android:textColor="@color/purple_100"
                 android:textSize="18sp">

@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
-            android:text="Make a plan"
+            android:text="@string/make_a_plan"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="Quitting is strongly advised if you:"
+                android:text="@string/quitting_is_strongly_advised_if_you"
                 android:textSize="@dimen/_12sdp"/>
 
             <TextView
@@ -83,10 +83,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text=" • Have tried cutting down but cannot stay within the limit you set.\n\n
-• Have a physical or mental health condition that is caused or being worsened by drinking.\n\n
-• Are taking medication that interacts with alcohol.\n\n
-• Are or might be pregnant."
+                android:text="@string/make_a_plan_screen_two_desc"
                 android:textSize="@dimen/_12sdp"/>
 
             <TextView
@@ -94,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="Also yo need to consider the following factors to determine what to do."
+                android:text="@string/also_yo_need_to_consider_the_following_factors_to_determine_what_to_do"
                 android:textSize="@dimen/_12sdp"/>
 
             <TextView
@@ -102,10 +99,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text=" • A family history of alcohol problems.\n\n
-• Your age.\n\n
-• A history of drinking-related injuries.\n\n
-• Symptoms such as a sleep, pain, or anxiety disorder and sexual dysfunction."
+                android:text="@string/make_a_plan_screen_two_desc_2"
                 android:textSize="@dimen/_12sdp"/>
 
             <TextView
@@ -113,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="With this in mind, tell us what you would like to do."
+                android:text="@string/with_this_in_mind_tell_us_what_you_would_like_to_do"
                 android:textSize="@dimen/_12sdp"/>
 
 
@@ -126,7 +120,7 @@
                 android:background="@drawable/no_border"
                 android:gravity="center"
                 android:fontFamily="@font/lexendmedium"
-                android:text="Quit"
+                android:text="@string/quit"
                 android:textAllCaps="false"
                 android:textColor="@color/purple_100"
                 android:textSize="18sp">
@@ -141,7 +135,7 @@
                 android:fontFamily="@font/lexendmedium"
                 android:background="@drawable/no_border"
                 android:gravity="center"
-                android:text="Cut down"
+                android:text="@string/cut_down"
                 android:textAllCaps="false"
                 android:textColor="@color/purple_100"
                 android:textSize="18sp">

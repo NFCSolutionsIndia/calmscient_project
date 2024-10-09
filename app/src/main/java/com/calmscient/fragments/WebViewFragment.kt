@@ -309,6 +309,7 @@ class WebViewFragment : Fragment() {
 
 
         private fun handleGotoIndex(value: String) {
+            customProgressDialog.dialogDismiss()
             if (value == "turn off loading and go to index") {
                 // Turn off loading, go to index
                 requireActivity().actionBar?.show()
@@ -323,6 +324,7 @@ class WebViewFragment : Fragment() {
             }
         }
         private fun handleInitialLoadingOff(value: String) {
+            customProgressDialog.dialogDismiss()
             if (value == "web page loaded with valid session") {
                 // Dismiss the loading dialog
                 customProgressDialog.dialogDismiss()
@@ -331,6 +333,7 @@ class WebViewFragment : Fragment() {
             }
         }
         private fun handleInvalidSession(value: String) {
+            customProgressDialog.dialogDismiss()
             if (value.contains("error")) {
                 requireActivity().actionBar?.show()
                 val alertDialog = AlertDialog.Builder(context)
@@ -343,6 +346,7 @@ class WebViewFragment : Fragment() {
             }
         }
         private fun handleChangedHeaderTitle(newTitle: String, titleView: TextView) {
+            customProgressDialog.dialogDismiss()
             // Update the header title in the toolbar
             titleView.text = newTitle
             Log.d("WebViewFragment", "Updated header title to: $newTitle")
@@ -360,6 +364,7 @@ class WebViewFragment : Fragment() {
         }
 
         private fun handleNeedToTalkWithSomeone(value: String) {
+            customProgressDialog.dialogDismiss()
             // Implement logic for handling the "need to talk with someone" case
             Log.d("WebViewFragment", "Action: Need to talk with someone, value: $value")
             // Add your action, e.g., open a contact dialog, navigate to a new fragment, etc.
@@ -367,6 +372,7 @@ class WebViewFragment : Fragment() {
         }
 
         private fun handleReturningBackFromFavMedia() {
+            customProgressDialog.dialogDismiss()
             requireActivity().actionBar?.show()
             Log.d("WebViewFragment", "Action: Returning back from favorite media")
             loadFragment(HomeFragment())

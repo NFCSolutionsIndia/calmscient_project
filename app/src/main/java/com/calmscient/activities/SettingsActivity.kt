@@ -11,18 +11,34 @@
 
 package com.calmscient.activities
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.UiModeManager
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -46,8 +62,15 @@ import com.calmscient.viewmodels.GetPatientPrivacyDetailsViewModel
 import com.calmscient.viewmodels.GetUserLanguagesViewModel
 import com.calmscient.viewmodels.GetUserProfileDetailsViewModel
 import com.calmscient.viewmodels.UpdateUserLanguageViewModel
+import com.calmscient.viewmodels.UploadProfileImageViewModel
 import com.calmscient.viewmodels.UserLogoutViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Locale
 
 
@@ -80,6 +103,15 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
 
     private val getPatientPrivacyDetailsViewModel: GetPatientPrivacyDetailsViewModel by viewModels()
     private val logoutViewModel: UserLogoutViewModel by viewModels()
+
+    private val uploadProfileImageViewModel: UploadProfileImageViewModel by viewModels()
+
+    companion object {
+        private const val REQUEST_IMAGE_PICKER = 1001
+        private const val STORAGE_PERMISSION_REQUEST_CODE = 1002
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 1003
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,6 +159,25 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         binding.logout.setOnClickListener {
             logoutAPICall()
         }
+
+        binding.uploadImage.setOnClickListener{
+            // here i want to open two options one is Camera and external storage for the internal phone images in seperate method
+            showImagePickerOptions()
+        }
+
+        binding.darkThemeToggleButton.setOnToggledListener { toggleableView, isOn ->
+            val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+
+            if (isOn) {
+                uiModeManager.nightMode = UiModeManager.MODE_NIGHT_YES
+            } else {
+                uiModeManager.nightMode = UiModeManager.MODE_NIGHT_NO
+            }
+
+            // Optionally: Manually refresh necessary UI elements here without recreating the entire activity.
+        }
+
+
     }
 
     fun loader() {
@@ -198,6 +249,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
 
 
     private fun getUserDateApiCall(){
+        getUserProfileDetailsViewModel.clear()
         getUserProfileDetailsViewModel.getUserProfileDetails(loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,accessToken)
         observeUserDate()
     }
@@ -226,37 +278,28 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
 
     private fun bindUserProfile(response: GetUserProfileResponse) {
         // Bind settings to UI elements
-       /* Glide.with(this)
-            .load(response.settings.profileImage)
-            .into(binding.profileImage)
-        Glide.with(this)
-            .load(response.settings.profileIcon)
-            .into(binding.ivProfile)
-        Glide.with(this)
-            .load(response.settings.themeDetails.themeIcon)
-            .into(binding.ivTheme)
-        Glide.with(this)
-            .load(response.settings.languageIcon)
-            .into(binding.ivLanguage)
-        Glide.with(this)
-            .load(response.settings.privacyIcon)
-            .into(binding.ivPrivacy)
-        Glide.with(this)
-            .load(response.settings.notificationIcon)
-            .into(binding.ivNotification)
-        Glide.with(this)
-            .load(response.settings.licenseDetails.licenseIcon)
-            .into(binding.ivLicense)
-        Glide.with(this)
-            .load(response.settings.helpIcon)
-            .into(binding.ivHelpAndSupport)
-        Glide.with(this)
-            .load(response.settings.logoutIcon)
-            .into(binding.ivLogout)*/
+        val iconsAndViews = listOf(
+            response.settings.profileImage to binding.profileImage,
+            response.settings.profileIcon to binding.ivProfile,
+            response.settings.themeDetails.themeIcon to binding.ivTheme,
+            response.settings.languageIcon to binding.ivLanguage,
+            response.settings.privacyIcon to binding.ivPrivacy,
+            response.settings.notificationIcon to binding.ivNotification,
+            response.settings.licenseDetails.licenseIcon to binding.ivLicense,
+            response.settings.helpIcon to binding.ivHelpAndSupport,
+            response.settings.logoutIcon to binding.ivLogout
+        )
+
+        iconsAndViews.forEach { (icon, view) ->
+            Glide.with(this)
+                .load(icon)
+                .into(view)
+        }
 
 
 
-      binding.apply {
+
+        binding.apply {
           tvProfile.text = response.settings.profileTitle
           tvTheme.text = response.settings.themeDetails.themeTitle
           tvLanguage.text = response.settings.languageTitle
@@ -273,6 +316,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
     }
 
     private fun languageAPICall(){
+        getUserLanguagesViewModel.clear()
         getUserLanguagesViewModel.getUserLanguages(loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,accessToken)
         observeLanguageAPIData()
     }
@@ -357,7 +401,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
     }
 
     private fun languageSettingAPICall(languageId: Int){
-
+        updateUserLanguageViewModel.clear()
         updateUserLanguageViewModel.updateUserLanguage(loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,languageId,1,accessToken)
 
         observeLanguageSettingAPICall()
@@ -387,41 +431,8 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         })
     }
 
-   /* private fun getPrivacyDataAPICall(){
-        getPatientPrivacyDetailsViewModel.clear()
-        getPatientPrivacyDetailsViewModel.getPatientPrivacyDetails(loginResponse.loginDetails.clientID,loginResponse.loginDetails.patientID,loginResponse.loginDetails.patientLocationID,accessToken)
-        observePrivacyAPICall()
-    }
-
-    private fun observePrivacyAPICall(){
-
-        getPatientPrivacyDetailsViewModel.loadingLiveData.observe(this,Observer{
-            if(it){
-                customProgressDialog.show(getString(R.string.loading))
-            }else{
-                customProgressDialog.dialogDismiss()
-            }
-        })
-
-        getPatientPrivacyDetailsViewModel.successLiveData.observe(this, Observer { isSuccess->
-            if(isSuccess){
-                getPatientPrivacyDetailsViewModel.saveResponseLiveData.observe(this, Observer { successData->
-
-                    if (successData != null) {
-                        if(successData.patientConsent.isNotEmpty()){
-
-                            binding.privacyLayout.setOnClickListener {
-                                val privacyBottomSheet = PrivacyBottomSheet.newInstance(successData.patientConsent)
-                                privacyBottomSheet.show(this.supportFragmentManager, privacyBottomSheet.tag)
-                            }
-                        }
-                    }
-                })
-            }
-        })
-    }*/
-
     private fun logoutAPICall(){
+        logoutViewModel.clear()
         logoutViewModel.userLogout(accessToken)
         observeLogOutAPICall()
     }
@@ -451,4 +462,236 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         })
 
     }
+    private fun showImagePickerOptions() {
+        val options = arrayOf("Camera", "Gallery")
+        AlertDialog.Builder(this)
+            .setTitle("Select Image Source")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> openCamera() // Open Camera
+                    1 -> openGallery() // Open Gallery
+                }
+            }
+            .show()
+    }
+
+    private fun openCamera() {
+      /*  val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraLauncher.launch(cameraIntent)*/
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            // Open Camera directly if permission is granted
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraLauncher.launch(cameraIntent)
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+   /* private fun openGallery() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(galleryIntent)
+    }*/
+
+    private fun openGallery() {
+        if (checkAndRequestStoragePermissions()) {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            galleryLauncher.launch(galleryIntent)
+        }
+    }
+
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageBitmap = result.data?.extras?.get("data") as Bitmap
+            binding.profileImage.setImageBitmap(imageBitmap) // Show the selected image in the ImageView
+            // Convert Bitmap to File and upload it to the server
+            uploadImageAPICall(convertBitmapToFile(imageBitmap))
+        }
+    }
+
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageUri: Uri? = result.data?.data
+            imageUri?.let {
+                Glide.with(this).load(it).into(binding.profileImage) // Show the selected image in the ImageView
+                // Convert Uri to File and upload it to the server
+                val imageFile = getFileFromUri(it)
+                imageFile?.let { file -> uploadImageAPICall(file) }
+            }
+        }
+    }
+
+    // Convert Bitmap to File
+    private fun convertBitmapToFile(bitmap: Bitmap): File {
+        val file = File(this.cacheDir, "profile_image.png")
+        file.createNewFile()
+
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
+        val bitmapData = bos.toByteArray()
+
+        val fos = FileOutputStream(file)
+        fos.write(bitmapData)
+        fos.flush()
+        fos.close()
+
+        return file
+    }
+
+    // Convert Uri to File
+    private fun getFileFromUri(uri: Uri): File? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val file = File(this.cacheDir, "profile_image_${System.currentTimeMillis()}.jpg") // Use cacheDir
+            inputStream?.use { stream ->
+                FileOutputStream(file).use { outputStream ->
+                    stream.copyTo(outputStream)
+                }
+            }
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun uploadImageAPICall(imageFile: File) {
+        val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+        val multipartBody = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
+
+        updateUserLanguageViewModel.clear()
+        uploadProfileImageViewModel.uploadProfileImage(accessToken,
+            loginResponse.loginDetails.patientID.toString(),
+            loginResponse.loginDetails.clientID.toString(),multipartBody)
+        observeImageUpload()
+    }
+
+    private fun observeImageUpload() {
+        uploadProfileImageViewModel.loadingLiveData.observe(this, Observer { isLoading ->
+            if (isLoading) {
+                customProgressDialog.show("Uploading...")
+            } else {
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        uploadProfileImageViewModel.successLiveData.observe(this, Observer { isSuccess ->
+            if (isSuccess) {
+               uploadProfileImageViewModel.saveResponseLiveData.observe(this, Observer { successData->
+                   if(successData != null){
+                       Toast.makeText(this,successData.responseMessage,Toast.LENGTH_SHORT).show()
+                   }
+               })
+
+            }
+        })
+    }
+
+    private fun checkAndRequestStoragePermissions(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // For Android 14 (API 34) and above, check READ_MEDIA_IMAGES
+            return if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                != PackageManager.PERMISSION_GRANTED) {
+                // Request permission for reading images
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), STORAGE_PERMISSION_REQUEST_CODE)
+                false
+            } else {
+                true // Permission already granted
+            }
+        } else {
+            // For Android 13 and below, check READ_EXTERNAL_STORAGE
+            return if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_REQUEST_CODE)
+                false
+            } else {
+                true // Permission already granted
+            }
+        }
+    }
+
+
+
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+                openGallery()
+                // Proceed with your action, e.g., open gallery
+            } else {
+                // Permission denied
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
+                    // "Don't ask again" is checked, guide the user to settings
+                    //showStoragePermissionDeniedDialog()
+
+                } else {
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        if (requestCode == STORAGE_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted, open the gallery
+                openGallery()
+            } else {
+                // Permission was denied, show a message to the user
+                Toast.makeText(this, "Storage permission is required to access the gallery.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted, open the camera
+                openCamera()
+            } else {
+                // Permission was denied, show a message to the user
+                Toast.makeText(this, "Camera permission is required to use the camera.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /*private fun showStoragePermissionDeniedDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Storage Permissions Required")
+            .setMessage("To upload images, storage permission is required. Please allow the permission in the app settings.")
+            .setPositiveButton("Go to Settings") { dialog, _ ->
+                dialog.dismiss()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    // For Android 11 (API 30) and above, navigate to All Files Access screen
+                    try {
+                        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                            data = Uri.parse("package:$packageName")
+                        }
+                        startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        // Handle case where the settings screen isn't available
+                        Toast.makeText(this, "Settings screen not available", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // For Android 10 (API 29) and below, navigate to the specific app settings page
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:$packageName")
+                    }
+                    startActivity(intent)
+                }
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                // Dismiss the dialog without further action
+                dialog.dismiss()
+            }
+            .setNeutralButton("Don't ask again") { dialog, _ ->
+                // Optional button if you want to remind the user about the "Don't ask again" selection
+                dialog.dismiss()
+                Toast.makeText(this, "Permission permanently denied. Please enable it in settings.", Toast.LENGTH_SHORT).show()
+            }
+            .show()
+    }*/
+
+
+
+
 }

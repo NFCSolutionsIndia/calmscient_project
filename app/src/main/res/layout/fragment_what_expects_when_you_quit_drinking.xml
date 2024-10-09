@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
-            android:text="Basic knowledge"
+            android:text="@string/basic_knowledge"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/purple_100"
-                android:text="What to expect when you quit drinking?"
+                android:text="@string/what_to_expect_when_you_quit_drinking"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/lexendregular"
                 android:textSize="@dimen/_14sdp"/>
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_head"
-                android:text="Let’s watch the videos"
+                android:text="@string/let_s_watch_the_videos"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/lexendlight"
                 android:textSize="@dimen/_12sdp"/>
@@ -156,13 +156,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_head"
-                android:text="This video highlights the positive transformations that occur when quitting alcohol, such as improved well-being, hydration, weight loss, and overall health. It also explains potential withdrawal symptoms and offers practical tips for navigating this period."
+                android:text="@string/what_expects_quit_drinking_video_description"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/lexendlight"
                 android:textSize="@dimen/_12sdp"/>
-
-
-
         </LinearLayout>
     </ScrollView>
 

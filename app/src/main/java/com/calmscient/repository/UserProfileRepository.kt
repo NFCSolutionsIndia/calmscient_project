@@ -22,6 +22,8 @@ import com.calmscient.di.remote.response.GetUserProfileResponse
 import com.calmscient.di.remote.response.Response
 import com.calmscient.di.remote.response.UpdatePatientConsentResponse
 import com.calmscient.di.remote.response.UpdateUserLanguageResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import javax.inject.Inject
@@ -51,6 +53,10 @@ class UserProfileRepository @Inject constructor(private val apiService: ApiServi
 
     fun updatePatientConsent(accessToken: String, @Body request: UpdatePatientConsentRequest): Call<UpdatePatientConsentResponse>{
         return apiService.updatePatientConsent("Bearer $accessToken",request)
+    }
+
+    fun uploadProfileImage(accessToken: String, patientId: RequestBody, clientId: RequestBody, file: MultipartBody.Part): Call<Response> {
+        return apiService.uploadProfileImage("Bearer $accessToken", patientId, clientId, file)
     }
 
 }

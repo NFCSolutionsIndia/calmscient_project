@@ -108,9 +108,9 @@ class FavouritesWebViewFragment : Fragment() {
                     webViewLearn?.evaluateJavascript("onAbortCourseGotoIndex();") { result ->
 
                         customProgressDialog.show(getString(R.string.loading))
-                        Handler(Looper.getMainLooper()).postDelayed({
+                        /*Handler(Looper.getMainLooper()).postDelayed({
                             customProgressDialog.dialogDismiss()
-                        }, 4000)
+                        }, 4000)*/
 
                     }
                 }
@@ -120,9 +120,9 @@ class FavouritesWebViewFragment : Fragment() {
                 webViewLearn?.evaluateJavascript("onAbortCourseGotoIndex();") { result ->
                     Log.d("WebViewFragment", "JS Result: $result")
                     customProgressDialog.show(getString(R.string.loading))
-                    Handler(Looper.getMainLooper()).postDelayed({
+                   /* Handler(Looper.getMainLooper()).postDelayed({
                         customProgressDialog.dialogDismiss()
-                    }, 4000)
+                    }, 4000)*/
                 }
             }
         }else{
@@ -282,6 +282,7 @@ class FavouritesWebViewFragment : Fragment() {
 
         private fun handleGotoIndex(value: String) {
             if (value == "turn off loading and go to index") {
+                customProgressDialog.dialogDismiss()
                 // Turn off loading, go to index
                 requireActivity().actionBar?.show()
                 Log.d("WebViewFragment", "Action: Turning off loading, going to index")
@@ -297,6 +298,7 @@ class FavouritesWebViewFragment : Fragment() {
             }
         }
         private fun handleInvalidSession(value: String) {
+            customProgressDialog.dialogDismiss()
             if (value.contains("error")) {
                 requireActivity().actionBar?.show()
                 val alertDialog = AlertDialog.Builder(context)
@@ -309,6 +311,7 @@ class FavouritesWebViewFragment : Fragment() {
             }
         }
         private fun handleChangedHeaderTitle(newTitle: String, titleView: TextView) {
+            customProgressDialog.dialogDismiss()
             // Update the header title in the toolbar
             titleView.text = newTitle
             Log.d("WebViewFragment", "Updated header title to: $newTitle")
@@ -326,12 +329,14 @@ class FavouritesWebViewFragment : Fragment() {
         }
 
         private fun handleNeedToTalkWithSomeone(value: String) {
+            customProgressDialog.dialogDismiss()
             // Implement logic for handling the "need to talk with someone" case
             Log.d("WebViewFragment", "Action: Need to talk with someone, value: $value")
             // Add your action, e.g., open a contact dialog, navigate to a new fragment, etc.
         }
 
         private fun handleReturningBackFromFavMedia() {
+            customProgressDialog.dialogDismiss()
             requireActivity().actionBar?.show()
             Log.d("WebViewFragment", "Action: Returning back from favorite media")
             loadFragment(HomeFragment())

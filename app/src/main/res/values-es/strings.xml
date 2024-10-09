@@ -1466,4 +1466,157 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="please_accept_terms_and_conditions">Please accept terms and conditions</string>
 
 
+    //Taking Control introduction
+
+    <string name="welcome_to_taking_control">¡Bienvenido a Tomando el control!</string>
+    <string name="thank_you_for_willing_to_talk_about_the_alcohol_and_drugs_now_let_s_begin_with_a_brief_assessment">Gracias por estar dispuesto a hablar sobre alcohol y drogas. Comencemos con una breve evaluación.</string>
+    <string name="taking_control_intro_screen_three_description">Hablemos sobre alcohol y drogas. No tomará mucho tiempo, ¡lo prometo! \n\n¿Por qué abordar este tema?\n\nBueno, el poder hablar abiertamente sobre tu consumo de alcohol o drogas es fundamental para tu salud, bienestar mental y tu manera de relacionarte con tu familia y otras personas. Pero,tú tienes el control total en la decisión sobre este tema. ¿Listo? </string>
+    <string name="do_not_show_this_tutorial_from_the_next_time">No mostrar este tutorial de nuevo</string>
+    <string name="drink_coach">Drink coach</string>
+    <string name="substance_coach">Substance coach</string>
+    <string name="make_a_plan_intro_screen_four_description">Recuerda, siempre puedes realizar las pruebas AUDIT, DUST-10 y CAGE, en la sección de Mis registros médicos.</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="alcohol_use_disorder_identification_test">(Test de Identificación del Trastorno por Uso de Alcohol)</string>
+    <string name="taking_control_dialog_1">¿Disfrutas de una copa de vez en cuando? Muchos de nosotros lo hacemos, a menudo cuando compartimos con amigos y familiares. Echemos un vistazo a tus patrones de consumo de alcohol y cómo estos pueden afectar tu salud.\n\nEl cuestionario AUDIT está diseñado para ayudar en la autoevaluación del consumo de alcohol e identificar cualquier implicación para la salud y el bienestar de la persona, tanto ahora como en el futuro.\n\nRealiza una prueba rápida con AUDIT arriba. Haz clic en "Enviar" al final para obtener una evaluación instantánea.</string>
+    <string name="drug_abuse_screening_test">(Prueba de Detección de Abuso de Drogas)</string>
+    <string name="taking_control_dialog_2">"Uso de drogas" se refiere a\n\n
+
+1. Usar en exceso medicamentos recetados o de venta libre pese a las indicaciones, y\n
+2.  cualquier uso no médico de drogas.\n\n
+
+Las diversas clases de drogas pueden incluir cannabis (marihuana, hachís), disolventes (por ejemplo, diluyente para pintura), tranquilizantes (por ejemplo, valium), barbitúricos, cocaína, estimulantes (por ejemplo, speed), alucinógenos (por ejemplo, LSD) o narcóticos (por ejemplo, heroína). Las preguntas no incluyen bebidas alcohólicas.\n\n
+
+Por favor, responde las preguntas en esta encuesta. Si tienes dificultades con alguna afirmación, elige simplemente la mejor respuesta posible.\n\n
+
+Estas preguntas se refieren al uso de drogas en los últimos 12 meses. Por favor, responde NO o SÍ a cada pregunta.</string>
+
+    <string name="cut_annoyed_guilty_and_eye">(Cut, Annoyed, Guilty and Eye)</string>
+    <string name="cage_heading">CAGE</string>
+
+    <string name="taking_control_dialog_3">El cuestionario CAGE para fumar (modificado a partir del cuestionario similar CAGE para alcoholismo), la prueba de las "cuatro C" y la Prueba de Fagerström ayudan a diagnosticar la dependencia a la nicotina según criterios estándar. Se pueden utilizar preguntas adicionales para determinar en el paciente la disposición al cambio y el tipo de refuerzo que el paciente recibirá al fumar. Estas herramientas pueden ayudar a los médicos a guiar a los pacientes hacia lo más importante que pueden hacer para mejorar su salud: dejar de fumar.</string>
+
+    <string name="now_let_s_see_what_drinking_habits_do_you_have">Veamos ahora qué hábitos de consumo tienes.</string>
+
+    //Basic Knowledge
+
+    <string name="basic_knowledge_standard_drink_text1">En Estados Unidos, una "bebida estándar" (también conocida como equivalente de bebida alcohólica) se define como cualquier bebida que contenga aproximadamente <font color="#6E6BB3"> 0.6 onzas líquidas</font> o <font color="#6E6BB3">14 gramos </font> de alcohol puro. Aunque las bebidas representadas aquí son de diferentes tamaños, cada una contiene aproximadamente la misma cantidad de alcohol y cuenta como una bebida estándar en EE. UU.</string>
+    <string name="basic_knowledge_standard_drink_text2">Cada bebida mostrada arriba, representa una bebida estándar (o un equivalente de bebida alcohólica), definida en Estados Unidos como cualquier bebida que contenga 0.6 oz o 14 gramos de alcohol puro. El porcentaje de alcohol puro, expresado aquí como alcohol por volumen (alc/vol), varía entre los tipos de bebidas. Aunque las cantidades de bebida estándar son útiles para seguir las pautas de salud, es posible que estas no reflejan los tamaños habituales de las bebidas</string>
+    <!--<string name="what_s_a_standard_drink">What’s a standard drink</string>-->
+    <string name="what_are_the_u_s_guidelines_for_drinking">¿Cuáles son las pautas de EE. UU. para beber?</string>
+    <string name="what_are_the_u_s_guidelines_text1">Las Pautas Dietéticas para Estadounidenses 2020–2025 establecen que los adultos en edad legal para beber pueden optar por no beber o beber moderadamente limitando el consumo a <font color="#6E6BB3">2 bebidas o menos al día</font> para los hombres y <font color="#6E6BB3">1 bebida o menos al día</font> para las mujeres cuando se consume alcohol. Beber menos es mejor para la salud que beber más.</string>
+    <string name="when_is_drinking_in_moderation_still_too_much">¿Cuándo beber moderadamente es demasiado?</string>
+    <string name="drinking_in_moderation_still_desc_1">Según las Pautas Dietéticas para Estadounidenses 2020–2025, ciertas personas no deben consumir alcohol. Es más seguro evitar el alcohol por completo si:</string>
+    <string name="drinking_in_moderation_still_points">• Estás tomando medicamentos que interactúan con el alcohol.\n\n • Tienes alguna enfermedad  que puede empeorar con la ingesta de alcohol.\n\n • Tienes menos de 21 años, la edad mínima legal para beber en Estados Unidos.\n\n •  Estás recuperándote de un trastorno por consumo de alcohol (AUD) o no puedes controlar la cantidad que bebes.\n\n • Estás embarazada o podrías estarlo. </string>
+    <string name="drinking_in_moderation_still_desc_2">Además, ciertas personas, especialmente adultos mayores, que planean conducir un vehículo o manejar maquinaria, o que participan en actividades que requieren habilidad, coordinación y atención, deben evitar el alcohol por completo.</string>
+    <string name="drinking_in_moderation_still_desc_3">
+    <![CDATA[
+        ¿Qué es el abuso de alcohol?<br><br>
+        NIAAA define el consumo excesivo de alcohol de la siguiente manera:<br><br>
+        Para mujeres:<br>
+       <font color="#6E6BB3">4 o más bebidas en cualquier día o 8 o más por semana.</font><br><br>
+        Para hombres:<br>
+       <font color="#6E6BB3">5 o más bebidas en cualquier día o 15 o más por semana.</font><br><br>
+    ]]>
+</string>
+    <string name="go_to_main_page">Ir a la página principal</string>
+    <string name="please_add_count_before_setting">Por favor, añade la cantidad antes de configurar</string>
+    <string name="us_guidlines_text2"><![CDATA[Hay adultos que no deben beber alcohol, como las mujeres embarazadas. Se alienta a los adultos que eligen beber, a limitar el consumo diario de alcohol para que coincida con las Pautas Dietéticas. Las personas que no beben no deben comenzar a beber por ningún motivo.]]></string>
+
+
+    //what happen to you brain when you quit drinking
+    <string name="let_s_watch_the_videos">Veamos el video.</string>
+    <string name="quit_drinking_description">Este video explica el impacto del alcohol en el cerebro y sus efectos posteriores. Tener este conocimiento te ayudará a reconsiderar tus hábitos de consumo de alcohol.</string>
+
+    //Consequences
+    <string name="consequences_card_1_description">Hay muchas consecuencias a corto y largo plazo asociadas al abuso de alcohol. \n Para algunas personas, hasta el mínimo consumo podría ser muy dañino. \n\nVeamos algunas de ellas.</string>
+    <string name="consequences_card_2_description">Las muertes relacionadas con el alcohol están aumentando en Estados Unidos. \n\nEl alcohol es un factor: </string>
+    <string name="consequences_card_3_description">Excessive alcohol consumption can have a significant negative impact on mental capacity.</string>
+    <string name="consequences_card_4_description">Beber está asociado con una serie de problemas de salud y puede empeorar ciertos problemas de salud crónicos.\n\n</string>
+    <string name="consequences_card_5_description">Algunos signos de AUD son seguir bebiendo aunque cause problemas con tu familia o en el trabajo, beber más de lo que tenías pensado, tener que beber más que antes para obtener un efecto deseado, no poder dejar de beber después de intentos repetidos, o seguir bebiendo a pesar de las consecuencias negativas.\n\nLos signos de AUD también pueden incluir beber para aliviar emociones negativas como sentirse "deprimido/a", ansioso/a, incómodo/a, infeliz, enfermo/a, insatisfecho/a con la vida, u otras emociones negativas que fueron causadas o empeoradas por el abuso de alcohol. \n\n Más allá de estos riesgos para la salud física y mental, el abuso frecuente de alcohol también está relacionado con problemas personales, como perder la licencia de conducir o tener problemas en las relaciones.</string>
+    <string name="consequences_card_6_description">For some people who drink, it take quite a few drinks to “get a buzz” or feel relaxed, and they may be less likely to show signs of intoxication compared to others. This is sometimes called being able to “hold your liquor’ or “’drink someone under the table”. Often these individuals are unaware that their body’s lower response to the intoxicating effects of alcohol isn’t protection from alcohol problems but instead is a reason for caution.\n\nThese individual tend to drink more, socialize with people who drink a lot, and develop a tolerance to alcohol(i.e., it takes more and more alcohol to feel or act intoxicated). As a result , they have an increased risk for developing AUD. Someone who misuses alcohol, especially over the long=term, can experience permanent liver, heart, or brain damage. And all people who drink, regardless of thr amount, need to be aware that critical decision-making abilities and driving-related skills are already diminished long before a person shows physical signs of intoxication.</string>
+    <string name="consequences_card_2_heading">Fatalidades y lesiones</string>
+    <string name="consequences_card_3_heading">Alcohol-related mental dysfunction</string>
+    <string name="consequences_card_4_heading">Problemas de salud</string>
+    <string name="consequences_card_5_heading">Trastorno por uso de alcohol (AUD)</string>
+    <string name="consequences_card_6_heading">Why is being able to “hold your liquor” a concern?</string>
+    <string name="consequences_card_4_points"><![CDATA[• La mitad de las muertes por enfermedades hepáticas en Estados Unidos son causadas por el alcohol, y las enfermedades hepáticas asociadas al alcohol están aumentando, especialmente entre mujeres y jóvenes. \n\n• La investigación ha mostrado una relación importante entre el consumo de alcohol y el cáncer de mama; por cada 10 gramos de alcohol consumidos (menos de 1 bebida estándar) en un día promedio, la probabilidad de que una mujer desarrolle cáncer de mama posmenopáusico aumenta alrededor del 9 por ciento. \n\n• La investigación también ha mostrado que el abuso de alcohol aumenta el riesgo de enfermedad hepática, enfermedades cardiovasculares, depresión y sangrado estomacal, así como cánceres de la cavidad oral, esófago, laringe, faringe, hígado, colon y recto. \n\n• Las personas que abusan del alcohol también pueden tener problemas para controlar afecciones como la diabetes, la presión arterial alta, el dolor y los trastornos del sueño.\n\n• Y las personas que abusan del alcohol tienen más probabilidades de participar en comportamientos sexuales inseguros, poniéndose a sí mismas y a otros en riesgo de infecciones de transmisión sexual y embarazos no deseados.\n\n• Defectos de nacimiento. La exposición prenatal al alcohol puede resultar en daño cerebral y otros problemas graves en los bebés. Los efectos se conocen como trastornos del espectro alcohólico fetal, o FASD, y pueden resultar en problemas físicos, cognitivos y de comportamiento de por vida. Debido a que no se sabe cuál es el nivel de alcohol seguro para un bebé en desarrollo, las mujeres embarazadas o que podrían estarlo no deben beber.]]></string>
+    <string name="consequences_card_3_points">\n1. Memory problem; alcohol can impair both short-term and long-term memory. I can lead to blackouts(Can’t recall events that occurred while one is intoxicated).\n\n2. Reduced cognitive function; negatively affects one’s attention, concentration, and processing speed, makes and perform tasks that require mental clarity and concentration.\n\n3. Mood swings and anxiety; alcohol is a “depressant” that leads to mood swings, irritability, and increased risk of developing depression and anxiety.</string>
+    <string name="consequences_card_2_points"><![CDATA[• 30% de los suicidios.\n\n• 40% de las lesiones mortales por quemaduras.\n\n• 50% de los ahogamientos mortales y de los homicidios, y aproximadamente el 65% de las caídas mortales.\n\n• 31% de todos los accidentes fatales en 2021.\n\n• Un número significativo de agresiones sexuales.]]></string>
+    <string name="consequences_card_2_dilaog">Above 1.5 million people are arrested each year for driving under the influence of alcohol or drugs. DUI citations typically remain on your criminal record for many years, leading to higher insurance rates, difficulty in securing employment, and many other problems. Can you imagine the long-term negative consequences on your life and the stress it could cause? If someone has more than two DUIs, it doesn’t matter if they occur within days or over a ten-year period. They will be regarded as compounding offenses, resulting in increased penalties and possible imprisonment.</string>
+
+    //My Drinking Habit
+
+    <string name="no_intention_on_changing">Sin intención de cambiar</string>
+    <string name="my_drinking_habit_screen_three_text_one">• Solo bebo para relajarme, no es gran cosa.\n\n • Disfruto bebiendo, y no veo ninguna razón para dejarlo.\n\n • Si el trabajo (u otra cosa) no fuera tan estresante, no necesitaría beber.\n</string>
+    <string name="aware_of_problem_but_not_ready_to_change">Consciente del problema pero no listo para cambiar</string>
+    <string name="my_drinking_habit_screen_three_text_two">• No estoy seguro/a de si quiero dejarlo por completo, pero sé que necesito hacer algo diferente.\n\n • Mis amigos y familiares se muestran preocupados por mi consumo de alcohol, y puedo ver que está afectando mi vida.\n\n • Estoy empezando a ver que el alcohol está afectando mis objetivos. Necesito hacer algo al respecto.\n</string>
+    <string name="already_have_a_plan_to_change">Ya tengo un plan para cambiar</string>
+    <string name="my_drinking_habit_screen_three_text_three">•He decidido que es hora de hacer un cambio, y estoy investigando opciones de tratamiento.\n\n • Estoy buscando grupos de apoyo o asesoramiento para este proceso.\n\n • He establecido una fecha para empezar a reducir mi consumo de alcohol, y estoy informándoselo a mis amigos y familiares para recibir su apoyo.\n</string>
+    <string name="achieved_modification_goals">Modificación/logros alcanzados</string>
+    <string name="my_drinking_habit_screen_three_text_four">• He realizado cambios significativos en mi estilo de vida y dejé de beber, estoy comprometido/a a mantener la sobriedad.\n\n • He comenzado a tomar medicamentos para controlar los antojos, estoy trabajando con un terapeuta o asistiendo a una reunión de grupo de apoyo.\n\n • Informé a mis amigos y familiares sobre mi decisión, y están brindándome su apoyo.\n</string>
+    <string name="save_it_to_weekly_summary_journal_entry">Guárdalo en el resumen semana</string>
+
+    //what expects when quit drinking
+    <string name="what_expects_quit_drinking_video_description">Este video resalta los cambios positivos que ocurren al dejar de beber alcohol, por ejemplo, una mejora en el bienestar general, hidratación, pérdida de peso y salud general. También explica los síntomas de abstinencia y da consejos prácticos para lidiar con ellos.</string>
+
+
+    // Make a plan
+
+    <string name="make_a_paln_screen1_description"> <![CDATA[¿Estás pensando en un cambio?<br/><br/>¡Queremos que sepas que <font color="#6E6BB3"> la decisión de reducir el consumo de alcohol/drogas está en tus manos!</font> <br /><br />Pero si te encuentras constantemente excediendo las pautas recomendadas, sería prudente considerar<font color="#6E6BB3"><br /><br /> dejar de beber, reducir, o disminuir tu consumo.</font> Los sentimientos encontrados son normales. \n ¿Has pensado en los pros y los contras de hacerlo?]]></string>
+    <string name="make_a_plan_screen_two_description"><![CDATA[En primer lugar, definamos qué es lo mejor para ti.<br/><br/> Si estás considerando cambiar tu consumo de alcohol, deberás decidir entre reducirlo o dejarlo por completo. Es una buena idea analizar diferentes opciones con un profesional de la salud, un amigo o alguien en quien confíes. <br/><br/> Ten en cuenta que cuando alguien que ha estado bebiendo mucho durante un período prolongado de tiempo deja de beber repentinamente, el cuerpo puede entrar en <font color="#6E6BB3">un proceso de abstinencia doloroso o incluso potencialmente mortal.</font><br/><br/> Los síntomas pueden incluir <font color="#6E6BB3">náuseas, aumento de frecuencia cardíaca, convulsiones u otros problemas.</font> Busca ayuda médica para planificar una recuperación segura. Los médicos pueden recetar medicamentos para abordar estos síntomas y hacer que el proceso sea más seguro y menos angustiante.]]></string>
+    <string name="something_went_wrong_try_again_later">Something went wrong try again later</string>
+    <string name="complete">Complete</string>
+
+    //Pros item
+    <string name="to_improve_my_health">Para mejorar mi salud</string>
+    <string name="to_improve_my_relationships">Para mejorar mis relaciones</string>
+    <string name="to_avoid_hangovers">Para evitar resacas</string>
+    <string name="to_do_better_at_work_or_in_school">Para rendir mejor en el trabajo o en la escuela</string>
+    <string name="to_save_money">Para ahorrar dinero</string>
+    <string name="to_lose_weight_or_get_fit">Para perder peso o ponerme en forma</string>
+    <string name="to_avoid_more_serious_problems">Para evitar problemas más graves</string>
+    <string name="to_meet_my_own_personal_standards">Para cumplir con mis propios estándares personales</string>
+
+    //Cons item
+    <string name="i_d_need_another_way_to_unwind">Necesitaría otra forma de relajarme.</string>
+    <string name="it_helps_me_feel_more_at_ease_socially">No me sentiría satisfecho socialmente.</string>
+    <string name="i_wouldn_t_fit_in_with_some_of_my_friends">No encajaría con algunos de mis amigos.</string>
+    <string name="change_can_be_hard">El cambio puede ser difícil.</string>
+
+
+    <string name="tell_us_what_you_would_like_to_do">Dinos qué te gustaría hacer.</string>
+    <string name="just_track_the_alcohol_consumption">Solo hacer un seguimiento del consumo de alcohol</string>
+    <string name="quit_or_cut_down_drinking">Dejar o reducir el consumo de alcohol</string>
+
+    //Make a plan - Screen two
+    <string name="quitting_is_strongly_advised_if_you">Dejar de beber se recomienda firmemente si:</string>
+    <string name="make_a_plan_screen_two_desc">• has intentado reducirlo pero no puedes mantenerte dentro del límite que estableciste.\n\n • has tenido un trastorno por consumo de alcohol (AUD) o ahora tienes algún síntoma.\n\n• tienes una condición física o mental que es causada o empeorada por beber.\n\n • estás tomando medicamentos que interactúan con el alcohol.\n\n • estás o podrías estar embarazada.</string>
+    <string name="also_yo_need_to_consider_the_following_factors_to_determine_what_to_do">También necesitas considerar los siguientes factores para determinar qué hacer.</string>
+    <string name="make_a_plan_screen_two_desc_2">• Antecedentes familiares de problemas con el alcohol\n\n • Tu edad. \n\n •  Un historial de lesiones relacionadas con el alcohol.\n\n • Síntomas como trastornos del sueño, dolor o ansiedad y disfunción sexual.</string>
+    <string name="with_this_in_mind_tell_us_what_you_would_like_to_do">Con esto en mente, dinos qué te gustaría hacer.</string>
+    <string name="quit">Dejar</string>
+    <string name="cut_down">Reducir</string>
+
+    //Make a plan - screen three
+
+    <string name="make_a_plan_screen_three_desc_1"><![CDATA[¡Felicidades por tu decisión de dejar de beber! Recuerda, no estás solo/a. La aplicación Calmscient puede ayudarte a seguir tu progreso. \n\n Aquí algunos consejos que pueden ayudarte a alcanzar tu objetivo:]]></string>
+    <string name="talk_to_your_primary_care_doctor">Habla con tu médico</string>
+    <string name="notify_to_pcp">Notificar al médico de atención primaria</string>
+    <string name="consider_medication_management">Considera el manejo de medicamentos</string>
+    <string name="look_for_alcohol_treatment_program">Busca un programa de tratamiento para el alcohol</string>
+    <string name="now_let_s_get_to_know_the_drink_coach_features">Ahora, conozcamos las características del entrenador de bebidas.</string>
+
+
+    <string name="set">Establecer</string>
+    <string name="apply_same_alcohol_free_days_for_following_months">Aplicar los mismos días libres de alcohol para los siguientes meses.</string>
+    <string name="make_a_plan_screen_four_desc_1">¡Felicidades por tomar una decisión firme! al cambiar tu consumo de bebidas!\n\nVamos a establecer un objetivo para tu recuento de bebidas primero.\n\nPara hacerlo, selecciona la(s) fecha(s) en el calendario de abajo en la(s) que planeas tener un día libre de alcohol.</string>
+    <string name="your_total_alcohol_free_days_are">Tus días libres de alcohol totales son</string>
+
+    //Dialog content
+    <string name="remember_the_us_guideline_of_moderate_drinking_is"><![CDATA[Recuerda, la guía de EE. UU. para beber moderadamente es:]]></string>
+    <string name="make_a_plan_drink_limit_points_1">• 2 bebidas o menos al día para hombres \n\n• 1 bebida o menos al día para mujeres</string>
+    <string name="make_a_plan_drink_limit_points_2"><![CDATA[• 5 o más bebidas en cualquier día o 15 o más por semana para mujeres \n\n• 4 o más bebidas en cualquier día o 8 o más por semana para hombres]]></string>
+    <string name="also_niaaa_defines_heavy_drinking_as">Además, NIAAA define el consumo excesivo de alcohol como:</string>
+    <string name="congratulations">¡Felicidades!</string>
+    <string name="congrats_description">Now you need to control your drink habit by taking a count not only monthly goal, but also daily limit according to the guideline about moderate drinking\n\nConozcamos las características del entrenador de bebidas.</string>
 </resources>

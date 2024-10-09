@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
-            android:text="Make a plan"
+            android:text="@string/make_a_plan"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/lexendlight"
-                android:text="Congratulations on making a firm decision on changing your drink consumption!\n\nFirst, Let’s set up a goal of changing your monthly drink counts.\n\nTo do this, pick the date(s) on the calendar below on which you plan to have a alcohol free day."
+                android:text="@string/make_a_plan_screen_four_desc_1"
                 android:textColor="@color/black_head"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:textSize="@dimen/_12sdp" />
@@ -114,7 +114,8 @@
                         android:background="@color/example_7_calendar"
                         android:fontFamily="@font/lexendlight"
                         android:gravity="center"
-                        android:text="9"
+                        android:text="90"
+                        android:minWidth="@dimen/_45sdp"
                         android:textAlignment="center"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_23sdp" />
@@ -128,7 +129,8 @@
                         android:gravity="center_vertical"
                         android:text="@string/days"
                         android:textColor="@color/black_head"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_12sdp"
+                        android:minWidth="@dimen/_40sdp"/>
 
                 </LinearLayout>
 
@@ -173,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lexendmedium"
                         android:layout_margin="@dimen/_6sdp"
-                        android:text="Apply same alcohol free days for following months"
+                        android:text="@string/apply_same_alcohol_free_days_for_following_months"
                         android:textColor="@color/black_head"
                         android:textSize="@dimen/_12sdp" />
 

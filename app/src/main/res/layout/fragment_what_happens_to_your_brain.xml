@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
-            android:text="Basic knowledge"
+            android:text="@string/basic_knowledge"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/purple_100"
-                android:text="What happens to your brain when you drink?"
+                android:text="@string/what_happens_to_your_brain_when_you_drink"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/lexendregular"
                 android:textSize="@dimen/_14sdp"/>
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_head"
-                android:text="Let’s watch the videos"
+                android:text="@string/let_s_watch_the_videos"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/lexendlight"
                 android:textSize="@dimen/_12sdp"/>
@@ -154,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_head"
-                android:text="This video explains the impact of alcohol on the brain and its subsequent effects. Having this knowledge will help you consider your drinking habits."
+                android:text="@string/quit_drinking_description"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/lexendlight"
                 android:textSize="@dimen/_12sdp"/>

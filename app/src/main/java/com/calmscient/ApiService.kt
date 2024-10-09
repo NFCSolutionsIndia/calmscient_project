@@ -110,11 +110,15 @@ import com.calmscient.di.remote.response.UpdateBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.UpdatePatientConsentResponse
 import com.calmscient.di.remote.response.UpdateTakingControlIndexResponse
 import com.calmscient.di.remote.response.UpdateUserLanguageResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Url
 
 
@@ -296,5 +300,15 @@ interface ApiService {
 
     @POST("identity/api/v1/settings/updatePatientConsent")
     fun updatePatientConsent(@Header("Authorization")accessToken: String, @Body request: UpdatePatientConsentRequest): Call<UpdatePatientConsentResponse>
+    @Multipart
+    @POST("http://20.197.5.97:8083/identity/api/v1/settings/uploadProfileImage")
+    fun uploadProfileImage(
+        @Header("Authorization") accessToken: String,
+        @Part("patientId") patientId: RequestBody,
+        @Part("clientId") clientId: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Call<Response>
+
+
 }
 

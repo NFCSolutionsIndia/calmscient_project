@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/lexendmedium"
-                android:text="Basic knowledge"
+                android:text="@string/basic_knowledge"
                 android:textColor="@color/black_head"
                 android:textSize="@dimen/_16sdp" />
         </RelativeLayout>
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/lexendregular"
-                android:text="What are the consequences?"
+                android:text="@string/what_are_the_consequences"
                 android:textColor="@color/purple_100"
                 android:textSize="@dimen/_14sdp" />
 

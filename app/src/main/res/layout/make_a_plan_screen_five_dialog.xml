@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Remember,  the US guideline of moderate drinking is:"
+                android:text="@string/remember_the_us_guideline_of_moderate_drinking_is"
                 android:textColor="@color/black_head"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginTop="@dimen/_13sdp"
@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• 2 drinks or less in a day for men \n\n• 1 drink or less in a day for women"
+                android:text="@string/make_a_plan_drink_limit_points_1"
                 android:textColor="@color/purple_100"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginHorizontal="@dimen/_14sdp"/>
@@ -70,7 +70,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Also NIAAA defines heavy drinking as:"
+                android:text="@string/also_niaaa_defines_heavy_drinking_as"
                 android:textColor="@color/black_head"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginTop="@dimen/_13sdp"
@@ -79,7 +79,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="• 5 or more drinks on any day or 15 or more per week drink or less in a day for women \n\n• 4 or more drinks on any day or 8 or more per week for men"
+                android:text="@string/make_a_plan_drink_limit_points_2"
                 android:textColor="@color/purple_100"
                 android:fontFamily="@font/lexendlight"
                 android:layout_marginHorizontal="@dimen/_14sdp"/>

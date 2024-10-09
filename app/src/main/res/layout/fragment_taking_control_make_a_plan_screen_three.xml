@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
-            android:text="Make a plan"
+            android:text="@string/make_a_plan"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
@@ -69,9 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/lexendlight"
-                android:text="Congratulations on your decision to quit drinking!
-Remember, you are not alone. The Calmscient app can help you track your progress. \n\n
-Here are resources that can assist you in achieving your goal?"
+                android:text="@string/make_a_plan_screen_three_desc_1"
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
@@ -79,7 +77,7 @@ Here are resources that can assist you in achieving your goal?"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/lexendlight"
-                android:text="Talk to your primary care doctor"
+                android:text="@string/talk_to_your_primary_care_doctor"
                 android:textSize="@dimen/_12sdp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,7 +94,7 @@ Here are resources that can assist you in achieving your goal?"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:fontFamily="@font/lexendregular"
                     android:gravity="center_vertical"
-                    android:text="Notify to PCP"
+                    android:text="@string/notify_to_pcp"
                     android:textColor="@color/purple_100"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -133,7 +131,7 @@ Here are resources that can assist you in achieving your goal?"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/lexendlight"
-                android:text="Consider medication management"
+                android:text="@string/consider_medication_management"
                 android:textSize="@dimen/_12sdp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -150,7 +148,7 @@ Here are resources that can assist you in achieving your goal?"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:fontFamily="@font/lexendregular"
                     android:gravity="center_vertical"
-                    android:text="Notify to PCP"
+                    android:text="@string/notify_to_pcp"
                     android:textColor="@color/purple_100"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -187,7 +185,7 @@ Here are resources that can assist you in achieving your goal?"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/lexendlight"
-                android:text="Look for alcohol treatment program"
+                android:text="@string/look_for_alcohol_treatment_program"
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
@@ -205,7 +203,7 @@ Here are resources that can assist you in achieving your goal?"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/lexendlight"
-                android:text="Now, let's get to know the drink coach features."
+                android:text="@string/now_let_s_get_to_know_the_drink_coach_features"
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
@@ -215,7 +213,7 @@ Here are resources that can assist you in achieving your goal?"
                 android:background="@drawable/no_border"
                 android:fontFamily="@font/lexendlight"
                 android:gravity="center"
-                android:text="See the introduction"
+                android:text="@string/see_the_introduction"
                 android:textColor="@color/purple_100"
                 android:textSize="@dimen/_12sdp"
                 android:visibility="gone" />

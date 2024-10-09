@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lexendmedium"
-            android:text="Basic knowledge"
+            android:text="@string/basic_knowledge"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black_head"
-            android:text="There are some adults who should not drink alcohol, such as women who are pregnant.  Adults who choose to drink, and are not among the individuals listed below who should not drink, are encouraged to limit daily consumption of alcohol to align with the Dietary Guidelines.People who do not drink should not start drinking for any reason."
+            android:text="@string/us_guidlines_text2"
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/lexendlight"
             android:textSize="@dimen/_12sdp"/>

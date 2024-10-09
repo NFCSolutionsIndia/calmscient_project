@@ -2231,7 +2231,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="no_records">No Records</string>
     <string name="welcome_to_taking_control">Welcome to taking control!</string>
     <string name="thank_you_for_willing_to_talk_about_the_alcohol_and_drugs_now_let_s_begin_with_a_brief_assessment">Thank you for willing to talk about the alcohol and drugs. Now let\'s begin with a brief assessment</string>
-    <string name="make_a_plan_intro_screen_three_description">Let’s talk about alcohol and drug. It won’t take much of your time. promise!\n\nWhy dive into this topic?\n\nWell, being able to openly discuss your alcohol or drug use is crucial for your health, mental well-being, and relationships with family and the community. But, you have full control over the decision regarding your habit. Ready?</string>
+    <string name="taking_control_intro_screen_three_description">Let’s talk about alcohol and drug. It won’t take much of your time. promise!\n\nWhy dive into this topic?\n\nWell, being able to openly discuss your alcohol or drug use is crucial for your health, mental well-being, and relationships with family and the community. But, you have full control over the decision regarding your habit. Ready?</string>
     <string name="do_not_show_this_tutorial_from_the_next_time">Do not show this tutorial from the next time</string>
     <string name="drink_coach">Drink coach</string>
     <string name="substance_coach">Substance coach</string>
@@ -2295,5 +2295,53 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="you_did_not_change_any_timings">You did not change any timings</string>
     <string name="provider_not_assign_please_contact_support">Provider not assign please contact support</string>
     <string name="please_accept_terms_and_conditions">Please accept terms and conditions</string>
+    <string name="alcohol_use_disorder_identification_test">(Alcohol Use Disorder Identification Test)</string>
+    <string name="drug_abuse_screening_test">(Drug Abuse Screening Test)</string>
+    <string name="cut_annoyed_guilty_and_eye">(Cut, Annoyed, Guilty and Eye)</string>
+    <string name="cage_heading">CAGE</string>
+    <string name="us_guidlines_text2"><![CDATA[There are some adults who should not drink alcohol, such as women who are pregnant.  Adults who choose to drink, and are not among the individuals listed below who should not drink, are encouraged to limit daily consumption of alcohol to align with the Dietary Guidelines.People who do not drink should not start drinking for any reason.]]></string>
+    <string name="let_s_watch_the_videos">Let’s watch the videos</string>
+    <string name="quit_drinking_description">This video explains the impact of alcohol on the brain and its subsequent effects. Having this knowledge will help you consider your drinking habits.</string>
+    <string name="what_expects_quit_drinking_video_description">This video highlights the positive transformations that occur when quitting alcohol, such as improved well-being, hydration, weight loss, and overall health. It also explains potential withdrawal symptoms and offers practical tips for navigating this period.</string>
+
+    //Pros item
+    <string name="to_improve_my_health">To improve my health</string>
+    <string name="to_improve_my_relationships">To improve my relationships</string>
+    <string name="to_avoid_hangovers">To avoid hangovers</string>
+    <string name="to_do_better_at_work_or_in_school">To do better at work or in school</string>
+    <string name="to_save_money">To save money</string>
+    <string name="to_lose_weight_or_get_fit">To lose weight or get fit</string>
+    <string name="to_avoid_more_serious_problems">To avoid more serious problems</string>
+    <string name="to_meet_my_own_personal_standards">To meet my own personal standards</string>
+
+    //Cons item
+    <string name="i_d_need_another_way_to_unwind">I\'d need another way to unwind</string>
+    <string name="it_helps_me_feel_more_at_ease_socially">It helps me feel more at ease socially</string>
+    <string name="i_wouldn_t_fit_in_with_some_of_my_friends">I wouldn\'t fit in with some of my friends</string>
+    <string name="change_can_be_hard">Change can be hard</string>
+    <string name="tell_us_what_you_would_like_to_do">Tell us what you would like to do.</string>
+    <string name="just_track_the_alcohol_consumption">Just track the alcohol consumption</string>
+    <string name="quit_or_cut_down_drinking">Quit or cut down drinking</string>
+    <string name="quitting_is_strongly_advised_if_you">Quitting is strongly advised if you:</string>
+    <string name="make_a_plan_screen_two_desc">• Have tried cutting down but cannot stay within the limit you set.\n\n • Have had alcohol use disorder (AUD) or now have any symptoms.\n\n • Have a physical or mental health condition that is caused or being worsened by drinking.\n\n • Are taking medication that interacts with alcohol.\n\n • Are or might be pregnant.</string>
+    <string name="also_yo_need_to_consider_the_following_factors_to_determine_what_to_do">Also yo need to consider the following factors to determine what to do.</string>
+    <string name="make_a_plan_screen_two_desc_2">• A family history of alcohol problems.\n\n • Your age.\n\n • A history of drinking-related injuries.\n\n • Symptoms such as a sleep, pain, or anxiety disorder and sexual dysfunction.</string>
+    <string name="with_this_in_mind_tell_us_what_you_would_like_to_do">With this in mind, tell us what you would like to do.</string>
+    <string name="quit">Quit</string>
+    <string name="cut_down">Cut down</string>
+    <string name="make_a_plan_screen_three_desc_1"><![CDATA[Congratulations on your decision to quit drinking! Remember, you are not alone. The Calmscient app can help you track your progress. \n\n Here are resources that can assist you in achieving your goal?]]></string>
+    <string name="talk_to_your_primary_care_doctor">Talk to your primary care doctor</string>
+    <string name="notify_to_pcp">Notify to PCP</string>
+    <string name="consider_medication_management">Consider medication management</string>
+    <string name="look_for_alcohol_treatment_program">Look for alcohol treatment program</string>
+    <string name="now_let_s_get_to_know_the_drink_coach_features">Now, let\'s get to know the drink coach features.</string>
+    <string name="apply_same_alcohol_free_days_for_following_months">Apply same alcohol free days for following months</string>
+    <string name="make_a_plan_screen_four_desc_1">Congratulations on making a firm decision on changing your drink consumption!\n\nFirst, Let’s set up a goal of changing your monthly drink counts.\n\nTo do this, pick the date(s) on the calendar below on which you plan to have a alcohol free day.</string>
+    <string name="remember_the_us_guideline_of_moderate_drinking_is"><![CDATA[Remember,  the US guideline of moderate drinking is:]]></string>
+    <string name="make_a_plan_drink_limit_points_1">• 2 drinks or less in a day for men \n\n• 1 drink or less in a day for women</string>
+    <string name="make_a_plan_drink_limit_points_2"><![CDATA[• 5 or more drinks on any day or 15 or more per week drink or less in a day for women \n\n• 4 or more drinks on any day or 8 or more per week for men]]></string>
+    <string name="also_niaaa_defines_heavy_drinking_as">Also NIAAA defines heavy drinking as:</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="congrats_description">Now you need to control your drink habit by taking a count not only monthly goal, but also daily limit according to the guideline about moderate drinking\n\nLet\'s get to know the drink coach features.</string>
 
 </resources>

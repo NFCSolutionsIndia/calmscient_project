@@ -139,23 +139,23 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
 
     private fun getProsItems(): List<ProsItem> {
         return listOf(
-            ProsItem("To improve my health"),
-            ProsItem("To improve my relationships"),
-            ProsItem("To avoid hangovers"),
-            ProsItem("To do better at work or in school"),
-            ProsItem("To save money"),
-            ProsItem("To lose weight or get fit"),
-            ProsItem("To avoid more serious problems"),
-            ProsItem("To meet my own personal standards")
+            ProsItem(getString(R.string.to_improve_my_health)),
+            ProsItem(getString(R.string.to_improve_my_relationships)),
+            ProsItem(getString(R.string.to_avoid_hangovers)),
+            ProsItem(getString(R.string.to_do_better_at_work_or_in_school)),
+            ProsItem(getString(R.string.to_save_money)),
+            ProsItem(getString(R.string.to_lose_weight_or_get_fit)),
+            ProsItem(getString(R.string.to_avoid_more_serious_problems)),
+            ProsItem(getString(R.string.to_meet_my_own_personal_standards))
         )
     }
 
     private fun getConsItems(): List<ConsItem> {
         return listOf(
-            ConsItem("I'd need another way to unwind"),
-            ConsItem("It helps me feel more at ease socially"),
-            ConsItem("I wouldn't fit in with some of my friends"),
-            ConsItem("Change can be hard"),
+            ConsItem(getString(R.string.i_d_need_another_way_to_unwind)),
+            ConsItem(getString(R.string.it_helps_me_feel_more_at_ease_socially)),
+            ConsItem(getString(R.string.i_wouldn_t_fit_in_with_some_of_my_friends)),
+            ConsItem(getString(R.string.change_can_be_hard)),
         )
     }
 
