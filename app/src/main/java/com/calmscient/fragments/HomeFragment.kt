@@ -142,6 +142,17 @@ class HomeFragment : Fragment() {
                 ServerTimeoutHandler.clearRetryListener()
                 ServerTimeoutHandler.dismissDialog()
 
+                val menuResponse = menuViewModel.menuResponse.value!!
+                val languageName = menuResponse.languageName
+                val languageMode = when {
+                    languageName.equals("Spanish", ignoreCase = true) -> "es"
+                    languageName.equals("English", ignoreCase = true) -> "en"
+                    else -> ""
+                }
+
+                savePrefData.setLanguageMode(languageMode)
+                localeLang.setLocale(requireContext(), languageMode)
+
 
                 if (menuResponseDate.size >= 2) {
 

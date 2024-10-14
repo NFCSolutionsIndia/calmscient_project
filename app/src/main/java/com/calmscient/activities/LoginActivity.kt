@@ -12,6 +12,8 @@
 package com.calmscient.activities
 
 import android.annotation.SuppressLint
+import android.app.UiModeManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -45,6 +47,7 @@ import javax.inject.Inject
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.network.ServerTimeoutHandler
 
@@ -54,6 +57,8 @@ class LoginActivity : AppCompatActivity() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
+    private lateinit var savePreferences: SavePreferences
 
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var responseDate: LoginResponse
@@ -80,7 +85,17 @@ class LoginActivity : AppCompatActivity() {
                 null
             }
         }
+        /*savePreferences = SavePreferences(this)
+        val isNightMode = savePreferences.getDarkModeState()
+        val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
 
+        if (isNightMode) {
+            uiModeManager.nightMode = UiModeManager.MODE_NIGHT_YES
+            savePreferences.setDarkModeState(true)
+        } else {
+            uiModeManager.nightMode = UiModeManager.MODE_NIGHT_NO
+            savePreferences.setDarkModeState(false)
+        }*/
         // Apply InputFilter to the UserName EditText
         binding.userName.filters = arrayOf(noSpaceFilter)
 

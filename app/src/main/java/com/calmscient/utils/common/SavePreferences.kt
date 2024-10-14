@@ -56,6 +56,14 @@ class SavePreferences(context:Context) {
         return (langM)
     }
 
+    fun setDarkModeState(isNightMode: Boolean) {
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putBoolean("DARK_MODE", isNightMode)
+        editor.apply()
+    }
 
+    fun getDarkModeState(): Boolean {
+        return sharedPreferences.getBoolean("DARK_MODE", false)
+    }
 
 }

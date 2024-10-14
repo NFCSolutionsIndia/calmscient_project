@@ -9,28 +9,35 @@
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient
+package com.calmscient.utils
 
-import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.calmscient.utils.common.SavePreferences
-import dagger.hilt.android.HiltAndroidApp
 
+class ThemeHelper(private val context: Context) {
 
-@HiltAndroidApp
-class AppController : Application() {
+    private val savePref: SavePreferences = SavePreferences(context)
 
-    override fun onCreate() {
-        super.onCreate()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-       /* val preferences = SavePreferences(this)
-        val isNightMode = preferences.getDarkModeState()
-
-        if (isNightMode) {
+    // Function to set Dark Mode without recreating the activity
+    fun setDarkMode(isDarkMode: Boolean) {
+        if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }*/
+        }
+        savePref.setDarkModeState(isDarkMode) // Save dark mode state
+    }
+
+    // Function to apply the saved dark mode when the app is launched
+    fun applySavedDarkMode() {
+        val isDarkMode = savePref.getDarkModeState()
+        setDarkMode(isDarkMode)
+    }
+
+    // Return the current dark mode state
+    fun getDarkModeState(): Boolean {
+        return savePref.getDarkModeState()
     }
 }
+

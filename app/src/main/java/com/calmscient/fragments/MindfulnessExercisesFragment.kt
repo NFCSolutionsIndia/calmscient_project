@@ -11,12 +11,16 @@
 
 package com.calmscient.fragments
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +28,17 @@ import com.calmscient.R
 import com.calmscient.adapters.MindfulnessScreensAdapter
 import com.calmscient.di.remote.MindfulnessExercisesTextDataClass
 import com.calmscient.databinding.MindfulnesscreensBinding
+import com.calmscient.di.remote.request.SavePatientExercisesFavoritesRequest
+import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.fragments.DiscoveryFragment
+import com.calmscient.utils.CommonAPICallDialog
+import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SharedPreferencesUtil
+import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 class MindfulnessExercisesFragment : Fragment() {
     private lateinit var binding: MindfulnesscreensBinding
     private lateinit var anxietyadapter: MindfulnessScreensAdapter
@@ -34,6 +48,12 @@ class MindfulnessExercisesFragment : Fragment() {
     private lateinit var stepIndicators: List<ImageView>
     private val maxProgress = 99
     private lateinit var progressBar: ProgressBar
+
+    private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
+    private lateinit var loginResponse: LoginResponse
+
+    private lateinit var customProgressDialog: CustomProgressDialog
+    private lateinit var commonDialog: CommonAPICallDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +65,13 @@ class MindfulnessExercisesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        customProgressDialog = CustomProgressDialog(requireContext())
+        commonDialog = CommonAPICallDialog(requireContext())
+
+        val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
+        loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
+
 
         val pagerSnapHelper = PagerSnapHelper()
         pagerSnapHelper.attachToRecyclerView(binding.optionsRecyclerView1)
@@ -217,5 +244,37 @@ class MindfulnessExercisesFragment : Fragment() {
             // Update the step indicators (ImageViews) as active or inactive
             updateStepIndicators()
         }
+    }
+    private fun favouritesAPICall(isFavourite: Boolean) {
+        savePatientExercisesFavoritesViewModel.clear()
+
+        val isFav = if(isFavourite) 1 else 0
+        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"Mindfulness - what is it?")
+
+        savePatientExercisesFavoritesViewModel.savePatientExercisesFavorites(request,loginResponse.token.access_token)
+
+        Log.d("Favourite Resuest","$request")
+        observeFavouritesAPICall()
+    }
+
+    private fun observeFavouritesAPICall(){
+
+        savePatientExercisesFavoritesViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading){
+                customProgressDialog.show(getString(R.string.loading))
+            }else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+        savePatientExercisesFavoritesViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess){
+                savePatientExercisesFavoritesViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+                    if(successData != null && successData.responseCode == 200){
+                        Toast.makeText(requireContext(),successData.responseMessage,Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        })
+
     }
 }

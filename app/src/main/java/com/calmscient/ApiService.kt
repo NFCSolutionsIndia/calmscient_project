@@ -40,6 +40,7 @@ import com.calmscient.di.remote.request.SaveAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.SaveCourseJournalEntryMakeAPlanRequest
 import com.calmscient.di.remote.request.SaveGoalSetupRequest
 import com.calmscient.di.remote.request.SaveMyDrinkingHabitAnswerRequest
+import com.calmscient.di.remote.request.SavePatientExercisesFavoritesRequest
 import com.calmscient.di.remote.request.SavePatientMoodRequest
 import com.calmscient.di.remote.request.SavePatientMoodWrapper
 import com.calmscient.di.remote.request.SaveTakingControlIntroductionRequest
@@ -59,6 +60,7 @@ import com.calmscient.di.remote.request.SummaryOfPHQ9Request
 import com.calmscient.di.remote.request.SummaryOfSleepRequest
 import com.calmscient.di.remote.request.UpdateBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.UpdatePatientConsentRequest
+import com.calmscient.di.remote.request.UpdatePatientThemeRequest
 import com.calmscient.di.remote.request.UpdateTakingControlIndexRequest
 import com.calmscient.di.remote.request.UpdateUserLanguageRequest
 import com.calmscient.di.remote.response.AddMedicationResponse
@@ -310,5 +312,12 @@ interface ApiService {
     ): Call<Response>
 
 
+    @POST("identity/api/v1/settings/updatePatientTheme")
+    fun updatePatientTheme(@Header("Authorization")accessToken: String, @Body request: UpdatePatientThemeRequest): Call<Response>
+
+
+    //Favourites in exercise
+    @POST("patients/api/v1/course/savePatientExercisesFavorites")
+    fun savePatientExercisesFavorites(@Header("Authorization")accessToken: String, @Body request: SavePatientExercisesFavoritesRequest): Call<Response>
 }
 

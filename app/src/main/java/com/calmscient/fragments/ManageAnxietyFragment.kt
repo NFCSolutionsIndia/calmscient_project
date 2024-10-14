@@ -216,7 +216,7 @@ class ManageAnxietyFragment : Fragment() {
             }
 
             val itemClickListener: (ChapterDataClass) -> Unit = { chapter ->
-                val url = "http://20.197.5.97:5000/?courseName=managingAnxiety&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId&language=$language"
+                val url = "http://20.197.5.97:5000/?courseName=managingAnxiety&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId&language=$language&darkMode=true"
                 Log.d("URL:","$url")
                 if(CommonClass.isNetworkAvailable(requireContext())){
                     chapter.chapterName?.let { WebViewFragment.newInstance(url, it,"ManageAnxiety") } ?.let { loadFragment(it) }

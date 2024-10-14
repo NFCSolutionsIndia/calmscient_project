@@ -26,6 +26,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
+import dagger.hilt.android.AndroidEntryPoint
 
 
 class MindfulBreathingExerciseFragment : Fragment() {

@@ -43,6 +43,7 @@ data class FavoriteItem(
 data class MenuItemsResponse(
     val statusResponse: MenuStatusResponse,
     val menuItems: List<MenuItem>,
-    val favorites: List<FavoriteItem>
+    val favorites: List<FavoriteItem>,
+    val languageName: String
 )
 

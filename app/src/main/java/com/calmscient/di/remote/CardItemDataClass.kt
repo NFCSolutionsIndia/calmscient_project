@@ -30,7 +30,7 @@ data class ChapterDataClass(
     val chapterUrl: String?,
     val isCourseCompleted: Int,
     val pageCount: Int,
-    val imageUrl: String,
+    val imageUrl: String?,
     val chapterOnlyReading: Boolean,
 )
 

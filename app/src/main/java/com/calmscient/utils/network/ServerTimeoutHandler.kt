@@ -47,6 +47,7 @@ object ServerTimeoutHandler {
 
     fun clearRetryListener() {
         retryListener = null
+        dialog?.dismiss()
     }
 
     fun dismissDialog() {

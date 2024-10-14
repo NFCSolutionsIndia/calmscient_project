@@ -14,7 +14,9 @@ package com.calmscient.repository
 import com.calmscient.ApiService
 import com.calmscient.di.remote.request.GetPatientPrivacyRequest
 import com.calmscient.di.remote.request.GetUserProfileRequest
+import com.calmscient.di.remote.request.SavePatientExercisesFavoritesRequest
 import com.calmscient.di.remote.request.UpdatePatientConsentRequest
+import com.calmscient.di.remote.request.UpdatePatientThemeRequest
 import com.calmscient.di.remote.request.UpdateUserLanguageRequest
 import com.calmscient.di.remote.response.GetPatientPrivacyResponse
 import com.calmscient.di.remote.response.GetUserLanguagesResponse
@@ -59,4 +61,12 @@ class UserProfileRepository @Inject constructor(private val apiService: ApiServi
         return apiService.uploadProfileImage("Bearer $accessToken", patientId, clientId, file)
     }
 
+    fun updatePatientTheme(accessToken: String, request: UpdatePatientThemeRequest): Call<Response>{
+        return apiService.updatePatientTheme("Bearer $accessToken", request)
+    }
+
+    // For Exercise
+    fun savePatientExercisesFavorites(accessToken: String, request: SavePatientExercisesFavoritesRequest): Call<Response>{
+        return  apiService.savePatientExercisesFavorites("Bearer $accessToken",request)
+    }
 }

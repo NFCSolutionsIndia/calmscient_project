@@ -15,12 +15,9 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.UiModeManager
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -28,28 +25,23 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import android.provider.Settings
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.calmscient.R
 import com.calmscient.databinding.ActivitySettingsBinding
-import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
+import com.calmscient.di.remote.request.UpdatePatientThemeRequest
 import com.calmscient.di.remote.response.GetUserLanguagesResponse
 import com.calmscient.di.remote.response.GetUserProfileResponse
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.di.remote.response.UpdateUserLanguageResponse
-import com.calmscient.fragments.HomeFragment
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.LocaleHelper
@@ -61,6 +53,7 @@ import com.calmscient.utils.getColorCompat
 import com.calmscient.viewmodels.GetPatientPrivacyDetailsViewModel
 import com.calmscient.viewmodels.GetUserLanguagesViewModel
 import com.calmscient.viewmodels.GetUserProfileDetailsViewModel
+import com.calmscient.viewmodels.UpdatePatientThemeViewModel
 import com.calmscient.viewmodels.UpdateUserLanguageViewModel
 import com.calmscient.viewmodels.UploadProfileImageViewModel
 import com.calmscient.viewmodels.UserLogoutViewModel
@@ -71,7 +64,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -105,6 +97,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
     private val logoutViewModel: UserLogoutViewModel by viewModels()
 
     private val uploadProfileImageViewModel: UploadProfileImageViewModel by viewModels()
+    private val updatePatientThemeViewModel: UpdatePatientThemeViewModel by viewModels()
 
     companion object {
         private const val REQUEST_IMAGE_PICKER = 1001
@@ -165,7 +158,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             showImagePickerOptions()
         }
 
-        binding.darkThemeToggleButton.setOnToggledListener { toggleableView, isOn ->
+       /* binding.darkThemeToggleButton.setOnToggledListener { toggleableView, isOn ->
             val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
 
             if (isOn) {
@@ -175,6 +168,10 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             }
 
             // Optionally: Manually refresh necessary UI elements here without recreating the entire activity.
+        }*/
+
+        binding.darkThemeToggleButton.setOnToggledListener { _, isChecked ->
+            updateThemeAPICall(isChecked)
         }
 
 
@@ -278,25 +275,33 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
 
     private fun bindUserProfile(response: GetUserProfileResponse) {
         // Bind settings to UI elements
-        val iconsAndViews = listOf(
-            response.settings.profileImage to binding.profileImage,
-            response.settings.profileIcon to binding.ivProfile,
-            response.settings.themeDetails.themeIcon to binding.ivTheme,
-            response.settings.languageIcon to binding.ivLanguage,
-            response.settings.privacyIcon to binding.ivPrivacy,
-            response.settings.notificationIcon to binding.ivNotification,
-            response.settings.licenseDetails.licenseIcon to binding.ivLicense,
-            response.settings.helpIcon to binding.ivHelpAndSupport,
-            response.settings.logoutIcon to binding.ivLogout
-        )
-
-        iconsAndViews.forEach { (icon, view) ->
-            Glide.with(this)
-                .load(icon)
-                .into(view)
-        }
-
-
+       Glide.with(this)
+            .load(response.settings.profileImage)
+            .into(binding.profileImage)
+        /* Glide.with(this)
+            .load(response.settings.profileIcon)
+            .into(binding.ivProfile)
+        Glide.with(this)
+            .load(response.settings.themeDetails.themeIcon)
+            .into(binding.ivTheme)
+        Glide.with(this)
+            .load(response.settings.languageIcon)
+            .into(binding.ivLanguage)
+        Glide.with(this)
+            .load(response.settings.privacyIcon)
+            .into(binding.ivPrivacy)
+        Glide.with(this)
+            .load(response.settings.notificationIcon)
+            .into(binding.ivNotification)
+        Glide.with(this)
+            .load(response.settings.licenseDetails.licenseIcon)
+            .into(binding.ivLicense)
+        Glide.with(this)
+            .load(response.settings.helpIcon)
+            .into(binding.ivHelpAndSupport)
+        Glide.with(this)
+            .load(response.settings.logoutIcon)
+            .into(binding.ivLogout)*/
 
 
         binding.apply {
@@ -310,8 +315,17 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
           tvLogout.text = response.settings.logoutTitle
 
           darkThemeToggleButton.isOn = response.settings.themeDetails.darkTheme == 1
-          /*darkThemeToggleButton.labelOn = getString(R.string.yes)
-          darkThemeToggleButton.labelOff = getString(R.string.no)*/
+          darkThemeToggleButton.labelOn = getString(R.string.yes)
+          darkThemeToggleButton.labelOff = getString(R.string.no)
+
+           /* val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+            if (response.settings.themeDetails.darkTheme == 1) {
+                uiModeManager.nightMode = UiModeManager.MODE_NIGHT_YES
+                savePrefData.setDarkModeState(true) // Save dark mode state
+            } else {
+                uiModeManager.nightMode = UiModeManager.MODE_NIGHT_NO
+                savePrefData.setDarkModeState(false) // Save light mode state
+            }*/
       }
     }
 
@@ -691,7 +705,43 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             .show()
     }*/
 
+    private fun updateThemeAPICall(isChecked: Boolean) {
 
+        updatePatientThemeViewModel.clear()
+        val theme = if (binding.darkThemeToggleButton.isOn) 1 else 0
+        val request = UpdatePatientThemeRequest(loginResponse.loginDetails.clientID,theme,loginResponse.loginDetails.patientID)
+        updatePatientThemeViewModel.updatePatientTheme(request,loginResponse.token.access_token)
 
+        observeThemeAPICall(isChecked)
+    }
+
+    private fun observeThemeAPICall(isChecked: Boolean) {
+        updatePatientThemeViewModel.loadingLiveData.observe(this, Observer { isLoadig->
+            if(isLoadig){
+                customProgressDialog.show(getString(R.string.loading))
+            }else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+
+        updatePatientThemeViewModel.successLiveData.observe(this, Observer { isSuccess->
+            if(isSuccess){
+                updatePatientThemeViewModel.saveResponseLiveData.observe(this, Observer { successData->
+                    if(successData != null){
+                        Toast.makeText(this,successData.responseMessage,Toast.LENGTH_SHORT).show()
+
+                       /* val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+                        if (isChecked) {
+                            uiModeManager.nightMode = UiModeManager.MODE_NIGHT_YES
+                            savePrefData.setDarkModeState(true) // Save dark mode state
+                        } else {
+                            uiModeManager.nightMode = UiModeManager.MODE_NIGHT_NO
+                            savePrefData.setDarkModeState(false) // Save light mode state
+                        }*/
+                    }
+                })
+            }
+        })
+    }
 
 }

@@ -24,6 +24,7 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
     val favoritesLiveData: MutableLiveData<List<FavoriteItem>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val failureLiveData: MutableLiveData<String> = MutableLiveData()
+    val menuResponse : MutableLiveData<MenuItemsResponse?> = MutableLiveData()
 
     private var lastPlid: Int = -1
     private var lastParentId: Int = -1
@@ -79,6 +80,7 @@ class MenuItemViewModel @Inject constructor(private val menuItemRepository: Menu
                         Log.d("MenuItemViewModel", "Response: $menuItemsResponse")
                         menuItemsLiveData.postValue(menuItemsResponse.menuItems)
                         favoritesLiveData.postValue(menuItemsResponse.favorites)
+                        menuResponse.postValue(menuItemsResponse)
                         resultLiveData.postValue(isSuccess)
                     } else {
                         errorLiveData.postValue("Empty response")
