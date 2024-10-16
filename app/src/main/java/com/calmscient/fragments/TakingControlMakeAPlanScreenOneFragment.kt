@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,7 @@ import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.NonSwipeRecyclerView
+import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.SaveCourseJournalEntryMakeAPlanViewModel
@@ -118,8 +120,11 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
         }
 
         binding.yesButton.setOnClickListener{
-            saveJournalEntryAPICall()
-            saveJournalEntryObserveViewModel()
+           if(CommonClass.isNetworkAvailable(requireContext())){
+               saveJournalEntryAPICall()
+           }else{
+               CommonClass.showInternetDialogue(requireContext())
+           }
         }
 
 
@@ -193,6 +198,7 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
                         it.clientID, it.patientLocationID, journalEntryList, accessToken
                     )
                 }
+                saveJournalEntryObserveViewModel()
             }
         } else {
             Toast.makeText(requireContext(), "Please answer the questions", Toast.LENGTH_LONG).show()
@@ -218,6 +224,8 @@ class TakingControlMakeAPlanScreenOneFragment : Fragment() {
                             if (successData != null) {
                                 binding.yesButton.text = getString(R.string.saved)
                                 binding.yesButton.isEnabled = false
+                                binding.yesButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                                binding.yesButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_light))
                             }
                         }
                     )

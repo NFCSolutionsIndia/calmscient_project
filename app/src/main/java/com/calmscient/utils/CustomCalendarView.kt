@@ -80,6 +80,16 @@ class CustomCalendarView @JvmOverloads constructor(
     fun getSelectedDatesSize() : Int{
         return calendarView.selectedDates.size
     }
+    fun getSelectedDatesSizeForCurrentMonth(): Int {
+        val currentMonth = calendarView.currentDate.month  // Get the current month (0-based)
+        val currentYear = calendarView.currentDate.year    // Get the current year
+
+        // Filter the selected dates to include only those in the current month and year
+        return calendarView.selectedDates.filter { date ->
+            date.year == currentYear && date.month == currentMonth
+        }.size
+    }
+
 
     fun clearSelections() {
         calendarView.clearSelection()
@@ -120,7 +130,7 @@ class CustomCalendarView @JvmOverloads constructor(
 
     public fun getUnselectedDaysInMonth(): Int {
         val totalDaysInMonth = getTotalDaysInCurrentMonth()
-        val selectedDaysCount = getSelectedDatesSize()
+        val selectedDaysCount = getSelectedDatesSizeForCurrentMonth()
         return totalDaysInMonth - selectedDaysCount
     }
 

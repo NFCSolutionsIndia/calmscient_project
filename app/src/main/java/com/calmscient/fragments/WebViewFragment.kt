@@ -233,7 +233,7 @@ class WebViewFragment : Fragment() {
             if (error.description.toString().contains("net::ERR_INTERNET_DISCONNECTED")) {
                 CommonClass.showInternetDialogue(requireContext())
             } else {
-                showErrorDialog(error.description.toString())
+                //showErrorDialog(error.description.toString())
             }
         }
     }
@@ -309,7 +309,7 @@ class WebViewFragment : Fragment() {
 
 
         private fun handleGotoIndex(value: String) {
-            customProgressDialog.dialogDismiss()
+            //customProgressDialog.dialogDismiss()
             if (value == "turn off loading and go to index") {
                 // Turn off loading, go to index
                 requireActivity().actionBar?.show()
@@ -324,7 +324,7 @@ class WebViewFragment : Fragment() {
             }
         }
         private fun handleInitialLoadingOff(value: String) {
-            customProgressDialog.dialogDismiss()
+            //customProgressDialog.dialogDismiss()
             if (value == "web page loaded with valid session") {
                 // Dismiss the loading dialog
                 customProgressDialog.dialogDismiss()

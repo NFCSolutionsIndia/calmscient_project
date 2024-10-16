@@ -167,6 +167,7 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
 
             dialog.setOnOkClickListener {
 
+                medicationDetailsViewModel.clear()
                 apiCall(selectedDate.toString())
             }
         }
@@ -191,6 +192,7 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
                         oldDate?.let { binding.exSevenCalendar.notifyDateChanged(it) }
 
                         // Call the function to update medication details for the new selected date
+                        medicationDetailsViewModel.clear()
                         apiCall(selectedDate.toString())
                     }
                 }

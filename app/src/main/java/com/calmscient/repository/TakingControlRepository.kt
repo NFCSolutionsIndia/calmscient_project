@@ -44,6 +44,7 @@ import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.GetTakingControlSummaryResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.MyDrinkingHabitResponse
+import com.calmscient.di.remote.response.Response
 import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
 import com.calmscient.di.remote.response.SaveGoalSetupResponse
@@ -126,7 +127,7 @@ class TakingControlRepository @Inject constructor(private val apiService: ApiSer
         return apiService.getTakingControlSummaryData("Bearer $accessToken", getTakingControlSummaryRequest)
     }
 
-    fun saveCourseJournalEntryMakeAPlan(saveCourseJournalEntryMakeAPlanRequest: SaveCourseJournalEntryMakeAPlanRequest, accessToken: String): Call<SaveCourseJournalEntryMakeAPlanResponse>
+    fun saveCourseJournalEntryMakeAPlan(saveCourseJournalEntryMakeAPlanRequest: SaveCourseJournalEntryMakeAPlanRequest, accessToken: String): Call<Response>
     {
         return apiService.saveCourseJournalEntry("Bearer $accessToken",saveCourseJournalEntryMakeAPlanRequest)
     }

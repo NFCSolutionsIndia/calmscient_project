@@ -22,6 +22,7 @@ import com.calmscient.di.remote.request.DrinkTrackerRequest
 import com.calmscient.di.remote.request.GetAlcoholFreeDayRequest
 import com.calmscient.di.remote.request.GetBasicKnowledgeIndexRequest
 import com.calmscient.di.remote.request.GetEventsListRequest
+import com.calmscient.di.remote.request.GetPatientFavoritesRequest
 import com.calmscient.di.remote.request.GetPatientJournalByPatientIdRequest
 import com.calmscient.di.remote.request.GetPatientPrivacyRequest
 import com.calmscient.di.remote.request.GetTakingControlIndexRequest
@@ -73,6 +74,7 @@ import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.GetEventsListResponse
+import com.calmscient.di.remote.response.GetPatientFavoritesResponse
 import com.calmscient.di.remote.response.GetPatientJournalByPatientIdResponse
 import com.calmscient.di.remote.response.GetPatientPrivacyResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
@@ -271,7 +273,7 @@ interface ApiService {
     fun getTakingControlSummaryData(@Header("Authorization")accessToken: String, @Body request: GetTakingControlSummaryRequest) : Call<GetTakingControlSummaryResponse>
 
     @POST("patients/api/v1/patientDetails/saveCourseJournalEntry")
-    fun saveCourseJournalEntry(@Header("Authorization")accessToken: String, @Body request: SaveCourseJournalEntryMakeAPlanRequest): Call<SaveCourseJournalEntryMakeAPlanResponse>
+    fun saveCourseJournalEntry(@Header("Authorization")accessToken: String, @Body request: SaveCourseJournalEntryMakeAPlanRequest): Call<Response>
 
     @POST("patients/api/v1/takingControl/saveBasicKnowledgeCourse")
     fun saveMyDrinkHabitAnswer(@Header("Authorization")accessToken: String, @Body request:SaveMyDrinkingHabitAnswerRequest): Call<SaveMyDrinkingHabitAnswerResponse>
@@ -319,5 +321,8 @@ interface ApiService {
     //Favourites in exercise
     @POST("patients/api/v1/course/savePatientExercisesFavorites")
     fun savePatientExercisesFavorites(@Header("Authorization")accessToken: String, @Body request: SavePatientExercisesFavoritesRequest): Call<Response>
+
+    @POST("patients/api/v1/course/getPatientFavorites")
+    fun getPatientFavourites(@Header("Authorization") accessToken: String, @Body request: GetPatientFavoritesRequest): Call<GetPatientFavoritesResponse>
 }
 

@@ -26,6 +26,7 @@ import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.calmscient.R
 import com.calmscient.databinding.FragmentWhatExpectsWhenYouQuitDrinkingBinding
 import com.calmscient.databinding.FragmentWhatHappensToYourBrainBinding
@@ -61,6 +62,7 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
     private lateinit var player: ExoPlayer
     private var isVideoPlaying = true
     private var isFavorite = true
+    private lateinit var savePrefData: SavePreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,32 +86,89 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
 
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
+        savePrefData = SavePreferences(requireContext())
 
+        // Load thumbnail from URL using Glide
+        Glide.with(this)
+            .load("https://calmscient.blob.core.windows.net/taking-control-basic-knowledge-thumbnails/WhatToExpectWhenYouQuitDrinking.png")
+            .into(binding.videoThumbnail)
+
+        // Initialize ExoPlayer
         player = SimpleExoPlayer.Builder(requireContext()).build()
-
         playerView = binding.playerViewLayout
-
         playerView.player = player
-        player.setMediaItem(MediaItem.fromUri(Uri.parse("https://calmscient.blob.core.windows.net/course/What%20happens%20with%20subtitle.mp4")))
-        player.playWhenReady = true
 
-        binding.favoritesIcon.setOnClickListener {
-            isFavorite = !isFavorite
-            if (isFavorite) {
-                binding.favoritesIcon.setImageResource(R.drawable.ic_favorites_icon)
+        // Set up play button on the thumbnail
+        binding.playThumbnailButton.setOnClickListener {
+            // Hide the thumbnail and play button
+            binding.playThumbnailButton.visibility = View.GONE
+            binding.videoThumbnail.visibility = View.GONE
+
+            // Show the player
+            binding.playerViewLayout.visibility = View.VISIBLE
+
+            // Prepare the media item and load the video
+            val mediaUri = if (savePrefData.getLanguageMode() == "en") {
+                Uri.parse("https://calmscient.blob.core.windows.net/course/What%20happens%20with%20subtitle.mp4")
             } else {
-                binding.favoritesIcon.setImageResource(R.drawable.ic_favorites_red)
+                Uri.parse("https://calmscient.blob.core.windows.net/course/What%20happens%20with%20subtitle.mp4")
             }
+
+            val mediaItem = MediaItem.fromUri(mediaUri)
+
+            // Prepare the player with the media item
+            player.setMediaItem(mediaItem)
+
+            // Add a listener to start playing once the media is ready
+            player.addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if (playbackState == Player.STATE_READY) {
+                        // Start the video when it's ready
+                        player.playWhenReady = true
+                    }
+                }
+            })
+
+            // Prepare the player asynchronously (this will load the media)
+            player.prepare()
         }
 
+
+        // Hide thumbnail when video starts playing
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
+                if (state == Player.STATE_READY || state == Player.STATE_BUFFERING) {
+                    // Hide the thumbnail and show the player
+                    binding.videoThumbnail.visibility = View.GONE
+                    binding.playerViewLayout.visibility = View.VISIBLE
+                }
                 if (state == Player.STATE_ENDED) {
                     //  playPauseIcon.setImageResource(R.drawable.ic_play_icon)
                     isVideoPlaying = false
                 }
             }
         })
+
+        val favoritesIcon = binding.favoritesIcon
+        //Initially setting if it is favorite
+        isFavorite = if (isFavorite) {
+            favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
+            false
+        } else {
+            favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image)
+            true
+        }
+
+        favoritesIcon.setOnClickListener {
+            isFavorite = !isFavorite
+            if (isFavorite) {
+                favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image) // Set your desired color
+                //favouritesAPICall(false)
+            } else {
+                favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
+                //favouritesAPICall(true)
+            }
+        }
 
         binding.backIcon.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()

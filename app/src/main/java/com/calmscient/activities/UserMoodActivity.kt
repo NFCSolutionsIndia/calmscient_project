@@ -953,4 +953,8 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        customProgressDialog.dialogDismiss()
+    }
 }

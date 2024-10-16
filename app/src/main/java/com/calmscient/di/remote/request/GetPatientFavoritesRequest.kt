@@ -9,13 +9,8 @@
  *      Author : @Pardha Saradhi
  */
 
-package com.calmscient.di.remote.response
+package com.calmscient.di.remote.request
 
-data class GetAlcoholFreeDayResponse(
-    val currentMonthSuggestedDrinkCount: Int,
-    val dates: List<String>,
-    val drinkCount: Int,
-    val months: List<String>,
-    val statusResponse: StatusResponse,
-    val suggestedMonthlyDrinkCount: Int
+data class GetPatientFavoritesRequest(
+    val patientId: Int
 )

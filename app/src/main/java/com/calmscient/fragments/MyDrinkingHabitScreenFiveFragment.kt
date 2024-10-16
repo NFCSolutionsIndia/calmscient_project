@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -402,6 +403,8 @@ class MyDrinkingHabitScreenFiveFragment : Fragment() {
 
                                 binding.yesButton.text = getString(R.string.saved)
                                 binding.yesButton.isEnabled = false
+                                binding.yesButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_enabled)
+                                binding.yesButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_light))
 
                               /*  commonDialog.setOnDismissListener {
                                     val res = SharedPreferencesUtil.getData(requireContext(), "courseIdBasicKnowledge", "")

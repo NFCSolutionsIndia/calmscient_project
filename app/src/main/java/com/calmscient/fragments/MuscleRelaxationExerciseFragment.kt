@@ -40,10 +40,10 @@ import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MuscleRelaxationExerciseFragment : Fragment(), MediaPlayer.OnPreparedListener,
+class MuscleRelaxationExerciseFragment(favourite: Int) : Fragment(), MediaPlayer.OnPreparedListener,
     MediaPlayer.OnBufferingUpdateListener {
     private lateinit var binding: MuscleRelaxationExercisesBinding
-    private var isFavorite = true
+    private var isFavorite = favourite == 1
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var waveformView: WaveformView
     private lateinit var playButton: ImageView
@@ -59,7 +59,8 @@ class MuscleRelaxationExerciseFragment : Fragment(), MediaPlayer.OnPreparedListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
@@ -78,6 +79,14 @@ class MuscleRelaxationExerciseFragment : Fragment(), MediaPlayer.OnPreparedListe
         val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
+        //Initially setting if it is favorite
+        isFavorite = if (isFavorite) {
+            favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
+            false
+        } else {
+            favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image)
+            true
+        }
 
         favoritesIcon.setOnClickListener {
             isFavorite = !isFavorite
@@ -90,7 +99,8 @@ class MuscleRelaxationExerciseFragment : Fragment(), MediaPlayer.OnPreparedListe
             }
         }
         binding.backIcon.setOnClickListener {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
         return binding.root
     }
@@ -98,7 +108,8 @@ class MuscleRelaxationExerciseFragment : Fragment(), MediaPlayer.OnPreparedListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.backIcon.setOnClickListener {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
         waveformView = requireActivity().findViewById(R.id.waveformView)
         playButton = requireActivity().findViewById(R.id.playButton)
@@ -164,11 +175,6 @@ class MuscleRelaxationExerciseFragment : Fragment(), MediaPlayer.OnPreparedListe
 
         binding.audioForward.setOnClickListener {
             skipForward()
-        }
-
-        binding.backIcon.setOnClickListener {
-            //onBackPressed()
-            loadFragment(ExerciseFragment())
         }
         /*
                 binding.informationIcon.setOnClickListener{

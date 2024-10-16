@@ -802,7 +802,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="drink_count">Drink counts</string>
     <string name="terms">Accept <u>Terms and Conditions</u></string>
     <!--Emergency Resource Page strings-->
-    <string name="emergency_resource">Emergency Resource</string>
+    <string name="emergency_resource">Emergency resource</string>
     <string name="doctor_name">Dr. Samuel Parker</string>
     <string name="hospital_name">Central Park Hospital</string>
     <string name="doctor_phone_number"><u><a href="tel:(804)0938172"><font color="#6E6BB3">(804)0938172</font></a></u></string>
@@ -929,6 +929,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="body_moment_exercies">Mindful body movement</string>
     <string name="deepbreathing_exercises">Deep breathing</string>
     <string name="musclerelaxation_exercises">Progressive muscle relaxation</string>
+    <string name="breathing_technic">Breathing technique</string>
     <!--    Exercise_items-->
     <string name="screen1"><![CDATA[<font color="#6E6BB3">Have you ever caught your mind wandering or daydreaming </font>while you are in the middle of a familiar or repetitive task? You could be walking, working or even driving your car, and your mind is miles away, perhaps fantasizing about going on vacation, thinking about your to-do list, or worrying about some upcoming event.<br/><br/>In either case, you are not focusing on the current situation and not in touch with the ‘here and now’.  This mode of operation is often referred to as<font color="#6E6BB3"> automatic pilot</font>.]]></string>
     <string name="screen2"><![CDATA[<font color="#6E6BB3">Mindfulness</font> is the opposite of automatic pilot. It is about experiencing the world that is firmly in the ‘here and now’. This is referred to as the <font color="#6E6BB3">being</font> mode. It liberates you from automatic and unhelpful thoughts and responses.]]></string>
@@ -1625,7 +1626,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="runningexercise_titletext">Movement: Running</string>
     <string name="runningexercises_text">It’s not easy to move when you have a shutdown or are feeling numb. Running can quickly shift you out of the shutdown state and re-energize you.</string>
 
-    <string name="version">Version 2.14</string>
+    <string name="version">Version 2.15</string>
     <!--bodymovemet Exercise-->
     <string name="bodymovementexercise_titletext">Mindful body movement</string>
     <!--summary of sleep-->
@@ -2114,7 +2115,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
 
     <string name="taking_control_dialog_3">The CAGE questionnaire for smoking (modified from the familiar CAGE questionnaire for alcoholism), the “four Cs” test and the Lagerstrom Test for Nicotine Dependence help diagnose nicotine dependence based on standard criteria. Additional questions can  be used to determine a patient’s readiness to change and the nature of reinforcement the patient receives  from smoking. These tools can assist family physicians in guiding patients to quit smoking-the single most important thing smokers can do to improve their health.</string>
     <string name="consequences_card_1_description">There is a wide range of short- and long-term consequences associated with alcohol misuse. \n For some individuals, any amount of drinking could be potentially harmful.\n\nLet\’s see some of them.</string>
-    <string name="consequences_card_2_description">Alcohol-related deaths are increasing in the United States. \n\nAlcohol is a factor in: </string>
+    <string name="consequences_card_2_description">Alcohol-related deaths are increasing in the United States. \n\nAlcohol is a factor in:\n </string>
     <string name="consequences_card_3_description">Excessive alcohol consumption can have a significant negative impact on mental capacity.</string>
     <string name="consequences_card_4_description">Drinking is associated with a number of health problems and can make certain chronic health problems worse.\n\n</string>
     <string name="consequences_card_5_description">Some signs of AUD are continuing to drink even though it is causing trouble with your family or at work, drinking more than you intended, having to drink more than before to get a desired effect, being unable to stop drinking after repeated attempts, or continuing to drink despite negative consequences. Signs of AUD may also include drinking to alleviate negative emotions such as feeling ”low” anxious, uneasy, unhappy, unwell, dissatisfied with life, or other negative emotions that were caused or worsened by alcohol misuse. Beyond these physical and mental health risks, frequent alcohol misuse also is linked with personal problems, such as losing one’s driver’s license or having relationship troubles.</string>
@@ -2189,8 +2190,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="less_than_2_days">Less than 2 days</string>
     <string name="almost_everyday">Almost everyday</string>
     <string name="everyday_1">Everyday</string>
-    <string name="breathing_technic">Breathing technic</string>
-    <string name="_4_7_8_breathing_exercise">4-7-8 Breathing exercise</string>
+    <string name="_4_7_8_breathing_exercise">4–7–8 Breathing exercise</string>
     <string name="mindful_breathing_exercise">Mindful breathing exercise</string>
     <string name="diaphragmatic_breathing_exercise">Diaphragmatic breathing exercise</string>
     <string name="basic_knowledge">Basic knowledge</string>
@@ -2228,7 +2228,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="quiz">Quiz</string>
     <string name="daily_journals">Daily journals</string>
     <string name="discovery_exercise">Discovery Exercise</string>
-    <string name="no_records">No Records</string>
+    <string name="no_records">No records</string>
     <string name="welcome_to_taking_control">Welcome to taking control!</string>
     <string name="thank_you_for_willing_to_talk_about_the_alcohol_and_drugs_now_let_s_begin_with_a_brief_assessment">Thank you for willing to talk about the alcohol and drugs. Now let\'s begin with a brief assessment</string>
     <string name="taking_control_intro_screen_three_description">Let’s talk about alcohol and drug. It won’t take much of your time. promise!\n\nWhy dive into this topic?\n\nWell, being able to openly discuss your alcohol or drug use is crucial for your health, mental well-being, and relationships with family and the community. But, you have full control over the decision regarding your habit. Ready?</string>
@@ -2239,7 +2239,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="are_you_sure">Are you sure?</string>
     <string name="doesn_t_apply_for_me">Doesn\'t apply for me</string>
     <string name="apply_to_me">Apply to me</string>
-    <string name="what_s_a_standard_drink">What’s a "standard drink"</string>
+    <string name="what_s_a_standard_drink">What’s a “standard drink”?</string>
     <string name="what_are_the_u_s_guidelines_for_drink">What are the U.S. guidelines for drink?</string>
     <string name="when_is_drink_in_moderation_too_much">When is drink in moderation too much?</string>
     <string name="what_happens_to_your_brain_when_you_drink">What happens to your brain when you drink?</string>
@@ -2343,5 +2343,6 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="also_niaaa_defines_heavy_drinking_as">Also NIAAA defines heavy drinking as:</string>
     <string name="congratulations">Congratulations!</string>
     <string name="congrats_description">Now you need to control your drink habit by taking a count not only monthly goal, but also daily limit according to the guideline about moderate drinking\n\nLet\'s get to know the drink coach features.</string>
+    <string name="please_select_atleast_one_day_to_set_alcohol_free_days">Please select atleast one day to set alcohol free days.</string>
 
 </resources>

@@ -35,9 +35,9 @@ import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HandOverYourHeartFragment : Fragment() {
+class HandOverYourHeartFragment(favourite: Int) : Fragment() {
     private lateinit var binding: HandoverYourHeartExercisesBinding
-    private var isFavorite = true
+    private var isFavorite = favourite == 1
     private lateinit var favoritesIcon: ImageView
 
     private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
@@ -49,7 +49,8 @@ class HandOverYourHeartFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
@@ -67,6 +68,16 @@ class HandOverYourHeartFragment : Fragment() {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
         val favoritesIcon = binding.favoritesIcon
+
+        //Initially setting if it is favorite
+        isFavorite = if (isFavorite) {
+            favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
+            false
+        } else {
+            favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image)
+            true
+        }
+
         favoritesIcon.setOnClickListener {
             isFavorite = !isFavorite
             if (isFavorite) {
@@ -78,7 +89,8 @@ class HandOverYourHeartFragment : Fragment() {
             }
         }
         binding.menuicon.setOnClickListener {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
         return binding.root
     }

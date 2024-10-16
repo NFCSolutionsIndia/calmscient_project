@@ -19,7 +19,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
 import com.calmscient.di.remote.MindfulnessExercisesTextDataClass
-class MindfulnessScreensAdapter (private val items: List<MindfulnessExercisesTextDataClass>) :
+class MindfulnessScreensAdapter (private val items: List<MindfulnessExercisesTextDataClass>,private val favourite: Int, private val onFavoriteClicked: (Boolean) -> Unit) :
     RecyclerView.Adapter<MindfulnessScreensAdapter.MindfullnessQuestionsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MindfullnessQuestionsViewHolder {
@@ -32,7 +32,7 @@ class MindfulnessScreensAdapter (private val items: List<MindfulnessExercisesTex
 
     override fun onBindViewHolder(holder: MindfullnessQuestionsViewHolder, position: Int) {
         val item = items[position]
-        var isFavorite = false
+        var isFavorite = favourite == 1
         // Check and set text1
         if (item.text1.isNullOrBlank()) {
             holder.text1.visibility = View.GONE
@@ -54,6 +54,18 @@ class MindfulnessScreensAdapter (private val items: List<MindfulnessExercisesTex
         item.exercisesBellIcon?.let { holder.exercisesBellIcon.setImageResource(it) }
         item.exercisesHeartImage?.let { holder.exercisesHeartImage.setImageResource(it) }
         item.imageAnxiety?.let { holder.imageAnxiety.setImageResource(it) }
+
+        item.exercisesHeartImage?.let {
+            holder.exercisesHeartImage.visibility = View.VISIBLE
+            if (favourite == 1) {
+                isFavorite = false
+                holder.exercisesHeartImage.setImageResource(R.drawable.ic_mind_exercise_red_fill)
+            } else {
+                isFavorite = true
+                holder.exercisesHeartImage.setImageResource(R.drawable.mindfullexercise_heart__image)
+            }
+        }
+
         // Handle click event for exercisesHeartImage
         holder.exercisesHeartImage.setOnClickListener {
             isFavorite = !isFavorite
@@ -62,9 +74,11 @@ class MindfulnessScreensAdapter (private val items: List<MindfulnessExercisesTex
             if (isFavorite) {
                 holder.exercisesHeartImage.setImageResource(R.drawable.mindfullexercise_heart__image)
                 // Perform any other actions you need when it's set as favorite
+                onFavoriteClicked(false)
             } else {
                 holder.exercisesHeartImage.setImageResource(R.drawable.ic_mind_exercise_red_fill)
                 // Perform any other actions you need when it's not set as favorite
+                onFavoriteClicked(true)
             }
         }
 

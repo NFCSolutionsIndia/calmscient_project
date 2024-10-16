@@ -184,10 +184,14 @@ class ChangingYourResponseFragment : Fragment() {
                     isCourseCompleted = chapter.isCourseCompleted,
                     pageCount = chapter.pageCount,
                     imageUrl = chapter.imageUrl,
-                    chapterOnlyReading = chapter.chapterOnlyReading
+                    chapterOnlyReading = chapter.chapterOnlyReading,
+                    isFromExercises = 0
                 )
             }
-            val language = if(languageCode == 1) "en" else "sp"
+            var language = savePrefData.getLanguageMode()
+            if(language == "es") {
+                language = "sp"
+            }
             val itemClickListener: (ChapterDataClass) -> Unit = { chapter ->
                 val url = "http://20.197.5.97:5000/?courseName=changingYourResponseToStress&lessonId=${lesson.lessonId}&chapterId=${chapter.chapterId}&sessionId=$sessionId&language=$language"
                 Log.d("URL:","$url")

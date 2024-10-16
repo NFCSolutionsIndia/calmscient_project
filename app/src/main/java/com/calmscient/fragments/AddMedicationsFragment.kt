@@ -488,15 +488,15 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
         // Define default times
         val defaultTimes = mapOf(
             "morning" to "06:00:00",
-            "afternoon" to "13:00:00",
-            "evening" to "19:00:00"
+            "afternoon" to "12:00:00",
+            "evening" to "18:00:00"
         )
 
         // Define time ranges
         val timeRanges = mapOf(
             "morning" to (LocalTime.of(6, 0)..LocalTime.of(11, 59)),
-            "afternoon" to (LocalTime.of(12, 0)..LocalTime.of(18, 59)),
-            "evening" to (LocalTime.of(19, 0)..LocalTime.of(23, 59))
+            "afternoon" to (LocalTime.of(12, 0)..LocalTime.of(17, 59)),
+            "evening" to (LocalTime.of(18, 0)..LocalTime.of(23, 59))
         )
 
         // Initialize a set to keep track of existing medicine times

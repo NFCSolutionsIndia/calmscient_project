@@ -37,7 +37,7 @@ class DashboardActivity : AppCompat(), ExerciseInteractionListener {
     lateinit var localeLang: LocaleHelper
 
     override fun onExerciseSelected() {
-        bottomNav.menu.findItem(R.id.home).setIcon(R.drawable.ic_home)
+        bottomNav.menu.findItem(R.id.home).setIcon(R.drawable.ic_home_un)
         bottomNav.menu.findItem(R.id.discovery).setIcon(R.drawable.ic_discovery_un)
         bottomNav.menu.findItem(R.id.exercises).setIcon(R.drawable.ic_exercises_selected)
         bottomNav.menu.findItem(R.id.rewards).setIcon(R.drawable.ic_rewards_un)
@@ -70,7 +70,7 @@ class DashboardActivity : AppCompat(), ExerciseInteractionListener {
 
 
         bottomNav.setOnItemSelectedListener {
-            bottomNav.menu.findItem(R.id.home).setIcon(R.drawable.ic_home)
+            bottomNav.menu.findItem(R.id.home).setIcon(R.drawable.ic_home_un)
             bottomNav.menu.findItem(R.id.discovery).setIcon(R.drawable.ic_discovery_un)
             bottomNav.menu.findItem(R.id.exercises).setIcon(R.drawable.ic_exercises_un)
             bottomNav.menu.findItem(R.id.rewards).setIcon(R.drawable.ic_rewards_un)

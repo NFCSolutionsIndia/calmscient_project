@@ -13,6 +13,7 @@ package com.calmscient.fragments
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +51,7 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
     private val saveAlcoholFreeDaysViewModel : SaveAlcoholFreeDaysViewModel by activityViewModels()
     private val getAlcoholFreeDaysViewModel : GetAlcoholFreeDaysViewModel by activityViewModels()
 
-    private lateinit var getAlcoholFreeDayResponse: GetAlcoholFreeDayResponse
+    private var getAlcoholFreeDayResponse: GetAlcoholFreeDayResponse? = null
 
     private var loginResponse : LoginResponse? = null
     private  lateinit var accessToken : String
@@ -241,12 +242,24 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
     private fun bindDataToUI() {
         // Pre-select the dates in the CustomCalendarView
         val dateFormatter = SimpleDateFormat("MM/dd/yyyy", Locale.US)
-        val dates = getAlcoholFreeDayResponse.dates.map { dateStr ->
+        val dates = getAlcoholFreeDayResponse?.dates?.map { dateStr ->
             dateFormatter.parse(dateStr)
         }
-        customCalendarView.setSelectedDates(dates)
+        if (dates != null) {
+            customCalendarView.setSelectedDates(dates)
+        }
 
-        binding.tvFreeDaysCount.text = getAlcoholFreeDayResponse.dates.size.toString()
+        binding.tvFreeDaysCount.text = getAlcoholFreeDayResponse?.dates?.count {
+            val date = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(it)
+            val calendar = Calendar.getInstance().apply {
+                if (date != null) {
+                    time = date
+                }
+            }
+            calendar.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH) &&
+                    calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)
+        }.toString()
+
 
         // Pre-select the months in the UI
         val monthMap = mapOf(
@@ -264,7 +277,7 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
             getString(R.string.dec) to binding.dec
         )
 
-        getAlcoholFreeDayResponse.months.forEach { month ->
+        getAlcoholFreeDayResponse?.months?.forEach { month ->
             monthMap[month]?.let { selectMonth(it) }
         }
     }
@@ -276,58 +289,89 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
         val selectedDates = customCalendarView.getFormattedSelectedDates()
         val selectedMonthsList = getSelectedMonths()
         var pvcFlag = ""
-        pvcFlag = if(getAlcoholFreeDayResponse.dates.isEmpty() || getAlcoholFreeDayResponse.months.isEmpty()){
-            "I"
-        } else {
-            "U"
-        }
-       // val updatedSelectedDates = addMissingDatesForMonths(selectedDates, selectedMonthsList)
+           if(getAlcoholFreeDayResponse != null){
+               pvcFlag = if(getAlcoholFreeDayResponse!!.dates.isEmpty() || getAlcoholFreeDayResponse!!.months.isEmpty()){
+                   "I"
+               } else {
+                   "U"
+               }
+           }
+        val updatedSelectedDates = updateDatesForSelectedMonths(selectedDates, selectedMonthsList)
+
+        Log.d("Final Dates :","$updatedSelectedDates")
         if (loginDetails != null) {
-            saveAlcoholFreeDaysViewModel.saveAlcoholFreeDays(loginDetails.clientID,selectedDates,0,selectedMonthsList,loginDetails.patientID,loginDetails.patientLocationID,pvcFlag,accessToken)
+            if(updatedSelectedDates.isNotEmpty()) {
+                saveAlcoholFreeDaysViewModel.saveAlcoholFreeDays(
+                    loginDetails.clientID,
+                    updatedSelectedDates,
+                    0,
+                    selectedMonthsList,
+                    loginDetails.patientID,
+                    loginDetails.patientLocationID,
+                    pvcFlag,
+                    accessToken
+                )
+            }
+            else{
+                commonDialog.showDialog(getString(R.string.please_select_atleast_one_day_to_set_alcohol_free_days))
+            }
         }
         observeViewModel()
 
     }
 
-   /* private fun addMissingDatesForMonths(
+    private fun updateDatesForSelectedMonths(
         selectedDates: List<String>,
         selectedMonthsList: List<String>
     ): List<String> {
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
-        val updatedDates = selectedDates.toMutableList()
+        val updatedDates = mutableListOf<String>()
         val calendar = Calendar.getInstance()
 
+        // Extract existing months from selectedDates
         val existingMonths = selectedDates.mapNotNull {
             val date = dateFormat.parse(it)
             if (date != null) {
                 calendar.time = date
-            }
-            calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US)
+                calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US)
+            } else null
         }.toSet()
 
+        // Remove dates for months not in selectedMonthsList
+        selectedDates.forEach { dateString ->
+            val date = dateFormat.parse(dateString)
+            if (date != null) {
+                calendar.time = date
+                val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US)
+                if (selectedMonthsList.contains(monthName)) {
+                    updatedDates.add(dateString) // Keep the date if the month is in selectedMonthsList
+                }
+            }
+        }
+
+        // Add missing dates for months in selectedMonthsList
         for (month in selectedMonthsList) {
             if (!existingMonths.contains(month)) {
+                // Get the index of the month
                 val monthIndex = getMonthIndex(month)
                 calendar.set(Calendar.MONTH, monthIndex)
-                val year = calendar.get(Calendar.YEAR)
-                for (date in selectedDates) {
-                    val originalDate = dateFormat.parse(date)
+
+                for (dateString in selectedDates) {
+                    val originalDate = dateFormat.parse(dateString)
                     if (originalDate != null) {
                         calendar.set(Calendar.YEAR, originalDate.year + 1900)
-                    }
-                    if (originalDate != null) {
                         calendar.set(Calendar.DAY_OF_MONTH, originalDate.date)
-                    }
-                    val formattedDate = dateFormat.format(calendar.time)
-                    if (!updatedDates.contains(formattedDate)) {
-                        updatedDates.add(formattedDate)
+                        val newDateForMonth = dateFormat.format(calendar.time)
+                        if (!updatedDates.contains(newDateForMonth)) {
+                            updatedDates.add(newDateForMonth)
+                        }
                     }
                 }
             }
         }
 
         return updatedDates
-    }*/
+    }
 
     private fun getMonthIndex(month: String): Int {
         val monthMap = mapOf(
@@ -335,7 +379,7 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
             getString(R.string.feb) to Calendar.FEBRUARY,
             getString(R.string.mar) to Calendar.MARCH,
             getString(R.string.apr) to Calendar.APRIL,
-            getString(R.string.may)to Calendar.MAY,
+            getString(R.string.may) to Calendar.MAY,
             getString(R.string.jun) to Calendar.JUNE,
             getString(R.string.jul) to Calendar.JULY,
             getString(R.string.aug) to Calendar.AUGUST,
@@ -346,6 +390,7 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
         )
         return monthMap[month] ?: Calendar.JANUARY
     }
+
 
 
 

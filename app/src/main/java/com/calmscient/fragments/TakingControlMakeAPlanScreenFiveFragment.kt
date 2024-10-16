@@ -203,7 +203,7 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         customCalendarView.setSelectedDates(dates)
 
         binding.tvMonthlyDrinkCount.text =
-            getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount.toString()
+            getAlcoholFreeDayResponse.currentMonthSuggestedDrinkCount.toString()
     }
 
     private fun showBulbDialog() {

@@ -37,7 +37,8 @@ data class FavoriteItem(
     val navigateURL: String,
     val language: Int,
     val darkTheme: Int,
-    val title: String
+    val title: String,
+    val isFromExercises: Int
 )
 
 data class MenuItemsResponse(

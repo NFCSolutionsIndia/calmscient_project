@@ -28,6 +28,7 @@ import com.calmscient.di.remote.response.DrinkTrackerResponse
 import com.calmscient.di.remote.response.GetBasicKnowledgeIndexResponse
 import com.calmscient.di.remote.response.ManageAnxietyIndexResponse
 import com.calmscient.di.remote.response.PatientMoodResponse
+import com.calmscient.di.remote.response.Response
 import com.calmscient.di.remote.response.SaveAlcoholFreeDayResponse
 import com.calmscient.di.remote.response.SaveCourseJournalEntryMakeAPlanResponse
 import com.calmscient.di.remote.response.SummaryOfDASTResponse
@@ -47,13 +48,13 @@ import javax.inject.Inject
 @HiltViewModel
 class SaveCourseJournalEntryMakeAPlanViewModel @Inject constructor(private val repository: TakingControlRepository) : ViewModel() {
 
-    val saveResponseLiveData: MutableLiveData<SaveCourseJournalEntryMakeAPlanResponse?> = MutableLiveData()
+    val saveResponseLiveData: MutableLiveData<Response?> = MutableLiveData()
     val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
     val errorLiveData: MutableLiveData<String?> = MutableLiveData()
     val failureLiveData: MutableLiveData<String?> = MutableLiveData()
-    val failureResponseData: MutableLiveData<SaveCourseJournalEntryMakeAPlanResponse?> = MutableLiveData()
+    val failureResponseData: MutableLiveData<Response?> = MutableLiveData()
 
 
     private var lastClientId: Int = -1
@@ -91,13 +92,13 @@ class SaveCourseJournalEntryMakeAPlanViewModel @Inject constructor(private val r
     }
 
     // Function to handle API response
-    private suspend fun handleResponse(call: Call<SaveCourseJournalEntryMakeAPlanResponse>) {
+    private suspend fun handleResponse(call: Call<Response>) {
         withContext(Dispatchers.IO) {
             try {
                 val response = call.execute()
                 if (response.isSuccessful) {
-                    val isSuccess = response.body()?.response?.responseCode == 200
-                    val isNotAnswered = response.body()?.response?.responseCode == 300
+                    val isSuccess = response.body()?.responseCode == 200
+                    val isNotAnswered = response.body()?.responseCode == 300
                     if (isSuccess) {
                         saveResponseLiveData.postValue(response.body())
                         successLiveData.postValue(isSuccess)
@@ -107,7 +108,7 @@ class SaveCourseJournalEntryMakeAPlanViewModel @Inject constructor(private val r
                         successNotAnsweredData.postValue(isNotAnswered)
                     } else {
                         failureResponseData.postValue(response.body())
-                        val res = response.body()?.response?.responseMessage
+                        val res = response.body()?.responseMessage
                         errorLiveData.postValue("Error Occurred: $res")
                         successNotAnsweredData.postValue(false)
                     }

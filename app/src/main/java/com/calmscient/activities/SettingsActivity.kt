@@ -31,6 +31,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -98,6 +99,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
 
     private val uploadProfileImageViewModel: UploadProfileImageViewModel by viewModels()
     private val updatePatientThemeViewModel: UpdatePatientThemeViewModel by viewModels()
+    private var currentToast: Toast? = null
 
     companion object {
         private const val REQUEST_IMAGE_PICKER = 1001
@@ -574,7 +576,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
         val multipartBody = MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
 
-        updateUserLanguageViewModel.clear()
+        uploadProfileImageViewModel.clear()
         uploadProfileImageViewModel.uploadProfileImage(accessToken,
             loginResponse.loginDetails.patientID.toString(),
             loginResponse.loginDetails.clientID.toString(),multipartBody)
@@ -594,12 +596,28 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             if (isSuccess) {
                uploadProfileImageViewModel.saveResponseLiveData.observe(this, Observer { successData->
                    if(successData != null){
-                       Toast.makeText(this,successData.responseMessage,Toast.LENGTH_SHORT).show()
+                       showToast(successData.responseMessage)
                    }
                })
 
             }
         })
+
+
+        uploadProfileImageViewModel.errorLiveData.observe(this, Observer { error ->
+            if (error != null) {
+                showToast("Image size too large. Please choose a another image.")
+            }
+        })
+    }
+
+    private fun showToast(message: String) {
+        // Cancel the previous toast if it's still visible
+        currentToast?.cancel()
+
+        // Show the new toast and keep a reference to it
+        currentToast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        currentToast?.show()
     }
 
     private fun checkAndRequestStoragePermissions(): Boolean {

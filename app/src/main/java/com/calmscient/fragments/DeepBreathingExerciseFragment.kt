@@ -34,9 +34,9 @@ import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DeepBreathingExerciseFragment : Fragment() {
+class DeepBreathingExerciseFragment(favourite: Int, source: String) : Fragment() {
     private lateinit var binding: DeepbreathingexerciseBinding
-    private var isFavorite = true
+    private var isFavorite = favourite == 1
     private lateinit var favoritesIcon: ImageView
 
     private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
@@ -44,11 +44,16 @@ class DeepBreathingExerciseFragment : Fragment() {
 
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
+    private var fromSource = source
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            loadFragment(ExerciseFragment())
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(ExerciseFragment())
+            }
         }
     }
 
@@ -66,6 +71,15 @@ class DeepBreathingExerciseFragment : Fragment() {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
         val favoritesIcon = binding.favoritesIcon
+        //Initially setting if it is favorite
+        isFavorite = if (isFavorite) {
+            favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
+            false
+        } else {
+            favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image)
+            true
+        }
+
         favoritesIcon.setOnClickListener {
             isFavorite = !isFavorite
             if (isFavorite) {
@@ -77,17 +91,21 @@ class DeepBreathingExerciseFragment : Fragment() {
             }
         }
         binding.menuicon.setOnClickListener {
-            loadFragment(ExerciseFragment())
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(ExerciseFragment())
+            }
         }
         binding.mindfulBE.setOnClickListener{
-            loadFragment(MindfulBreathingExerciseFragment())
+            loadFragment(MindfulBreathingExerciseFragment(fromSource))
         }
         binding.fourSevenEightBE.setOnClickListener{
 
-            loadFragment(FourSevenEightBreathingExerciseFragment())
+            loadFragment(FourSevenEightBreathingExerciseFragment(fromSource))
         }
         binding.diaphragmaticBE.setOnClickListener{
-            loadFragment(DiaphragmaticBreathingExerciseFragment())
+            loadFragment(DiaphragmaticBreathingExerciseFragment(fromSource))
         }
         return binding.root
     }
@@ -103,7 +121,7 @@ class DeepBreathingExerciseFragment : Fragment() {
         savePatientExercisesFavoritesViewModel.clear()
 
         val isFav = if(isFavourite) 1 else 0
-        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"Breathing technic")
+        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"Breathing technique")
 
         savePatientExercisesFavoritesViewModel.savePatientExercisesFavorites(request,loginResponse.token.access_token)
 

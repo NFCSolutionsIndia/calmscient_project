@@ -201,11 +201,9 @@ class BasicKnowledgeFragment : Fragment() {
         //val currentName = item.name.trim()
 
         val currentName = item.name.trim().replace("\"", "")
-        val standardDrinkText = getString(R.string.what_s_a_standard_drink).trim().replace("\"", "")
-
-
+        Log.d("BasicKnowledgeFragment", "Name: ${getString(R.string.what_s_a_standard_drink)}")
         val fragment = when {
-            currentName.equals(standardDrinkText, ignoreCase = true) -> StandardDrinkFragment()
+            currentName.equals(getString(R.string.what_s_a_standard_drink), ignoreCase = true) -> StandardDrinkFragment()
             currentName.equals(getString(R.string.what_are_the_u_s_guidelines_for_drink), ignoreCase = true) -> GuidelinesForDrinkingFragment()
             currentName.equals(getString(R.string.when_is_drink_in_moderation_too_much), ignoreCase = true) -> ModerationDrinkingFragment()
             currentName.equals(getString(R.string.what_happens_to_your_brain_when_you_drink), ignoreCase = true) -> WhatHappensToYourBrainFragment()

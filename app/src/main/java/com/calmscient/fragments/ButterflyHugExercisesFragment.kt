@@ -34,9 +34,9 @@ import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ButterflyHugExercisesFragment : Fragment() {
+class ButterflyHugExercisesFragment(favourite: Int) : Fragment() {
     private lateinit var binding: ButterflyhugExercisesBinding
-    private var isFavorite = true
+    private var isFavorite = favourite == 1
     private lateinit var favoritesIcon: ImageView
     private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
     private lateinit var loginResponse: LoginResponse
@@ -47,7 +47,8 @@ class ButterflyHugExercisesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
@@ -65,6 +66,16 @@ class ButterflyHugExercisesFragment : Fragment() {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
         val favoritesIcon = binding.favoritesIcon
+
+        //Initially setting if it is favorite
+        isFavorite = if (isFavorite) {
+            favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
+            false
+        } else {
+            favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image)
+            true
+        }
+
         favoritesIcon.setOnClickListener {
             isFavorite = !isFavorite
             if (isFavorite) {
@@ -88,7 +99,8 @@ class ButterflyHugExercisesFragment : Fragment() {
             binding.previousQuestion.visibility = View.GONE
         }
         binding.menuicon.setOnClickListener {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
         return binding.root
     }

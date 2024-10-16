@@ -65,8 +65,4 @@ class UserProfileRepository @Inject constructor(private val apiService: ApiServi
         return apiService.updatePatientTheme("Bearer $accessToken", request)
     }
 
-    // For Exercise
-    fun savePatientExercisesFavorites(accessToken: String, request: SavePatientExercisesFavoritesRequest): Call<Response>{
-        return  apiService.savePatientExercisesFavorites("Bearer $accessToken",request)
-    }
 }

@@ -778,7 +778,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="evening">La Noche</string>
     <string name="cancel">Cancelar</string>
     <!--Emergency Resource Page strings-->
-    <string name="emergency_resource">Recurso de Emergencia</string>
+    <string name="emergency_resource">Recurso de emergencia</string>
     <string name="doctor_name">Dr. Samuel Parker</string>
     <string name="hospital_name">Hospital del Parque Central</string>
     <string name="doctor_phone_number"><u><a href="tel:(804)0938172"><font color="#6E6BB3">(804)0938172</font></a></u></string>
@@ -1369,7 +1369,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="title_response_to_stress">RESPUESTA AL ESTRÉS</string>
     <string name="nora">NORA</string>
     <string name="austin">AUSTIN</string>
-    <string name="version">Versión 2.14</string>
+    <string name="version">Versión 2.15</string>
 
     <!--summary of sleep-->
     <string name="chart_sleep_avg_sleep_score">Puntuación de sueño promedio</string>
@@ -1455,14 +1455,14 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="breathing_exercise_4_7_8">4–7–8 Breathing exercise</string>
     <string name="mindful_breathing_exercise_heading">Mindful breathing exercise</string>
     <string name="diaphragmatic_breathing_exercise_heading">Diaphragmatic breathing exercise</string>
-    <string name="breathing_technic">Breathing technic</string>
+    <string name="breathing_technic">Breathing technique</string>
     <string name="you_did_not_change_any_timings">You did not change any timings</string>
 
     <string name="quiz">Cuestionario</string>
     <string name="daily_journals">Diarios diarios</string>
     <string name="discovery_exercise">Ejercicio de descubrimiento</string>
     <string name="search">Buscar</string>
-    <string name="no_records">Sin Registros</string>
+    <string name="no_records">Sin registros</string>
     <string name="please_accept_terms_and_conditions">Please accept terms and conditions</string>
 
 
@@ -1529,7 +1529,7 @@ Estas preguntas se refieren al uso de drogas en los últimos 12 meses. Por favor
 
     //Consequences
     <string name="consequences_card_1_description">Hay muchas consecuencias a corto y largo plazo asociadas al abuso de alcohol. \n Para algunas personas, hasta el mínimo consumo podría ser muy dañino. \n\nVeamos algunas de ellas.</string>
-    <string name="consequences_card_2_description">Las muertes relacionadas con el alcohol están aumentando en Estados Unidos. \n\nEl alcohol es un factor: </string>
+    <string name="consequences_card_2_description">Las muertes relacionadas con el alcohol están aumentando en Estados Unidos. \n\nEl alcohol es un factor: \n</string>
     <string name="consequences_card_3_description">Excessive alcohol consumption can have a significant negative impact on mental capacity.</string>
     <string name="consequences_card_4_description">Beber está asociado con una serie de problemas de salud y puede empeorar ciertos problemas de salud crónicos.\n\n</string>
     <string name="consequences_card_5_description">Algunos signos de AUD son seguir bebiendo aunque cause problemas con tu familia o en el trabajo, beber más de lo que tenías pensado, tener que beber más que antes para obtener un efecto deseado, no poder dejar de beber después de intentos repetidos, o seguir bebiendo a pesar de las consecuencias negativas.\n\nLos signos de AUD también pueden incluir beber para aliviar emociones negativas como sentirse "deprimido/a", ansioso/a, incómodo/a, infeliz, enfermo/a, insatisfecho/a con la vida, u otras emociones negativas que fueron causadas o empeoradas por el abuso de alcohol. \n\n Más allá de estos riesgos para la salud física y mental, el abuso frecuente de alcohol también está relacionado con problemas personales, como perder la licencia de conducir o tener problemas en las relaciones.</string>
@@ -1619,4 +1619,5 @@ Estas preguntas se refieren al uso de drogas en los últimos 12 meses. Por favor
     <string name="also_niaaa_defines_heavy_drinking_as">Además, NIAAA define el consumo excesivo de alcohol como:</string>
     <string name="congratulations">¡Felicidades!</string>
     <string name="congrats_description">Now you need to control your drink habit by taking a count not only monthly goal, but also daily limit according to the guideline about moderate drinking\n\nConozcamos las características del entrenador de bebidas.</string>
+    <string name="please_select_atleast_one_day_to_set_alcohol_free_days">Please select atleast one day to set alcohol free days.</string>
 </resources>

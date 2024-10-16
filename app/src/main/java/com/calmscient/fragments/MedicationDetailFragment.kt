@@ -231,12 +231,12 @@
                             binding.morningAlarmTimeView.text = alarmFormattedTime12Hour
                             binding.alarmToggleButtonMorning.isOn = isEnabled
                         }
-                        in 12..18 -> { // Afternoon (12:00 PM to 6:59 PM)
+                        in 12..17 -> { // Afternoon (12:00 PM to 5:59 PM)
                             binding.afternoonTimeView.text = medicationFormattedTime12Hour
                             binding.afternoonAlarmTimeView.text = alarmFormattedTime12Hour
                             binding.alarmToggleButtonAfternoon.isOn = isEnabled
                         }
-                        in 19..23 -> { // Evening (7:00 PM to 11:59 PM)
+                        in 18..23 -> { // Evening (6:00 PM to 11:59 PM)
                             binding.eveningTimeView.text = medicationFormattedTime12Hour
                             binding.eveningAlarmTimeView.text = alarmFormattedTime12Hour
                             binding.alarmToggleButtonEvening.isOn = isEnabled
@@ -244,10 +244,6 @@
                     }
                 }
             }
-
-
-
-
 
             if (binding.morningTimeView.text.isBlank()) {
                 binding.morningAlarmCard.visibility = View.VISIBLE

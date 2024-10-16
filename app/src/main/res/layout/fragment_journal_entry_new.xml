@@ -168,14 +168,13 @@
 
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/btn_addNewEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_50sdp"
-        android:visibility="gone"
-        android:background="@drawable/ic_floatingicon" />
+        android:src="@drawable/ic_floatingicon"
+        android:layout_marginBottom="@dimen/_50sdp"/>
 
 </RelativeLayout>

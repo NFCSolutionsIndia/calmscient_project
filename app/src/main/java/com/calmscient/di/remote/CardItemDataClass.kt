@@ -32,6 +32,7 @@ data class ChapterDataClass(
     val pageCount: Int,
     val imageUrl: String?,
     val chapterOnlyReading: Boolean,
+    val isFromExercises: Int
 )
 
 enum class ItemType {

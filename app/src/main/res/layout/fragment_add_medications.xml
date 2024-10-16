@@ -406,7 +406,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="01:00 PM"
+                                    android:text="12:00 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 
@@ -486,7 +486,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="12:50 PM"
+                                    android:text="11:50 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 
@@ -569,7 +569,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="07:00 PM"
+                                    android:text="06:00 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 
@@ -648,7 +648,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lexendmedium"
-                                    android:text="06:50 PM"
+                                    android:text="05:50 PM"
                                     android:textColor="@color/purple_100"
                                     android:textSize="@dimen/_20sdp" />
 

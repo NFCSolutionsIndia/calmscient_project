@@ -181,6 +181,7 @@
                 android:fontFamily="@font/lexendlight"
                 android:text="@string/save_it_to_weekly_summary_journal_entry"
                 android:textColor="@color/black_head"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:textSize="@dimen/_12sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat

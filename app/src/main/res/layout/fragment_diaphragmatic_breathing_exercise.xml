@@ -472,24 +472,36 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_height="wrap_content">
 
+                <!-- Thumbnail Image -->
+                <ImageView
+                    android:id="@+id/videoThumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    android:scaleType="centerCrop"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"/>
+
+                <ImageButton
+                    android:id="@+id/playThumbnailButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Play"
+                    android:src="@drawable/ic_play_icon"
+                    android:visibility="visible" />
+
                 <!-- ExoPlayerView -->
                 <com.google.android.exoplayer2.ui.PlayerView
                     android:id="@+id/playerViewLayout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_200sdp"
-                    android:layout_centerInParent="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     app:buffered_color="@color/example_7_button"
                     app:resize_mode="fit"
+                    android:visibility="gone"
                     app:show_buffering="always"
                     app:use_controller="true" />
-                <!--<ImageView
-                    android:id="@+id/thumbnailImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_menu" />-->
 
                 <!-- Back Icon -->
                 <ImageButton

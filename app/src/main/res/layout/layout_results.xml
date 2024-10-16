@@ -93,7 +93,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginStart="@dimen/_6sdp"
             android:layout_weight="1">
 
             <!-- First TextView - Remind Me -->
@@ -107,7 +107,6 @@
                 android:text="@string/remind_me"
                 android:textColor="@color/grey_light"
                 android:textSize="@dimen/_12sdp" />
-
             <!-- Second TextView - Weekly, positioned below the first TextView -->
             <TextView
                 android:id="@+id/tv_weekly"
@@ -115,6 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_remind"
                 android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_toStartOf="@+id/ic_notify"
                 android:fontFamily="@font/lexendregular"
                 android:text="@string/weekly"
                 android:textColor="@color/example_7_button"
@@ -127,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="13dp"
                 android:src="@drawable/ic_notify_results" />
@@ -217,10 +219,10 @@
 
                     <TextView
                         android:id="@+id/tv_score"
-                        android:layout_width="@dimen/_50sdp"
+                        android:layout_width="@dimen/_54sdp"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_marginStart="@dimen/_18sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/lexendregular"
                         android:text="@string/score"
                         android:textColor="@color/purple_100"
@@ -232,20 +234,10 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginStart="@dimen/_12sdp"
-
+                        android:layout_toEndOf="@+id/tv_score"
                         android:fontFamily="@font/lexendmedium"
                         android:textColor="@color/purple_100"
                         android:textSize="@dimen/_25sdp" />
-                    <!--<TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_toEndOf="@+id/tv_score"
-                        android:fontFamily="@font/montserratsemibold"
-                        android:text="06"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_15sdp" />-->
                 </RelativeLayout>
 
                 <TextView
@@ -254,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:layout_toLeftOf="@id/tv_total"
+                    android:layout_toStartOf="@id/tv_total"
                     android:fontFamily="@font/lexendmedium"
                     android:textColor="@color/hospital_name"
                     android:textSize="@dimen/_25sdp" />

@@ -44,7 +44,7 @@ import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MindfulWalkingExerciseFragment : Fragment(), MediaPlayer.OnPreparedListener,
+class MindfulWalkingExerciseFragment(favourite: Int) : Fragment(), MediaPlayer.OnPreparedListener,
     MediaPlayer.OnBufferingUpdateListener {
     private lateinit var binding: MindfulWalkingExercisesBinding
     private lateinit var mediaPlayer: MediaPlayer
@@ -53,7 +53,7 @@ class MindfulWalkingExerciseFragment : Fragment(), MediaPlayer.OnPreparedListene
     private lateinit var handler: Handler
     private var isMediaPlayerInitialized = false
     lateinit var savePrefData: SavePreferences
-    var isFavorite = true
+    var isFavorite = favourite == 1
     private lateinit var loadingDialog: ProgressDialog
 
     private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
@@ -83,6 +83,14 @@ class MindfulWalkingExerciseFragment : Fragment(), MediaPlayer.OnPreparedListene
         val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
+        //Initially setting if it is favorite
+        isFavorite = if (isFavorite) {
+            favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
+            false
+        } else {
+            favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image)
+            true
+        }
 
         favoritesIcon.setOnClickListener {
             isFavorite = !isFavorite
@@ -100,7 +108,8 @@ class MindfulWalkingExerciseFragment : Fragment(), MediaPlayer.OnPreparedListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.backIcon.setOnClickListener {
-            loadFragment(ExerciseFragment())
+            //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
         }
         waveformView = requireActivity().findViewById(R.id.waveformView)
         playButton = requireActivity().findViewById(R.id.playButton)
@@ -170,11 +179,6 @@ class MindfulWalkingExerciseFragment : Fragment(), MediaPlayer.OnPreparedListene
 
         binding.audioForward.setOnClickListener {
             skipForward()
-        }
-
-        binding.backIcon.setOnClickListener {
-            //onBackPressed()
-            loadFragment(ExerciseFragment())
         }
         /*
                 binding.informationIcon.setOnClickListener{

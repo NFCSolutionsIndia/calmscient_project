@@ -443,7 +443,7 @@
 
                         <TextView
                             android:id="@+id/all"
-                            android:layout_width="match_parent"
+                            android:layout_width="@dimen/_50sdp"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/purple_100"
                             android:fontFamily="@font/lexendlight"
@@ -485,7 +485,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_8sdp">
 
         <ImageView
             android:id="@+id/previousQuestion"

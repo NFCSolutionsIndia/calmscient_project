@@ -39,7 +39,7 @@ import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MindfulnessExercisesFragment : Fragment() {
+class MindfulnessExercisesFragment(private val favourite: Int, private val index: Int) : Fragment() {
     private lateinit var binding: MindfulnesscreensBinding
     private lateinit var anxietyadapter: MindfulnessScreensAdapter
     private val anxietyText = mutableListOf<MindfulnessExercisesTextDataClass>()
@@ -80,9 +80,12 @@ class MindfulnessExercisesFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar2)
         progressBar.progress = currentQuestionIndex * (maxProgress / (anxietyText.size - 1))
 
+
         setupNavigation()
         initializeAdapter()
         displayCardViews()
+
+
 
         stepIndicators = listOf(
             view.findViewById(R.id.step1Indicator),
@@ -94,14 +97,26 @@ class MindfulnessExercisesFragment : Fragment() {
         )
 
         binding.menuIcon.setOnClickListener {
-            requireActivity().onBackPressed()
+            //requireActivity().onBackPressed()
+            requireActivity().supportFragmentManager.popBackStack()
         }
+
+        // Check if the index is greater than 0, and navigate to index - 1
+        /*if (index > 0) {
+            currentQuestionIndex = index - 1
+            binding.optionsRecyclerView1.scrollToPosition(currentQuestionIndex)
+            progressBar.progress = currentQuestionIndex * (maxProgress / (anxietyText.size - 1))
+            updateStepIndicators()
+        }*/
     }
 
     private fun initializeAdapter() {
         binding.optionsRecyclerView1.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        anxietyadapter = MindfulnessScreensAdapter(anxietyText)
+        anxietyadapter = MindfulnessScreensAdapter(anxietyText,favourite) { isFavorite ->
+            // Make the API call with true or false based on isFavorite
+            favouritesAPICall(isFavorite)
+        }
         binding.optionsRecyclerView1.adapter = anxietyadapter
     }
 
@@ -198,6 +213,12 @@ class MindfulnessExercisesFragment : Fragment() {
         })
     }
 
+    private fun updateAllStepIndicators(){
+        stepIndicators.forEach{
+            it.setImageResource(R.drawable.ic_activetickmark)
+        }
+    }
+
     private fun updateStepIndicators() {
         // Update the previous step indicator to inactive
         /*if (previousQuestionIndex >= 0 && previousQuestionIndex < stepIndicators.size) {
@@ -249,7 +270,7 @@ class MindfulnessExercisesFragment : Fragment() {
         savePatientExercisesFavoritesViewModel.clear()
 
         val isFav = if(isFavourite) 1 else 0
-        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"Mindfulness - what is it?")
+        val request = SavePatientExercisesFavoritesRequest(isFav,6, loginResponse.loginDetails.patientID,"Mindfulness – What is it?")
 
         savePatientExercisesFavoritesViewModel.savePatientExercisesFavorites(request,loginResponse.token.access_token)
 

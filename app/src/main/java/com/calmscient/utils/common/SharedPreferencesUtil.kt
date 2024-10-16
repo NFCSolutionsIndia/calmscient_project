@@ -18,6 +18,7 @@ object SharedPreferencesUtil {
     private const val PREF_NAME = "my_prefs"
 
     fun saveData(context: Context, key: String, value: String) {
+        clearData(context, key)
         val sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putString(key, value)

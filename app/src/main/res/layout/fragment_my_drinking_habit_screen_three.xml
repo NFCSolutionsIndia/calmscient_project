@@ -292,6 +292,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="16dp"
                     android:clickable="true"
+                    android:layout_marginBottom="@dimen/_8sdp"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_question_back" />
 
@@ -302,6 +303,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="16dp"
                     android:clickable="true"
+                    android:layout_marginBottom="@dimen/_8sdp"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_next_question" />
             </RelativeLayout>

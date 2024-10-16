@@ -22,27 +22,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat.recreate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
 import com.calmscient.activities.SettingsActivity
-import com.calmscient.activities.WeeklySummary
 import com.calmscient.adapters.AnxietyIntroductionAdapter
 import com.calmscient.adapters.CardItemDiffCallback
 import com.calmscient.adapters.ManageAnxietyChapterAdapter
 import com.calmscient.databinding.FragmentHomeBinding
-import com.calmscient.di.remote.CardItemDataClass
 import com.calmscient.di.remote.ChapterDataClass
-import com.calmscient.di.remote.ItemType
-import com.calmscient.di.remote.request.MenuItemRequest
 import com.calmscient.di.remote.response.FavoriteItem
 import com.calmscient.di.remote.response.LoginResponse
-import com.calmscient.di.remote.response.ManagingAnxiety
 import com.calmscient.di.remote.response.MenuItem
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
@@ -54,7 +47,6 @@ import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.network.ServerTimeoutHandler
 import com.calmscient.viewmodels.LoginViewModel
 import com.calmscient.viewmodels.MenuItemViewModel
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -167,6 +159,7 @@ class HomeFragment : Fragment() {
                 }
                 if(favoriteItem.isNotEmpty()){
                     bindDataToRecyclerView(favoriteItem)
+
                 }
             }
             else{
@@ -275,7 +268,8 @@ class HomeFragment : Fragment() {
                 isCourseCompleted = 0,
                 pageCount = lesson.pageNo,
                 imageUrl = lesson.thumbnailUrl,
-                chapterOnlyReading = true
+                chapterOnlyReading = true,
+                isFromExercises = lesson.isFromExercises
             )
         }
 
@@ -287,6 +281,19 @@ class HomeFragment : Fragment() {
             if (url != null) {
                 chapter.chapterName?.let { FavouritesWebViewFragment.newInstance(url, it) }
                     ?.let { loadFragment(it) }
+            } else {
+                when(chapter.chapterName){
+                    getString(R.string.mindfulness_exercises) -> { loadFragment(MindfulnessExercisesFragment(1,chapter.pageCount)) }
+                    getString(R.string.butterflyhug_exercises) -> { loadFragment(ButterflyHugExercisesFragment(1)) }
+                    getString(R.string.handover_esxercises) -> { loadFragment(HandOverYourHeartFragment(1))}
+                    getString(R.string.mindfulwalking_exercises) -> { loadFragment(MindfulWalkingExerciseFragment(1))}
+                    getString(R.string.dance_exercises) -> { loadFragment(DancingExercisesFragment(1))}
+                    getString(R.string.running_exercises) -> { loadFragment(RunningExerciseFragment(1))}
+                    getString(R.string.body_moment_exercies) -> { loadFragment(BodyMovementExerciseFragment(1))}
+                    getString(R.string.musclerelaxation_exercises) -> { loadFragment(MuscleRelaxationExerciseFragment(1))}
+                    getString(R.string.breathing_technic) -> { loadFragment(DeepBreathingExerciseFragment(1,"Home"))}
+                    getString(R.string._4_7_8_breathing_exercise)-> {loadFragment(FourSevenEightBreathingExerciseFragment("Home"))}
+                }
             }
         }
 
@@ -364,6 +371,10 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         updateLanguageSettings()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 
