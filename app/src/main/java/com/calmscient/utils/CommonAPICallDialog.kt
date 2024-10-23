@@ -15,6 +15,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import com.calmscient.R
@@ -24,13 +26,21 @@ class CommonAPICallDialog(private val context: Context) {
     private var onDismissListener: (() -> Unit)? = null
 
     @SuppressLint("MissingInflatedId")
-    fun showDialog(message: String) {
+    fun showDialog(message: String, imageResId: Int? = null) {
         dismiss()
 
         val dialogView = LayoutInflater.from(context).inflate(R.layout.layout_common_dialog, null)
         val infoTextView = dialogView.findViewById<TextView>(R.id.dialogInfoTextView)
+        val dialogImageView = dialogView.findViewById<ImageView>(R.id.dialogImageView)
         val okButton = dialogView.findViewById<AppCompatButton>(R.id.okButton)
         infoTextView.text = message
+
+        if (imageResId != null) {
+            dialogImageView.setImageResource(imageResId)
+            dialogImageView.visibility = View.VISIBLE
+        } else {
+            dialogImageView.visibility = View.GONE
+        }
 
         val dialogBuilder = AlertDialog.Builder(context, R.style.CustomDialog).setView(dialogView)
         dialogBuilder.setCancelable(false)

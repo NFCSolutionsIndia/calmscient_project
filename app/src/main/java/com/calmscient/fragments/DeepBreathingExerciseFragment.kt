@@ -70,6 +70,13 @@ class DeepBreathingExerciseFragment(favourite: Int, source: String) : Fragment()
         val jsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
+        val res = SharedPreferencesUtil.getData(requireContext(), "breathingTechnicExercise", "")
+        if(res.isNotEmpty()){
+            isFavorite = res.toInt() == 1
+        }else{
+            isFavorite = false
+        }
+
         val favoritesIcon = binding.favoritesIcon
         //Initially setting if it is favorite
         isFavorite = if (isFavorite) {
@@ -85,9 +92,11 @@ class DeepBreathingExerciseFragment(favourite: Int, source: String) : Fragment()
             if (isFavorite) {
                 favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image) // Set your desired color
                 favouritesAPICall(false)
+                SharedPreferencesUtil.saveData(requireContext(),"breathingTechnicExercise",0.toString())
             } else {
                 favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
                 favouritesAPICall(true)
+                SharedPreferencesUtil.saveData(requireContext(),"breathingTechnicExercise",1.toString())
             }
         }
         binding.menuicon.setOnClickListener {

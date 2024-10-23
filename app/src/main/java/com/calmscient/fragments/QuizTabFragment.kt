@@ -140,7 +140,7 @@ class QuizTabFragment : Fragment() {
                 getPatientJournalByPatientIdViewModel.saveResponseLiveData.observe(requireActivity(),
                     Observer { successData->
                         if(successData != null){
-                           // getPatientJournalByPatientIdResponse = successData
+                           getPatientJournalByPatientIdResponse = successData
                             updateUI(successData.quiz)
                             if(successData.quiz.isEmpty()){
                                 binding.tvNoRecords.visibility = View.VISIBLE
@@ -180,6 +180,7 @@ class QuizTabFragment : Fragment() {
         }
 
         journalEntryQuizAdapter.notifyDataSetChanged()
+
     }
 
     private fun calculateProgressBarValue(score: Int, total: Int): Int {
@@ -195,4 +196,18 @@ class QuizTabFragment : Fragment() {
         super.onResume()
         getPatientJournalDataAPICall(null)
     }
+
+    fun performSearch(query: String?) {
+        if (query.isNullOrBlank()) {
+            // Reset list if the query is empty
+            updateUI(getPatientJournalByPatientIdResponse.quiz)
+        } else {
+            val filteredList = getPatientJournalByPatientIdResponse.quiz.filter {
+                it.title.contains(query, ignoreCase = true) ||
+                        it.completionDateTime.contains(query, ignoreCase = true)
+            }
+            updateUI(filteredList)
+        }
+    }
+
 }

@@ -140,7 +140,7 @@ class DiscoveryExerciseTabFragment : Fragment() {
                         requireActivity(),
                         Observer { successData ->
                             if (successData != null) {
-                                // getPatientJournalByPatientIdResponse = successData
+                                getPatientJournalByPatientIdResponse = successData
                                 updateUI(successData.discoveryExercises)
 
                                 if(successData.discoveryExercises.isEmpty()){
@@ -163,11 +163,24 @@ class DiscoveryExerciseTabFragment : Fragment() {
         val sortedItems = dailyJournalItem.sortedByDescending { it.createdAt }
         discoveryExerciseItems.addAll(sortedItems)
         journalEntryDailyJournalAdapter.notifyDataSetChanged()
+
     }
 
     override fun onResume() {
         super.onResume()
         getPatientJournalDataAPICall(null)
+    }
+
+    fun performSearch(query: String?) {
+        if (query.isNullOrBlank()) {
+            // Reset list if the query is empty
+            updateUI(getPatientJournalByPatientIdResponse.discoveryExercises)
+        } else {
+            val filteredList = getPatientJournalByPatientIdResponse.discoveryExercises.filter {
+                it.entry.contains(query, ignoreCase = true)
+            }
+            updateUI(filteredList)
+        }
     }
 
 }

@@ -157,7 +157,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_6sdp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -165,12 +165,12 @@
                 android:id="@+id/braving_CourseTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_weight="1"
                 android:fontFamily="@font/lexendmedium"
                 android:gravity="left"
-                android:text="@string/summaryprogress_course"
-                android:textColor="@color/example_7_button"
+                android:text="@string/sections"
+                android:textColor="@color/black_head"
                 android:textSize="@dimen/_12sdp" />
 
             <TextView
@@ -180,7 +180,7 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="right"
                 android:layout_marginStart="@dimen/_130sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_weight="1"
                 android:fontFamily="@font/lexendmedium"
                 android:text="@string/summaryprogress_completed"
@@ -193,7 +193,7 @@
             android:id="@+id/expandableRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp" />
+            android:layout_marginHorizontal="@dimen/_6sdp" />
 
     </LinearLayout>
 
@@ -204,7 +204,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/button_border"
         android:fontFamily="@font/lexendmedium"
         android:text="@string/need_to_talk"

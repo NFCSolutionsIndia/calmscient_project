@@ -398,7 +398,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             // Set fromDate as 7 days back from selectedDate
             val startDateCalendar = Calendar.getInstance().apply {
                 time = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-                add(Calendar.DATE, -7)
+                add(Calendar.DATE, -6)
             }
             fromDate = dateFormat.format(startDateCalendar.time)
         } else {
@@ -406,7 +406,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
             toDate = dateFormat.format(calendar.time)
 
             // Set fromDate as 7 days back from today's date
-            calendar.add(Calendar.DATE, -7)
+            calendar.add(Calendar.DATE, -6)
             fromDate = dateFormat.format(calendar.time)
         }
         // Create the final date string

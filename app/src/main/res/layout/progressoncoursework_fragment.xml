@@ -33,7 +33,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_toEndOf="@+id/back_icon"
+            android:layout_alignParentEnd="true"
+            android:textAlignment="center"
+            android:ellipsize="end"
             android:fontFamily="@font/lexendmedium"
+            android:maxLines="1"
             android:text="@string/summaryof_progressofwork"
             android:textColor="@color/black_head"
             android:textSize="@dimen/_16sdp" />
@@ -111,7 +117,7 @@
                         android:scaleY="1"
                         android:theme="@style/ProgressBarStyle" />
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -126,10 +132,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_weight="1"
+                            android:layout_alignParentStart="true"
                             android:fontFamily="@font/lexendmedium"
                             android:gravity="left"
-                            android:text="16%"
+                            android:text="0.0%"
                             android:textColor="@color/example_7_button"
                             android:textSize="@dimen/_12sdp" />
 
@@ -137,16 +143,14 @@
                             android:id="@+id/text3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginStart="@dimen/_180sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_weight="1"
                             android:fontFamily="@font/lexendmedium"
+                            android:layout_alignParentEnd="true"
                             android:text="100%"
                             android:textColor="@color/black_head"
                             android:textDirection="ltr"
                             android:textSize="@dimen/_12sdp" />
-                    </LinearLayout>
+                    </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -163,7 +167,7 @@
                     android:id="@+id/courseTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/lexendmedium"
                     android:gravity="left"
@@ -177,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginStart="@dimen/_130sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/lexendmedium"
                     android:text="@string/summaryprogress_completed"
@@ -191,7 +195,7 @@
                 android:id="@+id/courseProgressRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_14sdp">
+                android:layout_marginHorizontal="@dimen/_6sdp">
 
             </com.calmscient.utils.NonSwipeRecyclerView>
         </LinearLayout>

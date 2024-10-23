@@ -29,7 +29,7 @@
         android:weightSum="4">
 
         <CheckBox
-            android:id="@+id/checkBox1"
+            android:id="@+id/medicationCheckBox"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center"

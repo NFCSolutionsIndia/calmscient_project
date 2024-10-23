@@ -1,978 +1,988 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.UserMoodFragment">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/id_wishes"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/lexendmedium"
-            android:gravity="center"
-            android:paddingVertical="12dp"
-            android:textColor="@color/black_head"
-            android:textSize="@dimen/_16sdp" />
+        android:layout_height="match_parent"
+        tools:context=".fragments.UserMoodFragment"
+        android:layout_marginBottom="@dimen/_110sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <!--afternoon mood-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_afternoon"
+
+            <TextView
+                android:id="@+id/id_wishes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/lexendmedium"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:textColor="@color/black_head"
+                android:textSize="@dimen/_16sdp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0.0px"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="12dp"
-                app:cardPreventCornerOverlap="false">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical">
+                <!--afternoon mood-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_afternoon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/id_after_mood"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexendmedium"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_13sdp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="5">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_eve_bad"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_bad" />
-
-                            <TextView
-                                android:id="@+id/tv_after_bad"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:textColor="@color/grey_light"
-                                android:textAlignment="center"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_eve_better"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_better" />
-
-                            <TextView
-                                android:id="@+id/tv_after_better"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_eve_fair"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_fair" />
-
-                            <TextView
-                                android:id="@+id/tv_after_fair"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_eve_good"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_good" />
-
-                            <TextView
-                                android:id="@+id/tv_after_good"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_eve_excellent"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_excellent" />
-
-                            <TextView
-                                android:id="@+id/tv_after_xcellent"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.cardview.widget.CardView>
-            <!--evening day-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_eve_day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0.0px"
-                android:elevation="8dp"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="10dp"
-                app:cardPreventCornerOverlap="false">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/id_even_mood"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexendmedium"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_15sdp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="5">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_nig_bad"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_bad"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_eve_bad"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:textAlignment="center"
-                                android:fontFamily="@font/lexendmedium"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_nig_better"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_better"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_eve_better"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_nig_fair"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_fair"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_eve_fair"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_nig_good"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_good"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_eve_good"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_nig_excellent"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_excellent"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_eve_xcellent"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.cardview.widget.CardView>
-            <!--morning_mood-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_morni_mood"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="20dp">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/id_morn_mood"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:fontFamily="@font/lexendmedium"
-                        android:paddingHorizontal="16dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_15sdp" />
-
-                    <TextView
-                        android:id="@+id/id_day_today"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexendmedium"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_13sdp"
-                        android:visibility="gone" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="5">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_mBad"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_bad" />
-
-                            <TextView
-                                android:id="@+id/tv_bad"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:textAlignment="center"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_mBetter"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_better"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_better"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:gravity="center"
-                                android:textStyle="bold"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_mFair"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:src="@drawable/icon_fair"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_fair"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_mGood"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_good"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_good"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.mikhaellopez.circularimageview.CircularImageView
-                                android:id="@+id/img_mExcellent"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:src="@drawable/icon_excellent"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_xcellent"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:layout_marginTop="@dimen/_3sdp"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.cardview.widget.CardView>
-            <!--spend_time-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/spend_time_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0.0px"
-                android:elevation="8dp"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="10dp"
-                app:cardPreventCornerOverlap="false">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_withWhomSpentTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexendmedium"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_15sdp" />
-
-                    <LinearLayout
-                        android:id="@+id/eve_spend_time"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="5">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/img_family"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:elevation="@dimen/_10sdp"
-                                android:src="@drawable/family" />
-
-                            <TextView
-                                android:id="@+id/tv_family"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/img_friends"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:elevation="@dimen/_10sdp"
-                                android:src="@drawable/friends" />
-
-                            <TextView
-                                android:id="@+id/tv_friends"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/img_workmates"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:elevation="@dimen/_10sdp"
-                                android:src="@drawable/workmates" />
-
-                            <TextView
-                                android:id="@+id/tv_workmates"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/img_others"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:elevation="@dimen/_10sdp"
-                                android:src="@drawable/others"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_others"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/img_alone"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_weight="1"
-                                android:elevation="@dimen/_10sdp"
-                                android:src="@drawable/alone"
-                                tools:ignore="MissingConstraints" />
-
-                            <TextView
-                                android:id="@+id/tv_alone"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lexendmedium"
-                                android:gravity="center"
-                                android:textColor="@color/grey_light"
-                                android:textSize="@dimen/_8sdp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.cardview.widget.CardView>
-            <!--morning_sleep-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/morn_hours_sleep_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0.0px"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="12dp"
-                app:cardPreventCornerOverlap="false">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_howManyHoursSleep"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexendregular"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_15sdp" />
+                    android:layout_margin="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0.0px"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="12dp"
+                    app:cardPreventCornerOverlap="false">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="9">
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="vertical">
 
-                        <!--<LinearLayout
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/id_after_mood"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal">-->
+                            android:fontFamily="@font/lexendmedium"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="12dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_13sdp" />
 
-                        <ImageView
-                            android:id="@+id/sleep_less"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:src="@drawable/less" />
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:orientation="horizontal"
+                            android:weightSum="5">
 
-                        <ImageView
-                            android:id="@+id/sleep_4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_4" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/sleep_5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_5" />
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_eve_bad"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_bad" />
 
-                        <ImageView
-                            android:id="@+id/sleep_6"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_6" />
+                                <TextView
+                                    android:id="@+id/tv_after_bad"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:textColor="@color/grey_light"
+                                    android:textAlignment="center"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/sleep_7"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_7" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/sleep_8"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_8" />
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_eve_better"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_better" />
 
-                        <ImageView
-                            android:id="@+id/sleep_9"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_9" />
+                                <TextView
+                                    android:id="@+id/tv_after_better"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/sleep_10"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_10" />
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/sleep_more"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/sleep_more" />
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_eve_fair"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_fair" />
+
+                                <TextView
+                                    android:id="@+id/tv_after_fair"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_eve_good"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_good" />
+
+                                <TextView
+                                    android:id="@+id/tv_after_good"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_eve_excellent"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_excellent" />
+
+                                <TextView
+                                    android:id="@+id/tv_after_xcellent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+                        </LinearLayout>
                     </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <TextView
-                        android:id="@+id/tv_hrs_slept"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:gravity="end"
-                        android:text=""
-                        android:textColor="@color/black_head"
-                        android:textSize="14dp"
-                        android:textStyle="bold" />
-
-                    <!--</LinearLayout>-->
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </androidx.cardview.widget.CardView>
-            <!--morning_meds-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/id_morn_meds"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0.0px"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="20dp"
-                app:cardPreventCornerOverlap="false">
-
-                <LinearLayout
+                </androidx.cardview.widget.CardView>
+                <!--evening day-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_eve_day"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:layout_margin="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0.0px"
+                    android:elevation="8dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="10dp"
+                    app:cardPreventCornerOverlap="false">
 
-                    <TextView
-                        android:id="@+id/tv_meds"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexendmedium"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_15sdp" />
-                    <!-- <TextView
-                         android:id="@+id/tv_eve_meds"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:fontFamily="@font/sfprotextbold"
-                         android:paddingHorizontal="16dp"
-                         android:paddingVertical="12dp"
-                         android:text="@string/take_medic_evening"
-                         android:textColor="@color/black"
-                         android:textSize="@dimen/_15sdp" />-->
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/id_even_mood"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexendmedium"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="12dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="5">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_nig_bad"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_bad"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_eve_bad"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:textAlignment="center"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_nig_better"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_better"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_eve_better"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_nig_fair"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_fair"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_eve_fair"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_nig_good"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_good"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_eve_good"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_nig_excellent"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_excellent"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_eve_xcellent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
+                <!--morning_mood-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_morni_mood"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="20dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/id_morn_mood"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:fontFamily="@font/lexendmedium"
+                            android:paddingHorizontal="16dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/id_day_today"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexendmedium"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="12dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_13sdp"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:orientation="horizontal"
+                            android:weightSum="5">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_mBad"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_bad" />
+
+                                <TextView
+                                    android:id="@+id/tv_bad"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:textAlignment="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_mBetter"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_better"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_better"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_mFair"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/icon_fair"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_fair"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_mGood"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_good"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_good"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <com.mikhaellopez.circularimageview.CircularImageView
+                                    android:id="@+id/img_mExcellent"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:src="@drawable/icon_excellent"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_xcellent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
+                <!--spend_time-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/spend_time_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0.0px"
+                    android:elevation="8dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="10dp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_withWhomSpentTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexendmedium"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="12dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <LinearLayout
+                            android:id="@+id/eve_spend_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="5">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/img_family"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:elevation="@dimen/_10sdp"
+                                    android:src="@drawable/family" />
+
+                                <TextView
+                                    android:id="@+id/tv_family"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/img_friends"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:elevation="@dimen/_10sdp"
+                                    android:src="@drawable/friends" />
+
+                                <TextView
+                                    android:id="@+id/tv_friends"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/img_workmates"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:elevation="@dimen/_10sdp"
+                                    android:src="@drawable/workmates" />
+
+                                <TextView
+                                    android:id="@+id/tv_workmates"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/img_others"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:elevation="@dimen/_10sdp"
+                                    android:src="@drawable/others"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_others"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/img_alone"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_weight="1"
+                                    android:elevation="@dimen/_10sdp"
+                                    android:src="@drawable/alone"
+                                    tools:ignore="MissingConstraints" />
+
+                                <TextView
+                                    android:id="@+id/tv_alone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lexendmedium"
+                                    android:gravity="center"
+                                    android:textColor="@color/grey_light"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
+                <!--morning_sleep-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/morn_hours_sleep_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0.0px"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="12dp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_howManyHoursSleep"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexendregular"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="12dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="9">
+
+                            <!--<LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">-->
+
+                            <ImageView
+                                android:id="@+id/sleep_less"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:src="@drawable/less" />
+
+                            <ImageView
+                                android:id="@+id/sleep_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_4" />
+
+                            <ImageView
+                                android:id="@+id/sleep_5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_5" />
+
+                            <ImageView
+                                android:id="@+id/sleep_6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_6" />
+
+                            <ImageView
+                                android:id="@+id/sleep_7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_7" />
+
+                            <ImageView
+                                android:id="@+id/sleep_8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_8" />
+
+                            <ImageView
+                                android:id="@+id/sleep_9"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_9" />
+
+                            <ImageView
+                                android:id="@+id/sleep_10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_10" />
+
+                            <ImageView
+                                android:id="@+id/sleep_more"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/sleep_more" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <TextView
+                            android:id="@+id/tv_hrs_slept"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:gravity="end"
+                            android:text=""
+                            android:textColor="@color/black_head"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <!--</LinearLayout>-->
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.cardview.widget.CardView>
+                <!--morning_meds-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/id_morn_meds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0.0px"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="20dp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_meds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lexendmedium"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="12dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_15sdp" />
+                        <!-- <TextView
+                             android:id="@+id/tv_eve_meds"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:fontFamily="@font/sfprotextbold"
+                             android:paddingHorizontal="16dp"
+                             android:paddingVertical="12dp"
+                             android:text="@string/take_medic_evening"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/_15sdp" />-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            tools:ignore="UseSwitchCompatOrMaterialXml">
+
+                            <!-- <Switch
+                                 android:id="@+id/idSwitch"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:layout_margin="10dp"
+                                 android:checked="true"
+                                 android:textOff="OFF"
+                                 android:textOn="ON" />-->
+                            <com.github.angads25.toggle.widget.LabeledSwitch
+                                android:id="@+id/id_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:textSize="14sp"
+                                app:on="false" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <!--daily_journel-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_daily_journel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="12dp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0.0px"
+                    android:visibility="gone"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="20dp"
+                    app:cardPreventCornerOverlap="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        tools:ignore="UseSwitchCompatOrMaterialXml">
+                        android:orientation="vertical">
 
-                        <!-- <Switch
-                             android:id="@+id/idSwitch"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_margin="10dp"
-                             android:checked="true"
-                             android:textOff="OFF"
-                             android:textOn="ON" />-->
-                        <com.github.angads25.toggle.widget.LabeledSwitch
-                            android:id="@+id/id_switch"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tv_dailyJournal"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:textSize="14sp"
-                            app:on="false" />
+                            android:fontFamily="@font/lexendmedium"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="12dp"
+                            android:textColor="@color/black_head"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <EditText
+                            android:id="@+id/et_daily_journel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_12sdp"
+                            android:layout_marginRight="@dimen/_12sdp"
+                            android:layout_marginBottom="@dimen/_12sdp"
+                            android:background="@drawable/edittext_grey_background"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:lines="8"
+                            android:overScrollMode="always"
+                            android:textCursorDrawable="@null" />
                     </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-            <!--daily_journel-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_daily_journel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="12dp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0.0px"
-                android:visibility="gone"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="20dp"
-                app:cardPreventCornerOverlap="false">
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_dailyJournal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lexendmedium"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="12dp"
-                        android:textColor="@color/black_head"
-                        android:textSize="@dimen/_15sdp" />
-
-                    <EditText
-                        android:id="@+id/et_daily_journel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_12sdp"
-                        android:layout_marginRight="@dimen/_12sdp"
-                        android:layout_marginBottom="@dimen/_12sdp"
-                        android:background="@drawable/edittext_grey_background"
-                        android:gravity="top"
-                        android:inputType="textMultiLine"
-                        android:lines="8"
-                        android:overScrollMode="always"
-                        android:textCursorDrawable="@null" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
         </LinearLayout>
-        <!--button-->
-        <LinearLayout
-            android:id="@+id/layout_button"
+    </ScrollView>
+
+    <!--button-->
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="12dp"
-            android:visibility="visible"
-            android:orientation="vertical">
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lexendregular"
+            android:background="@drawable/button_border"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_save"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/lexendregular"
-                android:background="@drawable/button_border"
-                android:gravity="center"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_16sdp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_skip"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/lexendregular"
-                android:background="@drawable/skip_border"
-                android:gravity="center"
-                android:textAllCaps="false"
-                android:textColor="@color/btn_gradient_color"
-                android:textSize="@dimen/_16sdp" />
-        </LinearLayout>
-
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_skip"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lexendregular"
+            android:background="@drawable/skip_border"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:textColor="@color/btn_gradient_color"
+            android:textSize="@dimen/_16sdp" />
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>

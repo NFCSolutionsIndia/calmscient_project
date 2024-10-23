@@ -252,7 +252,7 @@ class EventsTrackerFragment : Fragment() {
                     Observer { successData->
                         if(successData != null)
                         {
-                            commonAPICallDialog.showDialog(successData.statusResponse.responseMessage)
+                            commonAPICallDialog.showDialog(successData.statusResponse.responseMessage,R.drawable.ic_success_dialog)
 
                             commonAPICallDialog.setOnDismissListener {
                                 loadFragment(TakingControlFragment())

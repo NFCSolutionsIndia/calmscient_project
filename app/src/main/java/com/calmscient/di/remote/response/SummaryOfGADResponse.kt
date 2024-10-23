@@ -20,7 +20,7 @@ data class gadDashboardByDateRangeList(
     val lastName: String,
     val scoreTitle: String,
     val startDate: String,
-    val completionDate: String,
+    val completionDate: String?,
     val pscreeningId: Int
 )
 

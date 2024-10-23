@@ -20,6 +20,9 @@ import androidx.fragment.app.DialogFragment
 import com.calmscient.R
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class CustomCalendarDialog : DialogFragment() {
 
@@ -39,6 +42,31 @@ class CustomCalendarDialog : DialogFragment() {
         val view = inflater.inflate(R.layout.dialog_date_picker, container, false)
 
         val calendarView: MaterialCalendarView = view.findViewById(R.id.calendarView)
+
+        // Get the selected date string from arguments
+        val selectedDateString = arguments?.getString("selected_date")
+
+        // If no date is passed, default to today's date
+        val calendar = Calendar.getInstance()
+        if (selectedDateString != null) {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val selectedDate = dateFormat.parse(selectedDateString)
+            selectedDate?.let {
+                calendar.time = it // Use the passed date
+            }
+        }
+
+        // Set the selected date (either the passed date or today)
+        //calendarView.setSelectedDate(calendar.time)
+
+        // Set the selected date (either the passed date or today)
+        val selectedDay = CalendarDay.from(calendar.time)
+        calendarView.selectedDate = selectedDay
+
+        // Scroll directly to the month of the selected date
+        calendarView.currentDate = selectedDay
+
+
         calendarView.setOnDateChangedListener { widget, date, selected ->
             if (selected) {
                 listener?.onDateSelected(date)
@@ -76,5 +104,16 @@ class CustomCalendarDialog : DialogFragment() {
 
     fun setOnCancelClickListener(listener: () -> Unit) {
         onCancelClickListener = listener
+    }
+
+    companion object {
+        // Method to create the dialog and pass the selected date string
+        fun newInstance(selectedDate: String): CustomCalendarDialog {
+            val dialog = CustomCalendarDialog()
+            val args = Bundle()
+            args.putString("selected_date", selectedDate)
+            dialog.arguments = args
+            return dialog
+        }
     }
 }

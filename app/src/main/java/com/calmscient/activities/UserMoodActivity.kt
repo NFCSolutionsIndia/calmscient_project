@@ -3,6 +3,7 @@ package com.calmscient.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -171,6 +172,19 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
         //API calling
         //menuItemsViewModel.fetchMenuItems(plid, parentId, patientId, clientId)
 
+        // Create an InputFilter to block emojis
+        val emojiFilter = InputFilter { source, _, _, _, _, _ ->
+            for (char in source) {
+                if (!Character.isLetterOrDigit(char) && !Character.isWhitespace(char)) {
+                    return@InputFilter ""
+                }
+            }
+            null
+        }
+
+        // Apply the filter to etDailyJournel EditText
+        binding.etDailyJournel.filters = arrayOf(emojiFilter)
+
 
     }
    /* override fun onStart() {
@@ -193,12 +207,12 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
             moodQuestion = "How is your mood right now?"
             sleepQuestion = "How many hours did you sleep last night?"
             medicineQuestion = "Did you take your meds this morning?"
-        } else if (hour in 12..16) {
+        } else if (hour in 12..17) {
             //greeting = getString(R.string.good_afternoon)
             moodQuestion = "How is your mood right now?"
             greeting = getString(R.string.good_afternoon)
             wish = greeting
-        } else if (hour in 17..23) {
+        } else if (hour in 18..23) {
             //greeting = getString(R.string.good_evening)
             moodQuestion = "How was your day?"
             spendQuestion = "Who did you spend time with?"
@@ -665,7 +679,7 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
                     startActivity(Intent(this, DashboardActivity::class.java))*/
                     observeSavePatientMood()
                 }else{
-                    commonDialog.showDialog("You must answer at least one question before saving.")
+                    commonDialog.showDialog(getString(R.string.you_must_answer_at_least_one_question_before_saving),R.drawable.ic_alret)
                 }
 
 
@@ -863,19 +877,19 @@ class UserMoodActivity : AppCompat(), View.OnClickListener {
 
                     }else{
                         if (successData != null) {
-                            commonDialog.showDialog(successData.responseMessage)
+                            commonDialog.showDialog(successData.responseMessage,R.drawable.ic_info)
                         }
                     }
                 })
             }else{
                 savePatientMoodViewModel.failureLiveData.observe(this, Observer { failureData->
                     if(failureData != null){
-                        commonDialog.showDialog(failureData)
+                        commonDialog.showDialog(failureData,R.drawable.ic_failure)
                     }
                 })
                 savePatientMoodViewModel.failureResponseData.observe(this, Observer { failureData->
                     if(failureData != null){
-                        commonDialog.showDialog(failureData.responseMessage)
+                        commonDialog.showDialog(failureData.responseMessage,R.drawable.ic_failure)
                     }
                 })
             }

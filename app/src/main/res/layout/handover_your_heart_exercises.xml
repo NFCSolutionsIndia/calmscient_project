@@ -72,7 +72,7 @@
                android:text="@string/handoveryourHeart_text"
                android:fontFamily="@font/lexendlight"
                android:textColor="@color/black_head"
-               android:textSize="@dimen/_16sdp"/>
+               android:textSize="@dimen/_14sdp"/>
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                        android:text="@string/bullet"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"/>
+                       android:textSize="@dimen/_12sdp"/>
 
                    <TextView
                        android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
                        android:text="@string/handoveryourHeart_point1"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"
+                       android:textSize="@dimen/_12sdp"
                        android:layout_marginStart="@dimen/_4sdp"/>
                </LinearLayout>
 
@@ -115,7 +115,7 @@
                        android:text="@string/bullet"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"/>
+                       android:textSize="@dimen/_12sdp"/>
 
                    <TextView
                        android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
                        android:text="@string/handoveryourHeart_point2"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"
+                       android:textSize="@dimen/_12sdp"
                        android:layout_marginStart="@dimen/_4sdp"/>
                </LinearLayout>
 
@@ -139,7 +139,7 @@
                        android:text="@string/bullet"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"/>
+                       android:textSize="@dimen/_12sdp"/>
 
                    <TextView
                        android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
                        android:text="@string/handoveryourHeart_point3"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"
+                       android:textSize="@dimen/_12sdp"
                        android:layout_marginStart="@dimen/_4sdp"/>
                </LinearLayout>
 
@@ -163,7 +163,7 @@
                        android:text="@string/bullet"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"/>
+                       android:textSize="@dimen/_12sdp"/>
 
                    <TextView
                        android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
                        android:text="@string/handoveryourHeart_point4"
                        android:fontFamily="@font/lexendlight"
                        android:textColor="@color/black_head"
-                       android:textSize="@dimen/_14sdp"
+                       android:textSize="@dimen/_12sdp"
                        android:layout_marginStart="@dimen/_4sdp"/>
                </LinearLayout>
 

@@ -21,7 +21,7 @@
             android:fontFamily="@font/lexendregular"
             android:textAllCaps="false"
             android:textColor="@color/black_head"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/text2"
@@ -32,7 +32,7 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:fontFamily="@font/lexendlight"
             android:textColor="@color/black_head"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_12sdp"
             android:textAllCaps="false" />
 
         <!--<ImageView

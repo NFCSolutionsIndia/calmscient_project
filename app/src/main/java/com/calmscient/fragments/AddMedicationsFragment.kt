@@ -291,7 +291,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
     }*/
 
     private fun updateBottomNavVisibility(bottomNavView: BottomNavigationView) {
-        if (!isKeyboardVisible && !isAnyEditTextFocused()) {
+        if (!isKeyboardVisible) {
             bottomNavView.visibility = View.VISIBLE
         } else {
             bottomNavView.visibility = View.GONE
@@ -408,13 +408,13 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
 
         if (isEmptyField) {
             // Show a common pop-up message if any of the fields are empty
-            commonDialog.showDialog(getString(R.string.please_enter_all_fields))
+            commonDialog.showDialog(getString(R.string.please_enter_all_fields),R.drawable.ic_alret)
             return
         }
 
         if(binding.provider.text.isNullOrBlank()){
 
-            commonDialog.showDialog(getString(R.string.provider_not_assign_please_contact_support))
+            commonDialog.showDialog(getString(R.string.provider_not_assign_please_contact_support),R.drawable.ic_info)
             return
         }
 
@@ -587,7 +587,7 @@ class AddMedicationsFragment : Fragment(), OnAlarmSelectedListener {
             if(sucessData!= null)
             {
                 commonDialog.dismiss()
-                commonDialog.showDialog(sucessData.response.responseMessage)
+                commonDialog.showDialog(sucessData.response.responseMessage,R.drawable.ic_success_dialog)
                 commonDialog.setOnDismissListener {
                     onDialogDismissed.invoke()
                 }

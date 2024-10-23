@@ -552,7 +552,7 @@
                         if(successDate != null){
                             customProgressDialog.dialogDismiss()
                             commonDialog.dismiss()
-                            commonDialog.showDialog(successDate.responseMessage)
+                            commonDialog.showDialog(successDate.responseMessage,R.drawable.ic_success_dialog)
                             commonDialog.setOnDismissListener {
                                 onDialogDismissed.invoke()
                             }
@@ -603,7 +603,7 @@
                 }
                 else{
     
-                    commonDialog.showDialog(getString(R.string.you_did_not_change_any_timings))
+                    commonDialog.showDialog(getString(R.string.you_did_not_change_any_timings),R.drawable.ic_alret)
                 }
             }
             else

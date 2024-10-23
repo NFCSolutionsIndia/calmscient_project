@@ -12,6 +12,7 @@
 package com.calmscient.fragments
 
 import android.os.Bundle
+import android.text.InputFilter
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
@@ -51,6 +52,22 @@ class BottomSheetAddFragment:BottomSheetDialogFragment() {
         closeButton = view.findViewById(R.id.closeButton)
         etAdd.imeOptions = EditorInfo.IME_ACTION_DONE
         etAdd.setRawInputType(InputType.TYPE_CLASS_TEXT)
+
+
+        // Input filter to block emoji characters
+        val emojiFilter = InputFilter { source, _, _, _, _, _ ->
+
+            for (char in source) {
+                if (!Character.isLetterOrDigit(char) && !Character.isWhitespace(char)) {
+                    return@InputFilter ""
+                }
+            }
+            null
+        }
+
+        // Apply the emoji filter to etAdd EditText
+        etAdd.filters = arrayOf(emojiFilter)
+
         closeButton.setOnClickListener {
             dismiss()
         }

@@ -174,6 +174,11 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
         binding.nextQuestion.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
                 moveToNextQuestion()
+                if(currentQuestionIndex>0){
+                    binding.previousQuestion.visibility = View.VISIBLE
+                }else{
+                    binding.previousQuestion.visibility = View.GONE
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -183,6 +188,11 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
         binding.previousQuestion.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
                 moveToPreviousQuestion()
+                if(currentQuestionIndex <= 0){
+                    binding.previousQuestion.visibility = View.GONE
+                }else{
+                    binding.previousQuestion.visibility = View.VISIBLE
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -352,7 +362,7 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
                             if (isSuccess) {
                                 saveScreeningAnswersViewModel.saveResponseLiveData.observe(viewLifecycleOwner) { successData ->
                                     if (successData != null) {
-                                        commonDialog.showDialog(successData.statusResponse.responseMessage)
+                                        commonDialog.showDialog(successData.statusResponse.responseMessage,R.drawable.ic_success_dialog)
                                         commonDialog.setOnDismissListener {
                                             navigateToResultsFragment()
                                         }
@@ -363,7 +373,7 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
 
                         saveScreeningAnswersViewModel.successNotAnsweredDataMessage.observe(viewLifecycleOwner) { message ->
                             if (message != null) {
-                                commonDialog.showDialog(message)
+                                commonDialog.showDialog(message,R.drawable.ic_info)
                             }
                             commonDialog.setOnDismissListener {
                                 if(source == "TakingControlIntroductionFragment"){
@@ -375,10 +385,10 @@ class AUDITQuestionFragment(private val screeningItem: ScreeningItem) : Fragment
                         }
 
                         saveScreeningAnswersViewModel.errorLiveData.observe(viewLifecycleOwner) { errorMessage ->
-                            commonDialog.showDialog(errorMessage)
+                            commonDialog.showDialog(errorMessage,R.drawable.ic_failure)
                         }
                     } else {
-                        commonDialog.showDialog(getString(R.string.please_answer_the_questions))
+                        commonDialog.showDialog(getString(R.string.please_answer_the_questions),R.drawable.ic_alret)
                     }
                 }
             } else {

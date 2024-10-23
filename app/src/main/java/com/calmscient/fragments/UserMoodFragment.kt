@@ -96,8 +96,8 @@ class UserMoodFragment : Fragment(), View.OnClickListener {
         var greeting: String? = null
         when (hour) {
             in 6..11 -> greeting = getString(R.string.good_morning)
-            in 12..16 -> greeting = getString(R.string.good_afternoon)
-            in 17..23 -> greeting = getString(R.string.good_evening)
+            in 12..17 -> greeting = getString(R.string.good_afternoon)
+            in 18..23 -> greeting = getString(R.string.good_evening)
         }
         binding.idWishes.text = greeting
         if (greeting == getString(R.string.good_morning)) {

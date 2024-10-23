@@ -14,17 +14,19 @@ package com.calmscient.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.Interface.CellClickListener
+import com.calmscient.Interface.OnCheckedChangeListener
 import com.calmscient.R
 import com.calmscient.fragments.CardViewItem
 import com.calmscient.fragments.MedicationDetailFragment
 
-class MedicationsCardAdapter(private val items: List<CardViewItem>) :
+class MedicationsCardAdapter(private val items: List<CardViewItem>,private val listener: OnCheckedChangeListener) :
     RecyclerView.Adapter<MedicationsCardAdapter.CardViewHolder>() {
     lateinit var mListener: CellClickListener
     /*interface onItemClickListener {
@@ -79,6 +81,11 @@ class MedicationsCardAdapter(private val items: List<CardViewItem>) :
         holder.timeMorningTextView.text = item.timeMorning
         holder.timeEveningTextView.text = item.timeEvening
 
+        holder.medicationCheckBox.setOnCheckedChangeListener(null)
+        // Check/uncheck the checkbox based on the item's current state
+        holder.medicationCheckBox.isChecked = item.isChecked
+
+
         // Check if sunImageResource is not null before setting the image resource
         if (item.sunImageResource != null) {
             holder.imageViewSun.setImageResource(item.sunImageResource)
@@ -101,6 +108,19 @@ class MedicationsCardAdapter(private val items: List<CardViewItem>) :
             // Pass the clicked item to the onCellClickListener interface
             mListener.onCellClickListener(position, clickedItem)
         }
+
+        // Handle checkbox change listener
+        holder.medicationCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            item.isChecked = isChecked
+
+            // Notify the fragment if any checkbox is checked
+            val isAnyChecked = items.any { it.isChecked }
+            listener.onCheckedChanged(isAnyChecked)
+        }
+
+        holder.cardViewLayout.setOnClickListener {
+            mListener.onCellClickListener(position, item)
+        }
     }
 
 
@@ -119,6 +139,7 @@ class MedicationsCardAdapter(private val items: List<CardViewItem>) :
         val timeEveningTextView: TextView = itemView.findViewById(R.id.timeEveningTextView)
         val imageViewSun: ImageView = itemView.findViewById(R.id.imageViewSun)
         val imageViewMoon: ImageView = itemView.findViewById(R.id.imageViewMoon)
+        val medicationCheckBox: CheckBox = itemView.findViewById(R.id.medicationCheckBox)
 
     }
 

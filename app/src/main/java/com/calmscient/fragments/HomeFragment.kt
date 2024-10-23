@@ -166,7 +166,7 @@ class HomeFragment : Fragment() {
                 menuViewModel.failureLiveData.value?.let { failureMessage ->
                     failureMessage.let {
                         commonDialog.showDialog(
-                            it
+                            it,R.drawable.ic_failure
                         )
                     }
                 }
@@ -291,8 +291,12 @@ class HomeFragment : Fragment() {
                     getString(R.string.running_exercises) -> { loadFragment(RunningExerciseFragment(1))}
                     getString(R.string.body_moment_exercies) -> { loadFragment(BodyMovementExerciseFragment(1))}
                     getString(R.string.musclerelaxation_exercises) -> { loadFragment(MuscleRelaxationExerciseFragment(1))}
-                    getString(R.string.breathing_technic) -> { loadFragment(DeepBreathingExerciseFragment(1,"Home"))}
-                    getString(R.string._4_7_8_breathing_exercise)-> {loadFragment(FourSevenEightBreathingExerciseFragment("Home"))}
+                    getString(R.string.breathing_technic) ,"Breathing technique"-> { loadFragment(DeepBreathingExerciseFragment(1,"Home"))}
+                    getString(R.string._4_7_8_breathing_exercise), "4–7–8 Breathing exercise"-> {loadFragment(FourSevenEightBreathingExerciseFragment("Home"))}
+                    getString(R.string.diaphragmatic_breathing_exercise_heading), "Diaphragmatic breathing exercise"-> {loadFragment(DiaphragmaticBreathingExerciseFragment("Home"))}
+                    getString(R.string.mindful_breathing_exercise_heading), "Mindful breathing exercise"-> {loadFragment(MindfulBreathingExerciseFragment("Home"))}
+                    getString(R.string.what_to_expect_when_you_quit_drinking)->{ loadFragment(WhatExpectsWhenYouQuitDrinkingFragment("Home")) }
+                    getString(R.string.what_happens_to_your_brain_when_you_drink)->{ loadFragment(WhatHappensToYourBrainFragment("Home")) }
                 }
             }
         }

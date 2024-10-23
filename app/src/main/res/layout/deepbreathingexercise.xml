@@ -60,6 +60,7 @@
                 android:layout_marginStart="@dimen/_250sdp"
                 android:layout_marginTop="@dimen/_25sdp"
                 android:clickable="true"
+                android:visibility="gone"
                 android:src="@drawable/mindfullexercise_heart__image"/>
         </RelativeLayout>
         <androidx.cardview.widget.CardView

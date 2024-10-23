@@ -211,16 +211,17 @@ class ExerciseFragment:Fragment() {
                                 getString(R.string.breathing_technic) -> {
                                     breathingTechnic = 1
                                     Log.d("Favorites", "Breathing Technique is favorite: $breathingTechnic")
+                                    SharedPreferencesUtil.saveData(requireContext(),"breathingTechnicExercise",breathingTechnic.toString())
                                 }
-                                getString(R.string._4_7_8_breathing_exercise)->{
+                                getString(R.string._4_7_8_breathing_exercise),"4–7–8 Breathing exercise"->{
                                     fourSevenEightExercise = 1
                                     SharedPreferencesUtil.saveData(requireContext(),"fourSevenEightExercise",fourSevenEightExercise.toString())
                                 }
-                                getString(R.string.mindful_breathing_exercise)->{
+                                getString(R.string.mindful_breathing_exercise),"Mindful breathing exercise"->{
                                     mindfulBreathingExercise = 1
                                     SharedPreferencesUtil.saveData(requireContext(),"mindfulBreathingExercise",mindfulBreathingExercise.toString())
                                 }
-                                getString(R.string.diaphragmatic_breathing_exercise)->{
+                                getString(R.string.diaphragmatic_breathing_exercise),"Diaphragmatic breathing exercise"->{
                                     diaphragmaticBreathingExercise = 1
                                     SharedPreferencesUtil.saveData(requireContext(),"diaphragmaticBreathingExercise",diaphragmaticBreathingExercise.toString())
                                 }

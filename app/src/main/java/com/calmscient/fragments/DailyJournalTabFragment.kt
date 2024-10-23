@@ -141,7 +141,7 @@ class DailyJournalTabFragment : Fragment(){
                         requireActivity(),
                         Observer { successData ->
                             if (successData != null) {
-                                // getPatientJournalByPatientIdResponse = successData
+                                 getPatientJournalByPatientIdResponse = successData
                                 updateUI(successData.dailyJournal)
 
                                 if(successData.dailyJournal.isEmpty()){
@@ -164,6 +164,7 @@ class DailyJournalTabFragment : Fragment(){
         val sortedItems = dailyJournalItem.sortedByDescending { it.createdAt }
         dailyJournalItems.addAll(sortedItems)
         journalEntryDailyJournalAdapter.notifyDataSetChanged()
+
     }
 
     override fun onResume() {
@@ -171,4 +172,15 @@ class DailyJournalTabFragment : Fragment(){
         getPatientJournalDataAPICall(null)
     }
 
+    fun performSearch(query: String?) {
+        if (query.isNullOrBlank()) {
+            // Reset list if the query is empty
+            updateUI(getPatientJournalByPatientIdResponse.dailyJournal)
+        } else {
+            val filteredList = getPatientJournalByPatientIdResponse.dailyJournal.filter {
+                it.entry.contains(query, ignoreCase = true)
+            }
+            updateUI(filteredList)
+        }
+    }
 }

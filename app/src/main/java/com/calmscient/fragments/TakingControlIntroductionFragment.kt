@@ -193,8 +193,8 @@ class TakingControlIntroductionFragment : Fragment(), PayloadCallback {
 
         binding.secondScreenPreviousButton.setOnClickListener{
             currentScreenIndex = 1
-            binding.screenOne.visibility = View.VISIBLE
-            binding.screenTwo.visibility = View.GONE
+            binding.screenOne.visibility = View.GONE
+            binding.screenTwo.visibility = View.VISIBLE
             binding.screenThree.visibility = View.GONE
             binding.screenFour.visibility = View.GONE
         }

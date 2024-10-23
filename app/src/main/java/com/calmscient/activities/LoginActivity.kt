@@ -121,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             if (!hasFocus) {
-                binding.userName.setHint(R.string.username)
+                binding.userName.setHint("")
             }
         })
         binding.editPassword.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
@@ -133,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             if (!hasFocus) {
-                binding.editPassword.setHint(R.string.password)
+                binding.editPassword.setHint("")
             }
         })
         binding.termsCheckBox.setOnClickListener {
@@ -187,16 +187,14 @@ class LoginActivity : AppCompatActivity() {
                     navigateToDayScreen(responseDate)
 
                 } else {
-                    commonDialog.showDialog("Something went wrong.\nPlease try after some time !!!")
+                    commonDialog.showDialog("Something went wrong.\nPlease try after some time !!!",R.drawable.ic_failure)
                 }
 
 
             } else {
                 loginViewModel.failureResponseData.value?.let { failureMessage ->
                     failureMessage.statusResponse.responseMessage.let {
-                        commonDialog.showDialog(
-                            it
-                        )
+                        commonDialog.showDialog( it,R.drawable.ic_failure)
                     }
                 }
                 loginViewModel.errorLiveData.value?.let { failureMessage ->
@@ -234,24 +232,39 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.editPassword.text.toString()
 
             if (username.isEmpty()) {
-                showError(binding.userNameTextInputLayout, "Enter Valid Username")
+                showError(binding.userNameTextInputLayout, "Enter Username")
             }
             if (password.isEmpty()) {
 
-                showError(binding.TinPassword, "Enter Valid Password")
+                showError(binding.TinPassword, "Enter Password")
+            }
+            binding.termsCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                // Enable/disable further actions based on checkbox state
+                if (isChecked) {
+                    //navigateToDayScreen()
+                    // Checkbox is checked, perform actions here
+                    binding.termsTextView.visibility = View.GONE
+                } else {
+                    binding.termsTextView.visibility = View.VISIBLE
+                    // Checkbox is unchecked, handle this case if needed
+                }
             }
 
-            if (!username.isEmpty() && !password.isEmpty()) {
+            if (username.isNotEmpty() && password.isNotEmpty() && binding.termsCheckBox.isChecked) {
                 if (CommonClass.isNetworkAvailable(this)) {
                     loginViewModel.loginUser(username, password)
                 } else {
                     CommonClass.showInternetDialogue(this)
                 }
             } else if (username.isEmpty()) {
-                showError(binding.userNameTextInputLayout, "Enter Valid Username")
+                showError(binding.userNameTextInputLayout, "Enter Username")
             } else if (password.isEmpty()) {
 
-                showError(binding.TinPassword, "Enter Valid Password")
+                showError(binding.TinPassword, "Enter Password")
+            } else if(!binding.termsCheckBox.isChecked){
+                binding.termsTextView.visibility = View.VISIBLE
+            }else if(binding.termsCheckBox.isChecked){
+                binding.termsTextView.visibility = View.GONE
             }
             /*
 

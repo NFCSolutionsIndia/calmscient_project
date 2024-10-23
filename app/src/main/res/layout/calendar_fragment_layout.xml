@@ -89,11 +89,12 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:fontFamily="@font/lexendregular"
-            android:background="@drawable/button_border"
             android:text="@string/save"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:enabled="false"
+            android:background="@drawable/button_background_disabled"
+            android:textColor="@drawable/button_text_color_taking_control"
             android:textSize="18sp" />
 
     </LinearLayout>

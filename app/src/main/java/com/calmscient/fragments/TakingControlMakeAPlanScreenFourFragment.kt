@@ -284,7 +284,7 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
 
     private fun saveAlcoholFreeDaysApiCall()
     {
-
+        saveAlcoholFreeDaysViewModel.clear()
         val loginDetails = loginResponse?.loginDetails
         val selectedDates = customCalendarView.getFormattedSelectedDates()
         val selectedMonthsList = getSelectedMonths()
@@ -313,14 +313,14 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
                 )
             }
             else{
-                commonDialog.showDialog(getString(R.string.please_select_atleast_one_day_to_set_alcohol_free_days))
+                commonDialog.showDialog(getString(R.string.please_select_atleast_one_day_to_set_alcohol_free_days),R.drawable.ic_alret)
             }
         }
         observeViewModel()
 
     }
 
-    private fun updateDatesForSelectedMonths(
+    /*private fun updateDatesForSelectedMonths(
         selectedDates: List<String>,
         selectedMonthsList: List<String>
     ): List<String> {
@@ -371,7 +371,52 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
         }
 
         return updatedDates
+    }*/
+
+    private fun updateDatesForSelectedMonths(
+        selectedDates: List<String>,
+        selectedMonthsList: List<String>
+    ): List<String> {
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val updatedDates = selectedDates.toMutableList() // Start with the original selected dates
+        val calendar = Calendar.getInstance()
+
+        // Extract existing months from selectedDates
+        val existingMonths = selectedDates.mapNotNull {
+            val date = dateFormat.parse(it)
+            if (date != null) {
+                calendar.time = date
+                calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US)
+            } else null
+        }.toSet()
+
+        // Loop through the selectedMonthsList to add missing dates
+        for (month in selectedMonthsList) {
+            if (!existingMonths.contains(month)) {
+                // Get the index of the month
+                val monthIndex = getMonthIndex(month)
+                calendar.set(Calendar.MONTH, monthIndex)
+
+                for (dateString in selectedDates) {
+                    val originalDate = dateFormat.parse(dateString)
+                    if (originalDate != null) {
+                        // Retain the day and year from the original date
+                        calendar.set(Calendar.YEAR, originalDate.year + 1900)
+                        calendar.set(Calendar.DAY_OF_MONTH, originalDate.date)
+                        val newDateForMonth = dateFormat.format(calendar.time)
+
+                        // Add new dates for the month if not already present
+                        if (!updatedDates.contains(newDateForMonth)) {
+                            updatedDates.add(newDateForMonth)
+                        }
+                    }
+                }
+            }
+        }
+
+        return updatedDates
     }
+
 
     private fun getMonthIndex(month: String): Int {
         val monthMap = mapOf(
@@ -413,7 +458,7 @@ class TakingControlMakeAPlanScreenFourFragment : Fragment() , OnSelectionDateCha
                     Observer { successData->
                         if(successData != null)
                         {
-                            commonDialog.showDialog(successData.responseMessage)
+                            commonDialog.showDialog(successData.responseMessage,R.drawable.ic_success_dialog)
                         }
                     }
                 )

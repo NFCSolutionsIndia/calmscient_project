@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_260sdp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/dialog_border"
+    android:layout_margin="@dimen/_30sdp">
+
+    <!-- ScrollView -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="@dimen/_260sdp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonsLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_question_mark"/>
+
+            <TextView
+                android:id="@+id/areYouSureTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="@dimen/_18sdp"
+                android:text="Are you sure"
+                android:textStyle="bold"
+                android:textColor="@color/black_head" />
+
+            <TextView
+                android:id="@+id/dialogInfoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@string/you_want_to_logout"
+                android:textColor="@color/black_head" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- LinearLayout for buttons -->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/buttonsLayout"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- NO Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:background="@drawable/skip_border"
+            android:text="@string/no"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/purple_100"
+            android:textSize="@dimen/_12sdp" />
+
+        <!-- YES Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_yes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:layout_weight="1"
+            android:background="@drawable/button_border"
+            android:text="@string/yes"
+            android:textAllCaps="false"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

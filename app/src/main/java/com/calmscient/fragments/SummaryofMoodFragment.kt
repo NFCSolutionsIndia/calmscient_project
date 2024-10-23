@@ -350,7 +350,7 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             // Set fromDate as 7 days back from selectedDate
             val startDateCalendar = Calendar.getInstance().apply {
                 time = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-                add(Calendar.DATE, -7)
+                add(Calendar.DATE, -6)
             }
             fromDate = dateFormat.format(startDateCalendar.time)
         } else {
@@ -358,7 +358,7 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             toDate = dateFormat.format(calendar.time)
 
             // Set fromDate as 7 days back from today's date
-            calendar.add(Calendar.DATE, -7)
+            calendar.add(Calendar.DATE, -6)
             fromDate = dateFormat.format(calendar.time)
         }
         // Create the final date string
@@ -466,6 +466,8 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
                 }
             }
             xAxis.setDrawGridLines(false) // Disable vertical grid lines
+            val moodLabels = arrayOf("","BAD",
+                getString(R.string.could_be_better), "FAIR", "GOOD", "EXCELLENT")
 
             val yAxisLeft = lineChart.axisLeft
             yAxisLeft.setDrawGridLines(true)
@@ -474,6 +476,18 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             yAxisLeft.axisMaximum = 5f
             yAxisLeft.granularity = 1f // Set the interval to 1
             yAxisLeft.labelCount = 5 // Ensure 5 intervals from 0 to 5
+
+            // Custom value formatter for Y-axis to display mood labels
+            yAxisLeft.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return if (value >= 0 && value < moodLabels.size) {
+                        moodLabels[value.toInt()]
+                    } else {
+                        value.toString() // Fallback for any unexpected value
+                    }
+                }
+            }
+
 
             lineChart.axisRight.isEnabled = false
 
@@ -507,6 +521,7 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
     private fun configureBarChart(moodMonitorList: List<MoodMonitor>) {
         val barEntries = ArrayList<BarEntry>()
         val moodLabels = ArrayList<String>()
+        val barColors = ArrayList<Int>()
 
         val sortedMoodDateRange = moodMonitorList.sortedBy {
             SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.createdAt)
@@ -517,13 +532,23 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
             val barEntry = BarEntry(i.toFloat(), moodData.moodScore.toFloat())
             barEntries.add(barEntry)
             moodLabels.add(moodData.mood)
+
+            // Assign color based on moodScore
+            val moodScore = moodData.moodScore
+            val color = when {
+                moodScore <= 1 -> Color.parseColor("#EF6D6D") //  for bad mood
+                moodScore <= 2 -> Color.parseColor("#F28A91") //  for could be better
+                moodScore <= 3 -> Color.parseColor("#F8BEBD") //  for fair
+                moodScore <= 4 -> Color.parseColor("#A19EBD") //  for good
+                else -> Color.parseColor("#6E6BB3")// for excellent
+            }
+            barColors.add(color)
         }
 
         val barDataSet = BarDataSet(barEntries, "Mood Scores")
-        barDataSet.color = Color.parseColor("#6E6BB3")
+        barDataSet.colors = barColors // Apply the colors based on the mood scores
         barDataSet.valueTextColor = Color.BLACK
 
-        // Setting the custom ValueFormatter to remove .00 from data points
         barDataSet.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 return value.toInt().toString()
@@ -537,6 +562,8 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         val xAxis = barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
+        xAxis.textSize = 10f
+        xAxis.labelRotationAngle = 30f
         xAxis.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 return if (value.toInt() >= 0 && value.toInt() < moodLabels.size) {
@@ -546,6 +573,7 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
                 }
             }
         }
+        barChart.setExtraOffsets(0f, 0f, 0f, 40f) // Increase bottom offset for labels
         xAxis.setDrawGridLines(false)
 
         val yAxisLeft = barChart.axisLeft
@@ -559,6 +587,9 @@ class SummaryofMoodFragment : Fragment(),CustomCalendarDialog.OnDateSelectedList
         barChart.axisRight.isEnabled = false
         xAxis.setDrawAxisLine(false)
         yAxisLeft.setDrawAxisLine(false)
+
+        // Disable legend
+        barChart.legend.isEnabled = false
 
         barChart.setScaleEnabled(false)
         barChart.isDragEnabled = false

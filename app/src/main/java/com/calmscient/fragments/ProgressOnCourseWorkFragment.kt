@@ -117,12 +117,16 @@ class ProgressOnCourseWorkFragment : Fragment() {
                     val courseWorkList = successDate.patientcourseWorkList
                     setupRecyclerView(courseWorkList)
 
-                  if(courseWorkList.isNotEmpty())
-                  {
-                      binding.totalPercentage.text = courseWorkList[0].completedPer.toString()
-                      binding.progressbarCourseWork.progress = courseWorkList[0].completedPer.toInt()
-                  }
-                  else{
+                    if (courseWorkList.isNotEmpty()) {
+                        // Calculate the average completed percentage
+                        val averageCompletedPer = courseWorkList.map { it.completedPer }.average()
+                        // Format the average to one decimal place and append the % symbol
+                        val formattedPercentage = String.format("%.1f%%", averageCompletedPer)
+                        // Update the total percentage text and progress bar
+                        binding.totalPercentage.text = formattedPercentage
+                        binding.progressbarCourseWork.progress = averageCompletedPer.toInt()
+                    }
+                    else{
 
                       binding.totalPercentage.text = 0.toString()
                       binding.progressbarCourseWork.progress = 0

@@ -61,7 +61,11 @@ class FourSevenEightBreathingExerciseFragment(source: String)  : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this){
-            loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            }
         }
     }
 
@@ -74,6 +78,9 @@ class FourSevenEightBreathingExerciseFragment(source: String)  : Fragment() {
         val res = SharedPreferencesUtil.getData(requireContext(), "fourSevenEightExercise", "")
         if(res.isNotEmpty()){
             isFavorite = res.toInt() == 1
+        }else{
+            isFavorite = false
+            isFavorite = fromSource == "Home"
         }
 
         customProgressDialog = CustomProgressDialog(requireContext())
@@ -83,7 +90,11 @@ class FourSevenEightBreathingExerciseFragment(source: String)  : Fragment() {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
         savePrefData = SavePreferences(requireContext())
         binding.backIcon.setOnClickListener{
-            loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            }
         }
 
         // Load thumbnail from URL using Glide
@@ -166,9 +177,11 @@ class FourSevenEightBreathingExerciseFragment(source: String)  : Fragment() {
             if (isFavorite) {
                 favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image) // Set your desired color
                 favouritesAPICall(false)
+                SharedPreferencesUtil.saveData(requireContext(),"fourSevenEightExercise",0.toString())
             } else {
                 favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
                 favouritesAPICall(true)
+                SharedPreferencesUtil.saveData(requireContext(),"fourSevenEightExercise",1.toString())
             }
         }
 
@@ -219,7 +232,7 @@ class FourSevenEightBreathingExerciseFragment(source: String)  : Fragment() {
         savePatientExercisesFavoritesViewModel.clear()
 
         val isFav = if(isFavourite) 1 else 0
-        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"4-7-8 Breathing exercise")
+        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"4–7–8 Breathing exercise")
 
         savePatientExercisesFavoritesViewModel.savePatientExercisesFavorites(request,loginResponse.token.access_token)
 

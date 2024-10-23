@@ -94,6 +94,10 @@ class ProgressOnCourseWorkCommonFragment : Fragment() {
         selectedPosition = arguments?.getInt("selectedPosition") as? Int
 
         Log.d("Selected Position", "$selectedPosition")
+
+        binding.needToTalkWithSomeOne.setOnClickListener {
+            loadFragment(EmergencyResourceFragment())
+        }
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -102,10 +106,4 @@ class ProgressOnCourseWorkCommonFragment : Fragment() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
-
-
-
-
-
 }

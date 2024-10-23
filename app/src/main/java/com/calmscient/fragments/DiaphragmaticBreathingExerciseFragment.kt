@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -58,7 +59,13 @@ class DiaphragmaticBreathingExerciseFragment(source: String)  : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            }
+        }
     }
 
     override fun onCreateView(
@@ -70,6 +77,9 @@ class DiaphragmaticBreathingExerciseFragment(source: String)  : Fragment() {
         val res = SharedPreferencesUtil.getData(requireContext(), "diaphragmaticBreathingExercise", "")
         if(res.isNotEmpty()){
             isFavorite = res.toInt() == 1
+        }else{
+            isFavorite = false
+            isFavorite = fromSource == "Home"
         }
 
         customProgressDialog = CustomProgressDialog(requireContext())
@@ -169,9 +179,11 @@ class DiaphragmaticBreathingExerciseFragment(source: String)  : Fragment() {
             if (isFavorite) {
                 favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image) // Set your desired color
                 favouritesAPICall(false)
+                SharedPreferencesUtil.saveData(requireContext(),"diaphragmaticBreathingExercise",0.toString())
             } else {
                 favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
                 favouritesAPICall(true)
+                SharedPreferencesUtil.saveData(requireContext(),"diaphragmaticBreathingExercise",1.toString())
             }
         }
 
@@ -189,7 +201,12 @@ class DiaphragmaticBreathingExerciseFragment(source: String)  : Fragment() {
         })*/
 
         binding.backIcon.setOnClickListener{
-            loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            }
+
         }
 
         return binding.root

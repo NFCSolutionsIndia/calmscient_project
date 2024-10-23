@@ -206,8 +206,8 @@ class BasicKnowledgeFragment : Fragment() {
             currentName.equals(getString(R.string.what_s_a_standard_drink), ignoreCase = true) -> StandardDrinkFragment()
             currentName.equals(getString(R.string.what_are_the_u_s_guidelines_for_drink), ignoreCase = true) -> GuidelinesForDrinkingFragment()
             currentName.equals(getString(R.string.when_is_drink_in_moderation_too_much), ignoreCase = true) -> ModerationDrinkingFragment()
-            currentName.equals(getString(R.string.what_happens_to_your_brain_when_you_drink), ignoreCase = true) -> WhatHappensToYourBrainFragment()
-            currentName.equals(getString(R.string.what_to_expect_when_you_quit_drinking), ignoreCase = true) -> WhatExpectsWhenYouQuitDrinkingFragment()
+            currentName.equals(getString(R.string.what_happens_to_your_brain_when_you_drink), ignoreCase = true) -> WhatHappensToYourBrainFragment("Basicknowledge")
+            currentName.equals(getString(R.string.what_to_expect_when_you_quit_drinking), ignoreCase = true) -> WhatExpectsWhenYouQuitDrinkingFragment("Basicknowledge")
             currentName.equals(getString(R.string.what_are_the_consequences), ignoreCase = true) -> ConsequencesFragment()
             currentName.equals(getString(R.string.my_drinking_habit), ignoreCase = true) -> MyDrinkingHabitFragment()
             else -> null

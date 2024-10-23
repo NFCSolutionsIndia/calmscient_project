@@ -49,10 +49,10 @@ class SectionAdapter(private val data: List<Sections>) : RecyclerView.Adapter<Se
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val titleView: TextView = itemView.findViewById(R.id.titleView)
-        private val dropDownImage: ImageView = itemView.findViewById(R.id.dropdownButton)
-        private val titlePercentage: TextView = itemView.findViewById(R.id.titlePercentage)
-        private val subSectionRecyclerView: RecyclerView = itemView.findViewById(R.id.subSectionRecyclerView)
+        val titleView: TextView = itemView.findViewById(R.id.titleView)
+        val dropDownImage: ImageView = itemView.findViewById(R.id.dropdownButton)
+        val titlePercentage: TextView = itemView.findViewById(R.id.titlePercentage)
+        val subSectionRecyclerView: RecyclerView = itemView.findViewById(R.id.subSectionRecyclerView)
 
         init {
             // Set an OnClickListener to handle expanding/collapsing
@@ -64,7 +64,7 @@ class SectionAdapter(private val data: List<Sections>) : RecyclerView.Adapter<Se
                         collapse()
                         expandedCardPosition = -1
                     } else {
-                        // Clicked on a different card, collapse the previously expanded card (if any)
+                        // Collapse the previously expanded card (if any)
                         if (expandedCardPosition != -1) {
                             notifyItemChanged(expandedCardPosition)
                         }
@@ -84,16 +84,27 @@ class SectionAdapter(private val data: List<Sections>) : RecyclerView.Adapter<Se
             // Set up nested RecyclerView for subsections
             subSectionRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
             subSectionRecyclerView.adapter = SubsectionAdapter(item.subSectionList)
+
+            // Ensure that the RecyclerView is initially collapsed
+            if (expandedCardPosition == adapterPosition) {
+                expand()
+            } else {
+                collapse()
+            }
         }
 
         fun expand() {
-            AnimationUtils.expand(subSectionRecyclerView)
+            // Expand the RecyclerView and update the icon
+            subSectionRecyclerView.visibility = View.VISIBLE
             dropDownImage.setImageResource(R.drawable.minus)
+            AnimationUtils.expand(subSectionRecyclerView) // Optional if you have expand animation
         }
 
         fun collapse() {
-            AnimationUtils.collapse(subSectionRecyclerView)
+            // Collapse the RecyclerView and update the icon
+            subSectionRecyclerView.visibility = View.GONE
             dropDownImage.setImageResource(R.drawable.ic_expand)
+            AnimationUtils.collapse(subSectionRecyclerView) // Optional if you have collapse animation
         }
     }
 }

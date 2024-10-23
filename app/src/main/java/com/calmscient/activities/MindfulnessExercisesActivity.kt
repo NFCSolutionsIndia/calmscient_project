@@ -54,7 +54,7 @@ class MindfulnessExercisesActivity : AppCompat() {
         progressBar.progress = currentQuestionIndex * (maxProgress / (anxietyText.size - 1))
 
         setupNavigation()
-        initializeAdapter()
+        //initializeAdapter()
         displayCardViews()
 
         stepIndicators = listOf(
@@ -81,7 +81,7 @@ class MindfulnessExercisesActivity : AppCompat() {
     private fun initializeAdapter() {
         binding.optionsRecyclerView1.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        anxietyadapter = MindfulnessScreensAdapter(anxietyText)
+        //anxietyadapter = MindfulnessScreensAdapter(anxietyText)
         binding.optionsRecyclerView1.adapter = anxietyadapter
     }
 

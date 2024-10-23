@@ -694,7 +694,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="password">Contraseña</string>
     <string name="login">Login</string>
     <string name="forgot_password">Has olvidado tu contraseña</string>
-    <string name="create_new_account">Crear una nueva cuenta</string>
+    <string name="create_new_account">Crear a nueva cuenta</string>
     <string name="or">o</string>
     <string name="happy_to_see_you">Estamos felices de verte.</string>
     <string name="hello">Hola</string>
@@ -1620,4 +1620,8 @@ Estas preguntas se refieren al uso de drogas en los últimos 12 meses. Por favor
     <string name="congratulations">¡Felicidades!</string>
     <string name="congrats_description">Now you need to control your drink habit by taking a count not only monthly goal, but also daily limit according to the guideline about moderate drinking\n\nConozcamos las características del entrenador de bebidas.</string>
     <string name="please_select_atleast_one_day_to_set_alcohol_free_days">Please select atleast one day to set alcohol free days.</string>
+    <string name="sections">secciones</string>
+    <string name="you_must_answer_at_least_one_question_before_saving">You must answer at least one question before saving.</string>
+    <string name="you_want_to_logout">You want to logout?</string>
+    <string name="saved_successfully">Guardado con éxito</string>
 </resources>

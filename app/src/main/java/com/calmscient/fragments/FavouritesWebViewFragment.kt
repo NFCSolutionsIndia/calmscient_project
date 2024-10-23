@@ -299,7 +299,7 @@ class FavouritesWebViewFragment : Fragment() {
         }
         private fun handleInvalidSession(value: String) {
             customProgressDialog.dialogDismiss()
-            if (value.contains("error")) {
+            if (value.contains("in valid session")) {
                 requireActivity().actionBar?.show()
                 val alertDialog = AlertDialog.Builder(context)
                     .setTitle("Error Occurred")

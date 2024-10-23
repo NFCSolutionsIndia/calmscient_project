@@ -125,6 +125,10 @@ class WebViewFragment : Fragment() {
                        /* Handler(Looper.getMainLooper()).postDelayed({
                             customProgressDialog.dialogDismiss()
                         }, 4000)*/
+                        if (result == null || result == "null" || result.isEmpty()) {
+                            Log.d("WebViewFragment", "JS Result is null or empty: $result")
+                            customProgressDialog.dialogDismiss()
+                        }
 
                     }
                 }
@@ -137,6 +141,11 @@ class WebViewFragment : Fragment() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         customProgressDialog.dialogDismiss()
                     }, 4000)
+                    if (result == null || result == "null" || result.isEmpty()) {
+                        Log.d("WebViewFragment", "JS Result is null or empty: $result")
+                        customProgressDialog.dialogDismiss()
+                        activity?.onBackPressed()
+                    }
                 }
             }
 
@@ -242,7 +251,10 @@ class WebViewFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setTitle("Error Occurred")
             .setMessage("Error loading page: $errorMessage")
-            .setPositiveButton("OK", null)
+            .setPositiveButton("OK"){dialog,_->
+                dialog.dismiss()
+                activity?.onBackPressed()
+            }
             .show()
     }
 
@@ -289,12 +301,18 @@ class WebViewFragment : Fragment() {
                         }
                     }
                     "1003" -> {
-                       /* toolbar?.visibility = View.GONE
-                        Log.d("WebViewFragment", "Action: Hiding toolbar")*/
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+                            toolbar?.visibility = View.GONE
+                            Log.d("WebViewFragment", "Action: Hiding toolbar")
+                        }
                     }
                     "1004" -> {
-                        /*toolbar?.visibility = View.VISIBLE
-                        Log.d("WebViewFragment", "Action: Showing toolbar")*/
+                        val handler = Handler(Looper.getMainLooper())
+                        handler.post {
+                            toolbar?.visibility = View.VISIBLE
+                            Log.d("WebViewFragment", "Action: Showing toolbar")
+                        }
                     }
                     "1005" -> handleNeedToTalkWithSomeone(value)
                     "1006" -> handleReturningBackFromFavMedia()
@@ -333,18 +351,24 @@ class WebViewFragment : Fragment() {
             }
         }
         private fun handleInvalidSession(value: String) {
-            customProgressDialog.dialogDismiss()
-            if (value.contains("error")) {
-                requireActivity().actionBar?.show()
-                val alertDialog = AlertDialog.Builder(context)
-                    .setTitle("Error Occurred")
-                    .setMessage("Error occurred. Please try again!")
-                    .setPositiveButton("OK", null)
-                    .create()
-                alertDialog.show()
-                Log.d("WebViewFragment", "Error: $value")
+            activity?.runOnUiThread {
+                customProgressDialog.dialogDismiss()
+                if (value.contains("in valid session")) {
+                    requireActivity().actionBar?.show()
+                    val alertDialog = AlertDialog.Builder(requireContext())
+                        .setTitle("Error Occurred")
+                        .setMessage("Error occurred. Please try again!")
+                        .setPositiveButton("OK"){dialog,_->
+                            dialog.dismiss()
+                            activity?.onBackPressed()
+                        }
+                        .create()
+                    alertDialog.show()
+                    Log.d("WebViewFragment", "Error: $value")
+                }
             }
         }
+
         private fun handleChangedHeaderTitle(newTitle: String, titleView: TextView) {
             customProgressDialog.dialogDismiss()
             // Update the header title in the toolbar

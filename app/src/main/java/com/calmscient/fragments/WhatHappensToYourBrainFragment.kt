@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,6 +30,7 @@ import com.calmscient.R
 import com.calmscient.databinding.FragmentModerationDrinkingBinding
 import com.calmscient.databinding.FragmentWhatHappensToYourBrainBinding
 import com.calmscient.di.remote.BasicKnowledgeItem
+import com.calmscient.di.remote.request.SavePatientExercisesFavoritesRequest
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
@@ -36,6 +38,7 @@ import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.BasicKnowledgeSharedViewModel
+import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import com.calmscient.viewmodels.UpdateBasicKnowledgeIndexDataViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -45,7 +48,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WhatHappensToYourBrainFragment : Fragment() {
+class WhatHappensToYourBrainFragment(source : String) : Fragment() {
 
     private lateinit var binding: FragmentWhatHappensToYourBrainBinding
 
@@ -59,9 +62,11 @@ class WhatHappensToYourBrainFragment : Fragment() {
     private lateinit var playerView: PlayerView
     private lateinit var player: ExoPlayer
     private var isVideoPlaying = true
-    private var isFavorite = true
+    private var isFavorite = false
+    private var fromSource = source
 
     private lateinit var savePrefData: SavePreferences
+    private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +88,14 @@ class WhatHappensToYourBrainFragment : Fragment() {
 
         val loginJsonString = SharedPreferencesUtil.getData(requireContext(), "loginResponse", "")
         loginResponse = JsonUtil.fromJsonString(loginJsonString)
+
+        val res = SharedPreferencesUtil.getData(requireContext(), "whatHappenToYourBrain", "")
+        if(res.isNotEmpty()){
+            isFavorite = res.toInt() == 1
+        }else{
+            isFavorite = false
+            isFavorite = fromSource == "Home"
+        }
 
         binding.backIcon.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
@@ -112,7 +125,7 @@ class WhatHappensToYourBrainFragment : Fragment() {
             val mediaUri = if (savePrefData.getLanguageMode() == "en") {
                 Uri.parse("https://calmscient.blob.core.windows.net/course/Tipsy_truth_with_subtitle.mp4")
             } else {
-                Uri.parse("https://calmscient.blob.core.windows.net/course/Tipsy_truth_with_subtitle.mp4")
+                Uri.parse("https://calmscient.blob.core.windows.net/exercises-videos/SPN%20Tipsy%20truth.mp4")
             }
 
             val mediaItem = MediaItem.fromUri(mediaUri)
@@ -164,10 +177,12 @@ class WhatHappensToYourBrainFragment : Fragment() {
             isFavorite = !isFavorite
             if (isFavorite) {
                 favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image) // Set your desired color
-                //favouritesAPICall(false)
+                favouritesAPICall(false)
+                SharedPreferencesUtil.saveData(requireContext(),"whatHappenToYourBrain",0.toString())
             } else {
                 favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
-                //favouritesAPICall(true)
+                favouritesAPICall(true)
+                SharedPreferencesUtil.saveData(requireContext(),"whatHappenToYourBrain",1.toString())
             }
         }
 
@@ -284,5 +299,38 @@ class WhatHappensToYourBrainFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         playerView.player!!.playbackState
+    }
+
+    private fun favouritesAPICall(isFavourite: Boolean) {
+        savePatientExercisesFavoritesViewModel.clear()
+
+        val isFav = if(isFavourite) 1 else 0
+        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"What happens to your brain when you drink?")
+
+        savePatientExercisesFavoritesViewModel.savePatientExercisesFavorites(request,loginResponse.token.access_token)
+
+        Log.d("Favourite Resuest","$request")
+        observeFavouritesAPICall()
+    }
+
+    private fun observeFavouritesAPICall(){
+
+        savePatientExercisesFavoritesViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading){
+                customProgressDialog.show(getString(R.string.loading))
+            }else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+        savePatientExercisesFavoritesViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess){
+                savePatientExercisesFavoritesViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+                    if(successData != null && successData.responseCode == 200){
+                        Toast.makeText(requireContext(),successData.responseMessage, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        })
+
     }
 }

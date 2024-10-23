@@ -173,10 +173,20 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
         }
 
         binding.exSevenToolbar.setOnClickListener{
-            val dialog = CustomCalendarDialog()
+          /*  val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")*/
+            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+
+            // Create and show the dialog, passing the selected date string
+            val dialog = CustomCalendarDialog.newInstance(selectedDate.toString())
             dialog.setOnDateSelectedListener(this)
             dialog.show(parentFragmentManager, "CustomCalendarDialog")
-            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+
+            dialog.setOnOkClickListener {
+                appointmentDetailsViewModel.clear()
+                apiCall(selectedDate.toString())
+            }
 
             dialog.setOnOkClickListener {
                 apiCall(selectedDate.toString())
@@ -446,7 +456,7 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
                 appointmentDetailsViewModel.failureLiveData.observe(viewLifecycleOwner, Observer { failureData->
                     failureData?.let {
                         commonDialog.dismiss()
-                        commonDialog.showDialog(it)
+                        commonDialog.showDialog(it,R.drawable.ic_failure)
                     }
                 })
             }

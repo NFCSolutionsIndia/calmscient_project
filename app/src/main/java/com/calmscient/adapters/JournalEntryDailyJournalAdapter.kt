@@ -57,6 +57,24 @@ class JournalEntryDailyJournalAdapter(private val items: List<DailyJournal>) :
             }
         }
 
+
+        holder.dropDownImage.setOnClickListener {
+            val currentPosition = holder.adapterPosition
+            if (expandedCardPosition == currentPosition) {
+                // Collapse the currently expanded card
+                holder.collapse()
+                expandedCardPosition = -1
+            } else {
+                // Collapse the previously expanded card (if any)
+                val previouslyExpandedCardPosition = expandedCardPosition
+                if (previouslyExpandedCardPosition != -1) {
+                    notifyItemChanged(previouslyExpandedCardPosition)
+                }
+                // Expand the clicked card
+                holder.expand()
+                expandedCardPosition = currentPosition
+            }
+        }
         // Dynamically expand/collapse the view based on the adapter position
         if (expandedCardPosition == holder.adapterPosition) {
             holder.expand()
@@ -71,7 +89,7 @@ class JournalEntryDailyJournalAdapter(private val items: List<DailyJournal>) :
         val singleLineDescription: TextView = itemView.findViewById(R.id.tv_singleLine)
         val multiLine: TextView = itemView.findViewById(R.id.tv_Description)
         val titleCardView: ConstraintLayout = itemView.findViewById(R.id.taskTitleLayout)
-        private val dropDownImage: ImageView = itemView.findViewById(R.id.dropdownButton)
+         val dropDownImage: ImageView = itemView.findViewById(R.id.dropdownButton)
         private var isExpanded = false
 
         // Bind data to the views

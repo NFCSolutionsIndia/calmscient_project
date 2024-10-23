@@ -700,7 +700,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="create_new_account">Create an new account</string>
+    <string name="create_new_account">Create a new account</string>
     <string name="or">or</string>
     <string name="happy_to_see_you">We are happy to see you.</string>
     <string name="hello">Hello</string>
@@ -1394,7 +1394,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="summarygad_by_date_range">GAD-7 by date range</string>
     <string name="summaryaudit_by_date_range">AUDIT by date range</string>
     <string name="summarydast_by_date_range">DAST by date range</string>
-    <string name="Summaryprogresswork_total_cousrework">Total course work complete</string>
+    <string name="Summaryprogresswork_total_cousrework">Total course work completed</string>
     <string name="summaryprogress_course">Course</string>
     <string name="summaryprogress_completed">% Completed</string>
     <string name="summaryprogress_braving_Anxiety">Braving anxiety</string>
@@ -2289,7 +2289,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="disphragmatic_step_four_desc">Exhale slowly and steadily through you mouth for about 6 seconds.</string>
     <string name="disphragmatic_step_five_desc">Repeat the cycle for 5 to 10 minutes about 3 to 5 times a day</string>
     <string name="disphragmatic_step_final_desc">Engage in this practice regularly, allowing the diaphragmatic breathing technique to guide you towards a state of tranquility and mindful breathing.</string>
-    <string name="breathing_exercise_4_7_8">4-7-8 Breathing exercise</string>
+    <string name="breathing_exercise_4_7_8">4–7–8 Breathing exercise</string>
     <string name="mindful_breathing_exercise_heading">Mindful breathing exercise</string>
     <string name="diaphragmatic_breathing_exercise_heading">Diaphragmatic breathing exercise</string>
     <string name="you_did_not_change_any_timings">You did not change any timings</string>
@@ -2344,5 +2344,10 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="congratulations">Congratulations!</string>
     <string name="congrats_description">Now you need to control your drink habit by taking a count not only monthly goal, but also daily limit according to the guideline about moderate drinking\n\nLet\'s get to know the drink coach features.</string>
     <string name="please_select_atleast_one_day_to_set_alcohol_free_days">Please select atleast one day to set alcohol free days.</string>
+    <string name="sections">Sections</string>
+    <string name="you_must_answer_at_least_one_question_before_saving">You must answer at least one question before saving.</string>
+    <string name="you_want_to_logout">You want to logout?</string>
+    <string name="could_be_better">COULD BE\nBETTER</string>
+    <string name="saved_successfully">Saved Successfully</string>
 
 </resources>

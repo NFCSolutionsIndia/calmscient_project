@@ -386,7 +386,7 @@ class SummaryofGAD7Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
            // Set fromDate as 7 days back from selectedDate
            val startDateCalendar = Calendar.getInstance().apply {
                time = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
-               add(Calendar.DATE, -7)
+               add(Calendar.DATE, -6)
            }
            fromDate = dateFormat.format(startDateCalendar.time)
        } else {
@@ -394,7 +394,7 @@ class SummaryofGAD7Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
            toDate = dateFormat.format(calendar.time)
 
            // Set fromDate as 7 days back from today's date
-           calendar.add(Calendar.DATE, -7)
+           calendar.add(Calendar.DATE, -6)
            fromDate = dateFormat.format(calendar.time)
        }
        // Create the final date string
@@ -457,9 +457,20 @@ class SummaryofGAD7Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
 
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.completionDate)
-                val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
-                dateLabels.add(formattedDate)
+                val date = if (!phqData.completionDate.isNullOrEmpty()) {
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.completionDate)
+                } else {
+                    null
+                }
+
+                val formattedDate = date?.let {
+                    SimpleDateFormat("MM/dd", Locale.getDefault()).format(
+                        it
+                    )
+                }
+                if (formattedDate != null) {
+                    dateLabels.add(formattedDate)
+                }
             }
 
             val dataSet = LineDataSet(entries, "GAD7 Scores")

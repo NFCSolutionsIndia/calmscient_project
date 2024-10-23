@@ -16,6 +16,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,29 +31,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
-import com.calmscient.Interface.BottomSheetListener
 import com.calmscient.R
-import com.calmscient.adapters.JournalEntryDailyJournalAdapter
-import com.calmscient.databinding.FragmentJournalEntryBinding
 import com.calmscient.databinding.FragmentJournalEntryNewBinding
 import com.calmscient.di.remote.request.AddPatientJournalEntryRequest
-import com.calmscient.di.remote.request.GetPatientJournalByPatientIdRequest
-import com.calmscient.di.remote.response.DailyJournal
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.CustomProgressDialog
-import com.calmscient.utils.ViewPager2Utils
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.AddPatientJournalEntryViewModel
-import com.calmscient.viewmodels.GetPatientJournalByPatientIdViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetListener,CustomCalendarDialog.OnDateSelectedListener  {
@@ -115,6 +109,7 @@ class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetLi
         tabLayout = binding.tabLayout
 
         tabAdapter = TabFragmentAdapter(requireActivity(), this,selectedDate)
+        disableViewPagerSwipe(viewPager)// disabling swipe
         viewPager.adapter = tabAdapter
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -179,6 +174,22 @@ class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetLi
             tab.customView = getCustomTabView(position)
         }.attach()
 
+
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No action needed here
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                performSearch(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // No action needed here
+            }
+        })
+
+
         return binding.root
     }
 
@@ -205,7 +216,7 @@ class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetLi
             if(isSuccess){
                 addPatientJournalEntryViewModel.saveResponseLiveData.observe(this, Observer { successData->
                     if(successData != null && successData.responseCode == 200){
-                        commonDialog.showDialog(successData.responseMessage)
+                        commonDialog.showDialog(successData.responseMessage,R.drawable.ic_success_dialog)
                        commonDialog.setOnDismissListener {
                            // I want to update the daily journal adapter here...
                            dailyJournalTabFragment?.getPatientJournalDataAPICall(null)
@@ -234,4 +245,16 @@ class JournalEntryFragmentNew : Fragment(), BottomSheetAddFragment.BottomSheetLi
         }
         return tabView
     }
+
+    private fun performSearch(query: String?) {
+        when (tabPosition) {
+            0 -> quizTabFragment?.performSearch(query) // Quiz Tab
+            1 -> dailyJournalTabFragment?.performSearch(query) // Daily Journal Tab
+            2 -> discoveryExerciseTabFragment?.performSearch(query) // Discovery Exercise Tab
+        }
+    }
+    private fun disableViewPagerSwipe(viewPager: ViewPager2) {
+        viewPager.isUserInputEnabled = false
+    }
+
 }

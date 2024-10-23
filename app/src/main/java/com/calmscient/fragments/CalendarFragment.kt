@@ -28,6 +28,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.calmscient.Interface.CellClickListener
+import com.calmscient.Interface.OnCheckedChangeListener
 import com.calmscient.R
 import com.calmscient.adapters.MedicationsCardAdapter
 import com.calmscient.databinding.CalendarDayLayoutBinding
@@ -73,10 +74,12 @@ data class CardViewItem(
     val timeEvening: String?,
     val sunImageResource: Int?,
     val moonImageResource: Int?,
-    var medicalDetails :MedicalDetails
+    var medicalDetails :MedicalDetails,
+    var isChecked: Boolean
 )
 
-class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnDateSelectedListener{
+class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnDateSelectedListener,
+    OnCheckedChangeListener {
     private lateinit var binding: CalendarFragmentLayoutBinding
     private var selectedDate = LocalDate.now()
     private val dateFormatter = DateTimeFormatter.ofPattern("dd")
@@ -98,6 +101,20 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
                 CommonClass.showInternetDialogue(requireContext())
             }
         }
+    }
+
+    // for the checkbox state in recyclerview
+    @SuppressLint("ResourceAsColor")
+    override fun onCheckedChanged(isAnyChecked: Boolean) {
+       if(isAnyChecked){
+           binding.saveButton.isEnabled = true
+           binding.saveButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_border)
+           binding.saveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+       }else{
+           binding.saveButton.isEnabled = false
+           binding.saveButton.background = ContextCompat.getDrawable(requireContext(), R.drawable.button_background_disabled)
+           binding.saveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_light))
+       }
     }
     override fun onDateSelected(date: CalendarDay) {
 
@@ -137,7 +154,10 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
         Log.d("Selected Date :","$selectedDate")
         binding.saveButton.setOnClickListener {
             if (CommonClass.isNetworkAvailable(requireContext())) {
-                loadFragment(MedicalRecordsFragment())
+                commonDialog.showDialog(getString(R.string.saved_successfully),R.drawable.ic_success_dialog)
+                commonDialog.setOnDismissListener {
+                    loadFragment(MedicalRecordsFragment())
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -160,10 +180,15 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
         observeViewModel()
 
         binding.exSevenToolbar.setOnClickListener{
-            val dialog = CustomCalendarDialog()
+          /*  val dialog = CustomCalendarDialog()
+            dialog.setOnDateSelectedListener(this)
+            dialog.show(parentFragmentManager, "CustomCalendarDialog")*/
+            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
+
+            // Create and show the dialog, passing the selected date string
+            val dialog = CustomCalendarDialog.newInstance(selectedDate.toString())
             dialog.setOnDateSelectedListener(this)
             dialog.show(parentFragmentManager, "CustomCalendarDialog")
-            //customCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_SINGLE)
 
             dialog.setOnOkClickListener {
 
@@ -242,39 +267,13 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
         )
         binding.exSevenCalendar.scrollToDate(LocalDate.now())
         binding.recyclerViewMedications.layoutManager = LinearLayoutManager(requireContext())
-        cardViewAdapter = MedicationsCardAdapter(cardViewItems)
+        cardViewAdapter = MedicationsCardAdapter(cardViewItems,this)
         cardViewAdapter.setCellClickListener(this)
         binding.recyclerViewMedications.adapter = cardViewAdapter
 
         // Call this function when the date is selected
         // displayCardViewsForSelectedDate()
     }
-
-    /* private fun displayCardViewsForSelectedDate() {
-        cardViewItems.clear()
-        cardViewItems.addAll(
-            listOf(
-                CardViewItem(
-                    getString(R.string.paracetamol),
-                    getString(R.string.two_tablets),
-                    "8:00 AM",
-                    "7:00 PM",
-                    R.drawable.sunset,
-                    R.drawable.moon
-                ),
-                CardViewItem(getString(R.string.anti_biotic),  getString(R.string.one_tablet), "9:30 AM", null, R.drawable.sunset, null),
-                CardViewItem(
-                    getString(R.string.vitamin),
-                    getString(R.string.two_tablets),
-                    "9:00 AM",
-                    "7:30 PM",
-                    R.drawable.sunset,
-                    R.drawable.moon
-                )
-            )
-        )
-        cardViewAdapter.notifyDataSetChanged()
-    }*/
 
     fun incrementDateByOne() {
         /* val c = Calendar.getInstance()
@@ -420,90 +419,6 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
         })
     }
 
-   /* @SuppressLint("NotifyDataSetChanged")
-    private fun filterData(isSuccess: Boolean) {
-        if (isSuccess) {
-            cardViewItems.clear()
-            medicationDetailsViewModel.saveResponseLiveData.observe(viewLifecycleOwner,Observer { successData ->
-                    if (successData != null) {
-                        cardViewItems.clear()
-
-                        val selectedDateMedication =
-                            successData.medicineDetails.filter { it.date == selectedDate.toString() }
-
-                        if (selectedDateMedication.isNotEmpty()) {
-                            // Medications exist for the selected date
-                            binding.noMedicationsTextView.visibility = View.GONE
-                            binding.saveButton.visibility = View.VISIBLE
-
-                            *//*selectedDateMedication.forEach { medicineDetail ->
-                                medicineDetail.medicationDetailsByDate.forEach { medicationDetailByDate ->
-                                    // Add medication details to the RecyclerView
-                                    val dosageTimes = medicationDetailByDate.dosageTime
-                                    val timeOfDayList = getTimeOfDay(dosageTimes)
-                                    val timeMorning =
-                                        timeOfDayList.firstOrNull { it.contains("AM") }
-                                    val timeEvening =
-                                        timeOfDayList.firstOrNull { it.contains("PM") }
-                                    val sunImageResource =
-                                        if (timeMorning != null) R.drawable.sunset else null
-                                    val moonImageResource =
-                                        if (timeEvening != null) R.drawable.moon else null
-                                    cardViewItems.add(
-                                        CardViewItem(
-                                            medicationDetailByDate.medicineName,
-                                            "${medicationDetailByDate.numberOfTablets} tablets",
-                                            timeMorning,
-                                            timeEvening,
-                                            sunImageResource,
-                                            moonImageResource,
-                                            medicationDetailByDate.medicalDetails
-                                        )
-                                    )
-                                }
-                            }*//*
-
-
-
-                            selectedDateMedication.forEach { medicineDetail ->
-                                medicineDetail.medicationDetailsByDate.forEach { medicationDetailByDate ->
-                                    // Add medication details to the RecyclerView
-                                    val morningTime = getMorningTime(medicationDetailByDate.medicalDetails.scheduledTimeList.flatMap { it.scheduledTimes })
-                                    val eveningTime = getEveningTime(medicationDetailByDate.medicalDetails.scheduledTimeList.flatMap { it.scheduledTimes })
-
-                                    val sunImageResource = if (morningTime.isNotEmpty()) R.drawable.sunset else null
-                                    val moonImageResource = if (eveningTime.isNotEmpty()) R.drawable.moon else null
-
-                                    // Add card only if there are morning or evening times
-                                    if (morningTime.isNotEmpty() || eveningTime.isNotEmpty()) {
-                                        cardViewItems.add(
-                                            CardViewItem(
-                                                medicationDetailByDate.medicineName,
-                                                "${medicationDetailByDate.numberOfTablets} tablets",
-                                                morningTime,
-                                                eveningTime,
-                                                sunImageResource,
-                                                moonImageResource,
-                                                medicationDetailByDate.medicalDetails
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-
-                        } else {
-                            // No medications for the selected date
-                            binding.noMedicationsTextView.visibility = View.VISIBLE
-                            binding.saveButton.visibility = View.GONE
-                        }
-
-                        cardViewAdapter.notifyDataSetChanged()
-                    }
-                })
-        }
-    }
-*/
-
     @SuppressLint("NotifyDataSetChanged")
     private fun filterData(isSuccess: Boolean) {
         var sunImageResource :Int?
@@ -554,7 +469,8 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
                                             if (eveningTime!!.isNotEmpty()) eveningTime else null,
                                             sunImageResource,
                                             moonImageResource,
-                                            medicationDetailByDate.medicalDetails
+                                            medicationDetailByDate.medicalDetails,
+                                            false
                                         )
                                     )
                                 }
@@ -571,51 +487,6 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
                     }
                 })
         }
-    }
-
-    private fun getTimeOfDay(times: List<String>): List<String> {
-        return times.map { time ->
-            val parts = time.split(":")
-            val hour = parts[0].toInt()
-            val minute = parts[1].toInt()
-
-            val amPm = if (hour < 12) "AM" else "PM"
-            val hour12 = if (hour == 0 || hour == 12) 12 else hour % 12
-
-
-            String.format("%d:%02d %s", hour12, minute, amPm)
-        }
-    }
-
-
-    private fun showDatePickerDialog() {
-        val currentDate = Calendar.getInstance()
-        val currentYear = currentDate.get(Calendar.YEAR)
-        val currentMonth = currentDate.get(Calendar.MONTH)
-        val currentDay = currentDate.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(requireContext(), { _, year, month, day ->
-            // Month in DatePickerDialog starts from 0 (January) to 11 (December)
-            // So, increment month by 1 to match with YearMonth's month
-            val selectedYearMonth = YearMonth.of(year, month + 1)
-
-            // Remove the selection indicator from the previously selected date
-            val previousSelectedDate = selectedDate
-            previousSelectedDate?.let {
-                binding.exSevenCalendar.notifyDateChanged(it)
-            }
-
-            // Update the selectedDate variable
-            selectedDate = LocalDate.of(year, month + 1, day)
-
-            // Scroll the WeekCalendarView to the selected month and day
-            binding.exSevenCalendar.scrollToDate(selectedYearMonth.atDay(day))
-
-            // Notify the WeekCalendarView to update the selected date UI
-            binding.exSevenCalendar.notifyDateChanged(selectedDate)
-        }, currentYear, currentMonth, currentDay)
-
-        datePickerDialog.show()
     }
 
 
@@ -677,7 +548,7 @@ class CalendarFragment : Fragment(), CellClickListener ,CustomCalendarDialog.OnD
         return if (eveningTimes.isNotEmpty()) eveningTimes.last() else ""
     }
 
-    fun CalendarDay.toLocalDate(): LocalDate {
+    private fun CalendarDay.toLocalDate(): LocalDate {
         return LocalDate.of(this.year, this.month + 1, this.day) // Note: CalendarDay month is 0-based, LocalDate is 1-based
     }
 

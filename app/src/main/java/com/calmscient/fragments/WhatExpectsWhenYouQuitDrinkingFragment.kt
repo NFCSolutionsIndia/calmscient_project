@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -31,6 +32,7 @@ import com.calmscient.R
 import com.calmscient.databinding.FragmentWhatExpectsWhenYouQuitDrinkingBinding
 import com.calmscient.databinding.FragmentWhatHappensToYourBrainBinding
 import com.calmscient.di.remote.BasicKnowledgeItem
+import com.calmscient.di.remote.request.SavePatientExercisesFavoritesRequest
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
@@ -38,6 +40,7 @@ import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.BasicKnowledgeSharedViewModel
+import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
 import com.calmscient.viewmodels.UpdateBasicKnowledgeIndexDataViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -47,7 +50,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
+class WhatExpectsWhenYouQuitDrinkingFragment(source: String) : Fragment() {
 
     private lateinit var binding : FragmentWhatExpectsWhenYouQuitDrinkingBinding
 
@@ -63,6 +66,8 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
     private var isVideoPlaying = true
     private var isFavorite = true
     private lateinit var savePrefData: SavePreferences
+    private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
+    private val fromSource = source
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +93,14 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(loginJsonString)
         savePrefData = SavePreferences(requireContext())
 
+        val res = SharedPreferencesUtil.getData(requireContext(), "whatExpectsWhenYouQuitDrinking", "")
+        if(res.isNotEmpty()){
+            isFavorite = res.toInt() == 1
+        }else{
+            isFavorite = false
+            isFavorite = fromSource == "Home"
+        }
+
         // Load thumbnail from URL using Glide
         Glide.with(this)
             .load("https://calmscient.blob.core.windows.net/taking-control-basic-knowledge-thumbnails/WhatToExpectWhenYouQuitDrinking.png")
@@ -111,7 +124,7 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
             val mediaUri = if (savePrefData.getLanguageMode() == "en") {
                 Uri.parse("https://calmscient.blob.core.windows.net/course/What%20happens%20with%20subtitle.mp4")
             } else {
-                Uri.parse("https://calmscient.blob.core.windows.net/course/What%20happens%20with%20subtitle.mp4")
+                Uri.parse("https://calmscient.blob.core.windows.net/exercises-videos/SPN%20What%20happens%20when%20you%20quit%20drinking.mp4")
             }
 
             val mediaItem = MediaItem.fromUri(mediaUri)
@@ -163,10 +176,12 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
             isFavorite = !isFavorite
             if (isFavorite) {
                 favoritesIcon.setImageResource(R.drawable.mindfullexercise_heart__image) // Set your desired color
-                //favouritesAPICall(false)
+                favouritesAPICall(false)
+                SharedPreferencesUtil.saveData(requireContext(),"whatExpectsWhenYouQuitDrinking",0.toString())
             } else {
                 favoritesIcon.setImageResource(R.drawable.heart_icon_fav) // Reset color
-                //favouritesAPICall(true)
+                favouritesAPICall(true)
+                SharedPreferencesUtil.saveData(requireContext(),"whatExpectsWhenYouQuitDrinking",1.toString())
             }
         }
 
@@ -256,6 +271,39 @@ class WhatExpectsWhenYouQuitDrinkingFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         playerView.player!!.playbackState
+    }
+
+    private fun favouritesAPICall(isFavourite: Boolean) {
+        savePatientExercisesFavoritesViewModel.clear()
+
+        val isFav = if(isFavourite) 1 else 0
+        val request = SavePatientExercisesFavoritesRequest(isFav,1, loginResponse.loginDetails.patientID,"What to expect when you quit drinking?")
+
+        savePatientExercisesFavoritesViewModel.savePatientExercisesFavorites(request,loginResponse.token.access_token)
+
+        Log.d("Favourite Resuest","$request")
+        observeFavouritesAPICall()
+    }
+
+    private fun observeFavouritesAPICall(){
+
+        savePatientExercisesFavoritesViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer { isLoading->
+            if(isLoading){
+                customProgressDialog.show(getString(R.string.loading))
+            }else{
+                customProgressDialog.dialogDismiss()
+            }
+        })
+        savePatientExercisesFavoritesViewModel.successLiveData.observe(viewLifecycleOwner, Observer { isSuccess->
+            if(isSuccess){
+                savePatientExercisesFavoritesViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
+                    if(successData != null && successData.responseCode == 200){
+                        Toast.makeText(requireContext(),successData.responseMessage, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        })
+
     }
 
 }

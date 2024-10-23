@@ -158,7 +158,7 @@ class UpdateMedicationDetailsBottomSheetFragment(private val selectedSchedule: S
             val todayDate = dateFormat.format(today.time)
 
             if (selectedDays.isEmpty()) {
-                commonDialog.showDialog(getString(R.string.please_select_at_least_one_day))
+                commonDialog.showDialog(getString(R.string.please_select_at_least_one_day),R.drawable.ic_alret)
                 return@setOnClickListener
             }
 

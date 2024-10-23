@@ -25,6 +25,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -32,6 +33,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -152,7 +154,7 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             privacyBottomSheet.show(supportFragmentManager, privacyBottomSheet.tag)
         }
         binding.logout.setOnClickListener {
-            logoutAPICall()
+            showLogoutConfirmationDialog()
         }
 
         binding.uploadImage.setOnClickListener{
@@ -178,6 +180,36 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
 
 
     }
+
+    private fun showLogoutConfirmationDialog() {
+        // Inflate the custom layout
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.logout_confirmation_dialog, null)
+
+        // Build the AlertDialog
+        val dialogBuilder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false) // Optional, to prevent dialog dismissal on back press or touch outside
+
+        // Create the AlertDialog
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+
+        // Find the buttons in the inflated layout
+        val noButton = dialogView.findViewById<AppCompatButton>(R.id.btn_no)
+        val yesButton = dialogView.findViewById<AppCompatButton>(R.id.btn_yes)
+
+        // Handle "Yes" button click
+        yesButton.setOnClickListener {
+            alertDialog.dismiss()
+            logoutAPICall() // Call your API method here
+        }
+
+        // Handle "No" button click
+        noButton.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
 
     fun loader() {
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
@@ -467,10 +499,20 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             if(isSuccess){
                 logoutViewModel.saveResponseLiveData.observe(this, Observer { successData->
                     if(successData != null){
-                        commonDialog.showDialog(successData.responseMessage)
+                        commonDialog.showDialog(successData.responseMessage,R.drawable.ic_success_dialog)
                         commonDialog.setOnDismissListener {
                             val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
+                        }
+                    }
+                })
+            }else{
+                logoutViewModel.failureLiveData.observe(this, Observer { isError->
+                    if(!isError.isNullOrEmpty()){
+                        commonDialog.showDialog(getString(R.string.something_went_wrong_try_again_later),R.drawable.ic_failure)
+                        commonDialog.setOnDismissListener {
+                            logoutViewModel.failureLiveData.postValue(null)
+                            logoutViewModel.clear()
                         }
                     }
                 })

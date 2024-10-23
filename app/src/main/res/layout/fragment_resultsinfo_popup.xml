@@ -85,6 +85,7 @@
             android:fontFamily="@font/lexendregular"
             android:text="@string/cancel"
             android:textAllCaps="false"
+            android:visibility="gone"
             android:textColor="@color/purple_100"
             android:textSize="18sp">
 

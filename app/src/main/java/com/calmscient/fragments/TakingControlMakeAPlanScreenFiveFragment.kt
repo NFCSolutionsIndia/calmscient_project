@@ -202,8 +202,7 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
         }
         customCalendarView.setSelectedDates(dates)
 
-        binding.tvMonthlyDrinkCount.text =
-            getAlcoholFreeDayResponse.currentMonthSuggestedDrinkCount.toString()
+        binding.tvMonthlyDrinkCount.text = getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount.toString()
     }
 
     private fun showBulbDialog() {
@@ -283,7 +282,10 @@ class TakingControlMakeAPlanScreenFiveFragment : Fragment() {
 
 
             binding.goalsTextView.text = (unSelectedDaysCount * selectedNumber).toString()
-            if (unSelectedDaysCount * selectedNumber > getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount) {
+            /*if (unSelectedDaysCount * selectedNumber > getAlcoholFreeDayResponse.suggestedMonthlyDrinkCount) {
+                showCustomDialog()
+            }*/
+            if(selectedNumber>2){
                 showCustomDialog()
             }
 

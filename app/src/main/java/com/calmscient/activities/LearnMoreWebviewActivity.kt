@@ -15,7 +15,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -27,14 +26,11 @@ import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.calmscient.R
 import java.io.File
 import java.io.IOException
@@ -45,6 +41,7 @@ class LearnMoreWebviewActivity : AppCompat() {
     private var icBack: ImageView? = null
     private lateinit var progressBar: ProgressBar
     private var url: String? = null
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_webview)
@@ -52,14 +49,13 @@ class LearnMoreWebviewActivity : AppCompat() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-        toolbar = findViewById(R.id.toolbar_learn_more) as Toolbar
-        webView_learn = findViewById(R.id.webview_learn_more) as WebView
-        progressBar = findViewById(R.id.progressBar_webview) as ProgressBar
-        icBack = findViewById(R.id.backIcon) as ImageView
+        toolbar = findViewById(R.id.toolbar_learn_more)
+        webView_learn = findViewById(R.id.webview_learn_more)
+        progressBar = findViewById(R.id.progressBar_webview)
+        icBack = findViewById(R.id.backIcon)
         val url1: String = intent.getStringExtra("988_url").toString()
         //initializeViews()
-        webView_learn!!.settings.javaScriptEnabled = true
-        webView_learn!!.settings.domStorageEnabled = true
+        webView_learn!!.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
         webView_learn!!.settings.userAgentString =
             "Mozilla/5.0 (Linux; Android 4.1.2; C1905 Build/15.1.C.2.8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36"
         webView_learn!!.settings.loadWithOverviewMode = true
@@ -84,6 +80,7 @@ class LearnMoreWebviewActivity : AppCompat() {
         url = url1
         webView_learn!!.settings.javaScriptEnabled = true
         webView_learn!!.settings.domStorageEnabled = true
+        webView_learn!!.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
         webView_learn!!.settings.userAgentString =
             "Mozilla/5.0 (Linux; Android 4.1.2; C1905 Build/15.1.C.2.8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.114 Mobile Safari/537.36"
         webView_learn!!.settings.loadWithOverviewMode = true
@@ -232,6 +229,7 @@ class LearnMoreWebviewActivity : AppCompat() {
         })
         webView_learn!!.settings.javaScriptEnabled = true
         webView_learn!!.settings.domStorageEnabled = true
+        webView_learn!!.settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
         webView_learn!!.isHorizontalScrollBarEnabled = false
     }
 
