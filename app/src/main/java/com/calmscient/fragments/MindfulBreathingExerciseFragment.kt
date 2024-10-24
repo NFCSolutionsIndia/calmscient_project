@@ -56,6 +56,7 @@ class MindfulBreathingExerciseFragment(source: String)  : Fragment() {
 
     private lateinit var customProgressDialog: CustomProgressDialog
     private lateinit var commonDialog: CommonAPICallDialog
+    private var playbackPosition: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -221,7 +222,7 @@ class MindfulBreathingExerciseFragment(source: String)  : Fragment() {
         transaction.commit()
     }
 
-    override fun onPause() {
+   /* override fun onPause() {
         super.onPause()
         playerView.player!!.playWhenReady = false
     }
@@ -239,8 +240,31 @@ class MindfulBreathingExerciseFragment(source: String)  : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         playerView.player!!.playbackState
+    }*/
+
+    override fun onPause() {
+        super.onPause()
+        playbackPosition = player.currentPosition
+        player.playWhenReady = false
     }
 
+    override fun onResume() {
+        super.onResume()
+        player.seekTo(playbackPosition)
+        player.playWhenReady = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Don't release the player here to avoid reinitialization when the user comes back
+        player.playWhenReady = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Release player resources here when the view is destroyed
+        player.release()
+    }
 
     private fun favouritesAPICall(isFavourite: Boolean) {
         savePatientExercisesFavoritesViewModel.clear()

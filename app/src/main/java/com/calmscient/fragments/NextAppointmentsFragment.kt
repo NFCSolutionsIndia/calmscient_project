@@ -37,6 +37,7 @@ import com.calmscient.utils.CustomCalendarDialog
 import com.calmscient.utils.CustomProgressDialog
 import com.calmscient.utils.common.CommonClass
 import com.calmscient.utils.common.JsonUtil
+import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.utils.getColorCompat
 import com.calmscient.utils.network.ServerTimeoutHandler
@@ -199,6 +200,18 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val savePreferences = SavePreferences(requireContext())
+
+        // Set Locale based on the saved language preference
+        val locale: Locale = when (savePreferences.getLanguageMode()) {
+            "english" -> Locale("en")
+            "spanish" -> Locale("es")
+            "asl" -> Locale("en") // Assuming ASL is a valid locale, otherwise handle it accordingly.
+            else -> Locale.getDefault() // Fallback to device default
+        }
+        // Set the locale for date formatting
+        Locale.setDefault(locale)
+
         class DayViewContainer(view: View, private val onDayClicked: (LocalDate) -> Unit) : ViewContainer(view) {
             val bind = CalendarDayLayoutBinding.bind(view)
             lateinit var day: WeekDay
@@ -216,10 +229,10 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
                 }
             }
 
-            fun bind(day: WeekDay) {
+            fun bind(day: WeekDay,locale: Locale) {
                 this.day = day
                 bind.exSevenDateText.text = dateFormatter.format(day.date)
-                bind.exSevenDayText.text = day.date.dayOfWeek.displayText()
+                bind.exSevenDayText.text = day.date.dayOfWeek.displayText(uppercase = false, locale = locale)
                 val colorRes = if (day.date == selectedDate) {
                     R.color.white
                 } else {
@@ -233,7 +246,9 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
                     R.color.example_7_calendar
                 }
                 bind.layoutDate.setBackgroundResource(colorResLayout)
+                //bind.exSevenSelectedView.isVisible = day.date == selectedDate
             }
+
         }
 
         binding.exSevenCalendar.dayBinder = object : WeekDayBinder<DayViewContainer> {
@@ -242,12 +257,12 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
                 displayCardViewsForSelectedDate()
             }
 
-            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data)
+            override fun bind(container: DayViewContainer, data: WeekDay) = container.bind(data,locale)
         }
 
         binding.exSevenCalendar.weekScrollListener = { weekDays ->
             val text = binding.exSevenToolbar.title
-            binding.exSevenToolbar.title = getWeekPageTitle(weekDays)
+            binding.exSevenToolbar.title = getWeekPageTitle(weekDays, locale)
             binding.exSevenToolbar.setTitleTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -349,34 +364,38 @@ class NextAppointmentsFragment : Fragment() , CellClickListenerAppointments, Cus
             appointmentDetailsViewModel.getAppointmentDetails(it.patientLocationID,it.patientID,it.clientID,formattedSevenDaysBefore, formattedSelectedDate,loginResponse!!.token.access_token)
         }
     }
-    fun getWeekPageTitle(week: Week): String {
+    fun getWeekPageTitle(week: Week, locale: Locale): String {
         val firstDate = week.days.first().date
         val lastDate = week.days.last().date
         return when {
             firstDate.yearMonth == lastDate.yearMonth -> {
-                firstDate.yearMonth.displayText()
+                firstDate.yearMonth.displayText(locale = locale)
             }
             firstDate.year == lastDate.year -> {
-                "${firstDate.month.displayText(short = false)} - ${lastDate.yearMonth.displayText()}"
+                "${firstDate.month.displayText(false, locale)} - ${lastDate.yearMonth.displayText(false,locale)}"
             }
             else -> {
-                "${firstDate.yearMonth.displayText()} - ${lastDate.yearMonth.displayText()}"
+                "${firstDate.yearMonth.displayText(false,locale)} - ${lastDate.yearMonth.displayText(false,locale)}"
             }
-        }
-    }
-    fun YearMonth.displayText(short: Boolean = false): String {
-        return "${this.month.displayText(short = short)} ${this.year}"
-    }
-    fun Month.displayText(short: Boolean = true): String {
-        val style = if (short) TextStyle.SHORT else TextStyle.FULL
-        return getDisplayName(style, Locale.ENGLISH)
-    }
-    fun DayOfWeek.displayText(uppercase: Boolean = false): String {
-        return getDisplayName(TextStyle.SHORT, Locale.ENGLISH).let { value ->
-            if (uppercase) value.uppercase(Locale.ENGLISH) else value
         }
     }
 
+    fun YearMonth.displayText(short: Boolean = false, locale: Locale): String {
+        return "${this.month.displayText(short = short, locale = locale)} ${this.year}"
+    }
+
+
+    fun Month.displayText(short: Boolean = false, locale: Locale): String {
+        val style = if (short) TextStyle.SHORT else TextStyle.FULL
+        return getDisplayName(style, locale)
+    }
+
+
+    fun DayOfWeek.displayText(uppercase: Boolean = false, locale: Locale): String {
+        return getDisplayName(TextStyle.SHORT, locale).let { value ->
+            if (uppercase) value.uppercase(locale) else value
+        }
+    }
     private fun loadFragment(fragment: Fragment) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.flFragment, fragment)
