@@ -212,7 +212,7 @@ class SummaryofSleepFragment : Fragment() , CustomCalendarDialog.OnDateSelectedL
         // Calculate the date for next month
         //calendar.add(Calendar.MONTH, -1)
         // Subtract one week (7 days) from today's date
-        calendar.add(Calendar.DATE, -7)
+        calendar.add(Calendar.DATE, -6)
         val previousMonthDate: Date = calendar.time
         val previousMonthDateString: String = dateFormat.format(previousMonthDate)
 
