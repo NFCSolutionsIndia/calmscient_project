@@ -21,8 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.calmscient.R
 import com.calmscient.di.remote.response.DailyJournal
 import com.calmscient.utils.AnimationUtils
-
-class JournalEntryDailyJournalAdapter(private val items: List<DailyJournal>) :
+class JournalEntryDailyJournalAdapter(private val items: List<DailyJournal>,  private val onUrlClick: ((url: String, title: String) -> Unit)? = null ) :
     RecyclerView.Adapter<JournalEntryDailyJournalAdapter.CardViewHolder>() {
 
     private var expandedCardPosition: Int = -1
@@ -36,85 +35,66 @@ class JournalEntryDailyJournalAdapter(private val items: List<DailyJournal>) :
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        val item = items[holder.adapterPosition] // Use the dynamic adapter position
+        val item = items[position]
         holder.bind(item)
 
-        holder.titleCardView.setOnClickListener {
-            val currentPosition = holder.adapterPosition
-            if (expandedCardPosition == currentPosition) {
-                // Collapse the currently expanded card
-                holder.collapse()
-                expandedCardPosition = -1
-            } else {
-                // Collapse the previously expanded card (if any)
-                val previouslyExpandedCardPosition = expandedCardPosition
-                if (previouslyExpandedCardPosition != -1) {
-                    notifyItemChanged(previouslyExpandedCardPosition)
-                }
-                // Expand the clicked card
-                holder.expand()
-                expandedCardPosition = currentPosition
-            }
-        }
-
-
-        holder.dropDownImage.setOnClickListener {
-            val currentPosition = holder.adapterPosition
-            if (expandedCardPosition == currentPosition) {
-                // Collapse the currently expanded card
-                holder.collapse()
-                expandedCardPosition = -1
-            } else {
-                // Collapse the previously expanded card (if any)
-                val previouslyExpandedCardPosition = expandedCardPosition
-                if (previouslyExpandedCardPosition != -1) {
-                    notifyItemChanged(previouslyExpandedCardPosition)
-                }
-                // Expand the clicked card
-                holder.expand()
-                expandedCardPosition = currentPosition
-            }
-        }
-        // Dynamically expand/collapse the view based on the adapter position
+        // Set the initial view state (expanded or collapsed)
         if (expandedCardPosition == holder.adapterPosition) {
             holder.expand()
         } else {
             holder.collapse()
         }
+
+        // Set the onClickListener for expanding/collapsing
+        holder.itemView.setOnClickListener {
+            if (expandedCardPosition == holder.adapterPosition) {
+                holder.collapse()
+                expandedCardPosition = -1
+            } else {
+                val previousExpandedPosition = expandedCardPosition
+                expandedCardPosition = holder.adapterPosition
+                notifyItemChanged(previousExpandedPosition)
+                notifyItemChanged(expandedCardPosition)
+            }
+        }
+        holder.dropDownImage.setOnClickListener {
+            if (expandedCardPosition == holder.adapterPosition) {
+                holder.collapse()
+                expandedCardPosition = -1
+            } else {
+                val previousExpandedPosition = expandedCardPosition
+                expandedCardPosition = holder.adapterPosition
+                notifyItemChanged(previousExpandedPosition)
+                notifyItemChanged(expandedCardPosition)
+            }
+        }
     }
 
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textviewDate: TextView = itemView.findViewById(R.id.tv_date)
-        val title: TextView = itemView.findViewById(R.id.tv_daily_journal_title)
-        val singleLineDescription: TextView = itemView.findViewById(R.id.tv_singleLine)
-        val multiLine: TextView = itemView.findViewById(R.id.tv_Description)
-        val titleCardView: ConstraintLayout = itemView.findViewById(R.id.taskTitleLayout)
+        private val textView: TextView = itemView.findViewById(R.id.tv_singleLineOrFullDescription)
          val dropDownImage: ImageView = itemView.findViewById(R.id.dropdownButton)
-        private var isExpanded = false
 
-        // Bind data to the views
         fun bind(dailyJournal: DailyJournal) {
-            textviewDate.text = dailyJournal.createdAt
-            title.text = dailyJournal.title
-            singleLineDescription.text = dailyJournal.entry
-            multiLine.text = dailyJournal.entry
-            collapse() // All tasks should be collapsed by default
+            textView.text = dailyJournal.entry
+
+            if (dailyJournal.url != null && dailyJournal.title != null && dailyJournal.entryType == "DiscoveryExercises" && onUrlClick != null) {
+                textView.setOnClickListener {
+                    onUrlClick.invoke(dailyJournal.url, dailyJournal.title)
+                }
+            }
+
+            collapse() // Start collapsed
         }
 
-        // Expand the journal entry and update the UI
         fun expand() {
-            AnimationUtils.expand(multiLine)
-            dropDownImage.setImageResource(R.drawable.minus) // Change the dropdown icon to a minus symbol
-            isExpanded = true
-            singleLineDescription.visibility = View.GONE // Hide single-line description
+            textView.maxLines = Integer.MAX_VALUE // Show full text
+            dropDownImage.setImageResource(R.drawable.minus) // Change icon to minus
         }
 
-        // Collapse the journal entry and update the UI
         fun collapse() {
-            AnimationUtils.collapse(multiLine)
-            dropDownImage.setImageResource(R.drawable.ic_expand) // Change the dropdown icon to an expand symbol
-            isExpanded = false
-            singleLineDescription.visibility = View.VISIBLE // Show single-line description
+            textView.maxLines = 1 // Show single line
+            dropDownImage.setImageResource(R.drawable.ic_expand) // Change icon to expand
         }
     }
 }
+

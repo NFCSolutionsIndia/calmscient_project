@@ -36,6 +36,7 @@ import com.calmscient.di.remote.request.SavePatientExercisesFavoritesRequest
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.ToastUtil
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SavePreferences
 import com.calmscient.utils.common.SharedPreferencesUtil
@@ -68,6 +69,7 @@ class WhatExpectsWhenYouQuitDrinkingFragment(source: String) : Fragment() {
     private lateinit var savePrefData: SavePreferences
     private val savePatientExercisesFavoritesViewModel: SavePatientExercisesFavoritesViewModel by viewModels()
     private val fromSource = source
+    private var playbackPosition: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -253,7 +255,7 @@ class WhatExpectsWhenYouQuitDrinkingFragment(source: String) : Fragment() {
         }
     }
 
-    override fun onPause() {
+    /*override fun onPause() {
         super.onPause()
         playerView.player!!.playWhenReady = false
     }
@@ -271,6 +273,30 @@ class WhatExpectsWhenYouQuitDrinkingFragment(source: String) : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         playerView.player!!.playbackState
+    }*/
+
+    override fun onPause() {
+        super.onPause()
+        playbackPosition = player.currentPosition
+        player.playWhenReady = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        player.seekTo(playbackPosition)
+        player.playWhenReady = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Don't release the player here to avoid reinitialization when the user comes back
+        player.playWhenReady = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Release player resources here when the view is destroyed
+        player.release()
     }
 
     private fun favouritesAPICall(isFavourite: Boolean) {
@@ -298,7 +324,7 @@ class WhatExpectsWhenYouQuitDrinkingFragment(source: String) : Fragment() {
             if(isSuccess){
                 savePatientExercisesFavoritesViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
                     if(successData != null && successData.responseCode == 200){
-                        Toast.makeText(requireContext(),successData.responseMessage, Toast.LENGTH_SHORT).show()
+                        ToastUtil.showToast(requireContext(), successData.responseMessage)
                     }
                 })
             }

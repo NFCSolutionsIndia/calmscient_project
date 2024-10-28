@@ -88,7 +88,7 @@ class DailyJournalTabFragment : Fragment(){
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
         binding.tabDailyJournalRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        journalEntryDailyJournalAdapter = JournalEntryDailyJournalAdapter(dailyJournalItems)
+        journalEntryDailyJournalAdapter = JournalEntryDailyJournalAdapter(dailyJournalItems,null)
         binding.tabDailyJournalRecyclerView.adapter = journalEntryDailyJournalAdapter
 
         if (CommonClass.isNetworkAvailable(requireContext())) {

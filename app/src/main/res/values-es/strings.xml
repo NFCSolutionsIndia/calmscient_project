@@ -1369,7 +1369,7 @@ Todos tenemos diferentes condiciones de salud y tipos de cuerpo. ¡El ejercicio 
     <string name="title_response_to_stress">RESPUESTA AL ESTRÉS</string>
     <string name="nora">NORA</string>
     <string name="austin">AUSTIN</string>
-    <string name="version">Versión 2.15</string>
+    <string name="version">Versión 2.16</string>
 
     <!--summary of sleep-->
     <string name="chart_sleep_avg_sleep_score">Puntuación de sueño promedio</string>

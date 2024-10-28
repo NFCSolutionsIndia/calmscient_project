@@ -444,7 +444,11 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
             val dateLabels = ArrayList<String>()
 
             val sortedAuditDateRange = auditWeeklyScores.sortedBy {
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.completionDate)
+                it.completionDate?.let { it1 ->
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                        it1
+                    )
+                }
             }
 
             // Assuming PHQ9ByDateRange has a date and score
@@ -454,9 +458,19 @@ class SummaryOfAUDITFragment: Fragment() , CustomCalendarDialog.OnDateSelectedLi
                 entry.data = auditData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
 
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(auditData.completionDate)
-                val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
-                dateLabels.add(formattedDate)
+                val date = auditData.completionDate?.let {
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                        it
+                    )
+                }
+                val formattedDate = date?.let {
+                    SimpleDateFormat("MM/dd", Locale.getDefault()).format(
+                        it
+                    )
+                }
+                if (formattedDate != null) {
+                    dateLabels.add(formattedDate)
+                }
             }
 
             val dataSet = LineDataSet(entries, "AUDIT Scores")

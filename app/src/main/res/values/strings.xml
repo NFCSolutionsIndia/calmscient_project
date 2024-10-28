@@ -920,7 +920,7 @@ The most important thing is to do it! Do you have some time today to get started
 
     <!--Exrercises-->
 
-    <string name="mindfulness_exercises">Mindfulness – What is it?</string>
+    <string name="mindfulness_exercises">Mindfulness - what is it?</string>
     <string name="butterflyhug_exercises">Touch and the butterfly hug</string>
     <string name="handover_esxercises">Hand over your heart</string>
     <string name="mindfulwalking_exercises">Mindful walking</string>
@@ -1626,7 +1626,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="runningexercise_titletext">Movement: Running</string>
     <string name="runningexercises_text">It’s not easy to move when you have a shutdown or are feeling numb. Running can quickly shift you out of the shutdown state and re-energize you.</string>
 
-    <string name="version">Version 2.15</string>
+    <string name="version">Version 2.16</string>
     <!--bodymovemet Exercise-->
     <string name="bodymovementexercise_titletext">Mindful body movement</string>
     <!--summary of sleep-->

@@ -28,6 +28,7 @@ import com.calmscient.di.remote.request.SavePatientExercisesFavoritesRequest
 import com.calmscient.di.remote.response.LoginResponse
 import com.calmscient.utils.CommonAPICallDialog
 import com.calmscient.utils.CustomProgressDialog
+import com.calmscient.utils.ToastUtil
 import com.calmscient.utils.common.JsonUtil
 import com.calmscient.utils.common.SharedPreferencesUtil
 import com.calmscient.viewmodels.SavePatientExercisesFavoritesViewModel
@@ -126,7 +127,7 @@ class BodyMovementExerciseFragment(favourite: Int) : Fragment() {
             if(isSuccess){
                 savePatientExercisesFavoritesViewModel.saveResponseLiveData.observe(viewLifecycleOwner, Observer { successData->
                     if(successData != null && successData.responseCode == 200){
-                        Toast.makeText(requireContext(),successData.responseMessage,Toast.LENGTH_SHORT).show()
+                        ToastUtil.showToast(requireContext(), successData.responseMessage)
                     }
                 })
             }

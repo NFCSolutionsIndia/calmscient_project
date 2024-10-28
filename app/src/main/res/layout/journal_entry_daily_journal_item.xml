@@ -83,7 +83,7 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_singleLine"
+                android:id="@+id/tv_singleLineOrFullDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/date_title_layout"
@@ -92,6 +92,7 @@
                 android:textColor="@color/purple_100"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:clickable="true"
                 android:text="wkjbdjkshljhsvjhd"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -105,8 +106,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/taskTitleLayout"
             app:layout_constraintVertical_bias="0.0"
+            android:clickable="true"
             android:textColor="@color/purple_100"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

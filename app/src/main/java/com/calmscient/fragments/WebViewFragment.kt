@@ -122,7 +122,7 @@ class WebViewFragment : Fragment() {
                     webViewLearn?.evaluateJavascript("onAbortCourseGotoIndex();") { result ->
                         Log.d("WebViewFragment", "JS Result: $result")
                         customProgressDialog.show(getString(R.string.loading))
-                       /* Handler(Looper.getMainLooper()).postDelayed({
+                        /*Handler(Looper.getMainLooper()).postDelayed({
                             customProgressDialog.dialogDismiss()
                         }, 4000)*/
                         if (result == null || result == "null" || result.isEmpty()) {

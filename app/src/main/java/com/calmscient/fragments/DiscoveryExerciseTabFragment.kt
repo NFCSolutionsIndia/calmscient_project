@@ -85,7 +85,9 @@ class DiscoveryExerciseTabFragment : Fragment() {
         loginResponse = JsonUtil.fromJsonString<LoginResponse>(jsonString)
 
         binding.tabDiscoveryExerciseRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        journalEntryDailyJournalAdapter = JournalEntryDailyJournalAdapter(discoveryExerciseItems)
+        journalEntryDailyJournalAdapter = JournalEntryDailyJournalAdapter(discoveryExerciseItems) { url, title ->
+            openWebViewFragment(url, title)
+        }
         binding.tabDiscoveryExerciseRecyclerView.adapter = journalEntryDailyJournalAdapter
 
         if (CommonClass.isNetworkAvailable(requireContext())) {
@@ -183,4 +185,11 @@ class DiscoveryExerciseTabFragment : Fragment() {
         }
     }
 
+    private fun openWebViewFragment(url: String, title: String) {
+        val webViewFragment = JournalEntryWebViewFragment.newInstance(url, title)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, webViewFragment)
+            .addToBackStack(null)
+            .commit()
+    }
 }

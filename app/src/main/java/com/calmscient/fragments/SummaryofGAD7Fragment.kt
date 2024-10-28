@@ -447,7 +447,11 @@ class SummaryofGAD7Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
             val dateLabels = ArrayList<String>()
 
             val sortedGad7DateRange = gad7WeeklyScores.sortedBy {
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.completionDate)
+                it.completionDate?.let { it1 ->
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                        it1
+                    )
+                }
             }
 
             // Assuming PHQ9ByDateRange has a date and score

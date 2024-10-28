@@ -20,7 +20,7 @@ data class SummaryOfDAST(
     val lastName: String,
     val scoreTitle: String,
     val startDate: String,
-    val completionDate: String,
+    val completionDate: String?,
     val pscreeningId: Int
 )
 

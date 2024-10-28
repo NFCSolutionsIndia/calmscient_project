@@ -26,7 +26,8 @@ data class DailyJournal(
     val plId: Int,
     val questionType: String?,
     val sno: Int,
-    val title: String?
+    val title: String?,
+    val url: String?
 )
 
 data class Quiz(

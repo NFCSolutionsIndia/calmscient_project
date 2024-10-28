@@ -425,7 +425,11 @@ class SummaryofPHQ9Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
             val dateLabels = ArrayList<String>()
 
             val sortedPhqDateRange = phq9ByDateRange.sortedBy {
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.completionDate)
+                it.completionDate?.let { it1 ->
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                        it1
+                    )
+                }
             }
 
             // Assuming PHQ9ByDateRange has a date and score
@@ -435,9 +439,19 @@ class SummaryofPHQ9Fragment: Fragment(), CustomCalendarDialog.OnDateSelectedList
                 entry.data = phqData.scoreTitle // Set scoreTitle as data for each entry
                 entries.add(entry)
 
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(phqData.completionDate)
-                val formattedDate = SimpleDateFormat("MM/dd", Locale.getDefault()).format(date)
-                dateLabels.add(formattedDate)
+                val date = phqData.completionDate?.let {
+                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                        it
+                    )
+                }
+                val formattedDate = date?.let {
+                    SimpleDateFormat("MM/dd", Locale.getDefault()).format(
+                        it
+                    )
+                }
+                if (formattedDate != null) {
+                    dateLabels.add(formattedDate)
+                }
             }
 
             val dataSet = LineDataSet(entries, "PHQ9 Scores")
