@@ -137,11 +137,11 @@ class MindfulWalkingExerciseFragment(favourite: Int) : Fragment(), MediaPlayer.O
                  )*/
                 binding.audioProgressBar.visibility = View.VISIBLE
                 if (savePrefData.getAslLanguageState() == true) {
-                    mediaPlayer.setDataSource("https://calmscient-videos.s3.ap-south-1.amazonaws.com/5+Mindful+walking+with+music+English.mp3")
+                    mediaPlayer.setDataSource("https://calmscient.blob.core.windows.net/exercises-audios/MindfulWalkingWithMusicEnglish.mp3")
                 } else if (savePrefData.getSpanLanguageState() == true) {
-                    mediaPlayer.setDataSource("https://calmscient-videos.s3.ap-south-1.amazonaws.com/5+Mindful+walking+with+music+Spanish.mp3")
+                    mediaPlayer.setDataSource("https://calmscient.blob.core.windows.net/exercises-audios/MindfulWalkingWithMusicSpanish.mp3")
                 } else {
-                    mediaPlayer.setDataSource("https://calmscient-videos.s3.ap-south-1.amazonaws.com/5+Mindful+walking+with+music+English.mp3")
+                    mediaPlayer.setDataSource("https://calmscient.blob.core.windows.net/exercises-audios/MindfulWalkingWithMusicEnglish.mp3")
                 }
                 mediaPlayer.prepareAsync()
                 mediaPlayer.setOnPreparedListener { mp ->

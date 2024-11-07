@@ -136,11 +136,11 @@ class MuscleRelaxationExerciseFragment(favourite: Int) : Fragment(), MediaPlayer
                 )*/
                 binding.audioProgressBar.visibility = View.VISIBLE
                 if (savePrefData.getAslLanguageState() == true) {
-                    mediaPlayer.setDataSource("https://calmscient-videos.s3.ap-south-1.amazonaws.com/2+Progressive+muscle+relaxation+English+with+music.wav")
+                    mediaPlayer.setDataSource("https://calmscient.blob.core.windows.net/exercises-audios/ProgressiveMuscleRelaxationEnglishWithMusic.wav")
                 }else if(savePrefData.getSpanLanguageState() == true){
-                    mediaPlayer.setDataSource("https://calmscient-videos.s3.ap-south-1.amazonaws.com/2+Progressive+muscle+relaxation+with+music+Spanish.wav")
+                    mediaPlayer.setDataSource("https://calmscient.blob.core.windows.net/exercises-audios/ProgressiveMuscleRelaxationWithMusicSpanish.wav")
                 }else{
-                    mediaPlayer.setDataSource("https://calmscient-videos.s3.ap-south-1.amazonaws.com/2+Progressive+muscle+relaxation+English+with+music.wav")
+                    mediaPlayer.setDataSource("https://calmscient.blob.core.windows.net/exercises-audios/ProgressiveMuscleRelaxationEnglishWithMusic.wav")
                 }
                 mediaPlayer.prepareAsync()
                 mediaPlayer.setOnPreparedListener { mp ->

@@ -1597,7 +1597,7 @@ The most important thing is to do it! Do you have some time today to get started
     <string name="total_text">Total</string>
     <string name="count_text">count</string>
     <string name="drink_tracker">Drink tracker</string>
-    <string name="how_to_do">How to do it</string>
+    <string name="how_to_do">How to do it:</string>
     <string name="lesson_intro">Introduction</string>
     <string name="lesson">Lesson 1</string>
     <string name="lesson_2">Lesson 2</string>
@@ -2247,7 +2247,7 @@ These questions refer to drug use in the past 12 months. Please answer NO or YES
     <string name="what_are_the_consequences">What are the consequences?</string>
     <string name="my_drinking_habit">My drinking habit</string>
     <string name="preparation">Preparation</string>
-    <string name="four_seven_eight_desc_one">First find a comfortable seated position. Ensure that you are at ease before beginning the rhythmic breathing pattern.\n\nPlace the tip of your tongue gently against the tissue just behind your top front teeth</string>
+    <string name="four_seven_eight_desc_one">To initiate the breathing exercise, First find a comfortable seated position. Ensure that you are at ease before beginning the rhythmic breathing pattern.\n\nPlace the tip of your tongue gently against the tissue just behind your top front teeth</string>
     <string name="let_s_learn_how_to_do_the_4_7_8_breathing_exercise">Let’s learn how to do the 4–7–8 breathing exercise.</string>
     <string name="step_1_emptying_the_lungs">Step 1: Emptying the lungs</string>
     <string name="four_seven_eight_step_one_desc">Begin by completely emptying your lungs of air. Allow yourself a moment to release any tension.</string>
