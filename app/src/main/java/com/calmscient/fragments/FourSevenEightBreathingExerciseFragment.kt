@@ -99,6 +99,15 @@ class FourSevenEightBreathingExerciseFragment(source: String)  : Fragment() {
             }
         }
 
+        binding.completeButton.setOnClickListener{
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            }
+
+        }
+
         // Load thumbnail from URL using Glide
         Glide.with(this)
             .load("https://calmscient.blob.core.windows.net/excercises-breathing-technique-thumbnails/478-excercise-video.png")

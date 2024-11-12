@@ -112,6 +112,10 @@ class MindfulWalkingExerciseFragment(favourite: Int) : Fragment(), MediaPlayer.O
             //loadFragment(ExerciseFragment())
             requireActivity().supportFragmentManager.popBackStack()
         }
+
+        binding.completeButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         waveformView = requireActivity().findViewById(R.id.waveformView)
         playButton = requireActivity().findViewById(R.id.playButton)
         handler = Handler()

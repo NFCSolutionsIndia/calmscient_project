@@ -211,6 +211,15 @@ class DiaphragmaticBreathingExerciseFragment(source: String)  : Fragment() {
 
         }
 
+        binding.completeButton.setOnClickListener{
+            if(fromSource == "Home"){
+                loadFragment(HomeFragment())
+            }else{
+                loadFragment(DeepBreathingExerciseFragment(0,fromSource))
+            }
+
+        }
+
         return binding.root
 
     }

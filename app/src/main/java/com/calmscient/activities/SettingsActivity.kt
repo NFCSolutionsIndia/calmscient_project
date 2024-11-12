@@ -178,6 +178,11 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
             updateThemeAPICall(isChecked)
         }
 
+        binding.Profile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 

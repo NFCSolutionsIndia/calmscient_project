@@ -33,8 +33,8 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
     var successLiveData: MutableLiveData<Boolean> = MutableLiveData()
     var successNotAnsweredData: MutableLiveData<Boolean> = MutableLiveData()
     var successNotAnsweredDataMessage: MutableLiveData<String?> = MutableLiveData()
-    val errorLiveData: MutableLiveData<String> = MutableLiveData()
-    var failureLiveData: MutableLiveData<String> = MutableLiveData()
+    val errorLiveData: MutableLiveData<String?> = MutableLiveData()
+    var failureLiveData: MutableLiveData<String?> = MutableLiveData()
 
     private var lastRequestBody: PatientAnswersWrapper? = null
     private var lastAccessToken: String = ""
@@ -92,6 +92,16 @@ class SaveScreeningAnswersViewModel @Inject constructor(private val repository: 
 
     fun retrySavePatientAnswers() {
         lastRequestBody?.let { savePatientAnswers(it, lastAccessToken) }
+    }
+
+    fun clear(){
+        saveResponseLiveData.value = null
+        loadingLiveData.value = false
+        successLiveData.value = false
+        successNotAnsweredData.value = false
+        successNotAnsweredDataMessage.value = null
+        errorLiveData.value = null
+        failureLiveData.value = null
     }
 }
 

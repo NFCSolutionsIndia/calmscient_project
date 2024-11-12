@@ -183,6 +183,28 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                 }else{
                     binding.previousQuestion.visibility = View.GONE
                 }
+
+                if (currentQuestionIndex == screeningQuestionResponse.size-1){
+                    binding.nextQuestion.visibility = View.GONE
+                    binding.completeButton.visibility = View.VISIBLE
+                }else{
+                    binding.nextQuestion.visibility = View.VISIBLE
+                    binding.completeButton.visibility = View.GONE
+                }
+
+            } else {
+                CommonClass.showInternetDialogue(requireContext())
+            }
+        }
+
+        binding.completeButton.setOnClickListener {
+            if (CommonClass.isNetworkAvailable(requireContext())) {
+                moveToNextQuestion()
+                if(currentQuestionIndex>0){
+                    binding.previousQuestion.visibility = View.VISIBLE
+                }else{
+                    binding.previousQuestion.visibility = View.GONE
+                }
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -197,6 +219,16 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                 }else{
                     binding.previousQuestion.visibility = View.VISIBLE
                 }
+
+                if (currentQuestionIndex == screeningQuestionResponse.size-1){
+                    binding.nextQuestion.visibility = View.GONE
+                    binding.completeButton.visibility = View.VISIBLE
+                }else{
+                    binding.nextQuestion.visibility = View.VISIBLE
+                    binding.completeButton.visibility = View.GONE
+                }
+
+
             } else {
                 CommonClass.showInternetDialogue(requireContext())
             }
@@ -224,50 +256,6 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
 
 
     private fun observeViewModel() {
-
-        /*screeningQuestionsViewModel.screeningsQuestionResultLiveData.observe(
-            viewLifecycleOwner,
-            Observer { isSuccess ->
-                if (isSuccess) {
-                    screeningQuestionsViewModel.screeningQuestionListLiveData.observe(
-                        viewLifecycleOwner,
-                        Observer { questionnaireItems ->
-                            questionnaireItems?.let {
-
-                                val res =
-                                    screeningQuestionsViewModel.screeningQuestionListLiveData.value!!
-                                screeningQuestionResponse = res
-                                Log.d("DAST Fragment ", "$res")
-
-                                result = it
-                                displayQuestions(it)
-                            }
-                        })
-
-                } else {
-                    screeningQuestionsViewModel.errorLiveData.value?.let { failureMessage ->
-                        failureMessage.let {
-                            if (CommonClass.isNetworkAvailable(requireContext())) {
-                                ServerTimeoutHandler.handleTimeoutException(requireContext()) {
-                                    // Retry logic when the retry button is clicked
-                                    screeningQuestionsViewModel.retryScreeningsFetchMenuItems()
-                                }
-                            } else {
-                                CommonClass.showInternetDialogue(requireContext())
-                            }
-
-                        }
-                    }
-
-                    screeningQuestionsViewModel.failureLiveData.value?.let { failureMessage ->
-                        failureMessage.let {
-                            commonDialog.showDialog(
-                                it
-                            )
-                        }
-                    }
-                }
-            })*/
         screeningQuestionsViewModel.screeningQuestionListLiveData.observe(
             viewLifecycleOwner,
             Observer { questionnaireItems ->
@@ -357,6 +345,7 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                     val patientAnswers = constructPatientAnswers()
 
                     if (patientAnswers.patientAnswers.isNotEmpty()) {
+                        saveScreeningAnswersViewModel.clear()
                         saveScreeningAnswersViewModel.savePatientAnswers(patientAnswers, accessToken)
                         saveScreeningAnswersViewModel.loadingLiveData.observe(viewLifecycleOwner) { isLoading ->
                             if (isLoading) customProgressDialog.show("Loading...") else customProgressDialog.dialogDismiss()
@@ -389,7 +378,9 @@ class DASTQuestionFragment(private val screeningItem: ScreeningItem) : Fragment(
                         }
 
                         saveScreeningAnswersViewModel.errorLiveData.observe(viewLifecycleOwner) { errorMessage ->
-                            commonDialog.showDialog(errorMessage,R.drawable.ic_failure)
+                            if (errorMessage != null) {
+                                commonDialog.showDialog(errorMessage,R.drawable.ic_failure)
+                            }
                         }
                     } else {
                         commonDialog.showDialog(getString(R.string.please_answer_the_questions),R.drawable.ic_alret)

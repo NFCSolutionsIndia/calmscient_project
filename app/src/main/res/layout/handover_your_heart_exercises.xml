@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".activities.HandOverYourHeartActivity"
-    tools:ignore="MissingConstraints">
+    tools:ignore="MissingConstraints"
+    android:layout_marginBottom="@dimen/_58sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,8 +43,7 @@
         android:background="@color/viewbackgroundcolor"/>
    <ScrollView
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginBottom="@dimen/_20sdp">
+       android:layout_height="wrap_content">
        <LinearLayout
            android:id="@+id/contentText1"
            android:layout_width="wrap_content"
@@ -154,8 +154,7 @@
                <LinearLayout
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:orientation="horizontal"
-                   android:layout_marginBottom="@dimen/_40sdp">
+                   android:orientation="horizontal">
 
                    <TextView
                        android:layout_width="wrap_content"
@@ -175,9 +174,34 @@
                        android:layout_marginStart="@dimen/_4sdp"/>
                </LinearLayout>
 
+
+
            </LinearLayout>
 
 
        </LinearLayout>
    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/completeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:background="@drawable/complete_button_background"
+            android:fontFamily="@font/lexendregular"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            android:text="@string/complete"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+
 </LinearLayout>

@@ -92,15 +92,21 @@ class ButterflyHugExercisesFragment(favourite: Int) : Fragment() {
             binding.contentText2.visibility = View.VISIBLE
             binding.contentText1.visibility = View.GONE
             binding.nextQuestion.visibility = View.GONE
+            binding.completeButton.visibility = View.VISIBLE
         }
         binding.previousQuestion.setOnClickListener {
             binding.contentText1.visibility = View.VISIBLE
             binding.contentText2.visibility = View.GONE
             binding.nextQuestion.visibility = View.VISIBLE
             binding.previousQuestion.visibility = View.GONE
+            binding.completeButton.visibility = View.GONE
         }
         binding.menuicon.setOnClickListener {
             //loadFragment(ExerciseFragment())
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        binding.completeButton.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
         return binding.root

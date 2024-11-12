@@ -103,6 +103,12 @@ class MuscleRelaxationExerciseFragment(favourite: Int) : Fragment(), MediaPlayer
             //loadFragment(ExerciseFragment())
             requireActivity().supportFragmentManager.popBackStack()
         }
+
+        binding.completeButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+
         return binding.root
     }
 

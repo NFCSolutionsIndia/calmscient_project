@@ -148,6 +148,22 @@
                 android:layout_marginEnd="16dp"
                 android:clickable="true"
                 android:src="@drawable/ic_next_question" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/completeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:background="@drawable/complete_button_background"
+                android:fontFamily="@font/lexendregular"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold"
+                android:text="@string/complete"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:visibility="gone"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

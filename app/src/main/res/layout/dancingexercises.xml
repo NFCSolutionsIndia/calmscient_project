@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activities.DancingExercisesActivity"
-    tools:ignore="MissingDefaultResource">
+    tools:ignore="MissingDefaultResource"
+    android:layout_marginBottom="@dimen/_58sdp">
 
         <RelativeLayout
+            android:id="@+id/toolbarDance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -41,12 +43,14 @@
             android:id="@+id/view1"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_1sdp"
+            android:layout_below="@+id/toolbarDance"
             android:background="@color/viewbackgroundcolor"/>
         <LinearLayout
             android:id="@+id/contentText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_below="@+id/view1">
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -74,4 +78,27 @@
                 android:textSize="@dimen/_12sdp"/>
         </LinearLayout>
 
-    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/completeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/complete_button_background"
+            android:clickable="true"
+            android:fontFamily="@font/lexendregular"
+            android:text="@string/complete"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    </RelativeLayout>

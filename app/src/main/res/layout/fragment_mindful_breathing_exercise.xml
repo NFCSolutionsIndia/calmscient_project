@@ -10,7 +10,7 @@
   ~      Author : @Pardha Saradhi
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,6 +21,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/tool_bar_mindful_breathing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_5sdp"
@@ -51,12 +52,15 @@
         android:id="@+id/view1"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_1sdp"
-        android:background="@color/viewbackgroundcolor"/>
+        android:background="@color/viewbackgroundcolor"
+        android:layout_below="@+id/tool_bar_mindful_breathing"/>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:layout_marginBottom="@dimen/_54sdp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -618,4 +622,28 @@
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/completeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:background="@drawable/complete_button_background"
+            android:fontFamily="@font/lexendregular"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:text="@string/complete"
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"
+            android:textAllCaps="false"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+</RelativeLayout>

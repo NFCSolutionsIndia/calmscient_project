@@ -88,6 +88,7 @@ class MindfulnessExercisesFragment(private val favourite: Int, private val index
 
 
 
+
         stepIndicators = listOf(
             view.findViewById(R.id.step1Indicator),
             view.findViewById(R.id.step2Indicator),
@@ -99,6 +100,10 @@ class MindfulnessExercisesFragment(private val favourite: Int, private val index
 
         binding.menuIcon.setOnClickListener {
             //requireActivity().onBackPressed()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        binding.completeButton.setOnClickListener{
             requireActivity().supportFragmentManager.popBackStack()
         }
 
@@ -240,10 +245,12 @@ class MindfulnessExercisesFragment(private val favourite: Int, private val index
         if(currentQuestionIndex == stepIndicators.size-1)
         {
             binding.nextQuestion.visibility = View.GONE
+            binding.completeButton.visibility = View.VISIBLE
         }
         else
         {
             binding.nextQuestion.visibility = View.VISIBLE
+            binding.completeButton.visibility = View.GONE
         }
     }
 

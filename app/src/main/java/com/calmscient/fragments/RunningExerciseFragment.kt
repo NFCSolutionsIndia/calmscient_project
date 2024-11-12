@@ -89,6 +89,12 @@ class RunningExerciseFragment(favourite: Int) : Fragment() {
             //loadFragment(ExerciseFragment())
             requireActivity().supportFragmentManager.popBackStack()
         }
+
+        binding.completeButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+
         return binding.root
     }
 
