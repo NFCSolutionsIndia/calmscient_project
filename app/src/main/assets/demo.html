@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Web Page</title>
+    <script type="text/javascript">
+        function getValues() {
+            // This function returns some value when called
+            return "Hello from the webpage!";
+        }
+
+         function onAbortCourseGotoIndex() {
+            console.log("Abort course method called");
+            alert("Abort course method called");
+             return "Abort course method called";
+        }
+
+        // JavaScript function with arguments
+        function onSetPercentageWithScreenWise(percentage) {
+            console.log("Setting percentage: " + percentage);
+            alert("Setting percentage: " + percentage);
+             return "Setting percentage: " + percentage;
+        }
+
+        // Sample function to be called without arguments
+        function yourJsFunction() {
+            console.log("yourJsFunction called");
+            alert("yourJsFunction called");
+            return "yourJsFunction called "
+        }
+    </script>
+</head>
+<body>
+    <h1>WebView Demo</h1>
+    <button onclick="getValues()">Click Me</button>
+</body>
+</html>

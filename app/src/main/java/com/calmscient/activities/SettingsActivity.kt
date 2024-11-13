@@ -179,8 +179,12 @@ class SettingsActivity : AppCompat(), View.OnClickListener {
         }
 
         binding.Profile.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+          if(CommonClass.isNetworkAvailable(this)){
+              val intent = Intent(this, ProfileActivity::class.java)
+              startActivity(intent)
+          }else{
+              CommonClass.showInternetDialogue(this)
+          }
         }
 
 

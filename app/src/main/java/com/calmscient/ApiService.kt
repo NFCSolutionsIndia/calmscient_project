@@ -25,6 +25,7 @@ import com.calmscient.di.remote.request.GetEventsListRequest
 import com.calmscient.di.remote.request.GetPatientFavoritesRequest
 import com.calmscient.di.remote.request.GetPatientJournalByPatientIdRequest
 import com.calmscient.di.remote.request.GetPatientPrivacyRequest
+import com.calmscient.di.remote.request.GetPatientProfileDetailsRequest
 import com.calmscient.di.remote.request.GetTakingControlIndexRequest
 import com.calmscient.di.remote.request.GetTakingControlIntroductionRequest
 import com.calmscient.di.remote.request.GetTakingControlSummaryRequest
@@ -77,6 +78,7 @@ import com.calmscient.di.remote.response.GetEventsListResponse
 import com.calmscient.di.remote.response.GetPatientFavoritesResponse
 import com.calmscient.di.remote.response.GetPatientJournalByPatientIdResponse
 import com.calmscient.di.remote.response.GetPatientPrivacyResponse
+import com.calmscient.di.remote.response.GetPatientProfileDetailsResponse
 import com.calmscient.di.remote.response.GetTakingControlIndexResponse
 import com.calmscient.di.remote.response.GetTakingControlIntroductionResponse
 import com.calmscient.di.remote.response.GetTakingControlSummaryResponse
@@ -292,6 +294,9 @@ interface ApiService {
 
     @POST("identity/api/v1/settings/getPatientLanguages")
     fun getUserLanguages(@Header("Authorization")accessToken: String,@Body requestBody: GetUserProfileRequest): Call<GetUserLanguagesResponse>
+
+    @POST("identity/api/v1/settings/getPatientProfileDetails")
+    fun getPatientProfileDetails(@Header("Authorization")accessToken: String, @Body requestBody: GetPatientProfileDetailsRequest): Call<GetPatientProfileDetailsResponse>
 
     @POST("identity/api/v1/settings/updateUserLanguage")
     fun updateUserLanguage(@Header("Authorization")accessToken: String,@Body requestBody: UpdateUserLanguageRequest): Call<UpdateUserLanguageResponse>
