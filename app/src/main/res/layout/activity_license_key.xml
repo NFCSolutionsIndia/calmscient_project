@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.LicenseKeyActivity">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       tools:ignore="MissingConstraints"
+       android:layout_marginHorizontal="@dimen/_10sdp">
+       <ImageView
+           android:id="@+id/backIcon"
+           android:layout_width="wrap_content"
+           android:layout_height="35dp"
+           android:clickable="true"
+           android:layout_marginTop="@dimen/_30sdp"
+           android:src="@drawable/ic_back"/>
+
+
+       <ImageView
+           android:id="@+id/img_calm"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="@dimen/_40sdp"
+           android:layout_marginEnd="@dimen/_40sdp"
+           android:layout_below="@+id/backIcon"
+           android:src="@drawable/clamscient_txt_splash" />
+
+       <com.google.android.material.textfield.TextInputLayout
+           android:id="@+id/licenseKeyTextInputLayout"
+           style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="@dimen/_10sdp"
+           android:paddingTop="1dp"
+           app:boxBackgroundColor="#ffffff"
+           android:layout_below="@+id/img_calm"
+           app:boxStrokeColor="@color/example_7_button"
+           app:endIconMode="clear_text"
+           app:hintTextColor="@color/black">
+
+           <com.google.android.material.textfield.TextInputEditText
+               android:id="@+id/licenseKey"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:hint="License key"
+               android:padding="@dimen/_11sdp"
+               android:text=""
+               android:inputType="textPersonName" />
+
+       </com.google.android.material.textfield.TextInputLayout>
+
+       <ScrollView
+           android:id="@+id/licenseTextView"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/_100sdp"
+           android:background="@drawable/license_key_border"
+           android:layout_below="@+id/licenseKeyTextInputLayout"
+           android:layout_marginTop="@dimen/_10sdp"
+           android:scrollbars="vertical">
+
+           <TextView
+               android:id="@+id/nonEditableTextView"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:focusable="true"
+               android:focusableInTouchMode="true"
+               android:inputType="none"
+               android:padding="16dp"
+               android:scrollbars="vertical"
+               android:layout_marginBottom="@dimen/_10sdp"
+               android:text="1Your text goes here...\n2Your text goes here...\n3Your text goes here...\n4Your text goes here...\n5Your text goes here...\n6Your text goes here...\n7Your text goes here...\n8Your text goes here...\n9Your text goes here...\n10Your text goes here...\nYour text goes here...\nYour text goes here...\n" />
+       </ScrollView>
+
+
+    <CheckBox
+           android:id="@+id/checkbox_read_understood"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:buttonTint="@color/purple_100"
+           android:checked="false"
+           android:textSize="@dimen/_12sdp"
+           android:fontFamily="@font/lexendlight"
+           android:layout_below="@+id/licenseTextView"
+           android:text="I have read it and understood." />
+
+       <CheckBox
+           android:id="@+id/checkbox_agree"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:buttonTint="@color/purple_100"
+           android:checked="false"
+           android:textSize="@dimen/_12sdp"
+           android:fontFamily="@font/lexendlight"
+           android:layout_below="@+id/checkbox_read_understood"
+           android:text="I agree to share my info with medical provider" />
+
+
+       <androidx.appcompat.widget.AppCompatButton
+           android:id="@+id/btn_submit"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:layout_marginHorizontal="@dimen/_10sdp"
+           android:layout_marginTop="16dp"
+           android:layout_marginBottom="8dp"
+           android:background="@drawable/button_border"
+           android:fontFamily="@font/lexendmedium"
+           android:gravity="center"
+           android:text="@string/submit"
+           android:textAllCaps="false"
+           android:textColor="@color/white"
+           android:textSize="20sp"
+           android:layout_below="@+id/checkbox_agree" />
+   </LinearLayout>
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/clamscient_splash_bottom" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

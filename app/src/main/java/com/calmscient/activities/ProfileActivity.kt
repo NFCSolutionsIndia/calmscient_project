@@ -54,49 +54,10 @@ class ProfileActivity : AppCompat() {
         getPatientProfileInformationAPICall()
         setContentView(binding.root)
 
-        setupFocusListeners()
 
         binding.backIcon.setOnClickListener{
             finish()
         }
-    }
-
-    private fun setupFocusListeners() {
-        // Add focus listeners to each TextInputEditText
-        val editTexts = listOf(
-            binding.firstName,
-            binding.lastName,
-            binding.oldPassword,
-            binding.newPassword,
-            binding.confirmNewPassword
-        )
-
-        for (editText in editTexts) {
-            editText.setOnFocusChangeListener { _, hasFocus ->
-                // Hide submit button when any TextInputEditText gets focus
-                binding.submitBtn.visibility = if (hasFocus) View.GONE else View.VISIBLE
-            }
-        }
-    }
-
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            val view = currentFocus
-            if (view is TextInputEditText) {
-                val outRect = Rect()
-                view.getGlobalVisibleRect(outRect)
-                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                    view.clearFocus()
-                    hideKeyboard(view)
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event)
-    }
-
-    private fun hideKeyboard(view: View) {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun  getPatientProfileInformationAPICall(){

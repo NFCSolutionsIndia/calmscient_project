@@ -184,7 +184,8 @@ class LoginActivity : AppCompatActivity() {
                     val accessToken = responseDate.token.access_token
 
                     SharedPreferencesUtil.saveData(this, "accessToken", accessToken)
-                    navigateToDayScreen(responseDate)
+                    //navigateToDayScreen(responseDate)
+                    startActivity(Intent(this, LicenseKeyActivity::class.java))
 
                 } else {
                     commonDialog.showDialog("Something went wrong.\nPlease try after some time !!!",R.drawable.ic_failure)

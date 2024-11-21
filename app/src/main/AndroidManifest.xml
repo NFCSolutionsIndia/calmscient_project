@@ -37,12 +37,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
         <activity
+            android:name=".activities.LicenseKeyActivity"
+            android:exported="false"
+            android:label="License Key"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".activities.ProfileActivity"
             android:exported="false"
             android:label="Profile"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.NoActionBar" />
+            android:theme="@style/Theme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.UserMoodActivity"
             android:configChanges="orientation"

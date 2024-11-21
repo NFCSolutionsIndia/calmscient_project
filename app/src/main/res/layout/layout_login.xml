@@ -167,6 +167,23 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_10sdp">
+
+                <CheckBox
+                    android:id="@+id/remember_me"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/purple_100"
+                    android:checked="false"
+                    android:textSize="@dimen/_12sdp"
+                    android:fontFamily="@font/lexendlight"
+                    android:text="Remember me" />
+
+            </RelativeLayout>
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_login"

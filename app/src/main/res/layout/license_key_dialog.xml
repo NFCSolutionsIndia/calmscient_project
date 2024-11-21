@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~
+  ~      Copyright (c) 2023- NFC Solutions, - All Rights Reserved
+  ~      All source code contained herein remains the property of NFC Solutions Incorporated
+  ~      and protected by trade secret or copyright law of USA.
+  ~      Dissemination, De-compilation, Modification and Distribution are strictly prohibited unless
+  ~      there is a prior written permission or license agreement from NFC Solutions.
+  ~
+  ~      Author : @Pardha Saradhi
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_border"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/_10sdp"
+    android:padding="@dimen/_20sdp"
+    android:layout_marginHorizontal="@dimen/_20sdp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your license key has been verified."
+        android:textAlignment="center"
+        android:textSize="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:fontFamily="@font/lexendregular"
+        android:textColor="@color/purple_100"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please complete your profile to start using calmscient."
+        android:textAlignment="center"
+        android:textSize="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:fontFamily="@font/lexendregular"
+        android:textColor="@color/black_head"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_continue"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_26sdp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_border"
+        android:fontFamily="@font/lexendmedium"
+        android:gravity="center"
+        android:text="Continue"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_below="@+id/checkbox_agree" />
+
+
+</LinearLayout>
